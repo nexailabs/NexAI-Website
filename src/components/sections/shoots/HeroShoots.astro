@@ -1,0 +1,292 @@
+<section class="hero-shoots">
+  <div class="hero-bg hero-bg-base"></div>
+  <div class="hero-bg hero-bg-gradient"></div>
+  <div class="hero-bg hero-bg-grid"></div>
+  <div class="hero-orb" aria-hidden="true"></div>
+
+  <div class="hero-content">
+    <span class="trust-badge">
+      <span class="trust-dot"></span>
+      Trusted by 15+ D2C Fashion Brands
+    </span>
+
+    <h1 class="hero-title">
+      Stop Waiting Weeks<br />
+      for <span class="gradient-text">Photoshoots</span>
+    </h1>
+
+    <p class="hero-subtitle">
+      Transform mannequin shots into stunning on-model photos in 48 hours.<br class="desktop-only" />
+      80% cheaper than traditional shoots.
+    </p>
+
+    <div class="hero-cta">
+      <a href="https://cal.com/nexailabs/15min" class="btn-primary" target="_blank" rel="noreferrer">
+        Get Free Sample Images
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 12h14M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
+        </svg>
+      </a>
+      <p class="hero-cta-sub">No commitment. See results before you pay.</p>
+    </div>
+
+    <div class="hero-showcase" aria-label="Before and after product photography showcase">
+      <div class="showcase-card before">
+        <div class="showcase-image placeholder-before">
+          <span>Mannequin Shot</span>
+        </div>
+        <span class="showcase-label">Your Product Photo</span>
+      </div>
+      <div class="showcase-arrow" aria-hidden="true">
+        <svg viewBox="0 0 64 24">
+          <path d="M2 12h56M48 4l12 8-12 8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+        </svg>
+      </div>
+      <div class="showcase-card after">
+        <div class="showcase-image placeholder-after">
+          <span>On-Model Photo</span>
+        </div>
+        <span class="showcase-label">48 Hours Later</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+
+  function initHeroAnimations() {
+    gsap.set(['.trust-badge', '.hero-title', '.hero-subtitle', '.hero-cta', '.showcase-card', '.showcase-arrow'], { clearProps: 'all' });
+
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+    tl.from('.trust-badge', { y: 20, opacity: 0, duration: 0.6 }, 0.2)
+      .from('.hero-title', { y: 30, opacity: 0, duration: 0.8 }, 0.4)
+      .from('.hero-subtitle', { y: 20, opacity: 0, duration: 0.8 }, 0.65)
+      .from('.hero-cta', { y: 20, opacity: 0, duration: 0.6 }, 0.85)
+      .from('.showcase-card.before', { x: -30, opacity: 0, duration: 0.8 }, 1.0)
+      .from('.showcase-arrow', { scale: 0, opacity: 0, duration: 0.4 }, 1.2)
+      .from('.showcase-card.after', { x: 30, opacity: 0, duration: 0.8 }, 1.0);
+  }
+
+  initHeroAnimations();
+  document.addEventListener('astro:page-load', () => {
+    initHeroAnimations();
+  });
+</script>
+
+<style>
+  .hero-shoots {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 6rem var(--space-sm) var(--space-lg);
+    overflow: hidden;
+    text-align: center;
+    isolation: isolate;
+    background: var(--color-bg);
+  }
+
+  .hero-bg,
+  .hero-orb {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero-bg-base {
+    background: var(--color-bg);
+  }
+
+  .hero-bg-gradient {
+    background: var(--gradient-hero);
+  }
+
+  .hero-bg-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7), transparent 100%);
+  }
+
+  .hero-orb {
+    inset: auto auto 5% 50%;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(30, 126, 114, 0.2) 0%, transparent 70%);
+    filter: blur(80px);
+    transform: translateX(-50%);
+    animation: float 14s ease-in-out infinite;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    width: 100%;
+  }
+
+  .trust-badge,
+  .hero-title,
+  .hero-subtitle,
+  .hero-cta {
+    opacity: 0;
+  }
+
+  .showcase-card,
+  .showcase-arrow {
+    opacity: 0;
+  }
+
+  .trust-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--color-success);
+  }
+
+  .trust-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-success);
+    animation: pulse 2s infinite;
+  }
+
+  .hero-title {
+    margin-top: 1.5rem;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 1.08;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+
+  .hero-subtitle {
+    max-width: 640px;
+    margin: 1.5rem auto 0;
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+
+  .desktop-only {
+    display: none;
+  }
+
+  .hero-cta {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hero-cta .btn-primary svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  .hero-cta-sub {
+    font-size: 0.85rem;
+    color: var(--color-text-subtle);
+  }
+
+  .hero-showcase {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+    flex-direction: column;
+  }
+
+  .showcase-card {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    background: linear-gradient(180deg, rgba(24, 25, 27, 0.92) 0%, rgba(10, 10, 10, 0.95) 100%);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  }
+
+  .showcase-image {
+    width: clamp(200px, 30vw, 320px);
+    aspect-ratio: 3 / 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+
+  .showcase-image span {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .placeholder-before {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    color: var(--color-text-subtle);
+  }
+
+  .placeholder-after {
+    background: linear-gradient(135deg, rgba(30, 126, 114, 0.15) 0%, rgba(78, 201, 180, 0.08) 100%);
+    color: var(--color-brand-cyan);
+  }
+
+  .showcase-label {
+    display: block;
+    padding: 0.75rem;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .showcase-arrow {
+    color: var(--color-brand-cyan);
+  }
+
+  .showcase-arrow svg {
+    width: 72px;
+    height: 28px;
+  }
+
+  @media (min-width: 768px) {
+    .desktop-only {
+      display: inline;
+    }
+
+    .hero-shoots {
+      padding-top: 7rem;
+    }
+
+    .hero-showcase {
+      flex-direction: row;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .showcase-arrow {
+      transform: rotate(90deg);
+    }
+  }
+</style>
