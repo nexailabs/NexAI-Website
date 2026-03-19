@@ -1,43 +1,45 @@
-# Astro Starter Kit: Minimal
+# NexAI Labs — Website
 
-```sh
-npm create astro@latest -- --template minimal
+Website rebuild for NexAI Labs, an AI agency based in India. Two pages:
+
+1. **`/ai-shoots`** — AI Fashion Photography conversion landing page
+2. **`/`** — AI Agency portfolio homepage
+
+## Quick Start
+
+```bash
+npm install
+npm run dev        # localhost:4321
+npm run build      # production build to dist/
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Documentation
 
-## 🚀 Project Structure
+Read these before writing any code:
 
-Inside of your Astro project, you'll see the following folders and files:
+| Doc | What it covers |
+|-----|---------------|
+| [`docs/BUILD-PLAN.md`](docs/BUILD-PLAN.md) | 21-phase build guide, architecture, section-by-section order, design quality expectations |
+| [`docs/BRAND.md`](docs/BRAND.md) | Color palette, typography, logo files, design patterns, contact info |
+| [`docs/REFERENCES.md`](docs/REFERENCES.md) | 19 competitor/inspiration sites, categorized by what to study from each |
+| [`docs/AI-SHOOTS-CONTENT.md`](docs/AI-SHOOTS-CONTENT.md) | Full copy/content for the AI Shoots landing page (all 11 sections) |
+| [`docs/website-analysis.md`](docs/website-analysis.md) | 5.3/10 critique of the current live site — context on what to fix |
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Stack
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+- **Astro 5** (SSG, TypeScript strict)
+- **GSAP 3.14** + ScrollTrigger (scroll animations)
+- **Lenis** (smooth scroll — `src/scripts/lenis.ts`, do not modify)
+- **Vanilla CSS** with custom properties (design tokens in `src/styles/global.css`)
+- **No** Tailwind, React, Vue, Svelte, or UI libraries
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Brand Assets
 
-Any static assets, like images, can be placed in the `public/` directory.
+Logo files in `public/assets/logo/`:
+- `nexai-icon.png` — standalone hexagonal icon (teal gradient)
+- `nexai-logo-white.png` — white wordmark for dark backgrounds
+- `nexai-logo-black.png` — black wordmark for light backgrounds
 
-## 🧞 Commands
+## Workflow
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Each section = 1 PR. Build it, push a feature branch, get approval, merge to `dev`. See `docs/BUILD-PLAN.md` for full phase-by-phase order.

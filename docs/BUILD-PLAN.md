@@ -49,7 +49,7 @@ Do not combine multiple phases in one PR. One section at a time.
 
 1. Read `docs/BRAND.md` — colors, typography, logo files, design patterns
 2. Read `docs/REFERENCES.md` — competitor sites labeled by what to study from each
-3. Read `docs/ANTIGRAVITY-PROMPT.md` — full content/copy for the AI Shoots page
+3. Read `docs/AI-SHOOTS-CONTENT.md` — full content/copy for the AI Shoots page
 4. Read `docs/website-analysis.md` — critique of the current live site (context on what to fix)
 5. Run `npm install && npm run dev` — verify scaffold loads at localhost:4321
 
@@ -99,7 +99,7 @@ Infinite marquee scroll of platform logos: Myntra, Flipkart, Amazon, Shopify, In
 
 Two-column grid. Left: "The Old Way" (red-tinted card, 5 pain points). Right: "The NexAI Way" (green/teal-tinted card, 5 solutions). Cards slide in from opposite sides via GSAP.
 
-**Content:** See `docs/ANTIGRAVITY-PROMPT.md` Section 3.
+**Content:** See `docs/AI-SHOOTS-CONTENT.md` Section 3.
 
 **Study:** [Photoroom](https://photoroom.com), [Botika](https://botika.com) — conversion comparison layouts
 
@@ -119,7 +119,7 @@ Grid of 6 before/after cards. Each shows a product transformation (mannequin →
 
 3-step horizontal timeline (vertical on mobile). Connecting line that draws on scroll. Steps: Upload Your Photos → Choose Your Look → Receive Studio-Quality Results.
 
-**Content:** See `docs/ANTIGRAVITY-PROMPT.md` Section 5.
+**Content:** See `docs/AI-SHOOTS-CONTENT.md` Section 5.
 
 **Study:** [Claid.ai](https://claid.ai) — 3-step "How it works" section
 
@@ -130,7 +130,7 @@ Grid of 6 before/after cards. Each shows a product transformation (mannequin →
 
 Stats bar with animated count-up (5000+ images, 15+ brands, 80% savings, 48hr delivery). Below: testimonial cards in a masonry-like grid. 5 testimonials with star ratings.
 
-**Content:** See `docs/ANTIGRAVITY-PROMPT.md` Section 6.
+**Content:** See `docs/AI-SHOOTS-CONTENT.md` Section 6.
 
 **Study:** [Resend](https://resend.com) — stats bar design and spacing
 
@@ -141,7 +141,7 @@ Stats bar with animated count-up (5000+ images, 15+ brands, 80% savings, 48hr de
 
 3-tier pricing cards. Center card ("Growth" at ₹35,000/mo) is featured — elevated, animated gradient border. Tiers: Pay Per SKU (₹400), Growth, Scale (₹75,000/mo).
 
-**Content:** See `docs/ANTIGRAVITY-PROMPT.md` Section 7.
+**Content:** See `docs/AI-SHOOTS-CONTENT.md` Section 7.
 
 **Study:** [Photoroom](https://photoroom.com), [Claid](https://claid.ai) — pricing card design
 
@@ -161,7 +161,7 @@ Stats bar with animated count-up (5000+ images, 15+ brands, 80% savings, 48hr de
 
 7-question accordion using `<details>`/`<summary>` for accessibility. GSAP smooth height animation. Only one open at a time. Chevron rotates on open.
 
-**Content:** See `docs/ANTIGRAVITY-PROMPT.md` Section 9.
+**Content:** See `docs/AI-SHOOTS-CONTENT.md` Section 9.
 
 ---
 
