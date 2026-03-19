@@ -1,0 +1,126 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="NexAI Labs | Future of Automation">
+	<main class="container">
+		<section class="hero">
+			<div class="hero-content">
+				<h1 class="hero-title">
+					Business Growth<br />
+					<span class="text-gradient">On Autopilot</span>
+				</h1>
+				<p class="hero-subtitle">
+					We plug AI into your workflows so your company runs itself.
+				</p>
+				<div class="cta-group">
+					<a href="#contact" class="btn btn-primary">Book a Call</a>
+				</div>
+			</div>
+		</section>
+		<section class="scroll-test">
+			<h2>Scroll To See Magic</h2>
+			<div class="box"></div>
+		</section>
+	</main>
+</Layout>
+
+<style>
+	main {
+		padding-top: var(--space-xl);
+		min-height: 200vh; /* To enable scrolling for testing */
+	}
+
+	.hero-title {
+		font-size: clamp(3rem, 8vw, 6rem);
+		line-height: 1.1;
+		font-weight: 800;
+		margin-bottom: var(--space-md);
+		opacity: 0; /* Hidden initially for animation */
+		transform: translateY(30px);
+	}
+
+	.hero-subtitle {
+		font-size: 1.25rem;
+		color: var(--color-text-muted);
+		max-width: 600px;
+		margin-bottom: var(--space-lg);
+		opacity: 0;
+		transform: translateY(20px);
+	}
+
+	.scroll-test {
+		margin-top: 100vh;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--space-md);
+	}
+
+	.box {
+		width: 100px;
+		height: 100px;
+		background: var(--color-accent);
+		border-radius: 12px;
+	}
+
+	.btn {
+		display: inline-block;
+		padding: 1rem 2rem;
+		background: #fff;
+		color: #000;
+		border-radius: 999px;
+		text-decoration: none;
+		font-weight: 600;
+		transition: transform 0.2s;
+	}
+
+	.btn:hover {
+		transform: scale(1.05);
+	}
+</style>
+
+<script>
+	import { gsap } from 'gsap';
+	import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+	// Animation Logic
+	function initAnimations() {
+		// Hero Enter
+		const tl = gsap.timeline();
+		
+		tl.to('.hero-title', {
+			opacity: 1,
+			y: 0,
+			duration: 1,
+			ease: 'power3.out'
+		})
+		.to('.hero-subtitle', {
+			opacity: 1,
+			y: 0,
+			duration: 1,
+			ease: 'power3.out'
+		}, '-=0.5');
+
+		// Scroll Trigger Test
+		gsap.from('.box', {
+			scrollTrigger: {
+				trigger: '.box',
+				start: 'top 80%',
+				toggleActions: 'play none none reverse'
+			},
+			rotation: 360,
+			scale: 0,
+			duration: 1.5,
+			ease: 'elastic.out(1, 0.5)'
+		});
+	}
+
+	// Run on initial load
+	initAnimations();
+
+	// Re-run on View Transitions navigation
+	document.addEventListener('astro:page-load', () => {
+		// initAnimations(); // Uncomment if we want to restart hero anims on nav
+	});
+</script>
