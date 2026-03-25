@@ -1,0 +1,179 @@
+
+> website@0.0.1 dev
+> astro dev --host 127.0.0.1 --port 4321
+
+[2m14:11:11[22m [34m[types][39m Generated [2m1ms[22m
+[2m14:11:11[22m [34m[content][39m Syncing content
+[2m14:11:11[22m [34m[content][39m Synced content
+[2m14:11:11[22m [34m[vite][39m Re-optimizing dependencies because vite config has changed
+
+[42m[1m astro [22m[49m [32mv5.18.1[39m [2mready in[22m 393 [2mms[22m
+
+[2m┃[22m Local    [36mhttp://127.0.0.1:4321/[39m
+
+[2m14:11:11[22m [32mwatching for file changes...[39m
+[2m14:11:17[22m [34m[200][39m /ai-shoots/ [2m31ms[22m
+[2m14:11:46[22m [34m[200][39m /ai-shoots/ [2m6ms[22m
+[2m14:12:41[22m [34m[200][39m /ai-shoots/ [2m7ms[22m
+[2m14:18:17[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m14:18:45[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m14:18:46[22m [34m[200][39m /ai-shoots/ [2m11ms[22m
+[2m14:19:37[22m [34m[watch][39m /src/pages/ai-shoots.astro?astro&type=style&index=0&lang.css
+[2m14:19:37[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m14:20:07[22m [34m[200][39m /ai-shoots/ [2m11ms[22m
+[2m14:20:45[22m [34m[200][39m /ai-shoots/ [2m6ms[22m
+[2m14:30:19[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m14:30:19[22m [34m[200][39m /ai-shoots/ [2m10ms[22m
+[2m14:30:19[22m [34m[200][39m /ai-shoots/ [2m5ms[22m
+[2m14:30:54[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m14:30:55[22m [34m[200][39m /ai-shoots/ [2m8ms[22m
+[2m14:30:55[22m [34m[200][39m /ai-shoots/ [2m4ms[22m
+[2m14:33:30[22m [34m[watch][39m /src/pages/ai-shoots.astro?astro&type=style&index=0&lang.css
+[2m14:33:30[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m14:34:59[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m14:34:59[22m [34m[200][39m /ai-shoots/ [2m10ms[22m
+[2m14:34:59[22m [34m[200][39m /ai-shoots/ [2m4ms[22m
+[2m14:35:21[22m [34m[200][39m /ai-shoots/ [2m4ms[22m
+[2m14:35:50[22m [34m[200][39m /ai-shoots/ [2m3ms[22m
+[2m14:36:18[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m14:36:19[22m [34m[200][39m /ai-shoots/ [2m11ms[22m
+[2m14:36:19[22m [34m[200][39m /ai-shoots/ [2m4ms[22m
+[2m14:36:41[22m [34m[200][39m /ai-shoots/ [2m3ms[22m
+[2m14:37:14[22m [34m[200][39m /ai-shoots/ [2m5ms[22m
+[2m14:44:20[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m14:44:41[22m [34m[200][39m /ai-shoots/ [2m7ms[22m
+[2m14:45:26[22m [34m[200][39m /ai-shoots/ [2m3ms[22m
+[2m14:49:43[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m14:49:44[22m [34m[200][39m /ai-shoots/ [2m7ms[22m
+[2m14:50:08[22m [34m[200][39m /ai-shoots/ [2m3ms[22m
+[2m14:51:41[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m14:51:41[22m [34m[200][39m /ai-shoots/ [2m7ms[22m
+[2m14:52:38[22m [34m[200][39m /ai-shoots/ [2m4ms[22m
+[2m14:53:30[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m14:53:30[22m [34m[200][39m /ai-shoots/ [2m10ms[22m
+[2m14:53:31[22m [34m[200][39m /ai-shoots/ [2m3ms[22m
+[2m14:56:29[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m14:56:30[22m [34m[200][39m /ai-shoots/ [2m10ms[22m
+[2m14:56:30[22m [34m[200][39m /ai-shoots/ [2m4ms[22m
+[2m14:59:42[22m [34m[200][39m /ai-shoots/ [2m4ms[22m
+[2m15:01:46[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m15:01:46[22m [34m[200][39m /ai-shoots/ [2m10ms[22m
+[2m15:01:58[22m [34m[watch][39m /src/pages/ai-shoots.astro?astro&type=style&index=0&lang.css
+[2m15:01:58[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m15:02:40[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m15:02:40[22m [34m[200][39m /ai-shoots/ [2m10ms[22m
+[2m15:14:50[22m [34m[watch][39m stitch code.html
+[2m15:19:42[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m15:23:42[22m [34m[200][39m /ai-shoots/ [2m10ms[22m
+[2m15:27:09[22m [34m[watch][39m best shoots/index.html
+[2m15:38:54[22m [34m[watch][39m best shoots/index.html
+[2m16:35:46[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m16:37:43[22m [34m[200][39m / [2m8ms[22m
+[2m16:37:54[22m [34m[200][39m /ai-shoots/ [2m7ms[22m
+[2m16:49:17[22m [34m[watch][39m /src/pages/ai-shoots.astro?astro&type=style&index=0&lang.css
+[2m16:49:17[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m16:50:06[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m16:50:07[22m [34m[200][39m /ai-shoots/ [2m9ms[22m
+[2m16:53:39[22m [34m[watch][39m /src/pages/ai-shoots.astro?astro&type=style&index=0&lang.css
+[2m16:53:39[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m16:54:00[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m16:54:00[22m [34m[200][39m /ai-shoots/ [2m7ms[22m
+[2m16:54:28[22m [34m[200][39m /ai-shoots/ [2m4ms[22m
+[2m16:56:07[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m16:56:07[22m [34m[200][39m /ai-shoots/ [2m9ms[22m
+[2m17:01:14[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m17:01:15[22m [34m[200][39m /ai-shoots/ [2m8ms[22m
+[2m17:02:55[22m [34m[200][39m /ai-shoots/ [2m3ms[22m
+[2m17:04:14[22m [34m[200][39m /ai-shoots/ [2m5ms[22m
+[2m17:13:19[22m [34m[watch][39m /src/pages/ai-shoots.astro?astro&type=style&index=0&lang.css
+[2m17:13:19[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m17:14:56[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m17:14:56[22m [34m[200][39m /ai-shoots/ [2m7ms[22m
+[2m17:17:33[22m [34m[watch][39m /src/pages/ai-shoots.astro?astro&type=style&index=0&lang.css
+[2m17:17:33[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m17:18:57[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m17:18:57[22m [34m[200][39m /ai-shoots/ [2m8ms[22m
+[2m17:27:10[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m17:27:11[22m [34m[200][39m /ai-shoots/ [2m8ms[22m
+[2m17:30:22[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m17:30:22[22m [34m[200][39m /ai-shoots/ [2m8ms[22m
+[2m17:39:22[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m17:39:23[22m [34m[200][39m /ai-shoots/ [2m6ms[22m
+[2m17:51:24[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m17:51:25[22m [34m[200][39m /ai-shoots/ [2m8ms[22m
+[2m17:55:16[22m [34m[watch][39m /src/pages/ai-shoots.astro?astro&type=style&index=0&lang.css
+[2m17:55:16[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m17:55:31[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m17:55:31[22m [34m[200][39m /ai-shoots/ [2m8ms[22m
+[2m17:59:01[22m [34m[watch][39m /src/pages/ai-shoots.astro?astro&type=style&index=0&lang.css
+[2m17:59:01[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m17:59:20[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m17:59:21[22m [34m[200][39m /ai-shoots/ [2m7ms[22m
+[2m18:00:15[22m [34m[200][39m /ai-shoots/ [2m3ms[22m
+[2m18:01:49[22m [34m[watch][39m /src/pages/ai-shoots.astro?astro&type=style&index=0&lang.css
+[2m18:01:49[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m18:02:08[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m18:02:09[22m [34m[200][39m /ai-shoots/ [2m6ms[22m
+[2m18:06:19[22m [34m[watch][39m /src/pages/ai-shoots.astro?astro&type=style&index=0&lang.css
+[2m18:06:19[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m18:06:37[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m18:06:38[22m [34m[200][39m /ai-shoots/ [2m7ms[22m
+[2m18:08:58[22m [34m[watch][39m /src/pages/ai-shoots.astro?astro&type=style&index=0&lang.css
+[2m18:08:58[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m18:09:52[22m [34m[200][39m /ai-shoots/ [2m7ms[22m
+[2m18:11:57[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m18:11:57[22m [34m[200][39m /ai-shoots/ [2m8ms[22m
+[2m18:12:27[22m [34m[watch][39m /src/pages/ai-shoots.astro?astro&type=style&index=0&lang.css
+[2m18:12:27[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m18:12:45[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m18:12:46[22m [34m[200][39m /ai-shoots/ [2m7ms[22m
+[2m18:28:50[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m18:28:51[22m [34m[200][39m /ai-shoots/ [2m9ms[22m
+[2m18:29:25[22m [34m[watch][39m /src/pages/ai-shoots.astro?astro&type=style&index=0&lang.css
+[2m18:29:25[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m18:30:39[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m18:30:40[22m [34m[200][39m /ai-shoots/ [2m7ms[22m
+[2m18:31:26[22m [34m[200][39m /ai-shoots/ [2m4ms[22m
+[2m18:33:43[22m [34m[200][39m /ai-shoots/ [2m3ms[22m
+[2m18:33:48[22m [34m[200][39m /ai-shoots/ [2m4ms[22m
+[2m18:35:30[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m18:35:31[22m [34m[200][39m /ai-shoots/ [2m7ms[22m
+[2m18:36:03[22m [34m[watch][39m /src/pages/ai-shoots.astro?astro&type=style&index=0&lang.css
+[2m18:36:03[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m18:38:32[22m [34m[watch][39m /src/pages/ai-shoots.astro?astro&type=style&index=0&lang.css
+[2m18:38:32[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m18:44:10[22m [34m[watch][39m /src/pages/ai-shoots.astro?astro&type=style&index=0&lang.css
+[2m18:44:10[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m18:47:16[22m [34m[watch][39m /src/pages/ai-shoots.astro?astro&type=style&index=0&lang.css
+[2m18:47:16[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m18:50:03[22m [34m[watch][39m /src/pages/ai-shoots.astro?astro&type=style&index=0&lang.css
+[2m18:50:03[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m18:52:29[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m18:55:46[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m18:55:47[22m [33m[404][39m /ai-shoots/ [2m2ms[22m
+[2m18:57:01[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m18:57:54[22m [34m[200][39m /ai-shoots/ [2m4ms[22m
+[2m19:04:52[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m19:04:52[22m [34m[200][39m /ai-shoots/ [2m4ms[22m
+[2m19:08:13[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m19:08:14[22m [34m[200][39m /ai-shoots/ [2m4ms[22m
+[2m19:09:05[22m [34m[200][39m /ai-shoots/ [2m3ms[22m
+[2m19:18:44[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m19:18:44[22m [34m[200][39m /ai-shoots/ [2m4ms[22m
+[2m19:30:37[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m19:30:38[22m [34m[200][39m /ai-shoots/ [2m3ms[22m
+[2m19:43:13[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m19:43:14[22m [34m[200][39m /ai-shoots/ [2m5ms[22m
+[2m19:45:52[22m [34m[200][39m /ai-shoots/ [2m3ms[22m
+[2m19:45:56[22m [34m[200][39m /ai-shoots/ [2m3ms[22m
+[2m19:55:16[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m19:55:17[22m [34m[200][39m /ai-shoots/ [2m4ms[22m
+[2m19:57:02[22m [34m[200][39m /ai-shoots/ [2m5ms[22m
+[2m20:02:20[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m20:02:21[22m [34m[200][39m /ai-shoots/ [2m3ms[22m
+[2m20:05:49[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m20:05:49[22m [34m[200][39m /ai-shoots/ [2m5ms[22m
+[2m20:08:32[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m20:08:33[22m [34m[200][39m /ai-shoots/ [2m3ms[22m
+[2m20:15:26[22m [34m[watch][39m src/pages/ai-shoots.astro
+[2m20:15:27[22m [34m[200][39m /ai-shoots/ [2m4ms[22m
