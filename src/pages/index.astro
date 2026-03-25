@@ -3,65 +3,415 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="NexAI Labs | Future of Automation">
-	<main class="container">
-		<section class="hero">
-			<div class="hero-content">
-				<h1 class="hero-title">
-					Business Growth<br />
-					<span class="text-gradient">On Autopilot</span>
-				</h1>
-				<p class="hero-subtitle">
-					We plug AI into your workflows so your company runs itself.
-				</p>
-				<div class="cta-group">
-					<a href="#contact" class="btn btn-primary">Book a Call</a>
+	<main>
+		<section class="hero" id="top">
+			<div class="hero__inner container">
+				<div class="hero-content">
+					<div class="hero-meta">
+						<span>India / Remote</span>
+						<span>AI Agency Portfolio</span>
+					</div>
+					<p class="eyebrow">Done-for-you AI automation for lean teams</p>
+					<h1 class="hero-title">
+						<span>Business</span>
+						<span>Growth</span>
+						<span class="gradient-text">On Autopilot</span>
+					</h1>
+					<p class="hero-subtitle">
+						We install AI systems that remove operational drag, qualify revenue, and keep
+						your team moving without extra headcount.
+					</p>
+					<div class="cta-group">
+						<a href="#contact" class="btn btn-primary">Book a Call</a>
+						<a href="#services" class="btn btn-secondary">See Automations</a>
+					</div>
+					<div class="hero-footnotes reveal-up">
+						<div>
+							<span>4-day deployment</span>
+							<p>Fast enough to feel productized, not dragged into a long consulting cycle.</p>
+						</div>
+						<div>
+							<span>Integration-first</span>
+							<p>We build into your current tools instead of forcing a full-stack replacement.</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="hero-panel reveal-up">
+					<div class="hero-panel__head">
+						<p class="hero-panel__eyebrow">Delivery rhythm</p>
+						<a href="#process">See process</a>
+					</div>
+					<div class="hero-panel__grid">
+						<div class="hero-panel__card">
+							<span>01 / Analyze</span>
+							<strong>Identify the automation opportunities with the highest ROI potential.</strong>
+						</div>
+						<div class="hero-panel__card">
+							<span>02 / Build</span>
+							<strong>Design the system around your actual workflows, tools, and handoffs.</strong>
+						</div>
+						<div class="hero-panel__card">
+							<span>03 / Deploy</span>
+							<strong>Launch fast, test live, and refine with signal from the real workflow.</strong>
+						</div>
+					</div>
+					<div class="hero-panel__footer">
+						<p>Built for teams who care about speed, not headcount.</p>
+					</div>
 				</div>
 			</div>
 		</section>
-		<section class="scroll-test">
-			<h2>Scroll To See Magic</h2>
-			<div class="box"></div>
+
+		<section class="section-block container reveal-up" id="services">
+			<div class="section-heading">
+				<p class="eyebrow">Services</p>
+				<h2>One navigation. Four clear entry points.</h2>
+				<p>
+					The navbar should immediately route buyers into the outcome they care about, not
+					make them decode internal categories.
+				</p>
+			</div>
+			<div class="services-grid">
+				<article class="info-card">
+					<h3>AI Sales Agents</h3>
+					<p>Voice and chat systems that qualify leads, handle objections, and book meetings.</p>
+				</article>
+				<article class="info-card">
+					<h3>Workflow Automation</h3>
+					<p>Operations infrastructure that removes manual handoffs across your existing stack.</p>
+				</article>
+				<article class="info-card">
+					<h3>Content Automation</h3>
+					<p>Brand-safe content pipelines for campaigns, product launches, and nurture sequences.</p>
+				</article>
+			</div>
+		</section>
+
+		<section class="section-block container reveal-up" id="work">
+			<div class="section-heading">
+				<p class="eyebrow">Work</p>
+				<h2>Selected systems with clearer outcomes.</h2>
+				<p>
+					A lightweight preview of what NexAI is actually building across fashion, sales, and
+					operations while the full showcase is still in progress.
+				</p>
+			</div>
+			<div class="work-grid">
+				<article class="work-card">
+					<span class="work-card__tag">Studio Vision AI</span>
+					<h3>AI Photoshoots for faster collection launches.</h3>
+					<p>
+						Transform mannequin and flat-lay product shots into premium on-model visuals so fashion
+						brands can ship faster without traditional production delays.
+					</p>
+					<small>Fashion imaging / launch velocity / lower production cost</small>
+				</article>
+				<article class="work-card">
+					<span class="work-card__tag">Miles</span>
+					<h3>AI sales systems that qualify and book without extra SDR headcount.</h3>
+					<p>
+						Voice and chat workflows that keep outreach moving, capture context, and hand cleaner
+						intent back to the team.
+					</p>
+					<small>Lead qualification / meeting flow / follow-up coverage</small>
+				</article>
+				<article class="work-card">
+					<span class="work-card__tag">Custom Workflow Automation</span>
+					<h3>Operational systems that remove manual handoffs from the stack.</h3>
+					<p>
+						Integration-first automations for CRM, reporting, content ops, and internal coordination
+						where repetitive work is slowing delivery down.
+					</p>
+					<small>Workflow orchestration / internal ops / system reliability</small>
+				</article>
+			</div>
+		</section>
+
+		<section class="section-block container reveal-up" id="process">
+			<div class="section-heading">
+				<p class="eyebrow">Process</p>
+				<h2>Fast enough to feel productized.</h2>
+			</div>
+			<div class="process-strip">
+				<div class="process-step">
+					<span>01</span>
+					<h3>Audit</h3>
+					<p>Map where time, follow-up, and conversion are leaking.</p>
+				</div>
+				<div class="process-step">
+					<span>02</span>
+					<h3>Build</h3>
+					<p>Ship the automation layer into your current tools instead of replacing them.</p>
+				</div>
+				<div class="process-step">
+					<span>03</span>
+					<h3>Deploy</h3>
+					<p>Launch, test, and refine with live signal from your actual workflow.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="section-block container reveal-up" id="faq">
+			<div class="section-heading">
+				<p class="eyebrow">FAQ</p>
+				<h2>Answer the friction before the call.</h2>
+			</div>
+			<div class="faq-list">
+				<article class="faq-item">
+					<h3>How quickly can you deploy?</h3>
+					<p>Most first systems can be live in days, with refinement based on real usage.</p>
+				</article>
+				<article class="faq-item">
+					<h3>Do you replace our tools?</h3>
+					<p>No. The default model is integration-first so your team keeps the stack they know.</p>
+				</article>
+				<article class="faq-item">
+					<h3>What kind of teams fit best?</h3>
+					<p>Lean operators, growth teams, and founders who need leverage before headcount.</p>
+				</article>
+			</div>
+		</section>
+
+		<section class="section-block section-block--contact container reveal-up" id="contact">
+			<div class="section-heading">
+				<p class="eyebrow">Contact</p>
+				<h2>Start with the bottleneck that costs the most.</h2>
+				<p>We’ll map the first automation worth deploying and the shortest path to launch.</p>
+			</div>
+			<div class="contact-panel">
+				<a href="mailto:hello@nexailabs.com" class="btn btn-primary">hello@nexailabs.com</a>
+			</div>
 		</section>
 	</main>
 </Layout>
 
 <style>
 	main {
-		padding-top: var(--space-xl);
-		min-height: 200vh; /* To enable scrolling for testing */
+		padding-top: 0;
+		padding-bottom: var(--space-xl);
+	}
+
+	.hero {
+		position: relative;
+		min-height: min(980px, 100svh);
+		padding-top: 8.2rem;
+		padding-bottom: 2rem;
+		background:
+			radial-gradient(circle at 12% 18%, rgba(227, 208, 162, 0.1), transparent 18%),
+			radial-gradient(circle at 78% 16%, rgba(78, 201, 180, 0.1), transparent 16%),
+			radial-gradient(circle at 84% 76%, rgba(30, 126, 114, 0.12), transparent 22%),
+			linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0)),
+			#050607;
+		overflow: clip;
+	}
+
+	.hero::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background:
+			linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+			linear-gradient(180deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+		background-size: 140px 140px;
+		mask-image: radial-gradient(circle at 30% 25%, black, transparent 76%);
+		opacity: 0.24;
+		pointer-events: none;
+	}
+
+	.hero::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 10rem;
+		background: linear-gradient(180deg, rgba(5, 6, 7, 0), #050607 82%);
+		pointer-events: none;
+	}
+
+	.hero__inner {
+		position: relative;
+		z-index: 1;
+		min-height: calc(min(980px, 100svh) - 9rem);
+		display: grid;
+		grid-template-columns: minmax(0, 1.24fr) minmax(320px, 0.76fr);
+		align-items: center;
+		gap: clamp(2rem, 5vw, 4.8rem);
+	}
+
+	.hero-content {
+		max-width: 780px;
+		align-self: center;
+	}
+
+	.hero-meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		margin-bottom: 1.2rem;
+		color: var(--color-text-subtle);
+		font-size: 0.76rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+	}
+
+	.eyebrow {
+		font-size: 0.8rem;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		color: var(--color-accent);
+		margin-bottom: 1.25rem;
 	}
 
 	.hero-title {
-		font-size: clamp(3rem, 8vw, 6rem);
-		line-height: 1.1;
+		display: grid;
+		font-size: clamp(3.6rem, 8vw, 7rem);
+		line-height: 0.9;
 		font-weight: 800;
-		margin-bottom: var(--space-md);
-		opacity: 0; /* Hidden initially for animation */
+		letter-spacing: -0.065em;
+		margin-bottom: 1.75rem;
+		opacity: 0;
 		transform: translateY(30px);
 	}
 
+	.hero-title span {
+		display: block;
+	}
+
+	.hero-title .gradient-text {
+		font-family: 'Cormorant Garamond', serif;
+		font-style: italic;
+		font-weight: 600;
+		letter-spacing: -0.02em;
+		line-height: 0.98;
+		background: linear-gradient(135deg, #2aaea0, #4ec9b4);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
 	.hero-subtitle {
-		font-size: 1.25rem;
+		font-size: clamp(1.05rem, 2vw, 1.25rem);
 		color: var(--color-text-muted);
-		max-width: 600px;
-		margin-bottom: var(--space-lg);
+		max-width: 38rem;
+		margin-bottom: 2rem;
 		opacity: 0;
 		transform: translateY(20px);
 	}
 
-	.scroll-test {
-		margin-top: 100vh;
+	.cta-group {
 		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: var(--space-md);
+		flex-wrap: wrap;
+		gap: 1rem;
 	}
 
-	.box {
-		width: 100px;
-		height: 100px;
-		background: var(--color-accent);
-		border-radius: 12px;
+	.hero-footnotes {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1rem;
+		margin-top: 2.2rem;
+	}
+
+	.hero-footnotes div {
+		padding-top: 1rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.08);
+	}
+
+	.hero-footnotes span {
+		display: block;
+		margin-bottom: 0.55rem;
+		font-size: 0.76rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.42);
+	}
+
+	.hero-footnotes p {
+		color: rgba(255, 255, 255, 0.66);
+		line-height: 1.65;
+	}
+
+	.hero-panel {
+		padding: 1.35rem;
+		border-radius: 2rem;
+		background:
+			linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015)),
+			rgba(12, 12, 12, 0.88);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		box-shadow: 0 32px 80px rgba(0, 0, 0, 0.26);
+		align-self: center;
+		backdrop-filter: blur(18px);
+	}
+
+	.hero-panel__head {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	.hero-panel__head a {
+		color: rgba(255, 255, 255, 0.6);
+		font-size: 0.78rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		text-decoration: none;
+	}
+
+	.hero-panel__eyebrow {
+		font-size: 0.78rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--color-text-subtle);
+	}
+
+	.hero-panel__grid {
+		display: grid;
+		gap: 0.9rem;
+	}
+
+	.hero-panel__card,
+	.info-card,
+	.process-step,
+	.faq-item,
+	.contact-panel {
+		border: 1px solid var(--color-border);
+		border-radius: 24px;
+		background: rgba(255, 255, 255, 0.03);
+		backdrop-filter: blur(18px);
+	}
+
+	.hero-panel__card {
+		padding: 1.1rem 1.15rem;
+	}
+
+	.hero-panel__card span,
+	.process-step span {
+		display: inline-block;
+		font-size: 0.78rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--color-text-subtle);
+		margin-bottom: 0.6rem;
+	}
+
+	.hero-panel__card strong {
+		display: block;
+		font-size: 1rem;
+		line-height: 1.5;
+	}
+
+	.hero-panel__footer {
+		padding-top: 1rem;
+		margin-top: 1rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.08);
+	}
+
+	.hero-panel__footer p {
+		color: rgba(255, 255, 255, 0.64);
+		line-height: 1.65;
 	}
 
 	.btn {
@@ -72,11 +422,172 @@ import Layout from '../layouts/Layout.astro';
 		border-radius: 999px;
 		text-decoration: none;
 		font-weight: 600;
-		transition: transform 0.2s;
+		transition:
+			transform 0.2s,
+			background 0.2s,
+			color 0.2s,
+			border-color 0.2s;
 	}
 
 	.btn:hover {
 		transform: scale(1.05);
+	}
+
+	.btn-secondary {
+		background: transparent;
+		color: var(--color-text-main);
+		border: 1px solid var(--color-border);
+	}
+
+	.section-block {
+		padding-top: clamp(4rem, 8vw, 7rem);
+	}
+
+	.section-heading {
+		max-width: 660px;
+		margin-bottom: 2rem;
+	}
+
+	.section-heading h2 {
+		font-size: clamp(2rem, 4vw, 3.2rem);
+		line-height: 1.1;
+		margin-bottom: 0.9rem;
+	}
+
+	.section-heading p {
+		color: var(--color-text-muted);
+		font-size: 1.05rem;
+		line-height: 1.7;
+	}
+
+	.services-grid,
+	.work-grid,
+	.process-strip,
+	.faq-list {
+		display: grid;
+		gap: 1rem;
+	}
+
+	.services-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.process-strip {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.work-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.info-card,
+	.work-card,
+	.process-step,
+	.faq-item {
+		padding: 1.4rem;
+	}
+
+	.info-card h3,
+	.work-card h3,
+	.process-step h3,
+	.faq-item h3 {
+		font-size: 1.1rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.info-card p,
+	.work-card p,
+	.process-step p,
+	.faq-item p {
+		color: var(--color-text-muted);
+		line-height: 1.7;
+	}
+
+	.work-card {
+		border: 1px solid var(--color-border);
+		border-radius: 24px;
+		background:
+			linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
+			rgba(255, 255, 255, 0.03);
+		backdrop-filter: blur(18px);
+		display: grid;
+		align-content: start;
+		gap: 0.75rem;
+	}
+
+	.work-card__tag {
+		display: inline-flex;
+		width: fit-content;
+		padding: 0.45rem 0.7rem;
+		border-radius: 999px;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		background: rgba(255, 255, 255, 0.03);
+		font-size: 0.72rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.54);
+	}
+
+	.work-card small {
+		color: rgba(255, 255, 255, 0.42);
+		font-size: 0.8rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		line-height: 1.6;
+	}
+
+	.faq-list {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.section-block--contact {
+		padding-bottom: 2rem;
+	}
+
+	.contact-panel {
+		padding: 1.25rem;
+		display: flex;
+		justify-content: flex-start;
+	}
+
+	.reveal-up {
+		opacity: 0;
+		transform: translateY(24px);
+	}
+
+	@media (max-width: 960px) {
+		.hero__inner,
+		.services-grid,
+		.work-grid,
+		.process-strip,
+		.faq-list {
+			grid-template-columns: 1fr;
+		}
+
+		.hero {
+			min-height: auto;
+			padding-bottom: 1rem;
+		}
+
+		.hero__inner {
+			min-height: auto;
+		}
+
+		.hero-footnotes {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.hero {
+			padding-top: 7.3rem;
+		}
+
+		.hero-meta,
+		.hero-panel__head {
+			flex-direction: column;
+			align-items: flex-start;
+		}
 	}
 </style>
 
@@ -84,9 +595,13 @@ import Layout from '../layouts/Layout.astro';
 	import { gsap } from 'gsap';
 	import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-	// Animation Logic
-	function initAnimations() {
-		// Hero Enter
+	gsap.registerPlugin(ScrollTrigger);
+
+  // Animation Logic
+  function initAnimations() {
+    // gsap.set(['.hero-title', '.hero-subtitle', '.reveal-up'], { clearProps: 'all' });
+
+    // Hero Enter
 		const tl = gsap.timeline();
 		
 		tl.to('.hero-title', {
@@ -102,17 +617,29 @@ import Layout from '../layouts/Layout.astro';
 			ease: 'power3.out'
 		}, '-=0.5');
 
-		// Scroll Trigger Test
-		gsap.from('.box', {
-			scrollTrigger: {
-				trigger: '.box',
-				start: 'top 80%',
-				toggleActions: 'play none none reverse'
-			},
-			rotation: 360,
-			scale: 0,
-			duration: 1.5,
-			ease: 'elastic.out(1, 0.5)'
+		gsap.utils.toArray('.reveal-up').forEach((element) => {
+			gsap.fromTo(element, {
+				opacity: 0,
+				y: 24
+			}, {
+				scrollTrigger: {
+					trigger: element,
+					start: 'top 85%',
+					once: true
+				},
+				opacity: 1,
+				y: 0,
+				duration: 0.9,
+				ease: 'power3.out'
+			});
+		});
+
+		gsap.from('.hero-panel', {
+			opacity: 0,
+			x: 36,
+			duration: 0.9,
+			delay: 0.22,
+			ease: 'power3.out'
 		});
 	}
 
