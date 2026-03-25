@@ -1,0 +1,90 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NavLabStage from '../components/nav-lab/NavLabStage.astro';
+import SignalLineNav from '../components/nav-lab/SignalLineNav.astro';
+---
+
+<Layout title="NexAI Labs | Nav Lab" showNavbar={false}>
+	<main class="nav-lab">
+		<section class="nav-lab__intro">
+			<p class="nav-lab__eyebrow">NexAI Nav Lab</p>
+			<h1>Signal line navigation refinement.</h1>
+			<p class="nav-lab__lede">
+				This page now focuses only on the Signal direction. The top bar stays graphic and sharp,
+				while the inside menu borrows the cleaner layout rhythm from Floating Studio.
+			</p>
+		</section>
+
+		<div class="nav-lab__stack">
+			<NavLabStage
+				id="concept-signal"
+				eyebrow="Focused Direction"
+				title="Signal-Line Navigation"
+				description="Sharper linework and stronger graphic tension, with a more professional trigger and a calmer floating-style menu interior."
+				intent="Review the smoothness of the trigger, the panel reveal, and the same-font hover motion."
+				tone="violet"
+			>
+				<SignalLineNav slot="nav" />
+			</NavLabStage>
+		</div>
+	</main>
+
+	<script src="../scripts/navLabPage.ts"></script>
+</Layout>
+
+<style>
+	.nav-lab {
+		padding: 3rem 1rem 6rem;
+		max-width: 1440px;
+		margin: 0 auto;
+	}
+
+	.nav-lab__intro {
+		padding: 2rem 0 3rem;
+		max-width: 62rem;
+	}
+
+	.nav-lab__eyebrow {
+		font-size: 0.82rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--color-accent);
+		margin-bottom: 1rem;
+	}
+
+	.nav-lab__intro h1 {
+		font-size: clamp(3rem, 7vw, 6rem);
+		line-height: 0.94;
+		letter-spacing: -0.05em;
+		max-width: 12ch;
+	}
+
+	.nav-lab__lede {
+		max-width: 42rem;
+		margin-top: 1.25rem;
+		color: rgba(255, 255, 255, 0.7);
+		font-size: 1.08rem;
+		line-height: 1.7;
+	}
+
+	.nav-lab__anchors {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.8rem;
+		margin-top: 1.7rem;
+	}
+
+	.nav-lab__anchors a {
+		padding: 0.8rem 1rem;
+		border-radius: 999px;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		background: rgba(255, 255, 255, 0.03);
+		color: rgba(255, 255, 255, 0.74);
+		text-decoration: none;
+	}
+
+	.nav-lab__stack {
+		display: grid;
+		gap: 4rem;
+	}
+</style>

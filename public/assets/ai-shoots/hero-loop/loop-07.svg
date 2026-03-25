@@ -1,0 +1,23 @@
+﻿<svg width="800" height="1040" viewBox="0 0 800 1040" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="88" y1="56" x2="700" y2="998" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1A1B21"/>
+      <stop offset="1" stop-color="#091010"/>
+    </linearGradient>
+    <linearGradient id="dress" x1="400" y1="330" x2="430" y2="882" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFD1B8"/>
+      <stop offset="1" stop-color="#9B5A38"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1040" rx="52" fill="#091010"/>
+  <rect x="34" y="34" width="732" height="972" rx="40" fill="url(#bg)"/>
+  <circle cx="402" cy="415" r="285" fill="#10181A"/>
+
+  <circle cx="400" cy="286" r="82" fill="#EDD3BF"/>
+  <path d="M334 255c30-36 64-52 103-50 28 2 55 14 82 36-24 2-46 10-68 24-19-9-58-13-117-10z" fill="#15161A"/>
+  <path d="M228 392c0-39 31-70 69-70h209c35 0 64 24 69 59l41 287c6 43-27 81-70 81H250c-43 0-76-38-70-81l48-276z" fill="url(#dress)"/>
+  <path d="M276 523c42 12 87 18 136 16 41-1 80-8 119-22" stroke="#FFF4EA" stroke-opacity=".44" stroke-width="14" stroke-linecap="round"/>
+  <text x="80" y="110" fill="#CDE8FA" fill-opacity=".82" font-family="Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="4">MINIMAL EDIT</text>
+  <text x="80" y="930" fill="white" font-family="Arial, sans-serif" font-size="46" font-weight="700">Modernwear / 07</text>
+  <text x="80" y="968" fill="#CDE8FA" fill-opacity=".72" font-family="Arial, sans-serif" font-size="24">Neutral styling for paid and PDP use</text>
+</svg>

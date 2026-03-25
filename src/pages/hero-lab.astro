@@ -1,0 +1,501 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { heroThemeConcepts } from '../data/heroLab';
+---
+
+<Layout title="NexAI Labs | Hero Theme Lab" showNavbar={false}>
+	<main class="hero-lab">
+		<section class="hero-lab__intro">
+			<p class="hero-lab__eyebrow">Hero Theme Lab</p>
+			<h1>10 visual hero themes with the same fixed title.</h1>
+			<p class="hero-lab__lede">
+				The title stays fixed as <strong>Business Growth On Autopilot</strong>. This page is only for
+				comparing the theme: layout, atmosphere, support panel style, spacing, and overall art direction.
+			</p>
+
+			<div class="hero-lab__summary">
+				<div>
+					<span>Locked</span>
+					<p>Navbar stays untouched and the main hero title stays fixed.</p>
+				</div>
+				<div>
+					<span>What changes</span>
+					<p>Only the visual theme, support composition, and hero presentation style.</p>
+				</div>
+				<div>
+					<span>Goal</span>
+					<p>Choose the strongest hero direction before we rebuild the live homepage hero.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="hero-lab__grid" aria-label="Hero theme concepts">
+			{
+				heroThemeConcepts.map((concept) => (
+					<article class={`theme-card theme-card--${concept.tone}`}>
+						<div class="theme-card__meta">
+							<div>
+								<p class="theme-card__eyebrow">{concept.name}</p>
+								<span class="theme-card__id">Concept {concept.id}</span>
+							</div>
+							<small>{concept.label}</small>
+						</div>
+
+						<div class="theme-card__hero">
+							<div class="theme-card__copy">
+								<p class="theme-card__signal">{concept.eyebrow}</p>
+								<h2 class="theme-card__title">
+									<span>Business</span>
+									<span>Growth</span>
+									<span class="is-accent">On Autopilot</span>
+								</h2>
+								<p class="theme-card__support">
+									We install AI systems that remove operational drag, qualify revenue, and keep your
+									team moving without extra headcount.
+								</p>
+								<div class="theme-card__actions">
+									<span class="theme-card__button theme-card__button--primary">Book a Call</span>
+									<span class="theme-card__button theme-card__button--ghost">See Automations</span>
+								</div>
+							</div>
+
+							<div class="theme-card__panel">
+								<p class="theme-card__panel-eyebrow">{concept.panelEyebrow}</p>
+								<div class="theme-card__panel-list">
+									{
+										concept.panelItems.map((item) => (
+											<div class="theme-card__panel-item">
+												<strong>{item}</strong>
+											</div>
+										))
+									}
+								</div>
+							</div>
+						</div>
+
+						<div class="theme-card__note">
+							<p>{concept.description}</p>
+						</div>
+					</article>
+				))
+			}
+		</section>
+	</main>
+</Layout>
+
+<style>
+	.hero-lab {
+		max-width: 1520px;
+		margin: 0 auto;
+		padding: 3.5rem 1rem 5rem;
+	}
+
+	.hero-lab__intro {
+		max-width: 78rem;
+		margin-bottom: 3rem;
+	}
+
+	.hero-lab__eyebrow,
+	.hero-lab__summary span,
+	.theme-card__eyebrow,
+	.theme-card__id,
+	.theme-card__signal,
+	.theme-card__panel-eyebrow {
+		font-size: 0.78rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+	}
+
+	.hero-lab__eyebrow {
+		color: var(--color-accent);
+		margin-bottom: 1rem;
+	}
+
+	.hero-lab__intro h1 {
+		max-width: 12ch;
+		font-size: clamp(3rem, 7vw, 6rem);
+		line-height: 0.94;
+		letter-spacing: -0.05em;
+	}
+
+	.hero-lab__lede {
+		max-width: 56rem;
+		margin-top: 1.25rem;
+		color: rgba(255, 255, 255, 0.72);
+		font-size: 1.08rem;
+		line-height: 1.7;
+	}
+
+	.hero-lab__summary {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1rem;
+		margin-top: 2rem;
+	}
+
+	.hero-lab__summary div {
+		padding: 1.1rem 1.15rem;
+		border-radius: 1.4rem;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		background: rgba(255, 255, 255, 0.03);
+	}
+
+	.hero-lab__summary span {
+		display: block;
+		margin-bottom: 0.75rem;
+		color: rgba(255, 255, 255, 0.42);
+	}
+
+	.hero-lab__summary p {
+		color: rgba(255, 255, 255, 0.72);
+		line-height: 1.6;
+	}
+
+	.hero-lab__grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1.25rem;
+	}
+
+	.theme-card {
+		display: grid;
+		gap: 1rem;
+		padding: 1.15rem;
+		border-radius: 2rem;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		background:
+			radial-gradient(circle at top left, rgba(255, 255, 255, 0.06), transparent 36%),
+			rgba(8, 9, 10, 0.96);
+		box-shadow: 0 32px 90px rgba(0, 0, 0, 0.22);
+	}
+
+	.theme-card__meta {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		align-items: flex-start;
+	}
+
+	.theme-card__eyebrow {
+		color: rgba(255, 255, 255, 0.56);
+		margin-bottom: 0.5rem;
+	}
+
+	.theme-card__id,
+	.theme-card__meta small {
+		color: rgba(255, 255, 255, 0.38);
+	}
+
+	.theme-card__meta small {
+		font-size: 0.88rem;
+		line-height: 1.55;
+		max-width: 12rem;
+		text-align: right;
+	}
+
+	.theme-card__hero {
+		position: relative;
+		min-height: 34rem;
+		padding: 1.25rem;
+		border-radius: 1.7rem;
+		border: 1px solid rgba(255, 255, 255, 0.07);
+		background:
+			linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015)),
+			radial-gradient(circle at 12% 16%, rgba(78, 201, 180, 0.12), transparent 28%),
+			#070809;
+		display: grid;
+		grid-template-columns: minmax(0, 1.2fr) minmax(270px, 0.8fr);
+		align-items: center;
+		gap: 1.4rem;
+		overflow: hidden;
+	}
+
+	.theme-card__copy {
+		max-width: 44rem;
+		align-self: center;
+	}
+
+	.theme-card__signal {
+		color: var(--color-accent);
+		margin-bottom: 1.75rem;
+	}
+
+	.theme-card__title {
+		display: grid;
+		gap: 0.08em;
+		font-size: clamp(3.4rem, 7vw, 6.4rem);
+		line-height: 0.9;
+		letter-spacing: -0.065em;
+	}
+
+	.theme-card__title .is-accent {
+		color: var(--color-brand-cyan);
+	}
+
+	.theme-card__support {
+		max-width: 34rem;
+		margin-top: 1.4rem;
+		color: rgba(255, 255, 255, 0.68);
+		font-size: 1rem;
+		line-height: 1.7;
+	}
+
+	.theme-card__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.9rem;
+		margin-top: 1.9rem;
+	}
+
+	.theme-card__button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 3.2rem;
+		padding: 0.95rem 1.35rem;
+		border-radius: 999px;
+		font-weight: 600;
+		border: 1px solid rgba(255, 255, 255, 0.12);
+	}
+
+	.theme-card__button--primary {
+		background: #fff;
+		color: #050607;
+		border-color: transparent;
+	}
+
+	.theme-card__button--ghost {
+		background: rgba(255, 255, 255, 0.03);
+		color: var(--color-text-main);
+	}
+
+	.theme-card__panel {
+		position: relative;
+		align-self: center;
+		padding: 1.15rem;
+		border-radius: 1.8rem;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		background: rgba(24, 24, 24, 0.86);
+		box-shadow: 0 24px 56px rgba(0, 0, 0, 0.22);
+	}
+
+	.theme-card__panel-eyebrow {
+		color: rgba(255, 255, 255, 0.44);
+		margin-bottom: 0.95rem;
+	}
+
+	.theme-card__panel-list {
+		display: grid;
+		gap: 0.9rem;
+	}
+
+	.theme-card__panel-item {
+		padding: 1rem 1.05rem;
+		border-radius: 1.2rem;
+		border: 1px solid rgba(255, 255, 255, 0.09);
+		background: rgba(255, 255, 255, 0.02);
+	}
+
+	.theme-card__panel-item strong {
+		font-size: 1rem;
+		line-height: 1.5;
+	}
+
+	.theme-card__note {
+		padding: 0.1rem 0.15rem 0;
+	}
+
+	.theme-card__note p {
+		color: rgba(255, 255, 255, 0.68);
+		line-height: 1.65;
+	}
+
+	.theme-card--signal .theme-card__hero {
+		background:
+			linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015)),
+			radial-gradient(circle at 12% 16%, rgba(78, 201, 180, 0.12), transparent 26%),
+			#070809;
+	}
+
+	.theme-card--editorial .theme-card__hero {
+		grid-template-columns: minmax(0, 1.3fr) minmax(250px, 0.7fr);
+		background:
+			linear-gradient(135deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.01)),
+			radial-gradient(circle at 20% 18%, rgba(227, 208, 162, 0.09), transparent 24%),
+			#080808;
+	}
+
+	.theme-card--editorial .theme-card__title .is-accent {
+		font-family: 'Cormorant Garamond', serif;
+		font-style: italic;
+		color: #f2ede2;
+	}
+
+	.theme-card--dashboard .theme-card__hero {
+		background:
+			linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015)),
+			radial-gradient(circle at 86% 18%, rgba(78, 201, 180, 0.08), transparent 20%),
+			#060708;
+	}
+
+	.theme-card--dashboard .theme-card__panel {
+		background:
+			linear-gradient(180deg, rgba(78, 201, 180, 0.05), rgba(255, 255, 255, 0.02)),
+			rgba(14, 16, 18, 0.92);
+	}
+
+	.theme-card--monument .theme-card__hero {
+		grid-template-columns: 1fr;
+		align-content: end;
+		background:
+			radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.055), transparent 22%),
+			#070809;
+	}
+
+	.theme-card--monument .theme-card__panel {
+		max-width: 24rem;
+		background: rgba(255, 255, 255, 0.02);
+	}
+
+	.theme-card--glow .theme-card__hero {
+		background:
+			radial-gradient(circle at 8% 14%, rgba(78, 201, 180, 0.16), transparent 24%),
+			radial-gradient(circle at 88% 26%, rgba(30, 126, 114, 0.12), transparent 22%),
+			#060708;
+	}
+
+	.theme-card--glow .theme-card__panel {
+		background:
+			linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.018)),
+			rgba(18, 19, 20, 0.88);
+	}
+
+	.theme-card--rail .theme-card__hero {
+		grid-template-columns: minmax(0, 1fr) 18rem;
+		background:
+			linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+			radial-gradient(circle at 84% 18%, rgba(255, 255, 255, 0.05), transparent 18%),
+			#070809;
+		background-size: 11rem 100%, auto, auto;
+	}
+
+	.theme-card--rail .theme-card__panel {
+		border-radius: 0;
+		border-top: 0;
+		border-right: 0;
+		border-bottom: 0;
+		background: transparent;
+		box-shadow: none;
+	}
+
+	.theme-card--glass .theme-card__hero {
+		background:
+			linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)),
+			radial-gradient(circle at 12% 14%, rgba(78, 201, 180, 0.08), transparent 24%),
+			#070809;
+	}
+
+	.theme-card--glass .theme-card__panel,
+	.theme-card--glass .theme-card__panel-item {
+		backdrop-filter: blur(18px);
+		background: rgba(255, 255, 255, 0.04);
+	}
+
+	.theme-card--accent .theme-card__hero {
+		background:
+			linear-gradient(120deg, rgba(220, 234, 34, 0.08), transparent 24%),
+			radial-gradient(circle at 14% 14%, rgba(78, 201, 180, 0.08), transparent 22%),
+			#060708;
+	}
+
+	.theme-card--accent .theme-card__signal {
+		color: #dcea22;
+	}
+
+	.theme-card--accent .theme-card__title .is-accent {
+		color: #dcea22;
+	}
+
+	.theme-card--process .theme-card__hero {
+		background:
+			linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.01)),
+			radial-gradient(circle at 82% 78%, rgba(78, 201, 180, 0.08), transparent 22%),
+			#070809;
+	}
+
+	.theme-card--process .theme-card__panel-item {
+		position: relative;
+		padding-left: 3.2rem;
+	}
+
+	.theme-card--process .theme-card__panel-item::before {
+		content: '';
+		position: absolute;
+		left: 1.15rem;
+		top: 1.2rem;
+		width: 1rem;
+		height: 1rem;
+		border-radius: 999px;
+		border: 1px solid rgba(255, 255, 255, 0.32);
+	}
+
+	.theme-card--mesh .theme-card__hero {
+		background:
+			radial-gradient(circle at 16% 16%, rgba(78, 201, 180, 0.14), transparent 24%),
+			radial-gradient(circle at 86% 20%, rgba(176, 144, 255, 0.1), transparent 20%),
+			radial-gradient(circle at 70% 76%, rgba(30, 126, 114, 0.12), transparent 24%),
+			#050607;
+	}
+
+	.theme-card--mesh .theme-card__panel {
+		background:
+			linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015)),
+			rgba(14, 15, 16, 0.9);
+	}
+
+	@media (max-width: 1180px) {
+		.hero-lab__grid,
+		.hero-lab__summary {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 900px) {
+		.theme-card__hero,
+		.theme-card--editorial .theme-card__hero,
+		.theme-card--rail .theme-card__hero {
+			grid-template-columns: 1fr;
+		}
+
+		.theme-card__hero {
+			min-height: auto;
+		}
+	}
+
+	@media (max-width: 720px) {
+		.hero-lab {
+			padding-top: 2.4rem;
+		}
+
+		.theme-card {
+			padding: 1rem;
+		}
+
+		.theme-card__meta {
+			display: grid;
+		}
+
+		.theme-card__meta small {
+			text-align: left;
+			max-width: none;
+		}
+
+		.theme-card__hero {
+			padding: 1rem;
+		}
+
+		.theme-card__title {
+			font-size: clamp(2.8rem, 14vw, 4.4rem);
+		}
+	}
+</style>

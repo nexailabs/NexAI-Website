@@ -1,0 +1,196 @@
+---
+import { navLabLinks, navLabMeta } from '../../data/navLab';
+---
+
+<div class="float-nav" data-nav-demo data-nav-id="floating-studio" data-open="false">
+	<header class="float-nav__bar">
+		<a class="float-nav__brand" href="#top">NexAI Labs</a>
+		<div class="float-nav__actions">
+			<a href={navLabMeta.ctaHref} class="float-nav__cta" target="_blank" rel="noreferrer">{navLabMeta.ctaLabel}</a>
+			<button class="float-nav__trigger" data-nav-trigger aria-expanded="false">
+				<span>Open</span>
+				<i></i>
+			</button>
+		</div>
+	</header>
+
+	<div class="float-nav__panel" data-nav-panel aria-hidden="true">
+		<div class="float-nav__panel-head">
+			<span>{navLabMeta.location}</span>
+			<a href={navLabMeta.emailHref}>{navLabMeta.email}</a>
+		</div>
+		<nav class="float-nav__list">
+			{
+				navLabLinks.map((link) => (
+					<a class="float-nav__item" href={link.href} data-nav-close>
+						<span>{link.index}</span>
+						<strong data-caption={link.caption}>{link.label}</strong>
+					</a>
+				))
+			}
+		</nav>
+	</div>
+</div>
+
+<style>
+	.float-nav {
+		position: sticky;
+		top: 1rem;
+		z-index: 30;
+		padding: 1rem 1.25rem 0;
+	}
+
+	.float-nav__bar {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 1rem 1.2rem;
+		border-radius: 999px;
+		background: rgba(11, 12, 14, 0.64);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		backdrop-filter: blur(16px);
+		box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+	}
+
+	.float-nav__brand,
+	.float-nav__cta,
+	.float-nav__trigger,
+	.float-nav__panel-head a,
+	.float-nav__item {
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.float-nav__brand {
+		font-size: 0.92rem;
+		text-transform: uppercase;
+		letter-spacing: 0.18em;
+	}
+
+	.float-nav__actions {
+		display: flex;
+		align-items: center;
+		gap: 0.7rem;
+	}
+
+	.float-nav__cta {
+		padding: 0.8rem 1rem;
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.06);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+	}
+
+	.float-nav__trigger {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.7rem;
+		background: transparent;
+		border: 0;
+		text-transform: uppercase;
+		letter-spacing: 0.16em;
+		font-size: 0.8rem;
+		cursor: pointer;
+	}
+
+	.float-nav__trigger i,
+	.float-nav__trigger i::before {
+		display: block;
+		width: 1.1rem;
+		height: 1px;
+		background: currentColor;
+		content: '';
+	}
+
+	.float-nav__trigger i::before {
+		transform: rotate(90deg);
+	}
+
+	.float-nav__panel {
+		position: absolute;
+		inset: 1rem 1.25rem auto 1.25rem;
+		min-height: 32rem;
+		padding: 5.8rem 1.2rem 1.2rem;
+		border-radius: 2rem;
+		background: rgba(10, 11, 13, 0.95);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		backdrop-filter: blur(18px);
+		opacity: 0;
+		pointer-events: none;
+		transform: translateY(-2%) scale(0.98);
+		transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.26s ease;
+	}
+
+	.float-nav[data-open='true'] .float-nav__panel {
+		opacity: 1;
+		pointer-events: auto;
+		transform: translateY(0) scale(1);
+	}
+
+	.float-nav__panel-head {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-bottom: 2rem;
+		font-size: 0.8rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.45);
+	}
+
+	.float-nav__list {
+		display: grid;
+		gap: 0.2rem;
+	}
+
+	.float-nav__item {
+		display: grid;
+		grid-template-columns: 2rem 1fr;
+		align-items: baseline;
+		gap: 1rem;
+		padding: 0.9rem 0;
+		opacity: 0;
+		transform: translateY(18px);
+		transition: transform 0.34s ease, opacity 0.28s ease;
+	}
+
+	.float-nav[data-open='true'] .float-nav__item {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	.float-nav[data-open='true'] .float-nav__item:nth-child(1) { transition-delay: 0.08s; }
+	.float-nav[data-open='true'] .float-nav__item:nth-child(2) { transition-delay: 0.14s; }
+	.float-nav[data-open='true'] .float-nav__item:nth-child(3) { transition-delay: 0.2s; }
+	.float-nav[data-open='true'] .float-nav__item:nth-child(4) { transition-delay: 0.26s; }
+
+	.float-nav__item span {
+		color: rgba(255, 255, 255, 0.34);
+	}
+
+	.float-nav__item strong {
+		display: inline-flex;
+		flex-direction: column;
+		font-size: clamp(2.4rem, 5vw, 4.4rem);
+		line-height: 0.96;
+	}
+
+	.float-nav__item strong::after {
+		content: attr(data-caption);
+		margin-top: 0.6rem;
+		font-size: 0.95rem;
+		font-family: Inter, sans-serif;
+		letter-spacing: 0;
+		color: rgba(255, 255, 255, 0.46);
+	}
+
+	.float-nav__item:hover strong {
+		font-family: 'Cormorant Garamond', serif;
+		font-style: italic;
+	}
+
+	@media (max-width: 900px) {
+		.float-nav__cta {
+			display: none;
+		}
+	}
+</style>

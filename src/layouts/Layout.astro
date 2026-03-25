@@ -1,13 +1,19 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import Navbar from '../components/Navbar.astro';
 import '../styles/global.css';
 
 interface Props {
 	title: string;
 	description?: string;
+	showNavbar?: boolean;
 }
 
-const { title, description = "NexAI Labs - Business Growth on Autopilot" } = Astro.props;
+const {
+	title,
+	description = "NexAI Labs - Business Growth on Autopilot",
+	showNavbar = true,
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -23,12 +29,17 @@ const { title, description = "NexAI Labs - Business Growth on Autopilot" } = Ast
 		<!-- View Transitions -->
         <ClientRouter />
 
-		<!-- Google Fonts (Inter) -->
+		<!-- Google Fonts -->
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+		<link
+			href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Inter:wght@400;600;800&display=swap"
+			rel="stylesheet"
+		>
+		<slot name="head" />
 	</head>
 	<body>
+		{showNavbar && <Navbar />}
 		<slot />
 		
 		<!-- Global Scripts -->

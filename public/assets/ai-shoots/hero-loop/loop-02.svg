@@ -1,0 +1,23 @@
+﻿<svg width="800" height="1040" viewBox="0 0 800 1040" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="88" y1="56" x2="700" y2="998" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#191D22"/>
+      <stop offset="1" stop-color="#091112"/>
+    </linearGradient>
+    <linearGradient id="dress" x1="400" y1="330" x2="430" y2="882" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFE1B7"/>
+      <stop offset="1" stop-color="#A06123"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1040" rx="52" fill="#091010"/>
+  <rect x="34" y="34" width="732" height="972" rx="40" fill="url(#bg)"/>
+  <circle cx="408" cy="498" r="286" fill="#101A1B"/>
+
+  <circle cx="400" cy="286" r="82" fill="#ECC6A0"/>
+  <path d="M340 246c22-31 50-46 83-46 31 0 58 13 81 39-20 0-38 4-54 12-18-11-55-8-110-5z" fill="#1A1B21"/>
+  <path d="M283 371c0-39 56-69 125-69s125 30 125 69v71c0 26 10 51 29 69l34 34c38 37 60 88 60 141v144c0 22-18 40-40 40H200c-22 0-40-18-40-40V686c0-53 22-104 60-141l34-34c19-18 29-43 29-69v-71z" fill="url(#dress)"/>
+  <path d="M290 514c60-33 118-41 175-25 20 5 40 14 61 26" stroke="#FFF4DE" stroke-opacity=".44" stroke-width="14" stroke-linecap="round"/>
+  <text x="80" y="110" fill="#CDE8FA" fill-opacity=".82" font-family="Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="4">JEWELRY CAMPAIGN</text>
+  <text x="80" y="930" fill="white" font-family="Arial, sans-serif" font-size="46" font-weight="700">Gold Edit / 02</text>
+  <text x="80" y="968" fill="#CDE8FA" fill-opacity=".72" font-family="Arial, sans-serif" font-size="24">Luxury lighting, no reshoot</text>
+</svg>

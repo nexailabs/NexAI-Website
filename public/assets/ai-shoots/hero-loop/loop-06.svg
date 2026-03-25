@@ -1,0 +1,23 @@
+﻿<svg width="800" height="1040" viewBox="0 0 800 1040" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="88" y1="56" x2="700" y2="998" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#152021"/>
+      <stop offset="1" stop-color="#081112"/>
+    </linearGradient>
+    <linearGradient id="dress" x1="400" y1="330" x2="430" y2="882" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C0F4DB"/>
+      <stop offset="1" stop-color="#3C8570"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1040" rx="52" fill="#091010"/>
+  <rect x="34" y="34" width="732" height="972" rx="40" fill="url(#bg)"/>
+  <circle cx="244" cy="210" r="90" fill="#132829"/>
+  <circle cx="570" cy="270" r="132" fill="#102221" />
+  <circle cx="400" cy="286" r="82" fill="#EAD3C6"/>
+  <path d="M325 247c33-36 67-52 104-49 29 2 57 15 86 38-28 1-54 7-78 20-19-10-55-13-112-9z" fill="#071919"/>
+  <path d="M260 388c18-32 49-54 88-63l51-12 126 39c44 14 74 55 74 102v309c0 37-30 67-67 67H268c-37 0-67-30-67-67V536c0-52 21-101 59-148z" fill="url(#dress)"/>
+  <path d="M285 555c70 10 126 9 169-4 27-8 55-21 84-39" stroke="#EFFFF8" stroke-opacity=".44" stroke-width="14" stroke-linecap="round"/>
+  <text x="80" y="110" fill="#CDE8FA" fill-opacity=".82" font-family="Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="4">KNIT COLLECTION</text>
+  <text x="80" y="930" fill="white" font-family="Arial, sans-serif" font-size="46" font-weight="700">Layered Look / 06</text>
+  <text x="80" y="968" fill="#CDE8FA" fill-opacity=".72" font-family="Arial, sans-serif" font-size="24">High-volume collection consistency</text>
+</svg>

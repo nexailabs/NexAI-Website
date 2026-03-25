@@ -1,0 +1,23 @@
+﻿<svg width="800" height="1040" viewBox="0 0 800 1040" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="88" y1="56" x2="700" y2="998" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1A1B20"/>
+      <stop offset="1" stop-color="#081011"/>
+    </linearGradient>
+    <linearGradient id="dress" x1="400" y1="330" x2="430" y2="882" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D8B3FF"/>
+      <stop offset="1" stop-color="#72419B"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1040" rx="52" fill="#091010"/>
+  <rect x="34" y="34" width="732" height="972" rx="40" fill="url(#bg)"/>
+  <circle cx="400" cy="526" r="296" fill="#10191C"/>
+
+  <circle cx="400" cy="286" r="82" fill="#ECD2C0"/>
+  <path d="M330 250c26-35 59-52 99-50 30 2 60 16 92 44-34 3-72 17-113 42-24-16-49-28-78-36z" fill="#181620"/>
+  <path d="M238 404c0-39 25-74 62-86l97-32c41-13 85-13 126 0l97 32c37 12 62 47 62 86v291c0 58-47 105-105 105H343c-58 0-105-47-105-105V404z" fill="url(#dress)"/>
+  <path d="M278 562c52 16 99 21 142 16 31-4 67-16 106-35" stroke="#F7EDFF" stroke-opacity=".44" stroke-width="14" stroke-linecap="round"/>
+  <text x="80" y="110" fill="#CDE8FA" fill-opacity=".82" font-family="Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="4">CAMPAIGN TILE</text>
+  <text x="80" y="930" fill="white" font-family="Arial, sans-serif" font-size="46" font-weight="700">Color Story / 10</text>
+  <text x="80" y="968" fill="#CDE8FA" fill-opacity=".72" font-family="Arial, sans-serif" font-size="24">Consistent campaign outputs at scale</text>
+</svg>
