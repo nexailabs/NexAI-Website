@@ -1186,22 +1186,35 @@ const heroDecks = [heroDeckD, heroDeckC, heroDeckB, heroDeckA];
       return width + 34;
     };
 
+    // Mobile: diagonal cascade using full screen area
+    const getMobileSpread = () => {
+      const vw = window.innerWidth;
+      const spreadX = Math.min(vw * 0.14, 55); // ~14% of viewport per step
+      const spreadY = Math.min(window.innerHeight * 0.11, 100); // ~11% of viewport per step
+      return [
+        { x: -spreadX * 2, y: -spreadY * 2, rotate: -12, zIndex: 50 },
+        { x: -spreadX,     y: -spreadY,     rotate: -6,  zIndex: 40 },
+        { x: 0,            y: 0,            rotate: 0,   zIndex: 30 },
+        { x: spreadX,      y: spreadY,      rotate: 6,   zIndex: 20 },
+        { x: spreadX * 2,  y: spreadY * 2,  rotate: 12,  zIndex: 10 },
+      ];
+    };
+
     const spreadState = (index, total, unit) => {
       const middle = (total - 1) / 2;
       const distance = index - middle;
 
-      // Mobile: radial fan from bottom-center pivot
+      // Mobile: diagonal cascade + rotation, fills screen
       if (isMobile()) {
-        const fanAngle = 14; // degrees per card from center
-        const rotation = distance * fanAngle;
+        const positions = getMobileSpread();
+        const pos = positions[index] || positions[2];
         return {
-          x: 0,
-          y: 0,
+          x: pos.x,
+          y: pos.y,
           scale: 1,
-          rotate: rotation,
+          rotate: pos.rotate,
           opacity: 1,
-          fan: true, // flag for applyState to set correct pivot
-          zIndex: total - Math.abs(Math.round(distance)), // center card on top
+          zIndex: pos.zIndex,
         };
       }
 
@@ -1230,8 +1243,7 @@ const heroDecks = [heroDeckD, heroDeckC, heroDeckB, heroDeckA];
       card.style.transition = animate ? ease : 'none';
       const rotate = state.rotate ? `rotate(${state.rotate}deg)` : '';
       card.style.transform = `translate(-50%, -50%) translate3d(${state.x}px, ${state.y}px, 0) scale(${state.scale}) ${rotate}`;
-      // Radial fan: pivot from below bottom-center for wider arc
-      card.style.transformOrigin = state.fan ? '50% 130%' : '50% 50%';
+      card.style.transformOrigin = '50% 50%';
       card.style.opacity = `${state.opacity}`;
       card.style.zIndex = `${state.zIndex}`;
     };
