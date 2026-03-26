@@ -1190,16 +1190,16 @@ const heroDecks = [heroDeckD, heroDeckC, heroDeckB, heroDeckA];
       const middle = (total - 1) / 2;
       const distance = index - middle;
 
-      // Mobile: playing card fan (rotate from bottom pivot)
+      // Mobile: hand of cards — bottom-left pivot, fan out
       if (isMobile()) {
-        const fanAngle = 10; // degrees per card from center
+        const cardsBelow = (total - 1) - index; // how many cards behind this one
         return {
-          x: distance * 12, // slight horizontal offset for depth
-          y: Math.abs(distance) * -8, // arc lift — outer cards rise slightly
+          x: 0,
+          y: 0,
           scale: 1,
-          rotate: distance * fanAngle,
+          rotate: -(cardsBelow * 10), // cards behind fan out left
           opacity: 1,
-          zIndex: getStackZIndex(Math.abs(distance) < 0.5 ? 0 : Math.abs(distance) < 1.5 ? 1 : 2, total),
+          zIndex: index + 1, // last card (index 4) on top
         };
       }
 
@@ -1224,7 +1224,7 @@ const heroDecks = [heroDeckD, heroDeckC, heroDeckB, heroDeckA];
       card.style.transition = animate ? 'transform 0.88s cubic-bezier(0.16, 1, 0.3, 1)' : 'none';
       const rotate = state.rotate ? `rotate(${state.rotate}deg)` : '';
       card.style.transform = `translate(-50%, -50%) translate3d(${state.x}px, ${state.y}px, 0) scale(${state.scale}) ${rotate}`;
-      card.style.transformOrigin = (isMobile() && state.rotate) ? '50% 85%' : '50% 50%';
+      card.style.transformOrigin = (isMobile() && state.rotate) ? '0% 100%' : '50% 50%';
       card.style.opacity = `${state.opacity}`;
       card.style.zIndex = `${state.zIndex}`;
     };
@@ -1306,40 +1306,55 @@ const heroDecks = [heroDeckD, heroDeckC, heroDeckB, heroDeckA];
         setTitleState({ shift: 0, opacity: 1 }, true);
       }, cycleStart + 80);
 
-      schedule(() => {
-        cards.forEach((card, index) => {
-          applyState(card, spreadState(index, cards.length, spreadUnit), true);
-        });
-      }, cycleStart + 1540);
+      const dealDelay = isMobile() ? 250 : 0; // ms between each card on mobile
+      const dealTotal = isMobile() ? dealDelay * (cards.length - 1) : 0; // extra time for dealing
 
+      // Spread / deal
+      if (isMobile()) {
+        // Mobile: deal cards one-by-one like dealing a hand
+        cards.forEach((card, index) => {
+          schedule(() => {
+            applyState(card, spreadState(index, cards.length, spreadUnit), true);
+          }, cycleStart + 1540 + (index * dealDelay));
+        });
+      } else {
+        schedule(() => {
+          cards.forEach((card, index) => {
+            applyState(card, spreadState(index, cards.length, spreadUnit), true);
+          });
+        }, cycleStart + 1540);
+      }
+
+      // Hold (shifted for mobile deal time)
       schedule(() => {
         cards.forEach((card, index) => {
           applyState(card, holdState(index, cards.length), true);
         });
-      }, cycleStart + 2860);
+      }, cycleStart + 2860 + dealTotal);
 
+      // Exit
       schedule(() => {
         cards.forEach((card, index) => {
           applyState(card, exitState(index, cards.length), true);
         });
-      }, cycleStart + 3840);
+      }, cycleStart + 3840 + dealTotal);
 
       schedule(() => {
         hideDeck(deck);
-      }, cycleStart + 4680);
+      }, cycleStart + 4680 + dealTotal);
 
       if (activeIndex === decks.length - 1) {
         schedule(() => {
           setTitleState({ shift: titleShift, opacity: 1 }, true);
-        }, cycleStart + 4920);
+        }, cycleStart + 4920 + dealTotal);
       } else {
         schedule(() => {
           setTitleState({ shift: 0, opacity: 1 }, false);
-        }, cycleStart + 4920);
+        }, cycleStart + 4920 + dealTotal);
       }
 
       activeIndex = (activeIndex + 1) % decks.length;
-      cycleTimer = window.setTimeout(runCycle, cycleStart + 5000);
+      cycleTimer = window.setTimeout(runCycle, cycleStart + 5000 + dealTotal);
     };
 
     runCycle();
