@@ -1186,29 +1186,22 @@ const heroDecks = [heroDeckD, heroDeckC, heroDeckB, heroDeckA];
       return width + 34;
     };
 
-    // Mobile: scattered photo pile positions (like dealing photos on a table)
-    const mobilePositions = [
-      { x: -70, y: 12, rotate: -3.5, zIndex: 50 },
-      { x: -35, y: 30, rotate: 2.5, zIndex: 40 },
-      { x: 0, y: 6, rotate: -1.5, zIndex: 30 },
-      { x: 35, y: 22, rotate: 3, zIndex: 20 },
-      { x: 70, y: 40, rotate: -2, zIndex: 10 },
-    ];
-
     const spreadState = (index, total, unit) => {
       const middle = (total - 1) / 2;
       const distance = index - middle;
 
-      // Mobile: scattered photo pile with spring feel
+      // Mobile: radial fan from bottom-center pivot
       if (isMobile()) {
-        const pos = mobilePositions[index] || mobilePositions[2];
+        const fanAngle = 14; // degrees per card from center
+        const rotation = distance * fanAngle;
         return {
-          x: pos.x,
-          y: pos.y,
+          x: 0,
+          y: 0,
           scale: 1,
-          rotate: pos.rotate,
+          rotate: rotation,
           opacity: 1,
-          zIndex: pos.zIndex,
+          fan: true, // flag for applyState to set correct pivot
+          zIndex: total - Math.abs(Math.round(distance)), // center card on top
         };
       }
 
@@ -1237,7 +1230,8 @@ const heroDecks = [heroDeckD, heroDeckC, heroDeckB, heroDeckA];
       card.style.transition = animate ? ease : 'none';
       const rotate = state.rotate ? `rotate(${state.rotate}deg)` : '';
       card.style.transform = `translate(-50%, -50%) translate3d(${state.x}px, ${state.y}px, 0) scale(${state.scale}) ${rotate}`;
-      card.style.transformOrigin = '50% 50%';
+      // Radial fan: pivot from below bottom-center for wider arc
+      card.style.transformOrigin = state.fan ? '50% 130%' : '50% 50%';
       card.style.opacity = `${state.opacity}`;
       card.style.zIndex = `${state.zIndex}`;
     };
