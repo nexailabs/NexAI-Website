@@ -27,7 +27,8 @@ npm run preview      # Preview built site locally
 | Animation | GSAP 3.14 + ScrollTrigger | Scroll-triggered animations |
 | Smooth Scroll | Lenis 1.3 | `src/scripts/lenis.ts` — DO NOT MODIFY |
 | Styling | Vanilla CSS + custom properties | Design tokens in `src/styles/global.css` |
-| Images | Cloudinary | Auto-optimization, CDN delivery |
+| Images + short video | ImageKit | 25GB free bandwidth, auto-optimization, CDN |
+| Long-form video | YouTube embed | Free, unlimited |
 | Hosting | Cloudflare Pages | Auto-deploys from `main` branch |
 | Fonts | Inter (400, 600, 800) | Google Fonts, preloaded |
 
@@ -128,7 +129,7 @@ When `dev` is stable and tested:
 | One feature per branch | If something breaks, only that branch is affected |
 | Always `git pull` before starting | Prevents merge conflicts |
 | Stage specific files, not `git add .` | Prevents committing logs, secrets, huge images |
-| Don't commit images to git | Use Cloudinary instead (see Image Guidelines) |
+| Don't commit images to git | Use ImageKit instead (see Image Guidelines) |
 | Don't commit `.log` files | They're in `.gitignore` for a reason |
 
 ### Common Mistakes & Fixes
@@ -150,32 +151,46 @@ git stash pop                      # Apply your changes here
 
 ## Image Guidelines
 
-### Where Images Live
+### Where Media Lives
 
-All website images are hosted on **Cloudinary** — NOT in the git repo.
+All website images and short video clips are hosted on **ImageKit** — NOT in the git repo.
+Longer videos are embedded from **YouTube**.
 
 **Exception:** Logos and favicons stay in `public/assets/logo/` (they're small and rarely change).
 
 ### How to Add Images
 
-1. **Upload** the original image to the Cloudinary dashboard
+1. **Upload** the original image to the [ImageKit dashboard](https://imagekit.io/dashboard)
 2. **Copy** the URL
-3. **Use it** in your code with optimization parameters:
+3. **Use it** in your code with transformation parameters:
 
 ```html
 <!-- Auto-format, auto-quality, 1200px wide -->
-<img src="https://res.cloudinary.com/YOUR_CLOUD/image/upload/f_auto,q_auto,w_1200/folder/image-name.jpg"
+<img src="https://ik.imagekit.io/YOUR_ID/folder/image.jpg?tr=w-1200,f-auto,q-80"
      alt="Description of the image" />
+```
+
+### How to Add Videos
+
+**Short clips (8-30s product demos, reels):** Upload to ImageKit, use like images:
+```html
+<video src="https://ik.imagekit.io/YOUR_ID/folder/clip.mp4?tr=w-800" autoplay muted loop playsinline />
+```
+
+**Longer videos (case studies, tutorials):** Upload to YouTube, embed:
+```html
+<iframe src="https://www.youtube.com/embed/VIDEO_ID" allowfullscreen></iframe>
 ```
 
 ### Size Targets
 
-| Image Type | Max Width | Target Size | Format |
+| Media Type | Max Width | Target Size | Format |
 |-----------|----------|------------|--------|
-| Hero/showcase | 1600px | 500KB - 1MB | WebP (auto via `f_auto`) |
+| Hero/showcase images | 1600px | 500KB - 1MB | WebP (auto via `f-auto`) |
 | Portfolio cards | 800px | 150 - 300KB | WebP (auto) |
 | Thumbnails | 400px | 50 - 100KB | WebP (auto) |
 | Logos/icons | As needed | < 50KB | SVG or PNG |
+| Short video clips | 800-1200px | < 5MB | MP4 |
 
 ### Why Not Git?
 
