@@ -604,12 +604,13 @@ const heroDecks = [heroDeckD, heroDeckC, heroDeckB, heroDeckA];
     max-width: 320px;
     object-fit: contain;
     opacity: 0.95;
-    /* Let original brand colors shine */
+    filter: grayscale(1) brightness(1.5);
     transition: all 0.4s ease;
   }
   .client-marquee__list img:hover {
     opacity: 1;
     transform: scale(1.05);
+    filter: grayscale(0) brightness(1);
   }
   @keyframes scrollMarquee {
     0%   { transform: translateX(0); }
