@@ -1176,10 +1176,12 @@ const heroDecks = [heroDeckD, heroDeckC, heroDeckB, heroDeckA];
       };
     };
 
+    const isMobile = () => window.innerWidth <= 720;
+
     const getSpreadUnit = (cards) => {
       if (!cards.length) return 0;
       const width = cards[cards.length - 1].getBoundingClientRect().width || 0;
-      if (window.innerWidth <= 720) return Math.max(width * 0.54, 72);
+      if (isMobile()) return 0; // fan uses rotation, not translation
       if (window.innerWidth <= 1100) return Math.max(width * 0.8, 130);
       return width + 34;
     };
@@ -1187,24 +1189,42 @@ const heroDecks = [heroDeckD, heroDeckC, heroDeckB, heroDeckA];
     const spreadState = (index, total, unit) => {
       const middle = (total - 1) / 2;
       const distance = index - middle;
+
+      // Mobile: playing card fan (rotate from bottom pivot)
+      if (isMobile()) {
+        const fanAngle = 10; // degrees per card from center
+        return {
+          x: distance * 12, // slight horizontal offset for depth
+          y: Math.abs(distance) * -8, // arc lift — outer cards rise slightly
+          scale: 1,
+          rotate: distance * fanAngle,
+          opacity: 1,
+          zIndex: getStackZIndex(Math.abs(distance) < 0.5 ? 0 : Math.abs(distance) < 1.5 ? 1 : 2, total),
+        };
+      }
+
+      // Desktop/tablet: horizontal spread
       return {
         x: distance * unit,
         y: 0,
         scale: 1,
+        rotate: 0,
         opacity: 1,
         zIndex: getStackZIndex(index, total),
       };
     };
 
-    const holdState = (index, total) => stackedState(index, total, 0);
+    const holdState = (index, total) => ({ ...stackedState(index, total, 0), rotate: 0 });
 
-    const entryState = (index, total) => stackedState(index, total, getTravelOffset());
+    const entryState = (index, total) => ({ ...stackedState(index, total, getTravelOffset()), rotate: 0 });
 
-    const exitState = (index, total) => stackedState(index, total, getTravelOffset());
+    const exitState = (index, total) => ({ ...stackedState(index, total, getTravelOffset()), rotate: 0 });
 
     const applyState = (card, state, animate = true) => {
       card.style.transition = animate ? 'transform 0.88s cubic-bezier(0.16, 1, 0.3, 1)' : 'none';
-      card.style.transform = `translate(-50%, -50%) translate3d(${state.x}px, ${state.y}px, 0) scale(${state.scale})`;
+      const rotate = state.rotate ? `rotate(${state.rotate}deg)` : '';
+      card.style.transform = `translate(-50%, -50%) translate3d(${state.x}px, ${state.y}px, 0) scale(${state.scale}) ${rotate}`;
+      card.style.transformOrigin = (isMobile() && state.rotate) ? '50% 85%' : '50% 50%';
       card.style.opacity = `${state.opacity}`;
       card.style.zIndex = `${state.zIndex}`;
     };
