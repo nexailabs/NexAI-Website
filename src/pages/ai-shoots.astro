@@ -376,9 +376,6 @@ const heroDecks = [heroDeckD, heroDeckC, heroDeckB, heroDeckA];
       </div>
     </section>
 
-  </main>
-    </Layout>
-
     <!-- Services Section -->
     <section class="section-block container reveal-up" id="services">
         <div class="section-heading">
@@ -405,9 +402,13 @@ const heroDecks = [heroDeckD, heroDeckC, heroDeckB, heroDeckA];
         </div>
     </section>
 
+  </main>
+</Layout>
+
 <style>
   .shoots-page {
     min-height: 100svh;
+    overflow-x: hidden;
     background:
       radial-gradient(circle at 50% 38%, rgba(34, 75, 66, 0.2), transparent 30%),
       linear-gradient(180deg, #0b1110 0%, #09100f 100%);
@@ -878,6 +879,63 @@ const heroDecks = [heroDeckD, heroDeckC, heroDeckB, heroDeckA];
     100% { opacity: 1; transform: translateY(0) scale(1); }
   }
 
+  /* ── Input Group ── */
+  .sc3__input-group {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 0.5rem;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  .sc3__input-main {
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 1px solid rgba(200,170,100,0.2);
+    aspect-ratio: 3 / 4;
+  }
+  .sc3__input-main img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
+  .sc3__input-side {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .sc3__in-top, .sc3__in-bottom {
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
+    flex: 1;
+  }
+
+  /* ── Output Bento Grid ── */
+  .sc3__outputs-bento {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  .sc3__ob-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+  .sc3__ob-card {
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border: 1px solid rgba(200,170,100,0.18);
+  }
+  .sc3__ob-card img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
+  .sc3__ob-card--3x4 { aspect-ratio: 3 / 4; }
+  .sc3__ob-card--2x3 { aspect-ratio: 2 / 3; }
+  .sc3__ob-card--1x1 { aspect-ratio: 1 / 1; }
+
   /* ── Responsive ── */
   @media (max-width: 1100px) {
     .sc3__shell { grid-template-columns: clamp(9rem, 14vw, 11rem) 1fr; }
@@ -885,10 +943,10 @@ const heroDecks = [heroDeckD, heroDeckC, heroDeckB, heroDeckA];
   }
   @media (max-width: 900px) {
     .sc3__shell {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(2rem, 4vw, 3rem);
-  }
+      display: flex;
+      flex-direction: column;
+      gap: clamp(2rem, 4vw, 3rem);
+    }
     .sc3__nav { position: static; }
     .sc3__nav-list {
       flex-direction: row; flex-wrap: wrap;
@@ -912,10 +970,32 @@ const heroDecks = [heroDeckD, heroDeckC, heroDeckB, heroDeckA];
       grid-template-columns: 1fr;
       max-height: none;
     }
-    .sc3__arrow { margin: -0.5rem 0; }
+    .sc3__panel.active {
+      position: relative;
+    }
+    .sc3__stage {
+      min-height: auto;
+    }
+    .sc3__arrow {
+      margin: 0.5rem auto;
+      transform: rotate(90deg);
+    }
+    .sc3__input-group {
+      max-width: 100%;
+    }
+    .sc3__outputs-bento {
+      grid-template-columns: repeat(3, 1fr) !important;
+      max-width: 100%;
+    }
+    .sc3__ob-col {
+      min-width: 0;
+    }
   }
   @media (max-width: 600px) {
     .sc3__panel { grid-template-columns: 1fr; }
+    .sc3__outputs-bento {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
   }
 </style>
 
