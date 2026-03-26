@@ -1284,7 +1284,8 @@ const heroDecks = [heroDeckD, heroDeckC, heroDeckB, heroDeckA];
     };
 
     decks.forEach((deck) => hideDeck(deck, true));
-    setTitleState({ shift: getTitleShift(), opacity: 1 }, false);
+    // Initial state: text together (mobile: tighter shift)
+    setTitleState({ shift: isMobile() ? -120 : getTitleShift(), opacity: 1 }, false);
 
     if (prefersReducedMotion) {
       const activeDeck = decks[0];
@@ -1318,29 +1319,31 @@ const heroDecks = [heroDeckD, heroDeckC, heroDeckB, heroDeckA];
         spreadUnit = getSpreadUnit(cards);
       };
 
-      if (isLoopRestart) {
-        setTitleState({ shift: titleShift, opacity: 1 }, true);
-        schedule(startDeck, cycleStart);
-      } else {
-        setTitleState({ shift: 0, opacity: 1 }, false);
-        startDeck();
-      }
-
-      schedule(() => {
-        setTitleState({ shift: 0, opacity: 1 }, true);
-      }, cycleStart + 80);
-
       if (isMobile()) {
-        // ── MOBILE: Deal cards one-at-a-time ──
+        // ── MOBILE: Self-contained deal cycle ──
+        // Together: -120 (closes the visual gap → one word)
+        // Split: +180 (flies off-screen both sides)
+        const togetherShift = -120;
+        const splitShift = 180;
         const dealInterval = 800;
-        const dealTotal = dealInterval * cards.length;
 
-        // Split NEXAI / STUDIO apart when first card arrives
+        // 1. Start with text together
+        setTitleState({ shift: togetherShift, opacity: 1 }, !isLoopRestart);
+
+        // 2. Show deck (stack enters from above)
+        if (isLoopRestart) {
+          schedule(startDeck, cycleStart);
+        } else {
+          startDeck();
+        }
+
+        // 3. Split text off-screen as first card arrives
         schedule(() => {
-          setTitleState({ shift: titleShift, opacity: 1 }, true);
-        }, cycleStart + 1100);
+          setTitleState({ shift: splitShift, opacity: 1 }, true);
+        }, cycleStart + 800);
 
-        // Deal each card one by one
+        // 4. Deal each card one by one from above
+        const dealStart = cycleStart + 1000;
         cards.forEach((card, index) => {
           schedule(() => {
             card.style.transition = 'none';
@@ -1354,11 +1357,12 @@ const heroDecks = [heroDeckD, heroDeckC, heroDeckB, heroDeckA];
               card.style.transform = 'translate(-50%, -50%) translate3d(0px, 0px, 0) scale(1) rotate(0deg)';
               card.style.opacity = '1';
             }); });
-          }, cycleStart + 1200 + (index * dealInterval));
+          }, dealStart + (index * dealInterval));
         });
 
-        // Exit: cards go back up + join NEXAI STUDIO back together
-        const exitStart = cycleStart + 1200 + dealTotal + 600;
+        // 5. Exit: cards go back up
+        const dealTotal = dealInterval * cards.length;
+        const exitStart = dealStart + dealTotal + 600;
 
         schedule(() => {
           cards.forEach((card, index) => {
@@ -1366,17 +1370,29 @@ const heroDecks = [heroDeckD, heroDeckC, heroDeckB, heroDeckA];
           });
         }, exitStart);
 
-        // Join text back together as cards exit
+        // 6. Join text back together as cards exit
         schedule(() => {
-          setTitleState({ shift: 0, opacity: 1 }, true);
+          setTitleState({ shift: togetherShift, opacity: 1 }, true);
         }, exitStart + 100);
 
         schedule(() => { hideDeck(deck); }, exitStart + 840);
 
         activeIndex = (activeIndex + 1) % decks.length;
-        cycleTimer = window.setTimeout(runCycle, exitStart + 1000);
+        cycleTimer = window.setTimeout(runCycle, exitStart + 1200);
 
       } else {
+        // ── DESKTOP (unchanged) ──
+        if (isLoopRestart) {
+          setTitleState({ shift: titleShift, opacity: 1 }, true);
+          schedule(startDeck, cycleStart);
+        } else {
+          setTitleState({ shift: 0, opacity: 1 }, false);
+          startDeck();
+        }
+
+        schedule(() => {
+          setTitleState({ shift: 0, opacity: 1 }, true);
+        }, cycleStart + 80);
         // ── DESKTOP: horizontal spread (unchanged) ──
         schedule(() => {
           cards.forEach((card, index) => {
