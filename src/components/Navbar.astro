@@ -12,7 +12,6 @@ interface Props {
 	ctaHref?: string;
 	ctaLabel?: string;
 	email?: string;
-	takeoverMeta?: string;
 	panelId?: string;
 }
 
@@ -46,7 +45,6 @@ const {
 	ctaHref = 'https://cal.com/nexailabs/15min',
 	ctaLabel = 'Book a Call',
 	email = 'hello@nexailabs.com',
-	takeoverMeta = 'India / Remote',
 	panelId = 'primary-nav-takeover',
 } = Astro.props;
 ---
@@ -86,10 +84,6 @@ const {
 
 	<div class="prod-signal-nav__takeover" id={panelId} data-nav-panel aria-hidden="true">
 		<div class="prod-signal-nav__takeover-shell container">
-			<div class="prod-signal-nav__takeover-meta">
-				<span>{takeoverMeta}</span>
-			</div>
-
 			<nav class="prod-signal-nav__list" aria-label="Primary">
 				{
 					navLinks.map((link) => (
@@ -409,6 +403,8 @@ const {
 		opacity: 0;
 		visibility: hidden;
 		pointer-events: none;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
 		transition:
 			opacity 0.45s ease,
 			visibility 0s linear 0.45s;
@@ -425,28 +421,17 @@ const {
 
 	.prod-signal-nav__takeover-shell {
 		display: grid;
-		grid-template-rows: auto 1fr auto;
+		grid-template-rows: 1fr auto;
 		min-height: 100vh;
-		padding-top: 7rem;
+		padding-top: 5rem;
 		padding-bottom: 2rem;
-	}
-
-	.prod-signal-nav__takeover-meta {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding-top: 1rem;
-		font-size: 0.76rem;
-		letter-spacing: 0.18em;
-		text-transform: uppercase;
-		color: rgba(255, 255, 255, 0.42);
 	}
 
 	.prod-signal-nav__list {
 		display: grid;
 		align-content: start;
 		gap: 0;
-		padding-top: 2.25rem;
+		padding-top: 0;
 	}
 
 	.prod-signal-nav__item {
@@ -553,12 +538,12 @@ const {
 		}
 
 		.prod-signal-nav__takeover-shell {
-			padding-top: 6.35rem;
-			padding-bottom: 1.35rem;
+			padding-top: 3.25rem;
+			padding-bottom: 1.5rem;
 		}
 
 		.prod-signal-nav__list {
-			padding-top: 1.75rem;
+			padding-top: 0;
 		}
 
 		.prod-signal-nav__label {
@@ -573,10 +558,17 @@ const {
 		.prod-signal-nav__takeover-foot {
 			flex-direction: column;
 			align-items: flex-start;
+			padding-top: 1rem;
 		}
 	}
 
 	@media (max-width: 640px) {
+		.prod-signal-nav.is-scrolled .prod-signal-nav__bar {
+			margin-inline: 0;
+			padding: 0.6rem 0.8rem 0.4rem;
+			border-radius: 1.25rem;
+		}
+
 		.prod-signal-nav__bar {
 			grid-template-columns: minmax(0, auto) 1fr auto;
 			gap: 0.75rem;
@@ -598,13 +590,8 @@ const {
 			height: 3.35rem;
 		}
 
-		.prod-signal-nav__takeover-meta {
-			font-size: 0.68rem;
-			letter-spacing: 0.14em;
-		}
-
 		.prod-signal-nav__item {
-			padding: 1.1rem 0 1rem;
+			padding: 0.75rem 0 0.65rem;
 		}
 	}
 
