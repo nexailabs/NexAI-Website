@@ -48,70 +48,6 @@ const heroDeckD = [
 ];
 
 const heroDecks = [heroDeckD, heroDeckC, heroDeckB, heroDeckA];
-
-const ethnicShowcaseInput = [
-  'https://ik.imagekit.io/nexailabs/Yufta%202-%20showcase/Yufta-Input-01.jpg',
-  'https://ik.imagekit.io/nexailabs/Yufta%202-%20showcase/Yufta-Input-02.jpg',
-  'https://ik.imagekit.io/nexailabs/Yufta%202-%20showcase/Yufta-Input-03.jpg',
-];
-
-const ethnicShowcaseOutput = [
-  'https://ik.imagekit.io/nexailabs/Yufta%202-%20showcase/Yufta-Output-01.jpg',
-  'https://ik.imagekit.io/nexailabs/Yufta%202-%20showcase/Yufta-Output-02.jpg',
-  'https://ik.imagekit.io/nexailabs/Yufta%202-%20showcase/Yufta-Output-03.jpg',
-  'https://ik.imagekit.io/nexailabs/Yufta%202-%20showcase/Yufta-Output-04.jpg',
-  'https://ik.imagekit.io/nexailabs/Yufta%202-%20showcase/Yufta-Output-05.jpg',
-];
-
-const sareeShowcaseInput = 'https://ik.imagekit.io/nexailabs/Rasvidha-%20showcase/Rasvidha-Input-01.jpg';
-
-const sareeShowcaseOutput = [
-  'https://ik.imagekit.io/nexailabs/Rasvidha-%20showcase/Rasvidha-Output-01.jpg',
-  'https://ik.imagekit.io/nexailabs/Rasvidha-%20showcase/Rasvidha-Output-02.jpeg',
-  'https://ik.imagekit.io/nexailabs/Rasvidha-%20showcase/Rasvidha-Output-03.jpg',
-  'https://ik.imagekit.io/nexailabs/Rasvidha-%20showcase/Rasvidha-Output-04.jpg',
-  'https://ik.imagekit.io/nexailabs/Rasvidha-%20showcase/Rasvidha-Output-05.jpg',
-];
-
-const westernwearShowcaseInput = 'https://ik.imagekit.io/nexailabs/Selvia-%20showcase/Selvia-Input-01.jpg';
-
-const westernwearShowcaseOutput = [
-  'https://ik.imagekit.io/nexailabs/Selvia-%20showcase/Selvia-Output-01.jpeg',
-  'https://ik.imagekit.io/nexailabs/Selvia-%20showcase/Selvia-Output-02.jpeg',
-  'https://ik.imagekit.io/nexailabs/Selvia-%20showcase/Selvia-Output-03.jpeg',
-  'https://ik.imagekit.io/nexailabs/Selvia-%20showcase/Selvia-Output-04.jpeg',
-  'https://ik.imagekit.io/nexailabs/Selvia-%20showcase/Selvia-Output-05.jpeg',
-];
-
-const menswearShowcaseInput = 'https://ik.imagekit.io/nexailabs/XYXX-%20showcase/XYXX-Input-01.png';
-
-const menswearShowcaseOutput = [
-  'https://ik.imagekit.io/nexailabs/XYXX-%20showcase/XYXX-Output-01.JPG',
-  'https://ik.imagekit.io/nexailabs/XYXX-%20showcase/XYXX-Output-02.jpg',
-  'https://ik.imagekit.io/nexailabs/XYXX-%20showcase/XYXX-Output-03.jpg',
-  'https://ik.imagekit.io/nexailabs/XYXX-%20showcase/XYXX-Output-04.jpg',
-  'https://ik.imagekit.io/nexailabs/XYXX-%20showcase/XYXX-Output-05.JPG',
-];
-
-const jewelleryShowcaseInput = 'https://ik.imagekit.io/nexailabs/DBJ%202-%20showcase/DBJ-Input-01.jpg';
-
-const jewelleryShowcaseOutput = [
-  'https://ik.imagekit.io/nexailabs/DBJ%202-%20showcase/DBJ-Output-01.jpg',
-  'https://ik.imagekit.io/nexailabs/DBJ%202-%20showcase/DBJ-Output-02.jpg',
-  'https://ik.imagekit.io/nexailabs/DBJ%202-%20showcase/DBJ-Output-03.jpeg',
-  'https://ik.imagekit.io/nexailabs/DBJ%202-%20showcase/DBJ-Output-04.jpg',
-  'https://ik.imagekit.io/nexailabs/DBJ%202-%20showcase/DBJ-Output-05.jpeg',
-];
-
-const productShowcaseInput = 'https://ik.imagekit.io/nexailabs/Thrive%20Co%20-showcase/Thrive-Input-01.png';
-
-const productShowcaseOutput = [
-  'https://ik.imagekit.io/nexailabs/Thrive%20Co%20-showcase/Thrive-Output-01.png',
-  'https://ik.imagekit.io/nexailabs/Thrive%20Co%20-showcase/Thrive-Output-02.png',
-  'https://ik.imagekit.io/nexailabs/Thrive%20Co%20-showcase/Thrive-Output-03.png',
-  'https://ik.imagekit.io/nexailabs/Thrive%20Co%20-showcase/Thrive-Output-04.png',
-  'https://ik.imagekit.io/nexailabs/Thrive%20Co%20-showcase/Thrive-Output-05.png',
-];
 ---
 
 <Layout title="AI Photoshoots for Fashion Brands | NexAI Labs" description="Premium AI fashion photography for D2C brands." showNavbar={false}>
@@ -190,46 +126,28 @@ const productShowcaseOutput = [
         <!-- Vertical Editorial Category Nav -->
         <nav class="sc3__nav" aria-label="Service categories">
           <ul class="sc3__nav-list">
-            <li><button class="sc3__nav-item active" data-category="ethnic"><span class="sc3__nav-text">Ethnic</span></button></li>
-            <li><button class="sc3__nav-item" data-category="saree"><span class="sc3__nav-text">Saree</span></button></li>
-            <li><button class="sc3__nav-item" data-category="westernwear"><span class="sc3__nav-text">Westernwear</span></button></li>
-            <li><button class="sc3__nav-item" data-category="menswear"><span class="sc3__nav-text">Menswear</span></button></li>
-            <li><button class="sc3__nav-item" data-category="jewellery"><span class="sc3__nav-text">Jewellery</span></button></li>
-            <li><button class="sc3__nav-item" data-category="product"><span class="sc3__nav-text">Product</span></button></li>
+            <li><button class="sc3__nav-item active" data-target="mannequin"><span class="sc3__nav-text">Mannequin</span></button></li>
+            <li><button class="sc3__nav-item" data-target="flat-lay"><span class="sc3__nav-text">Flat Lay</span></button></li>
+            <li><button class="sc3__nav-item" data-target="unstitched"><span class="sc3__nav-text">Unstitched</span></button></li>
+            <li><button class="sc3__nav-item" data-target="three-piece"><span class="sc3__nav-text">3-Piece</span></button></li>
+            <li><button class="sc3__nav-item" data-target="saree"><span class="sc3__nav-text">Saree</span></button></li>
+            <li><button class="sc3__nav-item" data-target="menswear"><span class="sc3__nav-text">Menswear</span></button></li>
           </ul>
         </nav>
 
         <!-- Content Stage -->
         <div class="sc3__stage">
-          <!-- westernwear -->
-          <div class="sc3__panel" data-panel="westernwear">
-            <div class="sc3__mobile-toggle" aria-label="Mobile showcase view">
-              <button class="sc3__mobile-pill" type="button" data-mobile-slide-trigger="before">Before</button>
-              <button class="sc3__mobile-pill" type="button" data-mobile-slide-trigger="after">After</button>
-            </div>
-            <div class="sc3__mobile-stage">
-              <div class="sc3__mobile-card sc3__mobile-card--before">
-                <div class="sc3__mobile-card-frame">
-                  <img src={westernwearShowcaseInput} alt="Westernwear raw garment input" loading="lazy" />
-                </div>
-              </div>
-              <div class="sc3__mobile-card sc3__mobile-card--after">
-                <div class="sc3__mobile-card-frame sc3__mobile-card-frame--collage">
-                  <div class="sc3__mobile-output-grid">
-                    <div class="sc3__mobile-output sc3__mobile-output--tl"><img src={westernwearShowcaseOutput[1]} alt="Westernwear AI output 2" loading="lazy" /></div>
-                    <div class="sc3__mobile-output sc3__mobile-output--tr"><img src={westernwearShowcaseOutput[2]} alt="Westernwear AI output 3" loading="lazy" /></div>
-                    <div class="sc3__mobile-output sc3__mobile-output--bl"><img src={westernwearShowcaseOutput[0]} alt="Westernwear AI output 1" loading="lazy" /></div>
-                    <div class="sc3__mobile-output sc3__mobile-output--br"><img src={westernwearShowcaseOutput[3]} alt="Westernwear AI output 4" loading="lazy" /></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <!-- mannequin -->
+          <div class="sc3__panel active" data-panel="mannequin">
             <!-- Left Input Block -->
             <div class="sc3__col sc3__col--left">
-              <span class="sc3__label">Raw Garments</span>
-              <div class="sc3__input-group sc3__input-group--single">
-                <div class="sc3__input-main">
-                  <img src={westernwearShowcaseInput} alt="Westernwear raw garment input" loading="lazy" />
+              <span class="sc3__label">Input Images</span>
+              <div class="sc3__input-group">
+                <div class="sc3__input-main sc3__placeholder">
+                  <svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Garment</span>                </div>
+                <div class="sc3__input-side">
+                  <div class="sc3__in-top sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></div>
+                  <div class="sc3__in-bottom sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></div>
                 </div>
               </div>
             </div>
@@ -241,171 +159,34 @@ const productShowcaseOutput = [
 
             <!-- Right Output Block -->
             <div class="sc3__col sc3__col--right">
-              <span class="sc3__label">AI Generated Images</span>
+              <span class="sc3__label">Output Images</span>
               <div class="sc3__outputs-bento">
                 <div class="sc3__ob-col sc3__ob-col--1">
-                  <div class="sc3__ob-card sc3__ob-card--3x4 sc3__out-card--1"><img src={westernwearShowcaseOutput[0]} alt="Westernwear AI output 1" loading="lazy" /></div>
-                  <div class="sc3__ob-card sc3__ob-card--1x1 sc3__out-card--2"><img src={westernwearShowcaseOutput[1]} alt="Westernwear AI output 2" loading="lazy" /></div>
+                  <div class="sc3__ob-card sc3__ob-card--3x4 sc3__out-card--1 sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Pose 1</span></div>
+                  <div class="sc3__ob-card sc3__ob-card--1x1 sc3__out-card--2 sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Pose 2</span></div>
                 </div>
                 <div class="sc3__ob-col sc3__ob-col--2">
-                  <div class="sc3__ob-card sc3__ob-card--2x3 sc3__out-card--3"><img src={westernwearShowcaseOutput[2]} alt="Westernwear AI output 3" loading="lazy" /></div>
+                  <div class="sc3__ob-card sc3__ob-card--2x3 sc3__out-card--3 sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Pose 3</span></div>
                 </div>
                 <div class="sc3__ob-col sc3__ob-col--3">
-                  <div class="sc3__ob-card sc3__ob-card--1x1 sc3__out-card--4"><img src={westernwearShowcaseOutput[3]} alt="Westernwear AI output 4" loading="lazy" /></div>
-                  <div class="sc3__ob-card sc3__ob-card--3x4 sc3__out-card--5"><img src={westernwearShowcaseOutput[4]} alt="Westernwear AI output 5" loading="lazy" /></div>
+                  <div class="sc3__ob-card sc3__ob-card--1x1 sc3__out-card--4 sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Pose 4</span></div>
+                  <div class="sc3__ob-card sc3__ob-card--3x4 sc3__out-card--5 sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Pose 5</span></div>
                 </div>
               </div>
             </div>
           </div>
-          <!-- product -->
-          <div class="sc3__panel" data-panel="product">
-            <div class="sc3__mobile-toggle" aria-label="Mobile showcase view">
-              <button class="sc3__mobile-pill" type="button" data-mobile-slide-trigger="before">Before</button>
-              <button class="sc3__mobile-pill" type="button" data-mobile-slide-trigger="after">After</button>
-            </div>
-            <div class="sc3__mobile-stage">
-              <div class="sc3__mobile-card sc3__mobile-card--before">
-                <div class="sc3__mobile-card-frame">
-                  <img src={productShowcaseInput} alt="Product raw garment input" loading="lazy" />
-                </div>
-              </div>
-              <div class="sc3__mobile-card sc3__mobile-card--after">
-                <div class="sc3__mobile-card-frame sc3__mobile-card-frame--collage">
-                  <div class="sc3__mobile-output-grid">
-                    <div class="sc3__mobile-output sc3__mobile-output--tl"><img src={productShowcaseOutput[1]} alt="Product AI output 2" loading="lazy" /></div>
-                    <div class="sc3__mobile-output sc3__mobile-output--tr"><img src={productShowcaseOutput[2]} alt="Product AI output 3" loading="lazy" /></div>
-                    <div class="sc3__mobile-output sc3__mobile-output--bl"><img src={productShowcaseOutput[0]} alt="Product AI output 1" loading="lazy" /></div>
-                    <div class="sc3__mobile-output sc3__mobile-output--br"><img src={productShowcaseOutput[3]} alt="Product AI output 4" loading="lazy" /></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <!-- flat-lay -->
+          <div class="sc3__panel" data-panel="flat-lay">
             <!-- Left Input Block -->
             <div class="sc3__col sc3__col--left">
-              <span class="sc3__label">Raw Garments</span>
-              <div class="sc3__input-group sc3__input-group--single">
-                <div class="sc3__input-main">
-                  <img src={productShowcaseInput} alt="Product raw garment input" loading="lazy" />
-                </div>
-              </div>
-            </div>
-
-            <!-- Arrow Bridge -->
-            <div class="sc3__arrow">
-              <svg width="48" height="24" viewBox="0 0 48 24" fill="none"><path d="M0 12h44m0 0l-8-8m8 8l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-
-            <!-- Right Output Block -->
-            <div class="sc3__col sc3__col--right">
-              <span class="sc3__label">AI Generated Images</span>
-              <div class="sc3__outputs-bento">
-                <div class="sc3__ob-col sc3__ob-col--1">
-                  <div class="sc3__ob-card sc3__ob-card--3x4 sc3__out-card--1"><img src={productShowcaseOutput[0]} alt="Product AI output 1" loading="lazy" /></div>
-                  <div class="sc3__ob-card sc3__ob-card--1x1 sc3__out-card--2"><img src={productShowcaseOutput[1]} alt="Product AI output 2" loading="lazy" /></div>
-                </div>
-                <div class="sc3__ob-col sc3__ob-col--2">
-                  <div class="sc3__ob-card sc3__ob-card--2x3 sc3__out-card--3"><img src={productShowcaseOutput[2]} alt="Product AI output 3" loading="lazy" /></div>
-                </div>
-                <div class="sc3__ob-col sc3__ob-col--3">
-                  <div class="sc3__ob-card sc3__ob-card--1x1 sc3__out-card--4"><img src={productShowcaseOutput[3]} alt="Product AI output 4" loading="lazy" /></div>
-                  <div class="sc3__ob-card sc3__ob-card--3x4 sc3__out-card--5"><img src={productShowcaseOutput[4]} alt="Product AI output 5" loading="lazy" /></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- jewellery -->
-          <div class="sc3__panel" data-panel="jewellery">
-            <div class="sc3__mobile-toggle" aria-label="Mobile showcase view">
-              <button class="sc3__mobile-pill" type="button" data-mobile-slide-trigger="before">Before</button>
-              <button class="sc3__mobile-pill" type="button" data-mobile-slide-trigger="after">After</button>
-            </div>
-            <div class="sc3__mobile-stage">
-              <div class="sc3__mobile-card sc3__mobile-card--before">
-                <div class="sc3__mobile-card-frame">
-                  <img src={jewelleryShowcaseInput} alt="Jewellery raw garment input" loading="lazy" />
-                </div>
-              </div>
-              <div class="sc3__mobile-card sc3__mobile-card--after">
-                <div class="sc3__mobile-card-frame sc3__mobile-card-frame--collage">
-                  <div class="sc3__mobile-output-grid">
-                    <div class="sc3__mobile-output sc3__mobile-output--tl"><img src={jewelleryShowcaseOutput[1]} alt="Jewellery AI output 2" loading="lazy" /></div>
-                    <div class="sc3__mobile-output sc3__mobile-output--tr"><img src={jewelleryShowcaseOutput[2]} alt="Jewellery AI output 3" loading="lazy" /></div>
-                    <div class="sc3__mobile-output sc3__mobile-output--bl"><img src={jewelleryShowcaseOutput[0]} alt="Jewellery AI output 1" loading="lazy" /></div>
-                    <div class="sc3__mobile-output sc3__mobile-output--br"><img src={jewelleryShowcaseOutput[3]} alt="Jewellery AI output 4" loading="lazy" /></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Left Input Block -->
-            <div class="sc3__col sc3__col--left">
-              <span class="sc3__label">Raw Garments</span>
-              <div class="sc3__input-group sc3__input-group--single">
-                <div class="sc3__input-main">
-                  <img src={jewelleryShowcaseInput} alt="Jewellery raw garment input" loading="lazy" />
-                </div>
-              </div>
-            </div>
-
-            <!-- Arrow Bridge -->
-            <div class="sc3__arrow">
-              <svg width="48" height="24" viewBox="0 0 48 24" fill="none"><path d="M0 12h44m0 0l-8-8m8 8l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-
-            <!-- Right Output Block -->
-            <div class="sc3__col sc3__col--right">
-              <span class="sc3__label">AI Generated Images</span>
-              <div class="sc3__outputs-bento">
-                <div class="sc3__ob-col sc3__ob-col--1">
-                  <div class="sc3__ob-card sc3__ob-card--3x4 sc3__out-card--1"><img src={jewelleryShowcaseOutput[0]} alt="Jewellery AI output 1" loading="lazy" /></div>
-                  <div class="sc3__ob-card sc3__ob-card--1x1 sc3__out-card--2"><img src={jewelleryShowcaseOutput[1]} alt="Jewellery AI output 2" loading="lazy" /></div>
-                </div>
-                <div class="sc3__ob-col sc3__ob-col--2">
-                  <div class="sc3__ob-card sc3__ob-card--2x3 sc3__out-card--3"><img src={jewelleryShowcaseOutput[2]} alt="Jewellery AI output 3" loading="lazy" /></div>
-                </div>
-                <div class="sc3__ob-col sc3__ob-col--3">
-                  <div class="sc3__ob-card sc3__ob-card--1x1 sc3__out-card--4"><img src={jewelleryShowcaseOutput[3]} alt="Jewellery AI output 4" loading="lazy" /></div>
-                  <div class="sc3__ob-card sc3__ob-card--3x4 sc3__out-card--5"><img src={jewelleryShowcaseOutput[4]} alt="Jewellery AI output 5" loading="lazy" /></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- ethnic -->
-          <div class="sc3__panel active" data-panel="ethnic">
-            <div class="sc3__mobile-toggle" aria-label="Mobile showcase view">
-              <button class="sc3__mobile-pill" type="button" data-mobile-slide-trigger="before">Before</button>
-              <button class="sc3__mobile-pill" type="button" data-mobile-slide-trigger="after">After</button>
-            </div>
-            <div class="sc3__mobile-stage">
-              <div class="sc3__mobile-card sc3__mobile-card--before">
-                <div class="sc3__mobile-card-frame">
-                  <img src={ethnicShowcaseInput[0]} alt="Ethnic raw garment input" loading="lazy" />
-                </div>
-              </div>
-              <div class="sc3__mobile-card sc3__mobile-card--after">
-                <div class="sc3__mobile-card-frame sc3__mobile-card-frame--collage">
-                  <div class="sc3__mobile-output-grid">
-                    <div class="sc3__mobile-output sc3__mobile-output--tl"><img src={ethnicShowcaseOutput[1]} alt="Ethnic AI output 2" loading="lazy" /></div>
-                    <div class="sc3__mobile-output sc3__mobile-output--tr"><img src={ethnicShowcaseOutput[2]} alt="Ethnic AI output 3" loading="lazy" /></div>
-                    <div class="sc3__mobile-output sc3__mobile-output--bl"><img src={ethnicShowcaseOutput[0]} alt="Ethnic AI output 1" loading="lazy" /></div>
-                    <div class="sc3__mobile-output sc3__mobile-output--br"><img src={ethnicShowcaseOutput[3]} alt="Ethnic AI output 4" loading="lazy" /></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Left Input Block -->
-            <div class="sc3__col sc3__col--left">
-              <span class="sc3__label">Raw Garments</span>
+              <span class="sc3__label">Input Images</span>
               <div class="sc3__input-group">
                 <div class="sc3__input-main">
-                  <img src={ethnicShowcaseInput[0]} alt="Ethnic raw garment main input" loading="lazy" />
+                  <img src="/assets/ai-shoots/services/flat-lay-raw.jpg" alt="Raw Garment" />
                 </div>
                 <div class="sc3__input-side">
-                  <div class="sc3__in-top">
-                    <img src={ethnicShowcaseInput[1]} alt="Ethnic raw garment secondary input" loading="lazy" />
-                  </div>
-                  <div class="sc3__in-bottom">
-                    <img src={ethnicShowcaseInput[2]} alt="Ethnic raw garment tertiary input" loading="lazy" />
-                  </div>
+                  <div class="sc3__in-top sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></div>
+                  <div class="sc3__in-bottom sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></div>
                 </div>
               </div>
             </div>
@@ -417,51 +198,110 @@ const productShowcaseOutput = [
 
             <!-- Right Output Block -->
             <div class="sc3__col sc3__col--right">
-              <span class="sc3__label">AI Generated Images</span>
+              <span class="sc3__label">Output Images</span>
               <div class="sc3__outputs-bento">
                 <div class="sc3__ob-col sc3__ob-col--1">
-                  <div class="sc3__ob-card sc3__ob-card--3x4 sc3__out-card--1"><img src={ethnicShowcaseOutput[0]} alt="Ethnic AI output 1" loading="lazy" /></div>
-                  <div class="sc3__ob-card sc3__ob-card--1x1 sc3__out-card--2"><img src={ethnicShowcaseOutput[1]} alt="Ethnic AI output 2" loading="lazy" /></div>
+                  <div class="sc3__ob-card sc3__ob-card--3x4 sc3__out-card--1"><img src="/assets/ai-shoots/services/flat-lay-ai-1.jpeg" alt="Pose 1" loading="lazy" /></div>
+                  <div class="sc3__ob-card sc3__ob-card--1x1 sc3__out-card--2"><img src="/assets/ai-shoots/services/flat-lay-ai-2.jpeg" alt="Pose 2" loading="lazy" /></div>
                 </div>
                 <div class="sc3__ob-col sc3__ob-col--2">
-                  <div class="sc3__ob-card sc3__ob-card--2x3 sc3__out-card--3"><img src={ethnicShowcaseOutput[2]} alt="Ethnic AI output 3" loading="lazy" /></div>
+                  <div class="sc3__ob-card sc3__ob-card--2x3 sc3__out-card--3"><img src="/assets/ai-shoots/services/flat-lay-ai-3.jpeg" alt="Pose 3" loading="lazy" /></div>
                 </div>
                 <div class="sc3__ob-col sc3__ob-col--3">
-                  <div class="sc3__ob-card sc3__ob-card--1x1 sc3__out-card--4"><img src={ethnicShowcaseOutput[3]} alt="Ethnic AI output 4" loading="lazy" /></div>
-                  <div class="sc3__ob-card sc3__ob-card--3x4 sc3__out-card--5"><img src={ethnicShowcaseOutput[4]} alt="Ethnic AI output 5" loading="lazy" /></div>
+                  <div class="sc3__ob-card sc3__ob-card--1x1 sc3__out-card--4"><img src="/assets/ai-shoots/services/flat-lay-ai-4.jpeg" alt="Pose 4" loading="lazy" /></div>
+                  <div class="sc3__ob-card sc3__ob-card--3x4 sc3__out-card--5 sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Pose 5</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- unstitched -->
+          <div class="sc3__panel" data-panel="unstitched">
+            <!-- Left Input Block -->
+            <div class="sc3__col sc3__col--left">
+              <span class="sc3__label">Input Images</span>
+              <div class="sc3__input-group">
+                <div class="sc3__input-main sc3__placeholder">
+                  <svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Garment</span>                </div>
+                <div class="sc3__input-side">
+                  <div class="sc3__in-top sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></div>
+                  <div class="sc3__in-bottom sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Arrow Bridge -->
+            <div class="sc3__arrow">
+              <svg width="48" height="24" viewBox="0 0 48 24" fill="none"><path d="M0 12h44m0 0l-8-8m8 8l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+
+            <!-- Right Output Block -->
+            <div class="sc3__col sc3__col--right">
+              <span class="sc3__label">Output Images</span>
+              <div class="sc3__outputs-bento">
+                <div class="sc3__ob-col sc3__ob-col--1">
+                  <div class="sc3__ob-card sc3__ob-card--3x4 sc3__out-card--1 sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Pose 1</span></div>
+                  <div class="sc3__ob-card sc3__ob-card--1x1 sc3__out-card--2 sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Pose 2</span></div>
+                </div>
+                <div class="sc3__ob-col sc3__ob-col--2">
+                  <div class="sc3__ob-card sc3__ob-card--2x3 sc3__out-card--3 sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Pose 3</span></div>
+                </div>
+                <div class="sc3__ob-col sc3__ob-col--3">
+                  <div class="sc3__ob-card sc3__ob-card--1x1 sc3__out-card--4 sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Pose 4</span></div>
+                  <div class="sc3__ob-card sc3__ob-card--3x4 sc3__out-card--5 sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Pose 5</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- three-piece -->
+          <div class="sc3__panel" data-panel="three-piece">
+            <!-- Left Input Block -->
+            <div class="sc3__col sc3__col--left">
+              <span class="sc3__label">Input Images</span>
+              <div class="sc3__input-group">
+                <div class="sc3__input-main sc3__placeholder">
+                  <svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Garment</span>                </div>
+                <div class="sc3__input-side">
+                  <div class="sc3__in-top sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></div>
+                  <div class="sc3__in-bottom sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Arrow Bridge -->
+            <div class="sc3__arrow">
+              <svg width="48" height="24" viewBox="0 0 48 24" fill="none"><path d="M0 12h44m0 0l-8-8m8 8l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+
+            <!-- Right Output Block -->
+            <div class="sc3__col sc3__col--right">
+              <span class="sc3__label">Output Images</span>
+              <div class="sc3__outputs-bento">
+                <div class="sc3__ob-col sc3__ob-col--1">
+                  <div class="sc3__ob-card sc3__ob-card--3x4 sc3__out-card--1 sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Pose 1</span></div>
+                  <div class="sc3__ob-card sc3__ob-card--1x1 sc3__out-card--2 sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Pose 2</span></div>
+                </div>
+                <div class="sc3__ob-col sc3__ob-col--2">
+                  <div class="sc3__ob-card sc3__ob-card--2x3 sc3__out-card--3 sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Pose 3</span></div>
+                </div>
+                <div class="sc3__ob-col sc3__ob-col--3">
+                  <div class="sc3__ob-card sc3__ob-card--1x1 sc3__out-card--4 sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Pose 4</span></div>
+                  <div class="sc3__ob-card sc3__ob-card--3x4 sc3__out-card--5 sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Pose 5</span></div>
                 </div>
               </div>
             </div>
           </div>
           <!-- saree -->
           <div class="sc3__panel" data-panel="saree">
-            <div class="sc3__mobile-toggle" aria-label="Mobile showcase view">
-              <button class="sc3__mobile-pill" type="button" data-mobile-slide-trigger="before">Before</button>
-              <button class="sc3__mobile-pill" type="button" data-mobile-slide-trigger="after">After</button>
-            </div>
-            <div class="sc3__mobile-stage">
-              <div class="sc3__mobile-card sc3__mobile-card--before">
-                <div class="sc3__mobile-card-frame">
-                  <img src={sareeShowcaseInput} alt="Saree raw garment input" loading="lazy" />
-                </div>
-              </div>
-              <div class="sc3__mobile-card sc3__mobile-card--after">
-                <div class="sc3__mobile-card-frame sc3__mobile-card-frame--collage">
-                  <div class="sc3__mobile-output-grid">
-                    <div class="sc3__mobile-output sc3__mobile-output--tl"><img src={sareeShowcaseOutput[1]} alt="Saree AI output 2" loading="lazy" /></div>
-                    <div class="sc3__mobile-output sc3__mobile-output--tr"><img src={sareeShowcaseOutput[2]} alt="Saree AI output 3" loading="lazy" /></div>
-                    <div class="sc3__mobile-output sc3__mobile-output--bl"><img src={sareeShowcaseOutput[0]} alt="Saree AI output 1" loading="lazy" /></div>
-                    <div class="sc3__mobile-output sc3__mobile-output--br"><img src={sareeShowcaseOutput[3]} alt="Saree AI output 4" loading="lazy" /></div>
-                  </div>
-                </div>
-              </div>
-            </div>
             <!-- Left Input Block -->
             <div class="sc3__col sc3__col--left">
-              <span class="sc3__label">Raw Garments</span>
-              <div class="sc3__input-group sc3__input-group--single">
+              <span class="sc3__label">Input Images</span>
+              <div class="sc3__input-group">
                 <div class="sc3__input-main">
-                  <img src={sareeShowcaseInput} alt="Saree raw garment input" loading="lazy" />
+                  <img src="/assets/ai-shoots/services/saree-raw.jpeg" alt="Raw Garment" />
+                </div>
+                <div class="sc3__input-side">
+                  <div class="sc3__in-top sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></div>
+                  <div class="sc3__in-bottom sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></div>
                 </div>
               </div>
             </div>
@@ -473,51 +313,33 @@ const productShowcaseOutput = [
 
             <!-- Right Output Block -->
             <div class="sc3__col sc3__col--right">
-              <span class="sc3__label">AI Generated Images</span>
+              <span class="sc3__label">Output Images</span>
               <div class="sc3__outputs-bento">
                 <div class="sc3__ob-col sc3__ob-col--1">
-                  <div class="sc3__ob-card sc3__ob-card--3x4 sc3__out-card--1"><img src={sareeShowcaseOutput[0]} alt="Saree AI output 1" loading="lazy" /></div>
-                  <div class="sc3__ob-card sc3__ob-card--1x1 sc3__out-card--2"><img src={sareeShowcaseOutput[1]} alt="Saree AI output 2" loading="lazy" /></div>
+                  <div class="sc3__ob-card sc3__ob-card--3x4 sc3__out-card--1"><img src="/assets/ai-shoots/services/saree-ai-1.jpg" alt="Pose 1" loading="lazy" /></div>
+                  <div class="sc3__ob-card sc3__ob-card--1x1 sc3__out-card--2"><img src="/assets/ai-shoots/services/saree-ai-2.jpg" alt="Pose 2" loading="lazy" /></div>
                 </div>
                 <div class="sc3__ob-col sc3__ob-col--2">
-                  <div class="sc3__ob-card sc3__ob-card--2x3 sc3__out-card--3"><img src={sareeShowcaseOutput[2]} alt="Saree AI output 3" loading="lazy" /></div>
+                  <div class="sc3__ob-card sc3__ob-card--2x3 sc3__out-card--3"><img src="/assets/ai-shoots/services/saree-ai-3.jpg" alt="Pose 3" loading="lazy" /></div>
                 </div>
                 <div class="sc3__ob-col sc3__ob-col--3">
-                  <div class="sc3__ob-card sc3__ob-card--1x1 sc3__out-card--4"><img src={sareeShowcaseOutput[3]} alt="Saree AI output 4" loading="lazy" /></div>
-                  <div class="sc3__ob-card sc3__ob-card--3x4 sc3__out-card--5"><img src={sareeShowcaseOutput[4]} alt="Saree AI output 5" loading="lazy" /></div>
+                  <div class="sc3__ob-card sc3__ob-card--1x1 sc3__out-card--4"><img src="/assets/ai-shoots/services/saree-ai-4.jpeg" alt="Pose 4" loading="lazy" /></div>
+                  <div class="sc3__ob-card sc3__ob-card--3x4 sc3__out-card--5 sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Pose 5</span></div>
                 </div>
               </div>
             </div>
           </div>
           <!-- menswear -->
           <div class="sc3__panel" data-panel="menswear">
-            <div class="sc3__mobile-toggle" aria-label="Mobile showcase view">
-              <button class="sc3__mobile-pill" type="button" data-mobile-slide-trigger="before">Before</button>
-              <button class="sc3__mobile-pill" type="button" data-mobile-slide-trigger="after">After</button>
-            </div>
-            <div class="sc3__mobile-stage">
-              <div class="sc3__mobile-card sc3__mobile-card--before">
-                <div class="sc3__mobile-card-frame">
-                  <img src={menswearShowcaseInput} alt="Menswear raw garment input" loading="lazy" />
-                </div>
-              </div>
-              <div class="sc3__mobile-card sc3__mobile-card--after">
-                <div class="sc3__mobile-card-frame sc3__mobile-card-frame--collage">
-                  <div class="sc3__mobile-output-grid">
-                    <div class="sc3__mobile-output sc3__mobile-output--tl"><img src={menswearShowcaseOutput[1]} alt="Menswear AI output 2" loading="lazy" /></div>
-                    <div class="sc3__mobile-output sc3__mobile-output--tr"><img src={menswearShowcaseOutput[2]} alt="Menswear AI output 3" loading="lazy" /></div>
-                    <div class="sc3__mobile-output sc3__mobile-output--bl"><img src={menswearShowcaseOutput[0]} alt="Menswear AI output 1" loading="lazy" /></div>
-                    <div class="sc3__mobile-output sc3__mobile-output--br"><img src={menswearShowcaseOutput[3]} alt="Menswear AI output 4" loading="lazy" /></div>
-                  </div>
-                </div>
-              </div>
-            </div>
             <!-- Left Input Block -->
             <div class="sc3__col sc3__col--left">
-              <span class="sc3__label">Raw Garments</span>
-              <div class="sc3__input-group sc3__input-group--single">
-                <div class="sc3__input-main">
-                  <img src={menswearShowcaseInput} alt="Menswear raw garment input" loading="lazy" />
+              <span class="sc3__label">Input Images</span>
+              <div class="sc3__input-group">
+                <div class="sc3__input-main sc3__placeholder">
+                  <svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Garment</span>                </div>
+                <div class="sc3__input-side">
+                  <div class="sc3__in-top sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></div>
+                  <div class="sc3__in-bottom sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></div>
                 </div>
               </div>
             </div>
@@ -529,18 +351,18 @@ const productShowcaseOutput = [
 
             <!-- Right Output Block -->
             <div class="sc3__col sc3__col--right">
-              <span class="sc3__label">AI Generated Images</span>
+              <span class="sc3__label">Output Images</span>
               <div class="sc3__outputs-bento">
                 <div class="sc3__ob-col sc3__ob-col--1">
-                  <div class="sc3__ob-card sc3__ob-card--3x4 sc3__out-card--1"><img src={menswearShowcaseOutput[0]} alt="Menswear AI output 1" loading="lazy" /></div>
-                  <div class="sc3__ob-card sc3__ob-card--1x1 sc3__out-card--2"><img src={menswearShowcaseOutput[1]} alt="Menswear AI output 2" loading="lazy" /></div>
+                  <div class="sc3__ob-card sc3__ob-card--3x4 sc3__out-card--1 sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Pose 1</span></div>
+                  <div class="sc3__ob-card sc3__ob-card--1x1 sc3__out-card--2 sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Pose 2</span></div>
                 </div>
                 <div class="sc3__ob-col sc3__ob-col--2">
-                  <div class="sc3__ob-card sc3__ob-card--2x3 sc3__out-card--3"><img src={menswearShowcaseOutput[2]} alt="Menswear AI output 3" loading="lazy" /></div>
+                  <div class="sc3__ob-card sc3__ob-card--2x3 sc3__out-card--3 sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Pose 3</span></div>
                 </div>
                 <div class="sc3__ob-col sc3__ob-col--3">
-                  <div class="sc3__ob-card sc3__ob-card--1x1 sc3__out-card--4"><img src={menswearShowcaseOutput[3]} alt="Menswear AI output 4" loading="lazy" /></div>
-                  <div class="sc3__ob-card sc3__ob-card--3x4 sc3__out-card--5"><img src={menswearShowcaseOutput[4]} alt="Menswear AI output 5" loading="lazy" /></div>
+                  <div class="sc3__ob-card sc3__ob-card--1x1 sc3__out-card--4 sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Pose 4</span></div>
+                  <div class="sc3__ob-card sc3__ob-card--3x4 sc3__out-card--5 sc3__placeholder"><svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span class="sc3__ph-text">Pose 5</span></div>
                 </div>
               </div>
             </div>
@@ -891,14 +713,6 @@ const productShowcaseOutput = [
     display: none;
   }
 
-  .sc3__mobile-toggle {
-    display: none;
-  }
-
-  .sc3__mobile-stage {
-    display: none;
-  }
-
   /* ── Stage (stacking context for overlay crossfade) ── */
   .sc3__stage {
     position: relative;
@@ -1015,16 +829,6 @@ const productShowcaseOutput = [
     100% { opacity: 1; transform: translateY(0) scale(1); }
   }
 
-  /* Mobile pop animations — driven by JS class toggles */
-  @keyframes mobPopDown {
-    0%   { opacity: 1; transform: translateY(0) scale(1); }
-    100% { opacity: 0; transform: translateY(30px) scale(0.92); }
-  }
-  @keyframes mobPopUp {
-    0%   { opacity: 0; transform: translateY(30px) scale(0.92); }
-    100% { opacity: 1; transform: translateY(0) scale(1); }
-  }
-
   /* ── Input Group ── */
   .sc3__input-group {
     display: grid;
@@ -1033,17 +837,11 @@ const productShowcaseOutput = [
     max-width: 100%;
     overflow: hidden;
   }
-  .sc3__input-group--single {
-    grid-template-columns: 1fr;
-  }
   .sc3__input-main {
     border-radius: 1rem;
     overflow: hidden;
     border: 1px solid rgba(200,170,100,0.2);
     aspect-ratio: 3 / 4;
-  }
-  .sc3__input-group--single .sc3__input-main {
-    width: 100%;
   }
   .sc3__input-main img {
     width: 100%; height: 100%;
@@ -1059,13 +857,6 @@ const productShowcaseOutput = [
     overflow: hidden;
     border: 1px solid rgba(255,255,255,0.06);
     flex: 1;
-  }
-  .sc3__in-top img,
-  .sc3__in-bottom img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
   }
 
   /* ── Output Bento Grid ── */
@@ -1089,10 +880,10 @@ const productShowcaseOutput = [
   }
   .sc3__ob-card img {
     width: 100%; height: 100%;
-    object-fit: cover; object-position: center top; display: block;
+    object-fit: cover; display: block;
   }
   .sc3__ob-card--3x4 { aspect-ratio: 3 / 4; }
-  .sc3__ob-card--2x3 { aspect-ratio: 4 / 7; }
+  .sc3__ob-card--2x3 { aspect-ratio: 2 / 3; }
   .sc3__ob-card--1x1 { aspect-ratio: 1 / 1; }
 
   /* ── Responsive ── */
@@ -1125,161 +916,34 @@ const productShowcaseOutput = [
     .sc3__nav-item.active::before { display: none; }
     .sc3__panel {
       grid-template-columns: 1fr;
-      grid-template-rows: auto;
       max-height: none;
     }
     .sc3__panel.active {
       position: relative;
-      grid-template-rows: auto auto;
-      row-gap: 1.25rem;
     }
     .sc3__stage {
       min-height: auto;
     }
     .sc3__arrow {
-      display: none;
+      margin: 0.5rem auto;
+      transform: rotate(90deg);
     }
-
-    .sc3__mobile-toggle {
-      display: flex;
-      justify-content: center;
-      gap: 0.6rem;
-      width: 100%;
-      margin: 0 auto;
-      grid-column: 1;
-      grid-row: 1;
+    .sc3__input-group {
+      max-width: 100%;
     }
-
-    .sc3__mobile-pill {
-      appearance: none;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(255, 255, 255, 0.05);
-      color: rgba(255, 255, 255, 0.72);
-      border-radius: 1rem;
-      min-width: 7.25rem;
-      padding: 0.78rem 1.1rem;
-      font-size: 0.92rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      transition:
-        background 0.25s ease,
-        color 0.25s ease,
-        border-color 0.25s ease,
-        box-shadow 0.25s ease,
-        transform 0.25s ease;
+    .sc3__outputs-bento {
+      grid-template-columns: repeat(3, 1fr) !important;
+      max-width: 100%;
     }
-
-    .sc3__panel[data-mobile-slide="before"] .sc3__mobile-pill[data-mobile-slide-trigger="before"],
-    .sc3__panel[data-mobile-slide="after"] .sc3__mobile-pill[data-mobile-slide-trigger="after"] {
-      background: rgba(255, 255, 255, 0.96);
-      color: #141414;
-      border-color: rgba(255, 255, 255, 0.96);
-      box-shadow: 0 12px 30px rgba(255, 255, 255, 0.1);
-      transform: translateY(-1px);
-    }
-
-    .sc3__mobile-stage {
-      display: block;
-      grid-column: 1;
-      grid-row: 2;
-      position: relative;
-      width: min(100%, 22rem);
-      min-height: 26rem;
-      margin: 0 auto;
-      overflow: visible;
-    }
-
-    .sc3__mobile-card {
-      position: absolute;
-      inset: 0 auto auto 0;
-      width: 76%;
-      aspect-ratio: 3 / 4;
-      transform-origin: center center;
-      transition:
-        transform 0.46s cubic-bezier(0.22, 1, 0.36, 1),
-        box-shadow 0.3s ease;
-      will-change: transform;
-    }
-
-    .sc3__mobile-card-frame {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      border-radius: 1.25rem;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 1rem 2.4rem rgba(0, 0, 0, 0.24);
-    }
-
-    .sc3__mobile-card img {
-      width: 100%;
-      height: 100%;
-      display: block;
-      object-fit: cover;
-      object-position: center top;
-    }
-
-    .sc3__mobile-card--before {
-      z-index: 3;
-      transform: translate3d(0, 1.4rem, 0) scale(1);
-    }
-
-    .sc3__mobile-card--after {
-      z-index: 2;
-      transform: translate3d(64%, 5.2rem, 0) scale(0.48);
-    }
-
-    .sc3__panel.active[data-mobile-slide="after"] .sc3__mobile-card--before {
-      z-index: 2;
-      transform: translate3d(64%, 5.2rem, 0) scale(0.48);
-    }
-
-    .sc3__panel.active[data-mobile-slide="after"] .sc3__mobile-card--after {
-      z-index: 4;
-      transform: translate3d(0, 1.4rem, 0) scale(1);
-    }
-
-    .sc3__mobile-card-frame--collage {
-      padding: 0.55rem;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)),
-        rgba(9, 16, 15, 0.92);
-    }
-
-    .sc3__mobile-output-grid {
-      width: 100%;
-      height: 100%;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: repeat(3, 1fr);
-      gap: 0.45rem;
-    }
-
-    .sc3__mobile-output {
-      overflow: hidden;
-      border-radius: 0.9rem;
-      background: rgba(255, 255, 255, 0.04);
-    }
-
-    .sc3__mobile-output img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center top;
-      display: block;
-    }
-
-    .sc3__mobile-output--tl { grid-area: 1 / 1; }
-    .sc3__mobile-output--tr { grid-area: 1 / 2 / 3 / 3; }
-    .sc3__mobile-output--bl { grid-area: 2 / 1 / 4 / 2; }
-    .sc3__mobile-output--br { grid-area: 3 / 2; }
-
-    .sc3__panel.active .sc3__col {
-      display: none;
+    .sc3__ob-col {
+      min-width: 0;
     }
   }
   @media (max-width: 600px) {
     .sc3__panel { grid-template-columns: 1fr; }
+    .sc3__outputs-bento {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
   }
 </style>
 
@@ -1559,11 +1223,11 @@ const productShowcaseOutput = [
       const deck = decks[activeIndex];
       const titleShift = getTitleShift();
       const cycleStart = isLoopRestart ? 2000 : 0;
-      let cards = getCards(deck);
+      let cards = [];
       let spreadUnit = 0;
 
       const startDeck = () => {
-        showDeck(deck);
+        cards = showDeck(deck);
         spreadUnit = getSpreadUnit(cards);
       };
 
@@ -1606,11 +1270,11 @@ const productShowcaseOutput = [
               card.style.transform = 'translate(-50%, -50%) translate3d(0px, 0px, 0) scale(1) rotate(0deg)';
               card.style.opacity = '1';
             }); });
-          }, dealStart + ((index - 1) * dealInterval));
+          }, dealStart + (index * dealInterval));
         });
 
         // 5. Exit: cards go back up
-        const dealTotal = dealInterval * (cards.length - 1);
+        const dealTotal = dealInterval * cards.length;
         const exitStart = dealStart + dealTotal;
 
         schedule(() => {
@@ -1696,7 +1360,7 @@ const productShowcaseOutput = [
     navItems.forEach(item => {
       item.addEventListener('click', () => {
         if (switching) return;
-        const target = item.getAttribute('data-category');
+        const target = item.getAttribute('data-target');
         const currentActive = document.querySelector('.sc3__panel.active');
         const nextPanel = document.querySelector(`.sc3__panel[data-panel="${target}"]`);
 
@@ -1721,11 +1385,6 @@ const productShowcaseOutput = [
           setTimeout(() => {
             if (currentActive) currentActive.classList.remove('leaving');
             switching = false;
-
-            // Restart mobile animation cycle instantly on new tab
-            if (window.innerWidth <= 900 && typeof window.__initMobShowcaseCycle === 'function') {
-              window.__initMobShowcaseCycle();
-            }
           }, 550);
         });
       });
@@ -1734,89 +1393,4 @@ const productShowcaseOutput = [
 
   initSc3();
   document.addEventListener('astro:after-swap', initSc3);
-
-  // ── Mobile Pop-Down / Pop-Up Showcase Cycle ──
-  const initMobShowcaseCycle = () => {
-    const isMob = () => window.innerWidth <= 900;
-    if (!isMob()) return;
-
-    const cleanupKey = '__mobShowcaseCycleCleanup';
-    if (typeof window[cleanupKey] === 'function') window[cleanupKey]();
-
-    const timers = [];
-    const schedule = (fn, delay) => { const id = setTimeout(fn, delay); timers.push(id); return id; };
-    let loopTimer;
-
-    const runCycle = () => {
-      const panel = document.querySelector('.sc3__panel.active');
-      if (!panel) { loopTimer = setTimeout(runCycle, 1000); return; }
-
-      const mobileStage = panel.querySelector('.sc3__mobile-stage');
-      const pills = panel.querySelectorAll('[data-mobile-slide-trigger]');
-      if (!mobileStage || !pills.length) return;
-
-      const resetTimers = () => {
-        timers.forEach(t => clearTimeout(t));
-        timers.length = 0;
-        clearTimeout(loopTimer);
-      };
-
-      const setSlide = (slide) => {
-        panel.setAttribute('data-mobile-slide', slide);
-        pills.forEach((pill) => {
-          const isActive = pill.getAttribute('data-mobile-slide-trigger') === slide;
-          pill.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-        });
-      };
-
-      const queueCycle = () => {
-        resetTimers();
-
-        const inputHold = 2000;
-        const outputHold = 2400;
-        const transitionBuffer = 520;
-
-        setSlide('before');
-
-        schedule(() => {
-          setSlide('after');
-        }, inputHold);
-
-        schedule(() => {
-          setSlide('before');
-        }, inputHold + outputHold);
-
-        schedule(() => {
-          loopTimer = setTimeout(runCycle, 40);
-        }, inputHold + outputHold + transitionBuffer);
-      };
-
-      pills.forEach((pill) => {
-        pill.onclick = () => {
-          const targetSlide = pill.getAttribute('data-mobile-slide-trigger');
-          if (!targetSlide) return;
-          resetTimers();
-          setSlide(targetSlide);
-          loopTimer = setTimeout(runCycle, targetSlide === 'before' ? 2200 : 2600);
-        };
-      });
-
-      queueCycle();
-    };
-
-    runCycle();
-
-    window[cleanupKey] = () => {
-      timers.forEach(t => clearTimeout(t));
-      clearTimeout(loopTimer);
-    };
-  };
-
-  window.__initMobShowcaseCycle = initMobShowcaseCycle;
-  initMobShowcaseCycle();
-  document.addEventListener('astro:after-swap', initMobShowcaseCycle);
-  window.addEventListener('resize', () => {
-    if (window.innerWidth <= 900) initMobShowcaseCycle();
-  });
-
 </script>
