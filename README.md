@@ -1,3 +1,5 @@
+![CI](https://github.com/nexailabs/NexAI-Website/actions/workflows/ci.yml/badge.svg?branch=dev) ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg) ![Cloudflare Pages](https://img.shields.io/badge/Deployed_on-Cloudflare_Pages-orange)
+
 # NexAI Labs — Website
 
 Premium website for NexAI Labs, an AI agency based in India. Built with Astro 5, GSAP animations, and deployed on Cloudflare Pages.
