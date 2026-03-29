@@ -112,10 +112,59 @@ const productShowcaseOutput = [
   'https://ik.imagekit.io/nexailabs/Thrive%20Co%20-showcase/Thrive-Output-04.png',
   'https://ik.imagekit.io/nexailabs/Thrive%20Co%20-showcase/Thrive-Output-05.png',
 ];
+
+const serviceExperiences = [
+  {
+    id: 'casting',
+    eyebrow: 'Casting Engine',
+    title: 'AI Model Generation',
+    blurb: 'Build a signature roster of photoreal models tailored to your brand, audience, and pricing tier.',
+    proof: 'Launch with a recognisable visual identity from day one instead of mixing random-looking faces across campaigns.',
+    detail: 'Best for new collections, hero PDPs, and brands that want consistency before they scale output volume.',
+    metrics: ['Brand-fit faces', 'Inclusive size coverage', 'Consistent garment drape'],
+    outcomes: ['Fresh launches', 'Hero PDP visuals', '24-48 hour setup'],
+    glow: '#61dbc4',
+  },
+  {
+    id: 'shoots',
+    eyebrow: 'Scene Composer',
+    title: 'Virtual Photoshoots',
+    blurb: 'Turn one sample into multiple moods, lighting setups, angles, and campaign-ready visual directions.',
+    proof: 'Expand your image library fast without waiting on studios, reshoots, or fresh product dispatches.',
+    detail: 'Best for seasonal edits, paid creative refreshes, and catalog teams that need volume without quality dropping.',
+    metrics: ['Editorial + marketplace mix', 'Faster campaign iteration', 'No studio bottlenecks'],
+    outcomes: ['Seasonal edits', 'Campaign sets', 'Same-day revisions'],
+    glow: '#8fd7ff',
+  },
+  {
+    id: 'adaptation',
+    eyebrow: 'Trend Switch',
+    title: 'Style & Trend Adaptation',
+    blurb: 'Translate one product story across festive, premium, regional, and trend-led campaign directions.',
+    proof: 'React to drops and culture faster while keeping the brand language polished and recognisable.',
+    detail: 'Best for festive calendars, regional campaigns, and teams that need rapid direction swaps without restarting production.',
+    metrics: ['Campaign-ready variants', 'Regional relevance', 'Fast creative pivots'],
+    outcomes: ['Festive calendars', 'Multi-theme creatives', 'Rapid direction swaps'],
+    glow: '#f4cf74',
+  },
+  {
+    id: 'rollout',
+    eyebrow: 'Launch System',
+    title: 'Marketplace Delivery Packs',
+    blurb: 'Package one AI shoot into a full asset system for PDPs, ads, thumbnails, lookbooks, and social.',
+    proof: 'One production engine feeds every touchpoint, so launch week feels coordinated instead of fragmented.',
+    detail: 'Best for scaling ecommerce teams that need consistent exports, campaign derivatives, and faster rollout operations.',
+    metrics: ['Multi-ratio exports', 'Catalog consistency', 'Channel-ready outputs'],
+    outcomes: ['Scale operations', 'Full asset kits', 'Launch-week rollouts'],
+    glow: '#b4f36c',
+  },
+];
 ---
 
 <Layout title="AI Photoshoots for Fashion Brands | NexAI Labs" description="Premium AI fashion photography for D2C brands." showNavbar={false}>
   <main class="shoots-page">
+    <span class="shoots-cursor-glow" aria-hidden="true" data-shoots-cursor-glow></span>
+    <span class="shoots-cursor" aria-hidden="true" data-shoots-cursor></span>
     <Navbar
       navLinks={heroNavLinks}
       topHref="#top"
@@ -184,6 +233,8 @@ const productShowcaseOutput = [
     </div>
     </section>
 
+    <div class="showcase-services-scene" data-showcase-services-scene>
+      <div class="showcase-services-scene__viewport" data-showcase-services-viewport>
     <!-- Services Showcase V3 -->
     <section class="sc3" id="showcase">
       <div class="container sc3__shell">
@@ -538,30 +589,78 @@ const productShowcaseOutput = [
     </section>
 
     <!-- Services Section -->
-    <section class="section-block container reveal-up" id="services">
-        <div class="section-heading">
-            <p class="eyebrow">AI Photoshoot Services</p>
-            <h2>Transform your fashion brand with AI-powered visuals</h2>
+    <section class="section-block container reveal-up services-capabilities" id="services">
+      <div class="section-heading services-capabilities__heading">
+        <p class="eyebrow">AI Photoshoot Services</p>
+        <h2>Transform your fashion brand with AI-powered visuals</h2>
+        <p>
+          Premium on-model imagery built for fashion brands that want faster launches, lower production friction, and
+          stronger creative consistency across every drop.
+        </p>
+      </div>
+      <div class="services-capabilities__board">
+        <div class="services-capabilities__overview">
+          <div class="services-capabilities__overview-copy">
+            <p class="services-capabilities__overview-kicker">Capability System</p>
+            <h3>One AI production workflow from casting and scene design to adaptation and rollout.</h3>
             <p>
-                We create premium on-model imagery that accelerates your collection launches while reducing
-                production costs and time-to-market.
+              This section should read like a structured production system, not isolated feature cards. Every layer
+              below contributes to the same launch engine.
             </p>
+          </div>
+          <div class="services-capabilities__overview-grid" aria-label="Service system highlights">
+            <article class="services-capabilities__overview-card">
+              <strong>Build the face of the brand</strong>
+              <span>Generate consistent on-model imagery tailored to category, audience, and pricing tier.</span>
+            </article>
+            <article class="services-capabilities__overview-card">
+              <strong>Multiply scenes without reshoots</strong>
+              <span>Turn one sample into campaign, catalog, festive, regional, and trend-led visual directions.</span>
+            </article>
+            <article class="services-capabilities__overview-card">
+              <strong>Deliver channel-ready assets</strong>
+              <span>Export one production workflow into PDPs, ads, thumbnails, lookbooks, and social packs.</span>
+            </article>
+          </div>
         </div>
-        <div class="services-grid">
-            <article class="info-card">
-                <h3>AI Model Generation</h3>
-                <p>Generate diverse, customizable AI models that match your brand's aesthetic and target audience.</p>
+
+        <div class="services-capabilities__service-rail" aria-label="AI photoshoot capabilities overview">
+          {serviceExperiences.map((service, index) => (
+            <article
+              class="services-capabilities__service-row"
+              style={`--service-glow: ${service.glow}; --service-order: ${index};`}
+            >
+              <div class="services-capabilities__service-identity">
+                <span class="services-capabilities__service-index">{String(index + 1).padStart(2, '0')}</span>
+                <div class="services-capabilities__service-copy">
+                  <div class="services-capabilities__service-head">
+                    <strong>{service.title}</strong>
+                    <span class="services-capabilities__service-eyebrow">{service.eyebrow}</span>
+                  </div>
+                  <p>{service.blurb}</p>
+                </div>
+              </div>
+
+              <div class="services-capabilities__service-proof">
+                <span class="services-capabilities__service-proof-label">Why it matters</span>
+                <p>{service.proof}</p>
+              </div>
+
+              <div class="services-capabilities__service-tags" aria-label={`${service.title} highlights`}>
+                {service.metrics.slice(0, 2).map((metric) => (
+                  <span class="services-capabilities__service-tag">{metric}</span>
+                ))}
+                {service.outcomes.slice(0, 1).map((outcome) => (
+                  <span class="services-capabilities__service-tag services-capabilities__service-tag--accent">{outcome}</span>
+                ))}
+              </div>
             </article>
-            <article class="info-card">
-                <h3>Virtual Photoshoots</h3>
-                <p>Create unlimited variations of product shots with different poses, lighting, and backgrounds.</p>
-            </article>
-            <article class="info-card">
-                <h3>Style & Trend Adaptation</h3>
-                <p>Quickly adapt visuals to seasonal trends, campaigns, and regional preferences without reshoots.</p>
-            </article>
+          ))}
         </div>
+      </div>
     </section>
+      </div>
+    </div>
 
   </main>
 </Layout>
@@ -573,6 +672,70 @@ const productShowcaseOutput = [
     background:
       radial-gradient(circle at 50% 38%, rgba(34, 75, 66, 0.2), transparent 30%),
       linear-gradient(180deg, #0b1110 0%, #09100f 100%);
+  }
+
+  .showcase-services-scene {
+    position: relative;
+  }
+
+  .showcase-services-scene__viewport {
+    position: relative;
+  }
+
+  .shoots-cursor {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    background: transparent;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate3d(-50%, -50%, 0);
+    transition: opacity 0.18s ease;
+    z-index: 200;
+    mix-blend-mode: screen;
+  }
+
+  .shoots-cursor-glow {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle,
+        rgba(255, 255, 255, 0.11) 0%,
+        rgba(166, 246, 231, 0.08) 22%,
+        rgba(97, 219, 196, 0.045) 40%,
+        rgba(97, 219, 196, 0.018) 58%,
+        transparent 74%);
+    pointer-events: none;
+    opacity: 0;
+    transform: translate3d(-50%, -50%, 0);
+    transition: opacity 0.2s ease;
+    z-index: 150;
+    mix-blend-mode: screen;
+    filter: blur(10px);
+  }
+
+  @media (pointer: fine) {
+    .shoots-page,
+    .shoots-page a,
+    .shoots-page button,
+    .shoots-page [role="button"] {
+      cursor: none;
+    }
+  }
+
+  @media (pointer: coarse) {
+    .shoots-cursor-glow,
+    .shoots-cursor {
+      display: none;
+    }
   }
 
   .shoots-hero {
@@ -1070,6 +1233,10 @@ const productShowcaseOutput = [
     gap: 0.5rem;
     min-width: 0;
   }
+  .sc3__ob-col--2 {
+    justify-content: center;
+    padding-block: clamp(1.2rem, 2.6vw, 2rem);
+  }
   .sc3__ob-card {
     border-radius: 0.75rem;
     overflow: hidden;
@@ -1089,6 +1256,9 @@ const productShowcaseOutput = [
     .sc3__panel { grid-template-columns: clamp(8rem, 12vw, 10.5rem) auto 1fr; }
   }
   @media (max-width: 900px) {
+    .sc3__ob-col--2 {
+      padding-block: 0;
+    }
     .sc3__shell {
       display: flex;
       flex-direction: column;
@@ -1337,6 +1507,70 @@ const productShowcaseOutput = [
   @media (max-width: 600px) {
     .sc3__panel { grid-template-columns: 1fr; }
   }
+
+  @media (min-width: 981px) {
+    .showcase-services-scene {
+      --services-overlay-progress: 0;
+    }
+
+    .showcase-services-scene.is-enhanced {
+      min-height: 225svh;
+    }
+
+    .showcase-services-scene.is-enhanced .showcase-services-scene__viewport {
+      position: relative;
+      height: 100svh;
+      overflow: hidden;
+    }
+
+    .showcase-services-scene.is-enhanced.is-pinned .showcase-services-scene__viewport {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+    }
+
+    .showcase-services-scene.is-enhanced.is-complete .showcase-services-scene__viewport {
+      position: absolute;
+      inset: auto 0 0;
+      z-index: 20;
+    }
+
+    .showcase-services-scene.is-enhanced .sc3,
+    .showcase-services-scene.is-enhanced #services {
+      position: absolute;
+      inset: 0;
+    }
+
+    .showcase-services-scene.is-enhanced .sc3 {
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      padding: clamp(3.5rem, 6vw, 5rem) 0;
+      background:
+        radial-gradient(circle at 50% 32%, rgba(24, 56, 50, 0.2), transparent 28%),
+        linear-gradient(180deg, #0b1110 0%, #09100f 100%);
+    }
+
+    .showcase-services-scene.is-enhanced .sc3__shell {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .showcase-services-scene.is-enhanced #services.container {
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      padding-inline: 0;
+    }
+
+    .showcase-services-scene.is-enhanced #services {
+      z-index: 3;
+      min-height: 100%;
+      transform: translate3d(0, calc((1 - var(--services-overlay-progress, 0)) * 102%), 0);
+      will-change: transform;
+      box-shadow: none;
+    }
+  }
 </style>
 
  <style>
@@ -1439,6 +1673,780 @@ const productShowcaseOutput = [
      }
    }
  </style>
+
+  <style>
+    #services.container {
+      width: 100vw;
+      max-width: none;
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+      padding-inline: 0;
+    }
+
+    #services {
+      position: relative;
+      padding-top: clamp(4rem, 8vw, 6rem);
+      padding-bottom: clamp(3.5rem, 6vw, 4.75rem);
+      padding-inline: clamp(1.2rem, 2.6vw, 2rem);
+      border-radius: 0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background:
+        linear-gradient(180deg, rgba(28, 37, 36, 1), rgba(11, 18, 17, 1) 16%, rgba(7, 13, 12, 1) 100%),
+        linear-gradient(135deg, rgba(97, 219, 196, 0.04), transparent 28%, transparent 72%, rgba(170, 226, 255, 0.03)),
+        #08110f;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.07),
+        0 28px 72px rgba(0, 0, 0, 0.28);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    #services::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.05), transparent 20%),
+        radial-gradient(circle at 14% 82%, rgba(143, 215, 255, 0.04), transparent 24%),
+        radial-gradient(circle at 86% 78%, rgba(180, 243, 108, 0.035), transparent 20%);
+      pointer-events: none;
+      opacity: 0.72;
+    }
+
+    #services::after {
+      content: '';
+      position: absolute;
+      inset: 5rem auto auto 50%;
+      width: min(78rem, 100%);
+      height: min(38rem, 60vw);
+      transform: translateX(-50%);
+      background:
+        radial-gradient(circle at 50% 12%, rgba(97, 219, 196, 0.1), transparent 34%),
+        radial-gradient(circle at 12% 86%, rgba(143, 215, 255, 0.07), transparent 24%),
+        radial-gradient(circle at 88% 84%, rgba(180, 243, 108, 0.06), transparent 22%);
+      pointer-events: none;
+      filter: blur(28px);
+    }
+
+    #services .section-heading {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 42rem;
+      margin: 0 auto clamp(2.2rem, 4vw, 3.25rem);
+    }
+
+    #services .section-heading .eyebrow {
+      display: inline-flex;
+      align-items: center;
+     justify-content: center;
+     gap: 0.65rem;
+     font-size: 0.86rem;
+     letter-spacing: 0.24em;
+   }
+
+   #services .section-heading .eyebrow::before,
+   #services .section-heading .eyebrow::after {
+     content: '';
+     width: 2.5rem;
+     height: 1px;
+     background: linear-gradient(90deg, transparent, rgba(78, 201, 180, 0.9), transparent);
+   }
+
+    #services .section-heading h2 {
+      font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+      font-weight: 800;
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      margin-bottom: 1.1rem;
+    }
+
+    #services .section-heading p {
+      color: rgba(229, 241, 238, 0.78);
+      font-size: clamp(1rem, 1.5vw, 1.08rem);
+      line-height: 1.7;
+      max-width: 38rem;
+      margin-inline: auto;
+    }
+
+    #services .services-capabilities__board {
+      position: relative;
+      z-index: 1;
+      min-height: clamp(33rem, 54vw, 39rem);
+      padding: clamp(1.1rem, 2.3vw, 1.6rem) 0 0;
+      border-radius: 0;
+      border: none;
+      background: transparent;
+      box-shadow: none;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    #services .services-capabilities__board::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 16%),
+        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.04), transparent 24%);
+      pointer-events: none;
+      opacity: 0.65;
+    }
+
+    #services .services-capabilities__board::after {
+      content: '';
+      position: absolute;
+      inset: 1.25rem 0 0;
+      background: linear-gradient(125deg, rgba(255, 255, 255, 0.04) 0%, transparent 28%, transparent 62%, rgba(255, 255, 255, 0.03) 100%);
+      mix-blend-mode: screen;
+      opacity: 0.55;
+      pointer-events: none;
+    }
+
+    #services .services-capabilities__board {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: clamp(1rem, 2vw, 1.4rem);
+      align-items: start;
+    }
+
+    #services .services-capabilities__overview,
+    #services .services-capabilities__service-rail {
+      position: relative;
+      z-index: 1;
+    }
+
+    #services .services-capabilities__overview {
+      display: grid;
+      gap: 1rem;
+      padding: clamp(1.25rem, 2.2vw, 1.6rem);
+      border-radius: 1.2rem;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      background:
+        linear-gradient(180deg, rgba(19, 28, 27, 0.95), rgba(10, 16, 15, 0.98));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    #services .services-capabilities__overview-copy {
+      display: grid;
+      gap: 0.9rem;
+    }
+
+    #services .services-capabilities__overview-kicker {
+      margin: 0;
+      color: rgba(151, 228, 214, 0.92);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    #services .services-capabilities__overview-copy h3 {
+      margin: 0;
+      color: #fff;
+      font-size: clamp(1.55rem, 2.2vw, 2.1rem);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      max-width: 16ch;
+    }
+
+    #services .services-capabilities__overview-copy > p:last-child {
+      margin: 0;
+      color: rgba(214, 228, 223, 0.74);
+      font-size: 0.97rem;
+      line-height: 1.7;
+    }
+
+    #services .services-capabilities__overview-grid {
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    #services .services-capabilities__overview-card {
+      display: grid;
+      gap: 0.45rem;
+      padding: 0.9rem 1rem;
+      border-radius: 0.95rem;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    #services .services-capabilities__overview-card strong {
+      color: rgba(245, 249, 247, 0.96);
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    #services .services-capabilities__overview-card span {
+      color: rgba(201, 217, 212, 0.72);
+      font-size: 0.84rem;
+      line-height: 1.55;
+    }
+
+    #services .services-capabilities__service-rail {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    #services .services-capabilities__service-row {
+      display: grid;
+      gap: 0.9rem;
+      padding: 1rem 1.05rem;
+      border-radius: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background:
+        linear-gradient(180deg, rgba(18, 27, 26, 0.94), rgba(9, 14, 14, 0.98));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+    #services .services-capabilities__service-identity {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 0.9rem;
+      align-items: start;
+    }
+
+    #services .services-capabilities__service-index {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.3rem;
+      height: 2.3rem;
+      border-radius: 0.7rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      flex-shrink: 0;
+    }
+
+    #services .services-capabilities__service-copy {
+      display: grid;
+      gap: 0.45rem;
+    }
+
+    #services .services-capabilities__service-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.85rem;
+    }
+
+    #services .services-capabilities__service-head strong {
+      color: #fff;
+      font-size: clamp(1.05rem, 1.5vw, 1.28rem);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+
+    #services .services-capabilities__service-eyebrow {
+      color: color-mix(in srgb, var(--service-glow, #61dbc4) 78%, #f0f6f4);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    #services .services-capabilities__service-copy p,
+    #services .services-capabilities__service-proof p {
+      margin: 0;
+      color: rgba(210, 224, 220, 0.72);
+      font-size: 0.9rem;
+      line-height: 1.58;
+    }
+
+    #services .services-capabilities__service-proof {
+      display: grid;
+      gap: 0.35rem;
+      padding-left: calc(2.3rem + 0.9rem);
+    }
+
+    #services .services-capabilities__service-proof-label {
+      color: rgba(240, 246, 244, 0.56);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    #services .services-capabilities__service-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding-left: calc(2.3rem + 0.9rem);
+    }
+
+    #services .services-capabilities__service-tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 1.9rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      background: rgba(255, 255, 255, 0.03);
+      color: rgba(235, 243, 240, 0.74);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    #services .services-capabilities__service-tag--accent {
+      border-color: color-mix(in srgb, var(--service-glow, #61dbc4) 28%, rgba(255,255,255,0.08));
+      color: color-mix(in srgb, var(--service-glow, #61dbc4) 78%, #ffffff);
+      background: color-mix(in srgb, var(--service-glow, #61dbc4) 9%, rgba(255,255,255,0.025));
+    }
+
+    #services .services-capabilities__mini-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(1rem, 2vw, 1.35rem);
+      min-height: auto;
+    }
+
+    #services .services-capabilities__mini-card {
+      position: relative;
+      min-height: clamp(14rem, 20vw, 15.5rem);
+      padding: clamp(1.2rem, 2vw, 1.5rem);
+      border-radius: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background:
+        linear-gradient(180deg, rgba(20, 29, 28, 0.98), rgba(10, 16, 15, 0.99));
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 10px 24px rgba(0, 0, 0, 0.14);
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 1rem;
+      align-content: start;
+      color: inherit;
+      text-align: left;
+      overflow: hidden;
+    }
+
+    #services .services-capabilities__mini-card::before {
+      content: '';
+      position: absolute;
+      inset: 0 0 auto;
+      height: 1px;
+      background:
+        linear-gradient(90deg, color-mix(in srgb, var(--service-glow, #61dbc4) 52%, rgba(255,255,255,0.12)), rgba(255,255,255,0.02) 72%, transparent 100%);
+      pointer-events: none;
+      opacity: 0.9;
+    }
+
+    #services .services-capabilities__mini-card::after {
+      display: none;
+    }
+
+    #services .services-capabilities__mini-topline,
+    #services .services-capabilities__mini-copy strong,
+    #services .services-capabilities__mini-copy span:last-child {
+      transition: none;
+    }
+
+    #services .services-capabilities__mini-topline,
+    #services .services-capabilities__expanded-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    #services .services-capabilities__index {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2.3rem;
+      height: 2.3rem;
+      border-radius: 0.7rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+    }
+
+    #services .services-capabilities__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: color-mix(in srgb, var(--service-glow, #61dbc4) 76%, #eaf3f0);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    #services .services-capabilities__eyebrow::before {
+      content: '';
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 50%;
+      background: var(--service-glow, #61dbc4);
+      box-shadow: 0 0 18px color-mix(in srgb, var(--service-glow, #61dbc4) 54%, transparent);
+    }
+
+    #services .services-capabilities__mini-copy,
+    #services .services-capabilities__copy {
+      display: grid;
+      gap: 0.7rem;
+    }
+
+    #services .services-capabilities__mini-copy strong {
+      color: #fff;
+      font-size: clamp(1.25rem, 1.9vw, 1.55rem);
+      line-height: 1.06;
+      letter-spacing: -0.04em;
+    }
+
+    #services .services-capabilities__mini-copy span:last-child {
+      color: rgba(214, 228, 223, 0.74);
+      font-size: 0.92rem;
+      line-height: 1.56;
+    }
+
+    #services .services-capabilities__mini-foot {
+      display: grid;
+      gap: 0.9rem;
+      align-self: end;
+      padding-top: 0.15rem;
+    }
+
+    #services .services-capabilities__mini-proof {
+      margin: 0;
+      color: rgba(241, 247, 245, 0.82);
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    #services .services-capabilities__mini-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    #services .services-capabilities__mini-tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 1.9rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.035);
+      color: rgba(240, 246, 244, 0.74);
+      font-size: 0.76rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    #services .services-capabilities__expanded-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      display: none;
+    }
+
+    #services .services-capabilities__expanded {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: scale(0.96) translateY(1rem);
+      pointer-events: none;
+      transition:
+        opacity 0.28s ease,
+        transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #services .services-capabilities__expanded.is-active {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      pointer-events: auto;
+    }
+
+    #services .services-capabilities__expanded-shell {
+      position: relative;
+      height: 100%;
+      padding: clamp(1.5rem, 3vw, 2.3rem);
+      border-radius: 1.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255,255,255,0.015) 10%, rgba(12, 21, 20, 0.98) 11%, rgba(8, 14, 13, 0.99) 100%);
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.24);
+      overflow: auto;
+      display: grid;
+      gap: 1.15rem;
+    }
+
+    #services .services-capabilities__expanded-shell::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 86% 10%, color-mix(in srgb, var(--service-glow, #61dbc4) 18%, transparent), transparent 22%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 18%);
+      pointer-events: none;
+    }
+
+    #services .services-capabilities__expanded-shell::after {
+      display: none;
+    }
+
+    #services .services-capabilities__expanded-head {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 1rem;
+      padding-right: 3.5rem;
+    }
+
+    #services .services-capabilities__copy h3 {
+      margin: 0;
+      color: #fff;
+      font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+    }
+
+    #services .services-capabilities__blurb {
+      margin: 0;
+      color: rgba(234, 243, 240, 0.8);
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+
+    #services .services-capabilities__proof {
+      position: relative;
+      padding: 0.9rem 1rem;
+      border-radius: 1.15rem;
+      border: 1px solid color-mix(in srgb, var(--service-glow, #61dbc4) 18%, rgba(255, 255, 255, 0.08));
+      background: rgba(14, 23, 22, 0.82);
+    }
+
+    #services .services-capabilities__proof-label {
+      display: inline-block;
+      margin-bottom: 0.42rem;
+      color: var(--service-glow, #61dbc4);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    #services .services-capabilities__proof p {
+      margin: 0;
+      color: rgba(247, 250, 249, 0.86);
+      font-size: 0.95rem;
+      line-height: 1.58;
+    }
+
+    #services .services-capabilities__metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.62rem;
+    }
+
+    #services .services-capabilities__metric {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.52rem 0.72rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.025));
+      color: rgba(244, 249, 247, 0.82);
+      font-size: 0.82rem;
+      line-height: 1.2;
+    }
+
+    #services .services-capabilities__expanded-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      gap: 1rem;
+      align-items: start;
+    }
+
+    #services .services-capabilities__footer {
+      display: grid;
+      gap: 0.95rem;
+      padding: 0.9rem 1rem;
+      border-radius: 1.15rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(13, 21, 20, 0.82);
+    }
+
+    #services .services-capabilities__footer > p {
+      margin: 0;
+      color: rgba(214, 228, 223, 0.72);
+      font-size: 0.94rem;
+      line-height: 1.62;
+    }
+
+    #services .services-capabilities__result-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.52rem;
+      padding-top: 0.95rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    #services .services-capabilities__result {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.42rem;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    #services .services-capabilities__result::before {
+      content: '';
+      width: 0.34rem;
+      height: 0.34rem;
+      border-radius: 50%;
+      background: var(--service-glow, #61dbc4);
+      box-shadow: 0 0 12px color-mix(in srgb, var(--service-glow, #61dbc4) 46%, transparent);
+    }
+
+    #services .services-capabilities__close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      z-index: 3;
+      width: 2.6rem;
+      height: 2.6rem;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 999px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.03) 18%, rgba(16, 29, 27, 0.96) 19%, rgba(10, 18, 17, 0.98) 100%);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.14);
+      transition: transform 0.22s ease, border-color 0.22s ease;
+    }
+
+    #services .services-capabilities__close:hover,
+    #services .services-capabilities__close:focus-visible {
+      transform: scale(1.06);
+      border-color: color-mix(in srgb, var(--service-glow, #61dbc4) 52%, rgba(255, 255, 255, 0.16));
+      outline: none;
+    }
+
+    #services .services-capabilities__board.is-open .services-capabilities__mini-grid {
+      opacity: 0;
+      transform: scale(0.96);
+      filter: none;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    @media (max-width: 980px) {
+      #services.container {
+        margin-left: calc(50% - 50vw);
+        margin-right: calc(50% - 50vw);
+      }
+
+      #services .services-capabilities__board {
+        grid-template-columns: 1fr;
+      }
+
+      #services .services-capabilities__overview-copy h3 {
+        max-width: none;
+      }
+
+      #services .services-capabilities__service-proof,
+      #services .services-capabilities__service-tags {
+        padding-left: 0;
+      }
+
+      #services .services-capabilities__mini-grid {
+        grid-template-columns: 1fr;
+      }
+
+      #services .services-capabilities__board {
+        min-height: auto;
+      }
+
+      #services .services-capabilities__expanded-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+     #services .section-heading .eyebrow::before,
+     #services .section-heading .eyebrow::after {
+       width: 1.35rem;
+     }
+
+      #services .services-capabilities__mini-card,
+      #services .services-capabilities__expanded-shell {
+        border-radius: 1.45rem;
+        padding: 1.15rem;
+      }
+
+      #services .services-capabilities__mini-card {
+        min-height: 12.5rem;
+      }
+
+      #services .services-capabilities__overview,
+      #services .services-capabilities__service-row {
+        padding: 1rem;
+      }
+
+      #services .services-capabilities__service-identity {
+        grid-template-columns: 1fr;
+        gap: 0.7rem;
+      }
+
+      #services .services-capabilities__service-head {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      #services .services-capabilities__service-index {
+        width: 2.1rem;
+        height: 2.1rem;
+      }
+
+      #services .services-capabilities__copy h3 {
+        font-size: 1.6rem;
+      }
+
+      #services .services-capabilities__mini-copy strong {
+        font-size: 1.32rem;
+      }
+
+      #services .services-capabilities__proof {
+        padding: 0.82rem 0.9rem;
+      }
+
+      #services .services-capabilities__close {
+        top: 0.9rem;
+        right: 0.9rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #services .services-capabilities__mini-card,
+      #services .services-capabilities__expanded,
+      #services .services-capabilities__mini-grid,
+      #services .services-capabilities__close {
+        transition: none !important;
+      }
+    }
+  </style>
 
  <script is:inline>
   const initAiShootsHero = () => {
@@ -2079,5 +3087,238 @@ const productShowcaseOutput = [
     };
     window.addEventListener('resize', window.__mobShowcaseResizeHandler);
   }
+
+  const initShowcaseServicesScene = () => {
+    const cleanupKey = '__showcaseServicesSceneCleanup';
+    if (typeof window[cleanupKey] === 'function') {
+      window[cleanupKey]();
+    }
+
+    const scene = document.querySelector('[data-showcase-services-scene]');
+    const viewport = document.querySelector('[data-showcase-services-viewport]');
+    if (!(scene instanceof HTMLElement)) return;
+    if (!(viewport instanceof HTMLElement)) return;
+
+    let rafId = 0;
+
+    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+    const render = () => {
+      rafId = 0;
+
+      if (window.innerWidth <= 980) {
+        scene.classList.remove('is-enhanced');
+        scene.classList.remove('is-pinned');
+        scene.classList.remove('is-complete');
+        scene.style.setProperty('--services-overlay-progress', '1');
+        viewport.style.removeProperty('left');
+        viewport.style.removeProperty('width');
+        return;
+      }
+
+      scene.classList.add('is-enhanced');
+
+      const sceneRect = scene.getBoundingClientRect();
+      const sceneTop = window.scrollY + sceneRect.top;
+      const totalTravel = Math.max(scene.offsetHeight - window.innerHeight, 1);
+      const start = sceneTop;
+      const end = start + totalTravel;
+      const currentY = window.scrollY;
+      const progress = clamp((currentY - start) / totalTravel, 0, 1);
+      const overlayProgress = clamp((progress - 0.16) / 0.56, 0, 1);
+
+      scene.classList.toggle('is-pinned', currentY >= start && currentY < end);
+      scene.classList.toggle('is-complete', currentY >= end);
+      scene.style.setProperty('--services-overlay-progress', overlayProgress.toFixed(4));
+
+      if (scene.classList.contains('is-pinned')) {
+        viewport.style.left = `${sceneRect.left}px`;
+        viewport.style.width = `${sceneRect.width}px`;
+      } else {
+        viewport.style.removeProperty('left');
+        viewport.style.removeProperty('width');
+      }
+    };
+
+    const requestRender = () => {
+      if (rafId) return;
+      rafId = window.requestAnimationFrame(render);
+    };
+
+    window.addEventListener('scroll', requestRender, { passive: true });
+    window.addEventListener('resize', requestRender);
+    render();
+
+    window[cleanupKey] = () => {
+      if (rafId) {
+        window.cancelAnimationFrame(rafId);
+      }
+      window.removeEventListener('scroll', requestRender);
+      window.removeEventListener('resize', requestRender);
+      scene.classList.remove('is-enhanced');
+      scene.style.removeProperty('--services-overlay-progress');
+    };
+  };
+
+  initShowcaseServicesScene();
+  document.addEventListener('astro:after-swap', initShowcaseServicesScene);
+
+  const initAiShootsServices = () => {
+    const cleanupKey = '__aiShootsServicesCleanup';
+    if (typeof window[cleanupKey] === 'function') {
+      window[cleanupKey]();
+    }
+
+    const board = document.querySelector('[data-services-board]');
+    if (!(board instanceof HTMLElement)) return;
+
+    const triggers = Array.from(board.querySelectorAll('[data-service-open]'));
+    const panels = Array.from(board.querySelectorAll('[data-service-expanded]'));
+    const closeButtons = Array.from(board.querySelectorAll('[data-service-close]'));
+    if (!triggers.length || !panels.length) return;
+
+    let activeService = '';
+    let closeTimer = 0;
+
+    const clearCloseTimer = () => {
+      if (closeTimer) {
+        clearTimeout(closeTimer);
+        closeTimer = 0;
+      }
+    };
+
+    const scheduleClose = () => {
+      clearCloseTimer();
+      if (!activeService) return;
+      closeTimer = window.setTimeout(() => {
+        setOpenService('');
+      }, 10000);
+    };
+
+    const setOpenService = (serviceId) => {
+      activeService = serviceId;
+      board.dataset.openService = serviceId;
+      board.classList.toggle('is-open', Boolean(serviceId));
+
+      triggers.forEach((trigger) => {
+        const isActive = trigger.getAttribute('data-service-open') === serviceId;
+        trigger.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+      });
+
+      panels.forEach((panel) => {
+        const isActive = panel.getAttribute('data-service-expanded') === serviceId;
+        panel.classList.toggle('is-active', isActive);
+        panel.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+      });
+
+      if (serviceId) {
+        scheduleClose();
+      } else {
+        clearCloseTimer();
+      }
+    };
+
+    const resetCloseIfOpen = () => {
+      if (activeService) scheduleClose();
+    };
+
+    const onBoardClick = (event) => {
+      const openTrigger = event.target.closest('[data-service-open]');
+      if (openTrigger instanceof HTMLElement) {
+        setOpenService(openTrigger.getAttribute('data-service-open') || '');
+        return;
+      }
+
+      const closeTrigger = event.target.closest('[data-service-close]');
+      if (closeTrigger instanceof HTMLElement) {
+        setOpenService('');
+        return;
+      }
+
+      if (event.target.closest('[data-service-expanded].is-active')) {
+        resetCloseIfOpen();
+      }
+    };
+
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape' && activeService) {
+        setOpenService('');
+        return;
+      }
+      resetCloseIfOpen();
+    };
+
+    const onPointerMove = (event) => {
+      if (event.target.closest('[data-service-expanded].is-active')) {
+        resetCloseIfOpen();
+      }
+    };
+
+    const onFocusIn = (event) => {
+      if (event.target.closest('[data-service-expanded].is-active')) {
+        resetCloseIfOpen();
+      }
+    };
+
+    board.addEventListener('click', onBoardClick);
+    board.addEventListener('keydown', onKeyDown);
+    board.addEventListener('pointermove', onPointerMove);
+    board.addEventListener('focusin', onFocusIn);
+
+    window[cleanupKey] = () => {
+      clearCloseTimer();
+      board.removeEventListener('click', onBoardClick);
+      board.removeEventListener('keydown', onKeyDown);
+      board.removeEventListener('pointermove', onPointerMove);
+      board.removeEventListener('focusin', onFocusIn);
+    };
+  };
+
+  initAiShootsServices();
+  document.addEventListener('astro:after-swap', initAiShootsServices);
+
+  const initAiShootsCursor = () => {
+    const cleanupKey = '__aiShootsCursorCleanup';
+    if (typeof window[cleanupKey] === 'function') {
+      window[cleanupKey]();
+    }
+
+    const glow = document.querySelector('[data-shoots-cursor-glow]');
+    const cursor = document.querySelector('[data-shoots-cursor]');
+    const page = document.querySelector('.shoots-page');
+    if (!(glow instanceof HTMLElement) || !(cursor instanceof HTMLElement) || !(page instanceof HTMLElement)) return;
+
+    const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
+    if (!hasFinePointer) {
+      glow.style.opacity = '0';
+      cursor.style.opacity = '0';
+      return;
+    }
+
+    const onMove = (event) => {
+      glow.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%)`;
+      glow.style.opacity = '1';
+      cursor.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%)`;
+      cursor.style.opacity = '1';
+    };
+
+    const onLeave = () => {
+      glow.style.opacity = '0';
+      cursor.style.opacity = '0';
+    };
+
+    window.addEventListener('pointermove', onMove);
+    page.addEventListener('pointerleave', onLeave);
+
+    window[cleanupKey] = () => {
+      window.removeEventListener('pointermove', onMove);
+      page.removeEventListener('pointerleave', onLeave);
+      glow.style.opacity = '0';
+      cursor.style.opacity = '0';
+    };
+  };
+
+  initAiShootsCursor();
+  document.addEventListener('astro:after-swap', initAiShootsCursor);
 
 </script>
