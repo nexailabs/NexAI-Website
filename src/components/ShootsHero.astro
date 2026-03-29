@@ -375,18 +375,41 @@ const { decks } = Astro.props;
 			return Math.max(0, Math.min(leftShift, rightShift));
 		};
 
-		const getViewportCenterOffset = () => {
+		const getViewportCenterOffset = (total = 0, unit = 0) => {
 			const stageRect = stage.getBoundingClientRect();
-			const offset = window.innerWidth / 2 - (stageRect.left + stageRect.width / 2);
-			const maxOffset = Math.max(80, Math.min(200, window.innerWidth * 0.12));
-			return Math.max(-maxOffset, Math.min(maxOffset, offset));
+			const viewportCenter = window.innerWidth / 2;
+			const stageCenter = stageRect.left + stageRect.width / 2;
+			const trueOffset = viewportCenter - stageCenter;
+
+			if (total <= 1 || unit <= 0) {
+				return trueOffset;
+			}
+
+			const sampleCard = stage.querySelector('[data-hero-card]');
+			const cardWidth =
+				sampleCard instanceof HTMLElement
+					? sampleCard.offsetWidth || stageRect.width
+					: stageRect.width;
+			const halfCard = (cardWidth * spreadScale) / 2;
+			const spreadHalfSpan = ((total - 1) * unit) / 2;
+
+			const viewportWidth = window.innerWidth;
+			const sideInset = Math.max(24, Math.min(140, viewportWidth * 0.08));
+			const minOffset = sideInset - (stageCenter - spreadHalfSpan - halfCard);
+			const maxOffset = viewportWidth - sideInset - (stageCenter + spreadHalfSpan + halfCard);
+
+			if (minOffset > maxOffset) {
+				return trueOffset;
+			}
+
+			return Math.max(minOffset, Math.min(maxOffset, trueOffset));
 		};
 
 		const spreadState = (index, total, unit) => {
 			const middle = (total - 1) / 2;
 			const distance = index - middle;
 			return {
-				x: distance * unit + getViewportCenterOffset(),
+				x: distance * unit + getViewportCenterOffset(total, unit),
 				y: 0,
 				scale: spreadScale,
 				rotate: 0,
