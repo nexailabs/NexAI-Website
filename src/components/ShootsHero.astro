@@ -346,23 +346,40 @@ const { decks } = Astro.props;
 			if (!cards.length) return 0;
 			const width = cards[0].offsetWidth || 0;
 			const total = cards.length;
-			const gap = 20;
+			const viewportWidth = window.innerWidth;
+			const sideInset = Math.max(90, Math.min(220, viewportWidth * 0.12));
+			const cardToTextGap = Math.max(14, Math.min(22, viewportWidth * 0.012));
+			const available = Math.max(0, viewportWidth - 2 * (sideInset + cardToTextGap));
+			const gap = Math.max(15, Math.min(20, viewportWidth * 0.012));
 			const idealUnit = width + gap;
 			const totalSpread = (total - 1) * idealUnit + width;
-			const margin = Math.max(window.innerWidth * 0.18, 160);
-			const available = window.innerWidth - margin;
+
 			if (totalSpread <= available) {
 				spreadScale = 1;
 				return idealUnit;
 			}
-			spreadScale = available / totalSpread;
+
+			const scaled = available / totalSpread;
+			spreadScale = Math.max(0.72, Math.min(1, scaled));
 			return idealUnit * spreadScale;
+		};
+
+		const getSpreadTitleShift = () => {
+			if (!(titleLeft instanceof HTMLElement) || !(titleRight instanceof HTMLElement)) return 0;
+			const viewportWidth = window.innerWidth;
+			const sideInset = Math.max(90, Math.min(220, viewportWidth * 0.12));
+			const leftRect = titleLeft.getBoundingClientRect();
+			const rightRect = titleRight.getBoundingClientRect();
+			const leftShift = leftRect.right - sideInset;
+			const rightShift = viewportWidth - sideInset - rightRect.left;
+			return Math.max(0, Math.min(leftShift, rightShift));
 		};
 
 		const getViewportCenterOffset = () => {
 			const stageRect = stage.getBoundingClientRect();
 			const offset = window.innerWidth / 2 - (stageRect.left + stageRect.width / 2);
-			return Math.max(-80, Math.min(80, offset));
+			const maxOffset = Math.max(80, Math.min(200, window.innerWidth * 0.12));
+			return Math.max(-maxOffset, Math.min(maxOffset, offset));
 		};
 
 		const spreadState = (index, total, unit) => {
@@ -548,7 +565,7 @@ const { decks } = Astro.props;
 
 				// Phase 3: cards spread → title moves with outermost cards
 				schedule(() => {
-					const spreadShift = Math.min(1.5 * spreadUnit, window.innerWidth * 0.35);
+					const spreadShift = getSpreadTitleShift();
 					setTitleState({ shift: spreadShift, opacity: 1 }, true);
 				}, cycleStart + 1540);
 
