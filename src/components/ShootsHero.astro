@@ -204,7 +204,7 @@ const { decks } = Astro.props;
 		}
 
 		.shoots-hero__dock-thumb {
-			width: 2.5rem;
+			width: 3rem;
 		}
 	}
 
@@ -228,6 +228,8 @@ const { decks } = Astro.props;
 		all: unset;
 		cursor: pointer;
 		width: 3rem;
+		min-width: 3rem;
+		min-height: 3rem;
 		aspect-ratio: 3 / 4;
 		border-radius: 0.4rem;
 		overflow: hidden;
@@ -237,6 +239,13 @@ const { decks } = Astro.props;
 			opacity 0.3s ease,
 			border-color 0.3s ease,
 			transform 0.3s ease;
+	}
+
+	.shoots-hero__dock-thumb:focus-visible {
+		opacity: 1;
+		outline: 2px solid #fff;
+		outline-offset: 3px;
+		box-shadow: 0 0 0 4px #000;
 	}
 
 	.shoots-hero__dock-thumb img {
