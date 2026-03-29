@@ -30,3 +30,6 @@ slides/
 
 # Claude Code local config
 .claude/
+
+# internal docs (not for public repo)
+docs/NexAI Labs - Company Overview.docx
