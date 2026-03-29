@@ -280,10 +280,9 @@ const { decks } = Astro.props;
 		const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 		let activeIndex = 0;
 		let cycleTimer;
-		let rafA;
-		let rafB;
 		let spreadScale = 1;
 		const timers = [];
+		const rafIds = new Set();
 		const listeners = [];
 
 		const getCards = (deck) => Array.from(deck.querySelectorAll('[data-hero-card]'));
@@ -292,6 +291,25 @@ const { decks } = Astro.props;
 			const id = window.setTimeout(fn, delay);
 			timers.push(id);
 			return id;
+		};
+
+		const scheduleRaf = (fn) => {
+			const id = requestAnimationFrame(() => {
+				rafIds.delete(id);
+				fn();
+			});
+			rafIds.add(id);
+			return id;
+		};
+
+		const clearScheduledTimers = () => {
+			timers.forEach((timer) => clearTimeout(timer));
+			timers.length = 0;
+		};
+
+		const cancelAndClearRafs = () => {
+			rafIds.forEach((id) => cancelAnimationFrame(id));
+			rafIds.clear();
 		};
 
 		const getTitleShift = () => {
@@ -441,8 +459,8 @@ const { decks } = Astro.props;
 				card.style.transform = `translate(-50%, -50%) translate3d(${state.x}px, ${state.y}px, 0) scale(${state.scale})`;
 			});
 
-			rafA = requestAnimationFrame(() => {
-				rafB = requestAnimationFrame(() => {
+			scheduleRaf(() => {
+				scheduleRaf(() => {
 					cards.forEach((card, index) => {
 						applyState(card, holdState(index, cards.length), true);
 					});
@@ -464,9 +482,8 @@ const { decks } = Astro.props;
 			);
 			setTitleState({ shift: 0, opacity: 1 }, false);
 			window[cleanupKey] = () => {
-				cancelAnimationFrame(rafA);
-				cancelAnimationFrame(rafB);
-				timers.forEach((timer) => clearTimeout(timer));
+				cancelAndClearRafs();
+				clearScheduledTimers();
 			};
 			return;
 		}
@@ -474,6 +491,7 @@ const { decks } = Astro.props;
 		let forceImmediate = false;
 
 		const runCycle = () => {
+			cancelAndClearRafs();
 			const isLoopRestart = activeIndex === 0 && !forceImmediate;
 			forceImmediate = false;
 			updateActiveDockThumb(activeIndex);
@@ -521,8 +539,8 @@ const { decks } = Astro.props;
 							card.style.zIndex = `${50 + index}`;
 							card.style.transformOrigin = '50% 50%';
 
-							requestAnimationFrame(() => {
-								requestAnimationFrame(() => {
+							scheduleRaf(() => {
+								scheduleRaf(() => {
 									card.style.transition =
 										'transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease';
 									card.style.transform =
@@ -613,11 +631,9 @@ const { decks } = Astro.props;
 
 		thumbs.forEach((thumb, i) => {
 			const onThumbClick = () => {
-				timers.forEach((t) => clearTimeout(t));
-				timers.length = 0;
+				clearScheduledTimers();
 				clearTimeout(cycleTimer);
-				cancelAnimationFrame(rafA);
-				cancelAnimationFrame(rafB);
+				cancelAndClearRafs();
 				decks.forEach((d) => hideDeck(d));
 				setTitleState({ shift: isMobile() ? -120 : getTitleShift(), opacity: 1 }, false);
 				activeIndex = i;
@@ -631,9 +647,8 @@ const { decks } = Astro.props;
 		window[cleanupKey] = () => {
 			listeners.forEach((removeListener) => removeListener());
 			listeners.length = 0;
-			cancelAnimationFrame(rafA);
-			cancelAnimationFrame(rafB);
-			timers.forEach((timer) => clearTimeout(timer));
+			cancelAndClearRafs();
+			clearScheduledTimers();
 			clearTimeout(cycleTimer);
 		};
 	};
