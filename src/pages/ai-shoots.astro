@@ -591,69 +591,28 @@ const serviceExperiences = [
     <!-- Services Section -->
     <section class="section-block container reveal-up services-capabilities" id="services">
       <div class="section-heading services-capabilities__heading">
-        <p class="eyebrow">AI Photoshoot Services</p>
-        <h2>Transform your fashion brand with AI-powered visuals</h2>
-        <p>
-          Premium on-model imagery built for fashion brands that want faster launches, lower production friction, and
-          stronger creative consistency across every drop.
-        </p>
+        <p class="eyebrow">Feature</p>
+        <h2>Features</h2>
+        <p>Three core capabilities for building fast, polished AI photoshoots without a heavy production stack.</p>
       </div>
       <div class="services-capabilities__board">
-        <div class="services-capabilities__overview">
-          <div class="services-capabilities__overview-copy">
-            <p class="services-capabilities__overview-kicker">Capability System</p>
-            <h3>One AI production workflow from casting and scene design to adaptation and rollout.</h3>
-            <p>
-              This section should read like a structured production system, not isolated feature cards. Every layer
-              below contributes to the same launch engine.
-            </p>
-          </div>
-          <div class="services-capabilities__overview-grid" aria-label="Service system highlights">
-            <article class="services-capabilities__overview-card">
-              <strong>Build the face of the brand</strong>
-              <span>Generate consistent on-model imagery tailored to category, audience, and pricing tier.</span>
-            </article>
-            <article class="services-capabilities__overview-card">
-              <strong>Multiply scenes without reshoots</strong>
-              <span>Turn one sample into campaign, catalog, festive, regional, and trend-led visual directions.</span>
-            </article>
-            <article class="services-capabilities__overview-card">
-              <strong>Deliver channel-ready assets</strong>
-              <span>Export one production workflow into PDPs, ads, thumbnails, lookbooks, and social packs.</span>
-            </article>
+        <div class="services-capabilities__intro">
+          <p class="services-capabilities__intro-label">Built for fast fashion rollouts</p>
+          <div class="services-capabilities__intro-points" aria-label="Feature section highlights">
+            <span>Consistent model identity</span>
+            <span>Multi-scene outputs</span>
+            <span>Channel-ready delivery</span>
           </div>
         </div>
-
-        <div class="services-capabilities__service-rail" aria-label="AI photoshoot capabilities overview">
-          {serviceExperiences.map((service, index) => (
-            <article
-              class="services-capabilities__service-row"
-              style={`--service-glow: ${service.glow}; --service-order: ${index};`}
-            >
-              <div class="services-capabilities__service-identity">
-                <span class="services-capabilities__service-index">{String(index + 1).padStart(2, '0')}</span>
-                <div class="services-capabilities__service-copy">
-                  <div class="services-capabilities__service-head">
-                    <strong>{service.title}</strong>
-                    <span class="services-capabilities__service-eyebrow">{service.eyebrow}</span>
-                  </div>
-                  <p>{service.blurb}</p>
-                </div>
-              </div>
-
-              <div class="services-capabilities__service-proof">
-                <span class="services-capabilities__service-proof-label">Why it matters</span>
-                <p>{service.proof}</p>
-              </div>
-
-              <div class="services-capabilities__service-tags" aria-label={`${service.title} highlights`}>
-                {service.metrics.slice(0, 2).map((metric) => (
-                  <span class="services-capabilities__service-tag">{metric}</span>
-                ))}
-                {service.outcomes.slice(0, 1).map((outcome) => (
-                  <span class="services-capabilities__service-tag services-capabilities__service-tag--accent">{outcome}</span>
-                ))}
-              </div>
+        <div class="services-capabilities__feature-grid" aria-label="AI photoshoot feature cards">
+          {[serviceExperiences[0], serviceExperiences[1], serviceExperiences[3]].map((service, index) => (
+            <article class="services-capabilities__feature-card" style={`--service-glow: ${service.glow};`}>
+              <span class="services-capabilities__feature-kicker">Feature {String(index + 1).padStart(2, '0')}</span>
+              <h3>{service.title}</h3>
+              <p>{service.blurb}</p>
+              <span class="services-capabilities__feature-meta">
+                {index === 2 ? service.outcomes[0] : service.metrics[0]}
+              </span>
             </article>
           ))}
         </div>
@@ -1732,8 +1691,8 @@ const serviceExperiences = [
       position: relative;
       z-index: 1;
       text-align: center;
-      max-width: 42rem;
-      margin: 0 auto clamp(2.2rem, 4vw, 3.25rem);
+      max-width: 54rem;
+      margin: 0 auto clamp(2.9rem, 5vw, 4.2rem);
     }
 
     #services .section-heading .eyebrow {
@@ -1754,32 +1713,36 @@ const serviceExperiences = [
    }
 
     #services .section-heading h2 {
-      font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+      font-size: clamp(3rem, 5.8vw, 4.8rem);
       font-weight: 800;
       line-height: 0.98;
       letter-spacing: -0.04em;
-      margin-bottom: 1.1rem;
+      margin-bottom: 1.25rem;
     }
 
     #services .section-heading p {
       color: rgba(229, 241, 238, 0.78);
-      font-size: clamp(1rem, 1.5vw, 1.08rem);
-      line-height: 1.7;
-      max-width: 38rem;
+      font-size: clamp(1.06rem, 1.7vw, 1.18rem);
+      line-height: 1.74;
+      max-width: 44rem;
       margin-inline: auto;
     }
 
     #services .services-capabilities__board {
       position: relative;
       z-index: 1;
-      min-height: clamp(33rem, 54vw, 39rem);
-      padding: clamp(1.1rem, 2.3vw, 1.6rem) 0 0;
-      border-radius: 0;
-      border: none;
-      background: transparent;
-      box-shadow: none;
+      min-height: auto;
+      max-width: 90rem;
+      margin: 0 auto;
+      padding: 2rem;
+      border-radius: 1.8rem;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background:
+        linear-gradient(180deg, rgba(13, 20, 19, 0.94), rgba(8, 13, 12, 0.98));
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.04),
+        0 18px 48px rgba(0, 0, 0, 0.18);
       overflow: hidden;
-      isolation: isolate;
     }
 
     #services .services-capabilities__board::before {
@@ -1787,217 +1750,113 @@ const serviceExperiences = [
       position: absolute;
       inset: 0;
       background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 16%),
-        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.04), transparent 24%);
-      pointer-events: none;
-      opacity: 0.65;
-    }
-
-    #services .services-capabilities__board::after {
-      content: '';
-      position: absolute;
-      inset: 1.25rem 0 0;
-      background: linear-gradient(125deg, rgba(255, 255, 255, 0.04) 0%, transparent 28%, transparent 62%, rgba(255, 255, 255, 0.03) 100%);
-      mix-blend-mode: screen;
-      opacity: 0.55;
+        radial-gradient(circle at 18% 18%, rgba(74, 194, 177, 0.09), transparent 24%),
+        radial-gradient(circle at 82% 78%, rgba(170, 224, 111, 0.08), transparent 26%);
+      opacity: 0.7;
       pointer-events: none;
     }
 
-    #services .services-capabilities__board {
-      display: grid;
-      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-      gap: clamp(1rem, 2vw, 1.4rem);
-      align-items: start;
-    }
-
-    #services .services-capabilities__overview,
-    #services .services-capabilities__service-rail {
+    #services .services-capabilities__intro,
+    #services .services-capabilities__feature-grid {
       position: relative;
       z-index: 1;
     }
 
-    #services .services-capabilities__overview {
+    #services .services-capabilities__intro {
       display: grid;
       gap: 1rem;
-      padding: clamp(1.25rem, 2.2vw, 1.6rem);
-      border-radius: 1.2rem;
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      background:
-        linear-gradient(180deg, rgba(19, 28, 27, 0.95), rgba(10, 16, 15, 0.98));
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      margin-bottom: 1.7rem;
+      padding-bottom: 1.2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
-    #services .services-capabilities__overview-copy {
-      display: grid;
-      gap: 0.9rem;
-    }
-
-    #services .services-capabilities__overview-kicker {
+    #services .services-capabilities__intro-label {
       margin: 0;
-      color: rgba(151, 228, 214, 0.92);
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-    }
-
-    #services .services-capabilities__overview-copy h3 {
-      margin: 0;
-      color: #fff;
-      font-size: clamp(1.55rem, 2.2vw, 2.1rem);
-      line-height: 1.08;
-      letter-spacing: -0.04em;
-      max-width: 16ch;
-    }
-
-    #services .services-capabilities__overview-copy > p:last-child {
-      margin: 0;
-      color: rgba(214, 228, 223, 0.74);
-      font-size: 0.97rem;
-      line-height: 1.7;
-    }
-
-    #services .services-capabilities__overview-grid {
-      display: grid;
-      gap: 0.8rem;
-    }
-
-    #services .services-capabilities__overview-card {
-      display: grid;
-      gap: 0.45rem;
-      padding: 0.9rem 1rem;
-      border-radius: 0.95rem;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      background: rgba(255, 255, 255, 0.03);
-    }
-
-    #services .services-capabilities__overview-card strong {
-      color: rgba(245, 249, 247, 0.96);
-      font-size: 0.92rem;
+      color: rgba(239, 246, 243, 0.92);
+      font-size: 1.05rem;
       font-weight: 700;
       letter-spacing: -0.01em;
     }
 
-    #services .services-capabilities__overview-card span {
-      color: rgba(201, 217, 212, 0.72);
-      font-size: 0.84rem;
-      line-height: 1.55;
+    #services .services-capabilities__intro-points {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
     }
 
-    #services .services-capabilities__service-rail {
-      display: grid;
-      gap: 0.75rem;
+    #services .services-capabilities__intro-points span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 2.15rem;
+      padding: 0.42rem 0.82rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      background: rgba(255, 255, 255, 0.03);
+      color: rgba(223, 234, 230, 0.78);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
     }
 
-    #services .services-capabilities__service-row {
+    #services .services-capabilities__feature-grid {
       display: grid;
-      gap: 0.9rem;
-      padding: 1rem 1.05rem;
-      border-radius: 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      justify-content: stretch;
+      gap: 1.7rem;
+      align-items: stretch;
+      max-width: none;
+      margin: 0;
+    }
+
+    #services .services-capabilities__feature-card {
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      gap: 1rem;
+      align-content: start;
+      aspect-ratio: 16 / 10;
+      min-height: 17rem;
+      padding: 1.5rem;
+      border-radius: 1.15rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       background:
-        linear-gradient(180deg, rgba(18, 27, 26, 0.94), rgba(9, 14, 14, 0.98));
+        linear-gradient(180deg, rgba(11, 18, 17, 0.96), rgba(7, 12, 11, 0.98));
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
     }
 
-    #services .services-capabilities__service-identity {
-      display: grid;
-      grid-template-columns: auto minmax(0, 1fr);
-      gap: 0.9rem;
-      align-items: start;
-    }
-
-    #services .services-capabilities__service-index {
+    #services .services-capabilities__feature-kicker {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      width: 2.3rem;
-      height: 2.3rem;
-      border-radius: 0.7rem;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(255, 255, 255, 0.03);
-      color: rgba(255, 255, 255, 0.72);
-      font-size: 0.78rem;
+      width: fit-content;
+      margin: 0;
+      color: color-mix(in srgb, var(--service-glow, #61dbc4) 78%, #f5fbf8);
+      font-size: 0.8rem;
       font-weight: 800;
-      letter-spacing: 0.12em;
-      flex-shrink: 0;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
     }
 
-    #services .services-capabilities__service-copy {
-      display: grid;
-      gap: 0.45rem;
-    }
-
-    #services .services-capabilities__service-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.85rem;
-    }
-
-    #services .services-capabilities__service-head strong {
+    #services .services-capabilities__feature-card h3 {
+      margin: 0;
       color: #fff;
-      font-size: clamp(1.05rem, 1.5vw, 1.28rem);
+      font-size: clamp(1.4rem, 2vw, 1.85rem);
       line-height: 1.08;
       letter-spacing: -0.03em;
     }
 
-    #services .services-capabilities__service-eyebrow {
-      color: color-mix(in srgb, var(--service-glow, #61dbc4) 78%, #f0f6f4);
-      font-size: 0.68rem;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
-    #services .services-capabilities__service-copy p,
-    #services .services-capabilities__service-proof p {
+    #services .services-capabilities__feature-card p {
       margin: 0;
-      color: rgba(210, 224, 220, 0.72);
+      color: rgba(213, 226, 222, 0.72);
+      font-size: 1rem;
+      line-height: 1.7;
+      max-width: none;
+    }
+
+    #services .services-capabilities__feature-meta {
+      margin-top: auto;
+      color: rgba(242, 247, 245, 0.86);
       font-size: 0.9rem;
-      line-height: 1.58;
-    }
-
-    #services .services-capabilities__service-proof {
-      display: grid;
-      gap: 0.35rem;
-      padding-left: calc(2.3rem + 0.9rem);
-    }
-
-    #services .services-capabilities__service-proof-label {
-      color: rgba(240, 246, 244, 0.56);
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-
-    #services .services-capabilities__service-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      padding-left: calc(2.3rem + 0.9rem);
-    }
-
-    #services .services-capabilities__service-tag {
-      display: inline-flex;
-      align-items: center;
-      min-height: 1.9rem;
-      padding: 0.35rem 0.65rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      background: rgba(255, 255, 255, 0.03);
-      color: rgba(235, 243, 240, 0.74);
-      font-size: 0.75rem;
       font-weight: 600;
-      letter-spacing: 0.02em;
-    }
-
-    #services .services-capabilities__service-tag--accent {
-      border-color: color-mix(in srgb, var(--service-glow, #61dbc4) 28%, rgba(255,255,255,0.08));
-      color: color-mix(in srgb, var(--service-glow, #61dbc4) 78%, #ffffff);
-      background: color-mix(in srgb, var(--service-glow, #61dbc4) 9%, rgba(255,255,255,0.025));
+      letter-spacing: 0.01em;
     }
 
     #services .services-capabilities__mini-grid {
@@ -2358,29 +2217,9 @@ const serviceExperiences = [
         margin-right: calc(50% - 50vw);
       }
 
-      #services .services-capabilities__board {
-        grid-template-columns: 1fr;
-      }
-
-      #services .services-capabilities__overview-copy h3 {
-        max-width: none;
-      }
-
-      #services .services-capabilities__service-proof,
-      #services .services-capabilities__service-tags {
-        padding-left: 0;
-      }
-
-      #services .services-capabilities__mini-grid {
-        grid-template-columns: 1fr;
-      }
-
-      #services .services-capabilities__board {
-        min-height: auto;
-      }
-
-      #services .services-capabilities__expanded-grid {
-        grid-template-columns: 1fr;
+      #services .services-capabilities__feature-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.5rem;
       }
     }
 
@@ -2390,51 +2229,22 @@ const serviceExperiences = [
        width: 1.35rem;
      }
 
-      #services .services-capabilities__mini-card,
-      #services .services-capabilities__expanded-shell {
-        border-radius: 1.45rem;
-        padding: 1.15rem;
+      #services .services-capabilities__feature-grid {
+        grid-template-columns: 1fr;
       }
 
-      #services .services-capabilities__mini-card {
-        min-height: 12.5rem;
-      }
-
-      #services .services-capabilities__overview,
-      #services .services-capabilities__service-row {
+      #services .services-capabilities__feature-card {
+        aspect-ratio: auto;
+        min-height: 12rem;
         padding: 1rem;
       }
 
-      #services .services-capabilities__service-identity {
-        grid-template-columns: 1fr;
-        gap: 0.7rem;
+      #services .services-capabilities__board {
+        padding: 1rem;
       }
 
-      #services .services-capabilities__service-head {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      #services .services-capabilities__service-index {
-        width: 2.1rem;
-        height: 2.1rem;
-      }
-
-      #services .services-capabilities__copy h3 {
-        font-size: 1.6rem;
-      }
-
-      #services .services-capabilities__mini-copy strong {
-        font-size: 1.32rem;
-      }
-
-      #services .services-capabilities__proof {
-        padding: 0.82rem 0.9rem;
-      }
-
-      #services .services-capabilities__close {
-        top: 0.9rem;
-        right: 0.9rem;
+      #services .services-capabilities__feature-card h3 {
+        font-size: 1.12rem;
       }
     }
 
