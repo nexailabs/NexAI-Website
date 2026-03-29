@@ -11,7 +11,7 @@ interface Props {
 
 const {
 	title,
-	description = "NexAI Labs - Business Growth on Autopilot",
+	description = 'NexAI Labs - Business Growth on Autopilot',
 	showNavbar = true,
 } = Astro.props;
 ---
@@ -25,23 +25,23 @@ const {
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
-		
+
 		<!-- View Transitions -->
-        <ClientRouter />
+		<ClientRouter />
 
 		<!-- Google Fonts -->
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
 			href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Inter:wght@400;600;800&display=swap"
 			rel="stylesheet"
-		>
+		/>
 		<slot name="head" />
 	</head>
 	<body>
 		{showNavbar && <Navbar />}
 		<slot />
-		
+
 		<!-- Global Scripts -->
 		<script src="../scripts/lenis.ts"></script>
 	</body>
