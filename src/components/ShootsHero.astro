@@ -346,23 +346,60 @@ const { decks } = Astro.props;
 			if (!cards.length) return 0;
 			const width = cards[0].offsetWidth || 0;
 			const total = cards.length;
-			const gap = 20;
-			const idealUnit = width + gap;
-			const totalSpread = (total - 1) * idealUnit + width;
-			const margin = Math.max(window.innerWidth * 0.18, 160);
-			const available = window.innerWidth - margin;
-			if (totalSpread <= available) {
-				spreadScale = 1;
-				return idealUnit;
+			const gap = Math.max(15, Math.min(20, window.innerWidth * 0.012));
+			const leftTitleWidth = titleLeft instanceof HTMLElement ? titleLeft.offsetWidth : 0;
+			const rightTitleWidth = titleRight instanceof HTMLElement ? titleRight.offsetWidth : 0;
+			const titleVisibilityRatio = 0.24;
+			const sideBuffer = Math.max(24, window.innerWidth * 0.02);
+			const reservedLeft = leftTitleWidth * titleVisibilityRatio + sideBuffer;
+			const reservedRight = rightTitleWidth * titleVisibilityRatio + sideBuffer;
+			const available = Math.max(
+				320,
+				window.innerWidth - reservedLeft - reservedRight - sideBuffer * 2,
+			);
+			const idealSpread = width * total + gap * (total - 1);
+			const scaled = available / idealSpread;
+			spreadScale = Math.min(1, Math.max(0.68, scaled));
+			const adjustedGap = Math.max(12, gap * spreadScale);
+			const scaledWidth = width * spreadScale;
+			const totalSpread = scaledWidth * total + adjustedGap * (total - 1);
+			if (totalSpread > available) {
+				const compression = available / totalSpread;
+				return (scaledWidth + adjustedGap) * compression;
 			}
-			spreadScale = available / totalSpread;
-			return idealUnit * spreadScale;
+			return scaledWidth + adjustedGap;
+		};
+
+		const getSpreadTitleShift = (cards, unit) => {
+			if (!cards.length) return 0;
+			if (!(titleLeft instanceof HTMLElement) || !(titleRight instanceof HTMLElement)) return 0;
+			const viewport = window.innerWidth;
+			const leftRect = titleLeft.getBoundingClientRect();
+			const rightRect = titleRight.getBoundingClientRect();
+			const leftCenter = leftRect.left + leftRect.width / 2;
+			const rightCenter = rightRect.left + rightRect.width / 2;
+			const visibleRatio = 0.14;
+			const visibleLeft = leftRect.width * visibleRatio;
+			const visibleRight = rightRect.width * visibleRatio;
+			const desiredLeftCenter = visibleLeft - leftRect.width / 2;
+			const desiredRightCenter = viewport - visibleRight + rightRect.width / 2;
+			const leftShift = leftCenter - desiredLeftCenter;
+			const rightShift = desiredRightCenter - rightCenter;
+			const stageCenterOffset = getViewportCenterOffset();
+			const spreadHalfWidth = ((cards.length - 1) * unit) / 2 + (cards[0].offsetWidth * spreadScale) / 2;
+			const cardLeftEdge = viewport / 2 + stageCenterOffset - spreadHalfWidth;
+			const cardRightEdge = viewport / 2 + stageCenterOffset + spreadHalfWidth;
+			const cardBuffer = Math.max(16, viewport * 0.012);
+			const minLeftShiftForCards = leftCenter + leftRect.width / 2 - (cardLeftEdge - cardBuffer);
+			const minRightShiftForCards = cardRightEdge + cardBuffer - (rightCenter - rightRect.width / 2);
+			return Math.max(minLeftShiftForCards, minRightShiftForCards, Math.min(leftShift, rightShift), 0);
 		};
 
 		const getViewportCenterOffset = () => {
 			const stageRect = stage.getBoundingClientRect();
 			const offset = window.innerWidth / 2 - (stageRect.left + stageRect.width / 2);
-			return Math.max(-80, Math.min(80, offset));
+			const maxOffset = Math.max(80, window.innerWidth * 0.12);
+			return Math.max(-maxOffset, Math.min(maxOffset, offset));
 		};
 
 		const spreadState = (index, total, unit) => {
@@ -548,7 +585,7 @@ const { decks } = Astro.props;
 
 				// Phase 3: cards spread → title moves with outermost cards
 				schedule(() => {
-					const spreadShift = Math.min(1.5 * spreadUnit, window.innerWidth * 0.35);
+					const spreadShift = getSpreadTitleShift(cards, spreadUnit);
 					setTitleState({ shift: spreadShift, opacity: 1 }, true);
 				}, cycleStart + 1540);
 
