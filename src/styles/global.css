@@ -49,6 +49,7 @@
 	--space-md: 2rem;
 	--space-lg: 4rem;
 	--space-xl: 8rem;
+	--header-height: 5.9rem;
 
 	/* Animation */
 	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
