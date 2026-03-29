@@ -1,98 +1,110 @@
-# Codex Prompt: Fix Desktop Hero Card Spread Animation
+# Hero Section — Quality Audit & Fix
+
+## Your Role
+
+You are auditing and fixing the hero animation on the `/ai-shoots` page. Do your own analysis first — read all the code, understand the architecture, identify issues independently, then fix them. Don't assume this doc lists everything.
 
 ## Branch
 
-Create from `dev` → `fix/hero-spread-responsive`
+Create from `dev` → `fix/hero-section-quality`
 
-## Problem
+## Design Spec — What "Done" Looks Like
 
-The desktop hero animation in `src/components/ShootsHero.astro` has a card spread that doesn't scale properly across viewport widths. When 5 cards fan out horizontally, they fill the entire viewport edge-to-edge with no breathing room — especially on viewports under 1500px. The "NEXAI" and "STUDIO" title words that should remain partially visible during the spread get pushed behind/under the cards.
+### Layout (all viewport widths 1000px–2560px)
 
-## Current Architecture
+- Everything is **viewport-centered**: stacked cards, spread cards, title text, thumbnail dock
+- The card stage sits between NEXAI and STUDIO in a flex row. Because STUDIO is wider than NEXAI, the stage is NOT at viewport center by default. **You must fix this** — cards should always appear centered in the viewport regardless of title text widths.
+- The dock thumbnails are centered below the cards
+- The brand marquee scrolls at the bottom, fully visible (not clipped)
 
-- **File**: `src/components/ShootsHero.astro` (single file — template + scoped CSS + `<script is:inline>`)
-- **Layout**: Flex row → `NEXAI [card-stage] STUDIO`. Cards are absolutely positioned inside the stage with `overflow: visible`, spreading outward via JS-computed transforms.
-- **Animation cycle**: Cards enter stacked from top → spread horizontally (hold 3s) → stack back → exit upward. Title words animate between 3 states: together (no gap), apart (alongside cards), off-to-sides (during spread).
-- **Data**: 4 decks × 5 cards each. Deck thumbnails shown in a dock bar.
+### Card Spread Animation
 
-## What Needs Fixing
+- 5 cards fan out horizontally with **visible gaps** (~15-20px) between them
+- Cards + gaps + margins must fit within the viewport with **breathing room on each side**
+- NEXAI and STUDIO text should remain **~20-30% visible** at viewport edges during spread — not hidden, not overlapping the cards
+- Cards should **scale smoothly** with viewport width — no size jumps at any breakpoint
+- The spread must work correctly from 1000px to 2560px viewport width
 
-### 1. Card spread must leave room for the title text
+### Title Animation (3 phases per deck)
 
-When cards spread, NEXAI and STUDIO should remain ~20-30% visible at the viewport edges. Currently the spread fills 95%+ of the viewport. The `getSpreadUnit()` function computes the spread distance — it needs to reserve space on each side for the partially-visible text.
+1. **No cards**: NEXAI STUDIO together with a small gap (no overlap)
+2. **Cards stacked**: NEXAI [cards] STUDIO — visible alongside
+3. **Cards spread**: NEXAI/STUDIO pushed outward, partially visible at edges, NOT overlapping cards
 
-**Key insight**: The title words are flex siblings of the stage. Their natural position is adjacent to the stage. When `setTitleState({ shift: N })` is called, NEXAI moves left by N pixels and STUDIO moves right by N pixels from their natural positions. During spread, the shift should be calculated so the words land at ~10-15% from the viewport edge — NOT off-screen.
+### Timing
 
-### 2. Responsive card sizing
+- Cards enter → hold stacked → spread (hold 3s) → stack back → exit upward
+- Title transitions sync with card transitions (same easing, same completion time)
+- Clicking dock thumbnail jumps immediately to that deck (no 2s delay)
 
-Cards use CSS `clamp()` for width/height. The values must:
+### Mobile (≤720px)
 
-- Scale smoothly with viewport width (no jumps at breakpoints)
-- Be small enough that 5 cards + gaps + text margins fit in any desktop viewport (1000px–2560px)
-- Current values `clamp(11rem, 15vw, 22rem)` may need adjustment
+- Cards deal one-by-one (existing behavior, don't break it)
+- Dock and marquee don't overlap
+- Touch targets ≥ 48px
 
-### 3. The spread calculation (`getSpreadUnit`)
+### Accessibility
 
-This function computes how far apart card centers should be. It also sets `spreadScale` (a CSS `scale()` value applied to cards during spread). Issues:
+- Dock thumbs have visible `:focus-visible` state
+- `prefers-reduced-motion` respected (already implemented)
 
-- The `available` width calculation must account for the title text space, not just a small margin
-- `spreadScale` should only go below 1 (shrink), never above 1
-- Card width must be measured with `offsetWidth` (not `getBoundingClientRect` which includes transforms)
+## Known Problem Areas (investigate these, but don't limit yourself to them)
 
-### 4. `getViewportCenterOffset()`
+### Centering
 
-Cards spread from the stage center, but the stage isn't at the viewport center (it's a flex child between NEXAI and STUDIO). This function offsets cards to center them on the viewport. Currently clamped to ±80px — verify this is sufficient and doesn't cause asymmetric margins.
+- The stage is ~48px off viewport center because STUDIO > NEXAI width. `getViewportCenterOffset()` tries to compensate but is clamped to ±80px and only applies during spread — **stacked cards are off-center too**.
+- Consider: should the offset apply to ALL card states, not just spread?
 
-## Expected Behavior (Desktop Only — Don't Touch Mobile ≤720px)
+### Responsive Card Sizing
 
-### Stacked state (cards in center):
+- CSS `clamp()` values may not scale smoothly across all widths
+- Check for jumps at the 1100px and 720px media query boundaries
+- 5 cards × card_width must fit in the viewport with margins at every width
 
-```
-         NEXAI  [stacked cards]  STUDIO
-         ←gap→                   ←gap→
-```
+### Performance
 
-NEXAI and STUDIO visible with a small gap between them (controlled by `getTitleShift()` returning a negative value).
+- `requestAnimationFrame` IDs stored in single vars (rafA, rafB) — if `showDeck()` is called rapidly (dock clicks), old RAFs aren't cancelled
+- `timers` array grows unbounded across cycles
+- `getBoundingClientRect()` called during animation (layout thrashing)
+- Cleanup should run on `astro:before-swap`, not just `after-swap`
 
-### Spread state (cards fanned out):
+### Overflow
 
-```
-  NEXA  [card] [card] [card] [card] [card]  UDIO
-  ↑                                          ↑
-  ~15% of word visible                ~15% of word visible
-  ↑                                          ↑
-  Cards have ~15-20px gaps between them
-  Cards centered in viewport
-  ~5% margin between outermost card and visible text
-```
+- `.shoots-hero` has `overflow: hidden` — verify this doesn't clip cards during spread, title during animation, or marquee at bottom
 
-### Stack-back state:
+### Spacing
 
-Same as stacked — title words return to alongside position.
+- `--header-height` CSS variable is used but may not be defined
+- `margin-top: 12.5vh` on `.shoots-hero__copy` — is this the right approach?
+- Dock and marquee spacing on mobile
 
-## Constraints
+## Files
 
-- Only modify `src/components/ShootsHero.astro`
-- Only modify the desktop `else` branch in JS (line ~540+). Do NOT touch the mobile `if (isMobile())` branch.
-- Do NOT touch the HTML template or the dock thumbnail feature
-- Keep all existing animation phases and timing (enter → spread → hold 3s → stack → exit)
-- Keep the `forceImmediate` click-to-jump feature working
-- Test at: 1000px, 1280px, 1440px, 1536px, 1920px viewport widths
+- `src/components/ShootsHero.astro` — **primary file** (template + CSS + JS)
+- `src/pages/ai-shoots.astro` — page wrapper, `.shoots-hero` section styles
+- `src/components/ClientMarquee.astro` — brand marquee (modify if needed for spacing/clipping)
+- `src/styles/global.css` — `.container` class, CSS variables
 
 ## How to Test
 
 ```bash
 npm run dev
 # Open http://localhost:4321/ai-shoots
-# Resize browser to various widths
-# Watch full animation cycle at each width
-# Click dock thumbnails to verify jump works
-# Verify: cards centered, gaps visible, text partially visible, no overflow
 ```
 
-## Files for Context
+Test matrix:
 
-- `src/components/ShootsHero.astro` — the only file to modify
-- `src/data/ai-shoots.ts` — deck image data (read-only context)
-- `src/pages/ai-shoots.astro` — page layout with `.shoots-hero` section (read-only context)
-- `src/components/ClientMarquee.astro` — brand logo marquee below hero (read-only context)
+- **Widths**: 1000px, 1280px, 1440px, 1536px, 1920px, 2560px
+- **Heights**: 700px, 900px, 1080px
+- **Mobile**: 375px, 414px (verify no regressions)
+- **Interactions**: click each dock thumbnail, verify instant jump + correct active state
+- **Full cycle**: watch all 4 decks animate through, verify centering + spacing at every phase
+- **Resize**: resize browser mid-animation, verify no visual glitches on next cycle
+
+## Quality Bar
+
+- Zero horizontal overflow at any viewport width
+- Cards always visually centered in viewport (stacked AND spread)
+- No element overlaps (cards/text, dock/marquee, content/navbar)
+- Smooth scaling — no jumps when resizing browser
+- Animation feels polished: title and cards move in sync, no jank
