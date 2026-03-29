@@ -49,6 +49,20 @@ const { decks } = Astro.props;
 			>
 		</div>
 	</div>
+
+	<nav class="shoots-hero__dock" data-hero-dock aria-label="Browse collections">
+		{
+			decks.map((deck, i) => (
+				<button
+					class:list={['shoots-hero__dock-thumb', i === 0 && 'shoots-hero__dock-thumb--active']}
+					data-hero-thumb={i}
+					aria-label={deck[0].alt}
+				>
+					<img src={deck[0].src} alt="" loading="lazy" decoding="async" />
+				</button>
+			))
+		}
+	</nav>
 </div>
 
 <style>
@@ -60,6 +74,7 @@ const { decks } = Astro.props;
 
 	.shoots-hero__copy {
 		width: 100%;
+		margin-top: 12.5vh;
 		display: grid;
 		justify-items: center;
 	}
@@ -107,8 +122,8 @@ const { decks } = Astro.props;
 
 	.shoots-hero__stack-stage {
 		position: relative;
-		width: clamp(15rem, 24vw, 18.5rem);
-		height: clamp(21rem, 33vw, 25.5rem);
+		width: clamp(11rem, 15vw, 22rem);
+		height: clamp(15rem, 21vw, 30rem);
 		overflow: visible;
 		pointer-events: none;
 	}
@@ -124,8 +139,8 @@ const { decks } = Astro.props;
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		width: clamp(15rem, 24vw, 18.5rem);
-		height: clamp(21rem, 33vw, 25.5rem);
+		width: clamp(11rem, 15vw, 22rem);
+		height: clamp(15rem, 21vw, 30rem);
 		transform: translate(-50%, -50%);
 		transform-origin: 50% 50%;
 		border-radius: 1.2rem;
@@ -147,12 +162,6 @@ const { decks } = Astro.props;
 		.shoots-hero__title-row {
 			min-height: 21rem;
 			gap: 1.15rem;
-		}
-
-		.shoots-hero__stack-stage,
-		.shoots-hero__card {
-			width: clamp(12rem, 26vw, 14rem);
-			height: clamp(17rem, 37vw, 20rem);
 		}
 
 		.shoots-hero__title-word {
@@ -188,6 +197,59 @@ const { decks } = Astro.props;
 			height: clamp(19.5rem, 86vw, 25rem);
 			border-radius: 1rem;
 		}
+
+		.shoots-hero__dock {
+			bottom: clamp(5rem, 8vw, 7rem);
+			gap: 0.5rem;
+		}
+
+		.shoots-hero__dock-thumb {
+			width: 2.5rem;
+		}
+	}
+
+	.shoots-hero__dock {
+		position: absolute;
+		bottom: clamp(3.5rem, 5vw, 5rem);
+		left: 50%;
+		transform: translateX(-50%);
+		display: flex;
+		gap: 0.6rem;
+		padding: 0.4rem;
+		background: rgba(255, 255, 255, 0.06);
+		backdrop-filter: blur(12px);
+		-webkit-backdrop-filter: blur(12px);
+		border-radius: 0.8rem;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		z-index: 20;
+	}
+
+	.shoots-hero__dock-thumb {
+		all: unset;
+		cursor: pointer;
+		width: 3rem;
+		aspect-ratio: 3 / 4;
+		border-radius: 0.4rem;
+		overflow: hidden;
+		opacity: 0.5;
+		border: 2px solid transparent;
+		transition:
+			opacity 0.3s ease,
+			border-color 0.3s ease,
+			transform 0.3s ease;
+	}
+
+	.shoots-hero__dock-thumb img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+	}
+
+	.shoots-hero__dock-thumb--active {
+		opacity: 1;
+		border-color: rgba(255, 255, 255, 0.5);
+		transform: scale(1.1);
 	}
 </style>
 
@@ -206,11 +268,19 @@ const { decks } = Astro.props;
 		const decks = Array.from(stage.querySelectorAll('[data-hero-deck]'));
 		if (!decks.length) return;
 
+		const thumbs = Array.from(document.querySelectorAll('[data-hero-thumb]'));
+		const updateActiveDockThumb = (index) => {
+			thumbs.forEach((t, i) => {
+				t.classList.toggle('shoots-hero__dock-thumb--active', i === index);
+			});
+		};
+
 		const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 		let activeIndex = 0;
 		let cycleTimer;
 		let rafA;
 		let rafB;
+		let spreadScale = 1;
 		const timers = [];
 
 		const getCards = (deck) => Array.from(deck.querySelectorAll('[data-hero-card]'));
@@ -222,9 +292,9 @@ const { decks } = Astro.props;
 		};
 
 		const getTitleShift = () => {
-			if (window.innerWidth <= 720) return -75;
-			if (window.innerWidth <= 1100) return -120;
-			return -160;
+			if (window.innerWidth <= 720) return -55;
+			if (window.innerWidth <= 1100) return -90;
+			return -120;
 		};
 
 		const setTitleState = ({ shift = 0, opacity = 1 }, animate = true) => {
@@ -274,18 +344,34 @@ const { decks } = Astro.props;
 
 		const getSpreadUnit = (cards) => {
 			if (!cards.length) return 0;
-			const width = cards[cards.length - 1].getBoundingClientRect().width || 0;
-			if (window.innerWidth <= 1100) return Math.max(width * 0.8, 130);
-			return width + 34;
+			const width = cards[0].offsetWidth || 0;
+			const total = cards.length;
+			const gap = 20;
+			const idealUnit = width + gap;
+			const totalSpread = (total - 1) * idealUnit + width;
+			const margin = Math.max(window.innerWidth * 0.18, 160);
+			const available = window.innerWidth - margin;
+			if (totalSpread <= available) {
+				spreadScale = 1;
+				return idealUnit;
+			}
+			spreadScale = available / totalSpread;
+			return idealUnit * spreadScale;
+		};
+
+		const getViewportCenterOffset = () => {
+			const stageRect = stage.getBoundingClientRect();
+			const offset = window.innerWidth / 2 - (stageRect.left + stageRect.width / 2);
+			return Math.max(-80, Math.min(80, offset));
 		};
 
 		const spreadState = (index, total, unit) => {
 			const middle = (total - 1) / 2;
 			const distance = index - middle;
 			return {
-				x: distance * unit,
+				x: distance * unit + getViewportCenterOffset(),
 				y: 0,
-				scale: 1,
+				scale: spreadScale,
 				rotate: 0,
 				opacity: 1,
 				zIndex: getStackZIndex(index, total),
@@ -365,8 +451,12 @@ const { decks } = Astro.props;
 			return;
 		}
 
+		let forceImmediate = false;
+
 		const runCycle = () => {
-			const isLoopRestart = activeIndex === 0;
+			const isLoopRestart = activeIndex === 0 && !forceImmediate;
+			forceImmediate = false;
+			updateActiveDockThumb(activeIndex);
 
 			decks.forEach((deck, deckIndex) => {
 				if (deckIndex !== activeIndex) hideDeck(deck);
@@ -446,16 +536,21 @@ const { decks } = Astro.props;
 				cycleTimer = window.setTimeout(runCycle, exitStart + 1200);
 			} else {
 				if (isLoopRestart) {
-					setTitleState({ shift: titleShift, opacity: 1 }, true);
 					schedule(startDeck, cycleStart);
 				} else {
-					setTitleState({ shift: 0, opacity: 1 }, false);
 					startDeck();
 				}
 
+				// Phase 2: cards enter → title separates (no gap → visible gap)
 				schedule(() => {
 					setTitleState({ shift: 0, opacity: 1 }, true);
 				}, cycleStart + 80);
+
+				// Phase 3: cards spread → title moves with outermost cards
+				schedule(() => {
+					const spreadShift = Math.min(1.5 * spreadUnit, window.innerWidth * 0.35);
+					setTitleState({ shift: spreadShift, opacity: 1 }, true);
+				}, cycleStart + 1540);
 
 				schedule(() => {
 					cards.forEach((card, index) => {
@@ -463,38 +558,53 @@ const { decks } = Astro.props;
 					});
 				}, cycleStart + 1540);
 
+				// Cards stack back → title returns visible
+				schedule(() => {
+					setTitleState({ shift: 0, opacity: 1 }, true);
+				}, cycleStart + 4540);
+
 				schedule(() => {
 					cards.forEach((card, index) => {
 						applyState(card, holdState(index, cards.length), true);
 					});
-				}, cycleStart + 2860);
+				}, cycleStart + 4540);
 
+				// Cards exit → title comes together (no gap)
 				schedule(() => {
 					cards.forEach((card, index) => {
 						applyState(card, exitState(index, cards.length), true);
 					});
-				}, cycleStart + 3840);
+				}, cycleStart + 5520);
+
+				schedule(() => {
+					setTitleState({ shift: titleShift, opacity: 1 }, true);
+				}, cycleStart + 5520);
 
 				schedule(() => {
 					hideDeck(deck);
-				}, cycleStart + 4680);
-
-				if (activeIndex === decks.length - 1) {
-					schedule(() => {
-						setTitleState({ shift: titleShift, opacity: 1 }, true);
-					}, cycleStart + 4920);
-				} else {
-					schedule(() => {
-						setTitleState({ shift: 0, opacity: 1 }, false);
-					}, cycleStart + 4920);
-				}
+				}, cycleStart + 6360);
 
 				activeIndex = (activeIndex + 1) % decks.length;
-				cycleTimer = window.setTimeout(runCycle, cycleStart + 5000);
+				cycleTimer = window.setTimeout(runCycle, cycleStart + 6680);
 			}
 		};
 
 		runCycle();
+
+		thumbs.forEach((thumb, i) => {
+			thumb.addEventListener('click', () => {
+				timers.forEach((t) => clearTimeout(t));
+				timers.length = 0;
+				clearTimeout(cycleTimer);
+				cancelAnimationFrame(rafA);
+				cancelAnimationFrame(rafB);
+				decks.forEach((d) => hideDeck(d));
+				setTitleState({ shift: isMobile() ? -120 : getTitleShift(), opacity: 1 }, false);
+				activeIndex = i;
+				forceImmediate = true;
+				runCycle();
+			});
+		});
 
 		window[cleanupKey] = () => {
 			cancelAnimationFrame(rafA);
