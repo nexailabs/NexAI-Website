@@ -277,18 +277,25 @@ const { decks } = Astro.props;
 
 		const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 		let activeIndex = 0;
-		let cycleTimer;
 		let rafA;
 		let rafB;
 		let spreadScale = 1;
-		const timers = [];
+		const timers = new Set();
 
 		const getCards = (deck) => Array.from(deck.querySelectorAll('[data-hero-card]'));
 
 		const schedule = (fn, delay) => {
-			const id = window.setTimeout(fn, delay);
-			timers.push(id);
+			const id = window.setTimeout(() => {
+				timers.delete(id);
+				fn();
+			}, delay);
+			timers.add(id);
 			return id;
+		};
+
+		const clearAllTimers = () => {
+			timers.forEach((id) => clearTimeout(id));
+			timers.clear();
 		};
 
 		const getTitleShift = () => {
@@ -463,7 +470,7 @@ const { decks } = Astro.props;
 			window[cleanupKey] = () => {
 				cancelAnimationFrame(rafA);
 				cancelAnimationFrame(rafB);
-				timers.forEach((timer) => clearTimeout(timer));
+				clearAllTimers();
 			};
 			return;
 		}
@@ -471,6 +478,7 @@ const { decks } = Astro.props;
 		let forceImmediate = false;
 
 		const runCycle = () => {
+			clearAllTimers();
 			const isLoopRestart = activeIndex === 0 && !forceImmediate;
 			forceImmediate = false;
 			updateActiveDockThumb(activeIndex);
@@ -550,7 +558,7 @@ const { decks } = Astro.props;
 				}, exitStart + 840);
 
 				activeIndex = (activeIndex + 1) % decks.length;
-				cycleTimer = window.setTimeout(runCycle, exitStart + 1200);
+				schedule(runCycle, exitStart + 1200);
 			} else {
 				if (isLoopRestart) {
 					schedule(startDeck, cycleStart);
@@ -602,7 +610,7 @@ const { decks } = Astro.props;
 				}, cycleStart + 6360);
 
 				activeIndex = (activeIndex + 1) % decks.length;
-				cycleTimer = window.setTimeout(runCycle, cycleStart + 6680);
+				schedule(runCycle, cycleStart + 6680);
 			}
 		};
 
@@ -610,9 +618,7 @@ const { decks } = Astro.props;
 
 		thumbs.forEach((thumb, i) => {
 			thumb.addEventListener('click', () => {
-				timers.forEach((t) => clearTimeout(t));
-				timers.length = 0;
-				clearTimeout(cycleTimer);
+				clearAllTimers();
 				cancelAnimationFrame(rafA);
 				cancelAnimationFrame(rafB);
 				decks.forEach((d) => hideDeck(d));
@@ -626,8 +632,7 @@ const { decks } = Astro.props;
 		window[cleanupKey] = () => {
 			cancelAnimationFrame(rafA);
 			cancelAnimationFrame(rafB);
-			timers.forEach((timer) => clearTimeout(timer));
-			clearTimeout(cycleTimer);
+			clearAllTimers();
 		};
 	};
 
