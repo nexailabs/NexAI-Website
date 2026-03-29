@@ -21,16 +21,16 @@ npm run preview      # Preview built site locally
 
 ## Tech Stack
 
-| Layer | Technology | Notes |
-|-------|-----------|-------|
-| Framework | Astro 5 (SSG, TypeScript strict) | Static site generation |
-| Animation | GSAP 3.14 + ScrollTrigger | Scroll-triggered animations |
-| Smooth Scroll | Lenis 1.3 | `src/scripts/lenis.ts` — DO NOT MODIFY |
-| Styling | Vanilla CSS + custom properties | Design tokens in `src/styles/global.css` |
-| Images + short video | ImageKit | 25GB free bandwidth, auto-optimization, CDN |
-| Long-form video | YouTube embed | Free, unlimited |
-| Hosting | Cloudflare Pages | Auto-deploys from `main` branch |
-| Fonts | Inter (400, 600, 800) | Google Fonts, preloaded |
+| Layer                | Technology                       | Notes                                       |
+| -------------------- | -------------------------------- | ------------------------------------------- |
+| Framework            | Astro 5 (SSG, TypeScript strict) | Static site generation                      |
+| Animation            | GSAP 3.14 + ScrollTrigger        | Scroll-triggered animations                 |
+| Smooth Scroll        | Lenis 1.3                        | `src/scripts/lenis.ts` — DO NOT MODIFY      |
+| Styling              | Vanilla CSS + custom properties  | Design tokens in `src/styles/global.css`    |
+| Images + short video | ImageKit                         | 25GB free bandwidth, auto-optimization, CDN |
+| Long-form video      | YouTube embed                    | Free, unlimited                             |
+| Hosting              | Cloudflare Pages                 | Auto-deploys from `main` branch             |
+| Fonts                | Inter (400, 600, 800)            | Google Fonts, preloaded                     |
 
 **DO NOT use:** Tailwind, React, Vue, Svelte, Bootstrap, or any UI component library.
 
@@ -116,25 +116,27 @@ git push origin feature/your-task-name
 ### Promoting to Production
 
 When `dev` is stable and tested:
+
 1. Create PR: `dev` > `main`
 2. Review together
 3. Merge = Cloudflare Pages auto-deploys to production
 
 ### Rules
 
-| Rule | Why |
-|------|-----|
-| Never push directly to `main` | Keeps production safe |
-| Never use `git push --force` | Destroys other people's work permanently |
-| One feature per branch | If something breaks, only that branch is affected |
-| Always `git pull` before starting | Prevents merge conflicts |
-| Stage specific files, not `git add .` | Prevents committing logs, secrets, huge images |
-| Don't commit images to git | Use ImageKit instead (see Image Guidelines) |
-| Don't commit `.log` files | They're in `.gitignore` for a reason |
+| Rule                                  | Why                                               |
+| ------------------------------------- | ------------------------------------------------- |
+| Never push directly to `main`         | Keeps production safe                             |
+| Never use `git push --force`          | Destroys other people's work permanently          |
+| One feature per branch                | If something breaks, only that branch is affected |
+| Always `git pull` before starting     | Prevents merge conflicts                          |
+| Stage specific files, not `git add .` | Prevents committing logs, secrets, huge images    |
+| Don't commit images to git            | Use ImageKit instead (see Image Guidelines)       |
+| Don't commit `.log` files             | They're in `.gitignore` for a reason              |
 
 ### Common Mistakes & Fixes
 
 **"I made changes on the wrong branch!"**
+
 ```bash
 git stash                          # Save your changes temporarily
 git checkout feature/correct-branch  # Switch to the right branch
@@ -142,9 +144,11 @@ git stash pop                      # Apply your changes here
 ```
 
 **"I committed something I shouldn't have!"**
+
 > Stop. Don't try to fix it yourself. Ask for help before running any undo commands.
 
 **"Git says there's a merge conflict!"**
+
 > Don't panic. Open the conflicted file, look for `<<<<<<<` markers, choose which version to keep, remove the markers, then commit.
 
 ---
@@ -166,31 +170,41 @@ Longer videos are embedded from **YouTube**.
 
 ```html
 <!-- Auto-format, auto-quality, 1200px wide -->
-<img src="https://ik.imagekit.io/YOUR_ID/folder/image.jpg?tr=w-1200,f-auto,q-80"
-     alt="Description of the image" />
+<img
+	src="https://ik.imagekit.io/YOUR_ID/folder/image.jpg?tr=w-1200,f-auto,q-80"
+	alt="Description of the image"
+/>
 ```
 
 ### How to Add Videos
 
 **Short clips (8-30s product demos, reels):** Upload to ImageKit, use like images:
+
 ```html
-<video src="https://ik.imagekit.io/YOUR_ID/folder/clip.mp4?tr=w-800" autoplay muted loop playsinline />
+<video
+	src="https://ik.imagekit.io/YOUR_ID/folder/clip.mp4?tr=w-800"
+	autoplay
+	muted
+	loop
+	playsinline
+/>
 ```
 
 **Longer videos (case studies, tutorials):** Upload to YouTube, embed:
+
 ```html
 <iframe src="https://www.youtube.com/embed/VIDEO_ID" allowfullscreen></iframe>
 ```
 
 ### Size Targets
 
-| Media Type | Max Width | Target Size | Format |
-|-----------|----------|------------|--------|
-| Hero/showcase images | 1600px | 500KB - 1MB | WebP (auto via `f-auto`) |
-| Portfolio cards | 800px | 150 - 300KB | WebP (auto) |
-| Thumbnails | 400px | 50 - 100KB | WebP (auto) |
-| Logos/icons | As needed | < 50KB | SVG or PNG |
-| Short video clips | 800-1200px | < 5MB | MP4 |
+| Media Type           | Max Width  | Target Size | Format                   |
+| -------------------- | ---------- | ----------- | ------------------------ |
+| Hero/showcase images | 1600px     | 500KB - 1MB | WebP (auto via `f-auto`) |
+| Portfolio cards      | 800px      | 150 - 300KB | WebP (auto)              |
+| Thumbnails           | 400px      | 50 - 100KB  | WebP (auto)              |
+| Logos/icons          | As needed  | < 50KB      | SVG or PNG               |
+| Short video clips    | 800-1200px | < 5MB       | MP4                      |
 
 ### Why Not Git?
 
@@ -213,13 +227,13 @@ MDX = Markdown + custom components. You can embed videos, image galleries, style
 
 ```mdx
 ---
-title: "How AI is Changing Fashion Photography"
+title: 'How AI is Changing Fashion Photography'
 date: 2026-03-26
 ---
 
 # How AI is Changing Fashion Photography
 
-Regular text with **bold** and *italic*...
+Regular text with **bold** and _italic_...
 
 <YouTubeEmbed url="https://youtube.com/watch?v=..." />
 
@@ -232,13 +246,13 @@ Regular text with **bold** and *italic*...
 
 Read these before writing any code:
 
-| Doc | What It Covers |
-|-----|---------------|
-| [BUILD-PLAN.md](docs/BUILD-PLAN.md) | 21-phase build guide, architecture, section-by-section order |
-| [BRAND.md](docs/BRAND.md) | Color palette, typography, logo files, design patterns |
-| [REFERENCES.md](docs/REFERENCES.md) | 19 competitor/inspiration sites to study |
-| [AI-SHOOTS-CONTENT.md](docs/AI-SHOOTS-CONTENT.md) | Full copy for the AI Shoots landing page |
-| [website-analysis.md](docs/website-analysis.md) | Critique of the current live site |
+| Doc                                               | What It Covers                                               |
+| ------------------------------------------------- | ------------------------------------------------------------ |
+| [BUILD-PLAN.md](docs/BUILD-PLAN.md)               | 21-phase build guide, architecture, section-by-section order |
+| [BRAND.md](docs/BRAND.md)                         | Color palette, typography, logo files, design patterns       |
+| [REFERENCES.md](docs/REFERENCES.md)               | 19 competitor/inspiration sites to study                     |
+| [AI-SHOOTS-CONTENT.md](docs/AI-SHOOTS-CONTENT.md) | Full copy for the AI Shoots landing page                     |
+| [website-analysis.md](docs/website-analysis.md)   | Critique of the current live site                            |
 
 ---
 
@@ -246,13 +260,13 @@ Read these before writing any code:
 
 Full brand specification is in [`docs/BRAND.md`](docs/BRAND.md). Key tokens:
 
-| Token | Value | Usage |
-|-------|-------|-------|
-| `--color-bg` | `#050607` | Page background |
+| Token                | Value     | Usage                |
+| -------------------- | --------- | -------------------- |
+| `--color-bg`         | `#050607` | Page background      |
 | `--color-brand-teal` | `#1E7E72` | Brand gradient start |
-| `--color-brand-cyan` | `#4EC9B4` | Brand gradient end |
-| `--color-accent` | `#DCEA22` | Lime accent |
-| `--color-text-main` | `#ffffff` | Primary text |
+| `--color-brand-cyan` | `#4EC9B4` | Brand gradient end   |
+| `--color-accent`     | `#DCEA22` | Lime accent          |
+| `--color-text-main`  | `#ffffff` | Primary text         |
 
 Responsive breakpoints: **375px** (mobile), **768px** (tablet), **1024px** (desktop), **1440px** (wide)
 
@@ -273,6 +287,7 @@ The site is deployed on **Cloudflare Pages**:
 ## Brand Assets
 
 Logo files in `public/assets/logo/`:
+
 - `nexai-icon.png` — Hexagonal icon (teal gradient)
 - `nexai-logo-white.png` — White wordmark (dark backgrounds)
 - `nexai-logo-black.png` — Black wordmark (light backgrounds)
