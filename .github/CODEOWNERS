@@ -1,0 +1,14 @@
+# Default — all PRs require review from Rahul
+* @rahul-nexailabs
+
+# Components and pages — Rahul or Amit
+src/components/ @rahul-nexailabs @amit-nexai
+src/pages/ @rahul-nexailabs @amit-nexai
+
+# Styles — Rahul
+src/styles/ @rahul-nexailabs
+
+# CI/CD and config — Rahul only
+.github/ @rahul-nexailabs
+astro.config.mjs @rahul-nexailabs
+package.json @rahul-nexailabs

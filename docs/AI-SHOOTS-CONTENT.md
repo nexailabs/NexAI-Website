@@ -7,6 +7,7 @@ All text content for the `/ai-shoots` landing page. See `docs/BUILD-PLAN.md` for
 ## Target Audience
 
 **Primary:** D2C fashion brand founders and e-commerce managers in India
+
 - Selling on Myntra, Flipkart, Amazon, Shopify
 - 50-500 SKUs per month
 - Frustrated with slow, expensive traditional photoshoots
@@ -16,6 +17,7 @@ All text content for the `/ai-shoots` landing page. See `docs/BUILD-PLAN.md` for
 **Secondary:** Creative agencies serving fashion brands
 
 **Tagline Options:**
+
 - "Stop Waiting Weeks for Photoshoots"
 - "From Mannequin to Model in 48 Hours"
 - "AI Photoshoots for Fashion Brands"
@@ -47,6 +49,7 @@ All text content for the `/ai-shoots` landing page. See `docs/BUILD-PLAN.md` for
 ## Section 3: Problem → Solution
 
 **Left — "The Old Way":**
+
 - Photoshoots take 2-4 weeks to schedule
 - Cost ₹2,000-5,000 per SKU
 - Model availability delays launches
@@ -54,6 +57,7 @@ All text content for the `/ai-shoots` landing page. See `docs/BUILD-PLAN.md` for
 - New collections sit in inventory waiting
 
 **Right — "The NexAI Way":**
+
 - 48-hour turnaround, guaranteed
 - Starting at just ₹400 per SKU
 - Unlimited AI model options
@@ -65,6 +69,7 @@ All text content for the `/ai-shoots` landing page. See `docs/BUILD-PLAN.md` for
 ## Section 4: Transformation Showcase
 
 6-8 before/after examples:
+
 - Mannequin → On-model (ethnic wear)
 - Flat-lay → Lifestyle shot (western wear)
 - Plain background → Studio setting (jewelry)
@@ -88,6 +93,7 @@ All text content for the `/ai-shoots` landing page. See `docs/BUILD-PLAN.md` for
 ## Section 6: Testimonials + Stats
 
 **Stats bar:**
+
 - 5,000+ Images Delivered
 - 15+ Brands Trust Us
 - 80% Average Cost Savings
@@ -115,12 +121,14 @@ All text content for the `/ai-shoots` landing page. See `docs/BUILD-PLAN.md` for
 ## Section 7: Pricing
 
 **Tier 1 — "Pay Per SKU"**
+
 - Price: ₹400/SKU
 - Subtitle: "Perfect for trying us out"
 - Min 25 SKUs, 5-7 images per SKU, marketplace-ready quality, 48-hour delivery, 2 revision rounds
 - CTA: "Get Started"
 
 **Tier 2 — "Growth" (FEATURED)**
+
 - Badge: "Most Popular"
 - Price: ₹35,000/month
 - Subtitle: "For scaling brands"
@@ -128,6 +136,7 @@ All text content for the `/ai-shoots` landing page. See `docs/BUILD-PLAN.md` for
 - CTA: "Book a Call"
 
 **Tier 3 — "Scale"**
+
 - Price: ₹75,000/month
 - Subtitle: "For high-volume brands"
 - 250 SKUs included, 10 video reels, 30 ad creatives, same-day rush option, API access, white-label available
@@ -181,13 +190,14 @@ All text content for the `/ai-shoots` landing page. See `docs/BUILD-PLAN.md` for
 - **Subheadline:** "Get free sample images for 3 products. See the quality before you commit."
 - **Primary CTA:** "Book Your Free Demo →"
 - **Secondary:** "Or email us at hello@nexailabs.com"
-- **Trust strip:** "No credit card required  |  15-minute call  |  Free samples included"
+- **Trust strip:** "No credit card required | 15-minute call | Free samples included"
 
 ---
 
 ## Section 11: Footer
 
 **Columns:**
+
 1. Brand: NexAI Labs logo + "AI-powered product photography for fashion brands" + social icons
 2. Product: How It Works, Pricing, Case Studies, FAQ
 3. Company: About Us, Blog, Careers, Contact
@@ -200,7 +210,9 @@ All text content for the `/ai-shoots` landing page. See `docs/BUILD-PLAN.md` for
 ## Future Sub-pages (after main page is complete)
 
 ### Case Studies
+
 Individual pages for each brand: hero before/after, challenge, solution, results with metrics, testimonial quote, image gallery, booking CTA.
 
 ### About Us
+
 Founder story (Rahul Juneja), mission ("Make professional product photography accessible to every fashion brand"), team section, values (Speed, Quality, Affordability, Innovation).
