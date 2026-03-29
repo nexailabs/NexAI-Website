@@ -130,9 +130,11 @@ const { decks } = Astro.props;
 	}
 
 	.shoots-hero__stack-stage {
+		--hero-card-width: clamp(11rem, 15vw, 22rem);
+		--hero-card-height: clamp(15rem, 21vw, 30rem);
 		position: relative;
-		width: clamp(11rem, 15vw, 22rem);
-		height: clamp(15rem, 21vw, 30rem);
+		width: var(--hero-card-width);
+		height: var(--hero-card-height);
 		overflow: visible;
 		pointer-events: none;
 	}
@@ -148,8 +150,8 @@ const { decks } = Astro.props;
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		width: clamp(11rem, 15vw, 22rem);
-		height: clamp(15rem, 21vw, 30rem);
+		width: var(--hero-card-width);
+		height: var(--hero-card-height);
 		transform: translate(-50%, -50%);
 		transform-origin: 50% 50%;
 		border-radius: 1.2rem;
@@ -208,8 +210,10 @@ const { decks } = Astro.props;
 
 		.shoots-hero__stack-stage,
 		.shoots-hero__card {
-			width: clamp(14.8rem, 86vw, 19rem);
-			height: clamp(19.6rem, 114vw, 25.6rem);
+			--hero-card-width: clamp(14.8rem, 86vw, 19rem);
+			--hero-card-height: clamp(19.6rem, 114vw, 25.6rem);
+			width: var(--hero-card-width);
+			height: var(--hero-card-height);
 			border-radius: 1rem;
 		}
 
@@ -332,8 +336,8 @@ const { decks } = Astro.props;
 
 		const getTitleShift = () => {
 			if (window.innerWidth <= 720) return -48;
-			if (window.innerWidth <= 1100) return -90;
-			return -120;
+			const desktopShift = window.innerWidth * -0.078;
+			return Math.max(-120, Math.min(-80, desktopShift));
 		};
 
 		const getMobileTitleShift = () => {
@@ -393,10 +397,10 @@ const { decks } = Astro.props;
 			const width = cards[0].offsetWidth || 0;
 			const total = cards.length;
 			const viewportWidth = window.innerWidth;
-			const sideInset = Math.max(90, Math.min(220, viewportWidth * 0.12));
-			const cardToTextGap = Math.max(14, Math.min(22, viewportWidth * 0.012));
+			const sideInset = Math.max(120, Math.min(360, viewportWidth * 0.18));
+			const cardToTextGap = Math.max(18, Math.min(34, viewportWidth * 0.017));
 			const available = Math.max(0, viewportWidth - 2 * (sideInset + cardToTextGap));
-			const gap = Math.max(15, Math.min(20, viewportWidth * 0.012));
+			const gap = Math.max(15, Math.min(20, viewportWidth * 0.011));
 			const idealUnit = width + gap;
 			const totalSpread = (total - 1) * idealUnit + width;
 
@@ -526,6 +530,26 @@ const { decks } = Astro.props;
 		}
 
 		let forceImmediate = false;
+		let activeCards = [];
+		let activeDesktopPhase = 'idle';
+
+		const applyDesktopLayoutForResize = () => {
+			if (isMobile() || !activeCards.length) return;
+			refreshCenterOffset();
+			const spreadUnit = getSpreadUnit(activeCards);
+			if (activeDesktopPhase === 'spread') {
+				activeCards.forEach((card, index) => {
+					applyState(card, spreadState(index, activeCards.length, spreadUnit, centerOffset), false);
+				});
+				const spreadShift = getSpreadTitleShift();
+				setTitleState({ shift: spreadShift, opacity: 1 }, false);
+				return;
+			}
+			activeCards.forEach((card, index) => {
+				applyState(card, holdState(index, activeCards.length, centerOffset), false);
+			});
+			setTitleState({ shift: 0, opacity: 1 }, false);
+		};
 
 		const runCycle = () => {
 			cancelAndClearRafs();
@@ -546,6 +570,8 @@ const { decks } = Astro.props;
 			const startDeck = () => {
 				refreshCenterOffset();
 				cards = showDeck(deck);
+				activeCards = cards;
+				activeDesktopPhase = 'stack';
 				spreadUnit = getSpreadUnit(cards);
 			};
 
@@ -627,6 +653,7 @@ const { decks } = Astro.props;
 				schedule(() => {
 					const spreadShift = getSpreadTitleShift();
 					setTitleState({ shift: spreadShift, opacity: 1 }, true);
+					activeDesktopPhase = 'spread';
 				}, cycleStart + 1540);
 
 				schedule(() => {
@@ -638,6 +665,7 @@ const { decks } = Astro.props;
 				// Cards stack back → title returns visible
 				schedule(() => {
 					setTitleState({ shift: 0, opacity: 1 }, true);
+					activeDesktopPhase = 'stack';
 				}, cycleStart + 4540);
 
 				schedule(() => {
@@ -659,6 +687,8 @@ const { decks } = Astro.props;
 
 				schedule(() => {
 					hideDeck(deck);
+					activeCards = [];
+					activeDesktopPhase = 'idle';
 				}, cycleStart + 6360);
 
 				activeIndex = (activeIndex + 1) % decks.length;
@@ -671,7 +701,7 @@ const { decks } = Astro.props;
 		const handleResize = () => {
 			if (resizeRaf) cancelAnimationFrame(resizeRaf);
 			resizeRaf = requestAnimationFrame(() => {
-				refreshCenterOffset();
+				applyDesktopLayoutForResize();
 			});
 		};
 
