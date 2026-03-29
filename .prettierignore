@@ -1,5 +1,6 @@
 dist
 node_modules
 .astro
+.vscode
 package-lock.json
 pnpm-lock.yaml
