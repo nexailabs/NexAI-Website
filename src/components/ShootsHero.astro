@@ -1,0 +1,509 @@
+---
+interface HeroImage {
+	src: string;
+	alt: string;
+}
+
+interface Props {
+	decks: HeroImage[][];
+}
+
+const { decks } = Astro.props;
+---
+
+<div class="container shoots-hero__shell">
+	<div class="shoots-hero__copy">
+		<h1 class="shoots-hero__sr-only">AI Photoshoots for Fashion Brands</h1>
+		<div class="shoots-hero__title-row">
+			<span class="shoots-hero__title-word shoots-hero__title-word--left" data-hero-title="left"
+				>NEXAI</span
+			>
+			<div class="shoots-hero__visual">
+				<span class="shoots-hero__stack-stage" data-hero-stack-stage aria-hidden="true">
+					{
+						decks.map((deck, deckIndex) => (
+							<span
+								class:list={['shoots-hero__deck', `shoots-hero__deck--${deckIndex + 1}`]}
+								data-hero-deck
+							>
+								{deck.map((item, index) => (
+									<span
+										class:list={['shoots-hero__card', `shoots-hero__card--${index + 1}`]}
+										data-hero-card
+									>
+										<img
+											src={item.src}
+											alt={item.alt}
+											loading={deckIndex === 0 && index === deck.length - 1 ? 'eager' : 'lazy'}
+											decoding="async"
+										/>
+									</span>
+								))}
+							</span>
+						))
+					}
+				</span>
+			</div>
+			<span class="shoots-hero__title-word shoots-hero__title-word--right" data-hero-title="right"
+				>STUDIO</span
+			>
+		</div>
+	</div>
+</div>
+
+<style>
+	.shoots-hero__shell {
+		width: 100%;
+		display: grid;
+		place-items: center;
+	}
+
+	.shoots-hero__copy {
+		width: 100%;
+		display: grid;
+		justify-items: center;
+	}
+
+	.shoots-hero__sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
+
+	.shoots-hero__title-row {
+		width: min(100%, 88rem);
+		min-height: clamp(22rem, 40vh, 28rem);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: clamp(1.35rem, 2.2vw, 2rem);
+	}
+
+	.shoots-hero__title-word {
+		display: block;
+		color: #fff;
+		font-size: clamp(3.6rem, 7vw, 7.4rem);
+		font-weight: 800;
+		letter-spacing: -0.06em;
+		line-height: 0.88;
+		transition:
+			transform 0.82s cubic-bezier(0.16, 1, 0.3, 1),
+			opacity 0.34s ease;
+		will-change: transform, opacity;
+		white-space: nowrap;
+	}
+
+	.shoots-hero__visual {
+		flex: none;
+		display: grid;
+		place-items: center;
+	}
+
+	.shoots-hero__stack-stage {
+		position: relative;
+		width: clamp(15rem, 24vw, 18.5rem);
+		height: clamp(21rem, 33vw, 25.5rem);
+		overflow: visible;
+		pointer-events: none;
+	}
+
+	.shoots-hero__deck {
+		position: absolute;
+		inset: 0;
+		opacity: 0;
+		visibility: hidden;
+	}
+
+	.shoots-hero__card {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: clamp(15rem, 24vw, 18.5rem);
+		height: clamp(21rem, 33vw, 25.5rem);
+		transform: translate(-50%, -50%);
+		transform-origin: 50% 50%;
+		border-radius: 1.2rem;
+		overflow: hidden;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		background: rgba(255, 255, 255, 0.03);
+		opacity: 0;
+		will-change: transform, opacity;
+	}
+
+	.shoots-hero__card img {
+		width: 100%;
+		height: 100%;
+		display: block;
+		object-fit: cover;
+	}
+
+	@media (max-width: 1100px) {
+		.shoots-hero__title-row {
+			min-height: 21rem;
+			gap: 1.15rem;
+		}
+
+		.shoots-hero__stack-stage,
+		.shoots-hero__card {
+			width: clamp(12rem, 26vw, 14rem);
+			height: clamp(17rem, 37vw, 20rem);
+		}
+
+		.shoots-hero__title-word {
+			font-size: clamp(3rem, 7vw, 5.6rem);
+		}
+	}
+
+	@media (max-width: 720px) {
+		.shoots-hero__shell {
+			min-height: calc(100svh - 7.5rem);
+		}
+
+		.shoots-hero__copy {
+			width: 100%;
+		}
+
+		.shoots-hero__title-row {
+			width: 100%;
+			min-height: clamp(20rem, 88vw, 26rem);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 0.5rem;
+		}
+
+		.shoots-hero__title-word {
+			font-size: clamp(1.6rem, 7vw, 2.8rem);
+		}
+
+		.shoots-hero__stack-stage,
+		.shoots-hero__card {
+			width: clamp(14rem, 62vw, 18rem);
+			height: clamp(19.5rem, 86vw, 25rem);
+			border-radius: 1rem;
+		}
+	}
+</style>
+
+<script is:inline>
+	const initAiShootsHero = () => {
+		const stage = document.querySelector('[data-hero-stack-stage]');
+		if (!(stage instanceof HTMLElement)) return;
+		const titleLeft = document.querySelector('[data-hero-title="left"]');
+		const titleRight = document.querySelector('[data-hero-title="right"]');
+
+		const cleanupKey = '__aiShootsHeroCleanup';
+		if (typeof window[cleanupKey] === 'function') {
+			window[cleanupKey]();
+		}
+
+		const decks = Array.from(stage.querySelectorAll('[data-hero-deck]'));
+		if (!decks.length) return;
+
+		const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		let activeIndex = 0;
+		let cycleTimer;
+		let rafA;
+		let rafB;
+		const timers = [];
+
+		const getCards = (deck) => Array.from(deck.querySelectorAll('[data-hero-card]'));
+
+		const schedule = (fn, delay) => {
+			const id = window.setTimeout(fn, delay);
+			timers.push(id);
+			return id;
+		};
+
+		const getTitleShift = () => {
+			if (window.innerWidth <= 720) return -75;
+			if (window.innerWidth <= 1100) return -120;
+			return -160;
+		};
+
+		const setTitleState = ({ shift = 0, opacity = 1 }, animate = true) => {
+			const transition = animate
+				? 'transform 0.82s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.34s ease'
+				: 'none';
+
+			if (titleLeft instanceof HTMLElement) {
+				titleLeft.style.transition = transition;
+				titleLeft.style.transform = `translate3d(${-shift}px, 0, 0)`;
+				titleLeft.style.opacity = `${opacity}`;
+			}
+
+			if (titleRight instanceof HTMLElement) {
+				titleRight.style.transition = transition;
+				titleRight.style.transform = `translate3d(${shift}px, 0, 0)`;
+				titleRight.style.opacity = `${opacity}`;
+			}
+		};
+
+		const getTravelOffset = () => {
+			const stageRect = stage.getBoundingClientRect();
+			const sampleCard = stage.querySelector('[data-hero-card]');
+			const cardRect =
+				sampleCard instanceof HTMLElement
+					? sampleCard.getBoundingClientRect()
+					: { height: stageRect.height };
+			const cardHeight = cardRect.height || stageRect.height;
+			const stageCenterY = stageRect.top + stageRect.height / 2;
+			return -(stageCenterY + cardHeight / 2 + 48);
+		};
+
+		const getStackZIndex = (index, total) => total - index;
+
+		const stackedState = (index, total, yOffset = 0) => {
+			const behind = index;
+			return {
+				x: 0,
+				y: yOffset + behind * 4,
+				scale: 1 - behind * 0.012,
+				opacity: 1,
+				zIndex: getStackZIndex(index, total),
+			};
+		};
+
+		const isMobile = () => window.innerWidth <= 720;
+
+		const getSpreadUnit = (cards) => {
+			if (!cards.length) return 0;
+			const width = cards[cards.length - 1].getBoundingClientRect().width || 0;
+			if (window.innerWidth <= 1100) return Math.max(width * 0.8, 130);
+			return width + 34;
+		};
+
+		const spreadState = (index, total, unit) => {
+			const middle = (total - 1) / 2;
+			const distance = index - middle;
+			return {
+				x: distance * unit,
+				y: 0,
+				scale: 1,
+				rotate: 0,
+				opacity: 1,
+				zIndex: getStackZIndex(index, total),
+			};
+		};
+
+		const holdState = (index, total) => ({ ...stackedState(index, total, 0), rotate: 0 });
+
+		const entryState = (index, total) => ({
+			...stackedState(index, total, getTravelOffset()),
+			rotate: 0,
+		});
+
+		const exitState = (index, total) => ({
+			...stackedState(index, total, getTravelOffset()),
+			rotate: 0,
+		});
+
+		const applyState = (card, state, animate = true) => {
+			const ease = isMobile()
+				? 'transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease'
+				: 'transform 0.88s cubic-bezier(0.16, 1, 0.3, 1)';
+			card.style.transition = animate ? ease : 'none';
+			const rotate = state.rotate ? `rotate(${state.rotate}deg)` : '';
+			card.style.transform = `translate(-50%, -50%) translate3d(${state.x}px, ${state.y}px, 0) scale(${state.scale}) ${rotate}`;
+			card.style.transformOrigin = '50% 50%';
+			card.style.opacity = `${state.opacity}`;
+			card.style.zIndex = `${state.zIndex}`;
+		};
+
+		const hideDeck = (deck, _immediate = false) => {
+			deck.style.transition = 'none';
+			deck.style.opacity = '0';
+			deck.style.visibility = 'hidden';
+		};
+
+		const showDeck = (deck) => {
+			const cards = getCards(deck);
+			deck.style.opacity = '1';
+			deck.style.visibility = 'visible';
+
+			cards.forEach((card, index) => {
+				const state = entryState(index, cards.length);
+				card.style.zIndex = `${state.zIndex}`;
+				card.style.opacity = '1';
+				card.style.transition = 'none';
+				card.style.transform = `translate(-50%, -50%) translate3d(${state.x}px, ${state.y}px, 0) scale(${state.scale})`;
+			});
+
+			rafA = requestAnimationFrame(() => {
+				rafB = requestAnimationFrame(() => {
+					cards.forEach((card, index) => {
+						applyState(card, holdState(index, cards.length), true);
+					});
+				});
+			});
+
+			return cards;
+		};
+
+		decks.forEach((deck) => hideDeck(deck, true));
+		setTitleState({ shift: isMobile() ? -120 : getTitleShift(), opacity: 1 }, false);
+
+		if (prefersReducedMotion) {
+			const activeDeck = decks[0];
+			activeDeck.style.opacity = '1';
+			activeDeck.style.visibility = 'visible';
+			getCards(activeDeck).forEach((card, index, cards) =>
+				applyState(card, holdState(index, cards.length), false),
+			);
+			setTitleState({ shift: 0, opacity: 1 }, false);
+			window[cleanupKey] = () => {
+				cancelAnimationFrame(rafA);
+				cancelAnimationFrame(rafB);
+				timers.forEach((timer) => clearTimeout(timer));
+			};
+			return;
+		}
+
+		const runCycle = () => {
+			const isLoopRestart = activeIndex === 0;
+
+			decks.forEach((deck, deckIndex) => {
+				if (deckIndex !== activeIndex) hideDeck(deck);
+			});
+
+			const deck = decks[activeIndex];
+			const titleShift = getTitleShift();
+			const cycleStart = isLoopRestart ? 2000 : 0;
+			let cards = [];
+			let spreadUnit = 0;
+
+			const startDeck = () => {
+				cards = showDeck(deck);
+				spreadUnit = getSpreadUnit(cards);
+			};
+
+			if (isMobile()) {
+				const togetherShift = -120;
+				const splitShift = 180;
+				const dealInterval = 800;
+
+				setTitleState({ shift: togetherShift, opacity: 1 }, !isLoopRestart);
+
+				if (isLoopRestart) {
+					schedule(startDeck, cycleStart);
+				} else {
+					startDeck();
+				}
+
+				schedule(() => {
+					setTitleState({ shift: splitShift, opacity: 1 }, true);
+				}, cycleStart + 800);
+
+				const dealStart = cycleStart + 1000;
+				cards.forEach((card, index) => {
+					schedule(
+						() => {
+							card.style.transition = 'none';
+							card.style.transform =
+								'translate(-50%, -50%) translate3d(0px, -60px, 0) scale(0.92) rotate(0deg)';
+							card.style.opacity = '0';
+							card.style.zIndex = `${50 + index}`;
+							card.style.transformOrigin = '50% 50%';
+
+							requestAnimationFrame(() => {
+								requestAnimationFrame(() => {
+									card.style.transition =
+										'transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease';
+									card.style.transform =
+										'translate(-50%, -50%) translate3d(0px, 0px, 0) scale(1) rotate(0deg)';
+									card.style.opacity = '1';
+								});
+							});
+						},
+						dealStart + index * dealInterval,
+					);
+				});
+
+				const dealTotal = dealInterval * cards.length;
+				const exitStart = dealStart + dealTotal + 600;
+
+				schedule(() => {
+					cards.forEach((card, index) => {
+						applyState(card, exitState(index, cards.length), true);
+					});
+				}, exitStart);
+
+				schedule(() => {
+					setTitleState({ shift: togetherShift, opacity: 1 }, true);
+				}, exitStart + 100);
+
+				schedule(() => {
+					hideDeck(deck);
+				}, exitStart + 840);
+
+				activeIndex = (activeIndex + 1) % decks.length;
+				cycleTimer = window.setTimeout(runCycle, exitStart + 1200);
+			} else {
+				if (isLoopRestart) {
+					setTitleState({ shift: titleShift, opacity: 1 }, true);
+					schedule(startDeck, cycleStart);
+				} else {
+					setTitleState({ shift: 0, opacity: 1 }, false);
+					startDeck();
+				}
+
+				schedule(() => {
+					setTitleState({ shift: 0, opacity: 1 }, true);
+				}, cycleStart + 80);
+
+				schedule(() => {
+					cards.forEach((card, index) => {
+						applyState(card, spreadState(index, cards.length, spreadUnit), true);
+					});
+				}, cycleStart + 1540);
+
+				schedule(() => {
+					cards.forEach((card, index) => {
+						applyState(card, holdState(index, cards.length), true);
+					});
+				}, cycleStart + 2860);
+
+				schedule(() => {
+					cards.forEach((card, index) => {
+						applyState(card, exitState(index, cards.length), true);
+					});
+				}, cycleStart + 3840);
+
+				schedule(() => {
+					hideDeck(deck);
+				}, cycleStart + 4680);
+
+				if (activeIndex === decks.length - 1) {
+					schedule(() => {
+						setTitleState({ shift: titleShift, opacity: 1 }, true);
+					}, cycleStart + 4920);
+				} else {
+					schedule(() => {
+						setTitleState({ shift: 0, opacity: 1 }, false);
+					}, cycleStart + 4920);
+				}
+
+				activeIndex = (activeIndex + 1) % decks.length;
+				cycleTimer = window.setTimeout(runCycle, cycleStart + 5000);
+			}
+		};
+
+		runCycle();
+
+		window[cleanupKey] = () => {
+			cancelAnimationFrame(rafA);
+			cancelAnimationFrame(rafB);
+			timers.forEach((timer) => clearTimeout(timer));
+			clearTimeout(cycleTimer);
+		};
+	};
+
+	initAiShootsHero();
+	document.addEventListener('astro:after-swap', initAiShootsHero);
+</script>

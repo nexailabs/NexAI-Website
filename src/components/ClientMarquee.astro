@@ -1,0 +1,75 @@
+---
+interface BrandLogo {
+	src: string;
+	alt: string;
+}
+
+interface Props {
+	brands: BrandLogo[];
+}
+
+const { brands } = Astro.props;
+---
+
+<div class="client-marquee" aria-label="Our Trusted Brands">
+	<div class="client-marquee__track">
+		<div class="client-marquee__list">
+			{brands.map((b) => <img src={b.src} alt={b.alt} loading="lazy" />)}
+		</div>
+		<div class="client-marquee__list" aria-hidden="true">
+			{brands.map((b) => <img src={b.src} alt="" loading="lazy" />)}
+		</div>
+	</div>
+</div>
+
+<style>
+	.client-marquee {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		z-index: 10;
+		padding: 1rem 0 2.5rem 0;
+		overflow: hidden;
+		background: transparent;
+		border-top: none;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+	}
+	.client-marquee__track {
+		display: flex;
+		width: max-content;
+		animation: scrollMarquee 35s linear infinite;
+	}
+	.client-marquee:hover .client-marquee__track {
+		animation-play-state: paused;
+	}
+	.client-marquee__list {
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		gap: clamp(3rem, 5vw, 6rem);
+		padding: 0 clamp(1.5rem, 3vw, 3rem);
+	}
+	.client-marquee__list img {
+		height: clamp(3.5rem, 6vw, 5.5rem);
+		width: auto;
+		max-width: 320px;
+		object-fit: contain;
+		opacity: 0.95;
+		filter: grayscale(1) brightness(1.5);
+		transition: all 0.4s ease;
+	}
+	.client-marquee__list img:hover {
+		opacity: 1;
+		transform: scale(1.05);
+		filter: grayscale(0) brightness(1);
+	}
+	@keyframes scrollMarquee {
+		0% {
+			transform: translateX(0);
+		}
+		100% {
+			transform: translateX(-50%);
+		}
+	}
+</style>
