@@ -181,12 +181,12 @@ const { decks } = Astro.props;
 	@media (max-width: 720px) {
 		.shoots-hero__shell {
 			min-height: max(
-				22rem,
-				calc(100svh - var(--header-height, 5rem) - var(--shoots-marquee-space, 8.5rem))
+				20rem,
+				calc(100svh - var(--header-height, 5rem) - var(--shoots-marquee-space, 9rem))
 			);
-			padding-top: clamp(0.75rem, 2.5vh, 1.5rem);
-			padding-bottom: 1.25rem;
-			row-gap: 0.75rem;
+			padding-top: clamp(0.45rem, 1.8vh, 1rem);
+			padding-bottom: clamp(0.35rem, 1.1vh, 0.6rem);
+			row-gap: clamp(0.4rem, 1.2vh, 0.8rem);
 		}
 
 		.shoots-hero__copy {
@@ -195,30 +195,34 @@ const { decks } = Astro.props;
 
 		.shoots-hero__title-row {
 			width: 100%;
-			min-height: clamp(20rem, 88vw, 26rem);
+			min-height: clamp(17rem, 68vh, 23rem);
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			gap: 0.5rem;
+			gap: clamp(0.25rem, 1.5vw, 0.5rem);
 		}
 
 		.shoots-hero__title-word {
-			font-size: clamp(1.6rem, 7vw, 2.8rem);
+			font-size: clamp(1.4rem, 6.4vw, 2.35rem);
 		}
 
 		.shoots-hero__stack-stage,
 		.shoots-hero__card {
-			width: clamp(14rem, 62vw, 18rem);
-			height: clamp(19.5rem, 86vw, 25rem);
+			width: clamp(14.8rem, 86vw, 19rem);
+			height: clamp(19.6rem, 114vw, 25.6rem);
 			border-radius: 1rem;
 		}
 
 		.shoots-hero__dock {
-			gap: 0.5rem;
+			gap: 0.55rem;
+			padding: 0.4rem;
 		}
 
 		.shoots-hero__dock-thumb {
-			width: 2.5rem;
+			width: 3rem;
+			height: 3rem;
+			aspect-ratio: auto;
+			border-radius: 0.55rem;
 		}
 	}
 
@@ -327,9 +331,16 @@ const { decks } = Astro.props;
 		};
 
 		const getTitleShift = () => {
-			if (window.innerWidth <= 720) return -55;
+			if (window.innerWidth <= 720) return -48;
 			if (window.innerWidth <= 1100) return -90;
 			return -120;
+		};
+
+		const getMobileTitleShift = () => {
+			const viewportWidth = window.innerWidth;
+			const togetherShift = Math.max(28, Math.min(46, viewportWidth * 0.12));
+			const splitShift = Math.max(74, Math.min(124, viewportWidth * 0.26));
+			return { togetherShift, splitShift };
 		};
 
 		const setTitleState = ({ shift = 0, opacity = 1 }, animate = true) => {
@@ -539,49 +550,47 @@ const { decks } = Astro.props;
 			};
 
 			if (isMobile()) {
-				const togetherShift = -120;
-				const splitShift = 180;
-				const dealInterval = 800;
+				const { togetherShift, splitShift } = getMobileTitleShift();
+				const mobileCycleDuration = 5800;
+				const dealStartOffset = 760;
+				const dealWindow = 1800;
+				const settleBuffer = 460;
+				const cardCount = Math.max(1, getCards(deck).length);
+				const dealInterval = Math.max(240, Math.floor(dealWindow / cardCount));
 
 				setTitleState({ shift: togetherShift, opacity: 1 }, !isLoopRestart);
 
-				if (isLoopRestart) {
-					schedule(startDeck, cycleStart);
-				} else {
+				const deckStartAt = isLoopRestart ? cycleStart : 0;
+				schedule(() => {
 					startDeck();
-				}
+				}, deckStartAt);
 
 				schedule(() => {
 					setTitleState({ shift: splitShift, opacity: 1 }, true);
-				}, cycleStart + 800);
+				}, deckStartAt + 420);
 
-				const dealStart = cycleStart + 1000;
-				cards.forEach((card, index) => {
-					schedule(
-						() => {
+				const dealStart = deckStartAt + dealStartOffset;
+				schedule(() => {
+					cards.forEach((card, index) => {
+						schedule(() => {
 							card.style.transition = 'none';
-							card.style.transform =
-								'translate(-50%, -50%) translate3d(0px, -60px, 0) scale(0.92) rotate(0deg)';
+							card.style.transform = 'translate(-50%, -50%) translate3d(0px, -56px, 0) scale(0.92)';
 							card.style.opacity = '0';
 							card.style.zIndex = `${50 + index}`;
-							card.style.transformOrigin = '50% 50%';
 
 							scheduleRaf(() => {
 								scheduleRaf(() => {
 									card.style.transition =
-										'transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease';
-									card.style.transform =
-										'translate(-50%, -50%) translate3d(0px, 0px, 0) scale(1) rotate(0deg)';
+										'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.24s ease';
+									card.style.transform = 'translate(-50%, -50%) translate3d(0px, 0px, 0) scale(1)';
 									card.style.opacity = '1';
 								});
 							});
-						},
-						dealStart + index * dealInterval,
-					);
-				});
+						}, index * dealInterval);
+					});
+				}, dealStart);
 
-				const dealTotal = dealInterval * cards.length;
-				const exitStart = dealStart + dealTotal + 600;
+				const exitStart = dealStart + cardCount * dealInterval + settleBuffer;
 
 				schedule(() => {
 					cards.forEach((card, index) => {
@@ -591,14 +600,17 @@ const { decks } = Astro.props;
 
 				schedule(() => {
 					setTitleState({ shift: togetherShift, opacity: 1 }, true);
-				}, exitStart + 100);
+				}, exitStart + 80);
 
 				schedule(() => {
 					hideDeck(deck);
-				}, exitStart + 840);
+				}, exitStart + 720);
 
 				activeIndex = (activeIndex + 1) % decks.length;
-				cycleTimer = window.setTimeout(runCycle, exitStart + 1200);
+				cycleTimer = window.setTimeout(
+					runCycle,
+					Math.max(deckStartAt + mobileCycleDuration, exitStart + 1000),
+				);
 			} else {
 				if (isLoopRestart) {
 					schedule(startDeck, cycleStart);
