@@ -254,13 +254,15 @@ const { decks } = Astro.props;
 </style>
 
 <script is:inline>
+	const cleanupKey = '__aiShootsHeroCleanup';
+	const swapListenersKey = '__aiShootsHeroSwapListenersBound';
+
 	const initAiShootsHero = () => {
 		const stage = document.querySelector('[data-hero-stack-stage]');
 		if (!(stage instanceof HTMLElement)) return;
 		const titleLeft = document.querySelector('[data-hero-title="left"]');
 		const titleRight = document.querySelector('[data-hero-title="right"]');
 
-		const cleanupKey = '__aiShootsHeroCleanup';
 		if (typeof window[cleanupKey] === 'function') {
 			window[cleanupKey]();
 		}
@@ -282,6 +284,7 @@ const { decks } = Astro.props;
 		let rafB;
 		let spreadScale = 1;
 		const timers = [];
+		const listeners = [];
 
 		const getCards = (deck) => Array.from(deck.querySelectorAll('[data-hero-card]'));
 
@@ -609,7 +612,7 @@ const { decks } = Astro.props;
 		runCycle();
 
 		thumbs.forEach((thumb, i) => {
-			thumb.addEventListener('click', () => {
+			const onThumbClick = () => {
 				timers.forEach((t) => clearTimeout(t));
 				timers.length = 0;
 				clearTimeout(cycleTimer);
@@ -620,10 +623,14 @@ const { decks } = Astro.props;
 				activeIndex = i;
 				forceImmediate = true;
 				runCycle();
-			});
+			};
+			thumb.addEventListener('click', onThumbClick);
+			listeners.push(() => thumb.removeEventListener('click', onThumbClick));
 		});
 
 		window[cleanupKey] = () => {
+			listeners.forEach((removeListener) => removeListener());
+			listeners.length = 0;
 			cancelAnimationFrame(rafA);
 			cancelAnimationFrame(rafB);
 			timers.forEach((timer) => clearTimeout(timer));
@@ -632,5 +639,23 @@ const { decks } = Astro.props;
 	};
 
 	initAiShootsHero();
-	document.addEventListener('astro:after-swap', initAiShootsHero);
+
+	if (!window[swapListenersKey]) {
+		const handleBeforeSwap = () => {
+			if (typeof window[cleanupKey] === 'function') {
+				window[cleanupKey]();
+			}
+		};
+
+		const handleAfterSwap = () => {
+			if (typeof window[cleanupKey] === 'function') {
+				window[cleanupKey]();
+			}
+			initAiShootsHero();
+		};
+
+		document.addEventListener('astro:before-swap', handleBeforeSwap);
+		document.addEventListener('astro:after-swap', handleAfterSwap);
+		window[swapListenersKey] = true;
+	}
 </script>
