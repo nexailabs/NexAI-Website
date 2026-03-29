@@ -44,6 +44,36 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 			{
 				categories.map((cat, i) => (
 					<div class:list={['sc3__panel', { active: i === 0 }]} data-panel={cat.id}>
+						{/* Mobile Before/After Stage */}
+						{cat.inputMain && (
+							<div class="sc3__mobile-stage">
+								<div class="sc3__mobile-card sc3__mobile-card--before">
+									<span class="sc3__mobile-bookmark sc3__mobile-bookmark--before">Before</span>
+									<div class="sc3__mobile-card-frame">
+										<img src={cat.inputMain} alt={`${cat.label} raw input`} loading="lazy" />
+									</div>
+								</div>
+								<div class="sc3__mobile-card sc3__mobile-card--after">
+									<span class="sc3__mobile-bookmark sc3__mobile-bookmark--after">After</span>
+									<div class="sc3__mobile-card-frame sc3__mobile-card-frame--collage">
+										<div class="sc3__mobile-output-grid">
+											{[1, 2, 0, 3].map((outputIdx, gridIdx) => {
+												const pos = ['tl', 'tr', 'bl', 'br'][gridIdx];
+												const slot = cat.outputs[outputIdx];
+												return slot?.src ? (
+													<div class={`sc3__mobile-output sc3__mobile-output--${pos}`}>
+														<img src={slot.src} alt={slot.alt} loading="lazy" />
+													</div>
+												) : (
+													<div class={`sc3__mobile-output sc3__mobile-output--${pos}`} />
+												);
+											})}
+										</div>
+									</div>
+								</div>
+							</div>
+						)}
+
 						{/* Left Input Block */}
 						<div class="sc3__col sc3__col--left">
 							<span class="sc3__label">Input Images</span>
@@ -524,6 +554,226 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 		.sc3__ob-col {
 			min-width: 0;
 		}
+
+		.sc3__arrow {
+			display: none;
+		}
+
+		.sc3__panel.active .sc3__col,
+		.sc3__panel.active .sc3__arrow {
+			display: none;
+		}
+
+		.sc3__mobile-stage {
+			display: block;
+			grid-column: 1;
+			grid-row: 1;
+			position: relative;
+			--sc3-before-x: 0px;
+			--sc3-after-x: 5.4rem;
+			--sc3-before-scale: 1;
+			--sc3-after-scale: 0.62;
+			--sc3-before-shadow: 0.34;
+			--sc3-after-shadow: 0.2;
+			--sc3-before-overlay: 0.02;
+			--sc3-after-overlay: 0.18;
+			--sc3-before-z: 4;
+			--sc3-after-z: 2;
+			--sc3-before-tag-opacity: 1;
+			--sc3-after-tag-opacity: 0;
+			width: min(100%, 22rem);
+			min-height: 26rem;
+			margin: 0 auto;
+			overflow: visible;
+			isolation: isolate;
+			touch-action: pan-y;
+			user-select: none;
+			-webkit-user-select: none;
+		}
+
+		.sc3__mobile-card {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			width: 76%;
+			aspect-ratio: 3 / 4;
+			overflow: visible;
+			isolation: isolate;
+			transform-origin: center center;
+			transition:
+				transform 0.58s cubic-bezier(0.22, 1, 0.36, 1),
+				z-index 0.58s cubic-bezier(0.22, 1, 0.36, 1);
+			will-change: transform;
+		}
+
+		.sc3__mobile-bookmark {
+			position: absolute;
+			top: -1.4rem;
+			z-index: 3;
+			min-width: 5.6rem;
+			padding: 0.46rem 0.78rem 0.64rem;
+			background: transparent;
+			border: 1px solid rgba(255, 255, 255, 0.96);
+			border-bottom: none;
+			border-radius: 0.9rem 0.9rem 0 0;
+			color: #fff;
+			font-size: 0.72rem;
+			font-weight: 900;
+			letter-spacing: 0.05em;
+			line-height: 1;
+			text-transform: uppercase;
+			text-align: center;
+			white-space: nowrap;
+			pointer-events: none;
+			transition: opacity 0.24s ease;
+		}
+
+		.sc3__mobile-bookmark::after {
+			content: '';
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: 100%;
+			height: 0.6rem;
+			background: transparent;
+			border-left: 1px solid rgba(255, 255, 255, 0.96);
+			border-right: 1px solid rgba(255, 255, 255, 0.96);
+			border-bottom: none;
+		}
+
+		.sc3__mobile-stage[data-dragging='true'] .sc3__mobile-bookmark {
+			transition: none;
+		}
+
+		.sc3__mobile-bookmark--before {
+			left: 0.62rem;
+			opacity: var(--sc3-before-tag-opacity);
+		}
+
+		.sc3__mobile-bookmark--after {
+			right: 0.62rem;
+			opacity: var(--sc3-after-tag-opacity);
+		}
+
+		.sc3__mobile-stage[data-dragging='true'] .sc3__mobile-card {
+			transition: none;
+		}
+
+		.sc3__mobile-card-frame {
+			position: relative;
+			z-index: 2;
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+			border-radius: 1.25rem;
+			background: rgba(255, 255, 255, 0.03);
+			border: 1px solid rgba(255, 255, 255, 0.08);
+			transition:
+				box-shadow 0.58s cubic-bezier(0.22, 1, 0.36, 1),
+				filter 0.58s cubic-bezier(0.22, 1, 0.36, 1);
+		}
+
+		.sc3__mobile-stage[data-dragging='true'] .sc3__mobile-card-frame {
+			transition: none;
+		}
+
+		.sc3__mobile-card-frame::after {
+			content: '';
+			position: absolute;
+			inset: 0;
+			border-radius: inherit;
+			pointer-events: none;
+			background:
+				linear-gradient(180deg, rgba(9, 16, 15, 0.02), rgba(9, 16, 15, 0.34)),
+				radial-gradient(circle at top center, rgba(255, 255, 255, 0.12), transparent 58%);
+			opacity: 0;
+			transition: opacity 0.58s cubic-bezier(0.22, 1, 0.36, 1);
+		}
+
+		.sc3__mobile-stage[data-dragging='true'] .sc3__mobile-card-frame::after {
+			transition: none;
+		}
+
+		.sc3__mobile-card img {
+			width: 100%;
+			height: 100%;
+			display: block;
+			object-fit: cover;
+			object-position: center top;
+			-webkit-user-drag: none;
+		}
+
+		.sc3__mobile-card--before {
+			z-index: var(--sc3-before-z);
+			transform: translate3d(calc(-50% + var(--sc3-before-x)), -50%, 0)
+				scale(var(--sc3-before-scale));
+		}
+
+		.sc3__mobile-card--after {
+			z-index: var(--sc3-after-z);
+			transform: translate3d(calc(-50% + var(--sc3-after-x)), -50%, 0) scale(var(--sc3-after-scale));
+		}
+
+		.sc3__mobile-card--before .sc3__mobile-card-frame {
+			box-shadow: 0 1.2rem 2.8rem rgba(0, 0, 0, var(--sc3-before-shadow));
+			filter: brightness(calc(1 - (var(--sc3-before-overlay) * 0.16)));
+		}
+
+		.sc3__mobile-card--after .sc3__mobile-card-frame {
+			box-shadow: 0 1.2rem 2.8rem rgba(0, 0, 0, var(--sc3-after-shadow));
+			filter: brightness(calc(1 - (var(--sc3-after-overlay) * 0.16)));
+		}
+
+		.sc3__mobile-card--before .sc3__mobile-card-frame::after {
+			opacity: var(--sc3-before-overlay);
+		}
+
+		.sc3__mobile-card--after .sc3__mobile-card-frame::after {
+			opacity: var(--sc3-after-overlay);
+		}
+
+		.sc3__mobile-card-frame--collage {
+			padding: 0.55rem;
+			background:
+				linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03)),
+				rgba(9, 16, 15, 0.92);
+		}
+
+		.sc3__mobile-output-grid {
+			width: 100%;
+			height: 100%;
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			grid-template-rows: repeat(3, 1fr);
+			gap: 0.45rem;
+		}
+
+		.sc3__mobile-output {
+			overflow: hidden;
+			border-radius: 0.9rem;
+			background: rgba(255, 255, 255, 0.04);
+		}
+
+		.sc3__mobile-output img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: center top;
+			display: block;
+		}
+
+		.sc3__mobile-output--tl {
+			grid-area: 1 / 1;
+		}
+		.sc3__mobile-output--tr {
+			grid-area: 1 / 2 / 3 / 3;
+		}
+		.sc3__mobile-output--bl {
+			grid-area: 2 / 1 / 4 / 2;
+		}
+		.sc3__mobile-output--br {
+			grid-area: 3 / 2;
+		}
 	}
 	@media (max-width: 600px) {
 		.sc3__panel {
@@ -572,4 +822,312 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 
 	initSc3();
 	document.addEventListener('astro:after-swap', initSc3);
+</script>
+
+<script is:inline>
+	// ── Mobile Before/After Showcase Cycle ──
+	const initMobShowcaseCycle = () => {
+		const isMob = () => window.innerWidth <= 900;
+		const cleanupKey = '__mobShowcaseCycleCleanup';
+		if (typeof window[cleanupKey] === 'function') window[cleanupKey]();
+		if (!isMob()) return;
+
+		const PASSIVE_SCALE = 0.62;
+		const PASSIVE_VISIBLE_RATIO = 0.24;
+		const PAN_INTENT = 12;
+		const IDLE_RESUME = 3000;
+		const AUTO_INPUT_HOLD = 2000;
+		const AUTO_OUTPUT_HOLD = 2400;
+		const TRANSITION_BUFFER = 720;
+		const ACTIVE_SHADOW = 0.34;
+		const PASSIVE_SHADOW = 0.2;
+		const ACTIVE_OVERLAY = 0.02;
+		const PASSIVE_OVERLAY = 0.18;
+
+		const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+		const lerp = (start, end, progress) => start + (end - start) * progress;
+		const slideToValue = (slide) => (slide === 'after' ? 1 : 0);
+
+		const timers = new Set();
+		const controllers = [];
+
+		const schedule = (fn, delay) => {
+			const id = window.setTimeout(() => {
+				timers.delete(id);
+				fn();
+			}, delay);
+			timers.add(id);
+			return id;
+		};
+
+		const clearTimers = () => {
+			timers.forEach((id) => clearTimeout(id));
+			timers.clear();
+		};
+
+		const getPassiveOffset = (controller) => {
+			const baseWidth =
+				controller.beforeCard?.offsetWidth || controller.mobileStage.clientWidth * 0.76;
+			return (baseWidth * (1 - PASSIVE_SCALE + 2 * PASSIVE_VISIBLE_RATIO * PASSIVE_SCALE)) / 2;
+		};
+
+		const getVisualState = (controller, progress) => {
+			const passiveOffset = getPassiveOffset(controller);
+			return {
+				before: {
+					x: lerp(0, -passiveOffset, progress),
+					scale: lerp(1, PASSIVE_SCALE, progress),
+					shadow: lerp(ACTIVE_SHADOW, PASSIVE_SHADOW, progress),
+					overlay: lerp(ACTIVE_OVERLAY, PASSIVE_OVERLAY, progress),
+					z: progress >= 0.5 ? 2 : 4,
+				},
+				after: {
+					x: lerp(passiveOffset, 0, progress),
+					scale: lerp(PASSIVE_SCALE, 1, progress),
+					shadow: lerp(PASSIVE_SHADOW, ACTIVE_SHADOW, progress),
+					overlay: lerp(PASSIVE_OVERLAY, ACTIVE_OVERLAY, progress),
+					z: progress >= 0.5 ? 4 : 2,
+				},
+			};
+		};
+
+		const applyVisualState = (controller, progress, dragging = false) => {
+			const state = getVisualState(controller, progress);
+			const beforeTagOpacity = progress < 0.5 ? 1 : 0;
+			const afterTagOpacity = progress >= 0.5 ? 1 : 0;
+			controller.progress = progress;
+			controller.mobileStage.dataset.dragging = dragging ? 'true' : 'false';
+			if (dragging) {
+				controller.panel.dataset.dragging = 'true';
+			} else {
+				controller.panel.removeAttribute('data-dragging');
+			}
+
+			controller.mobileStage.style.setProperty('--sc3-before-x', `${state.before.x.toFixed(2)}px`);
+			controller.mobileStage.style.setProperty('--sc3-after-x', `${state.after.x.toFixed(2)}px`);
+			controller.mobileStage.style.setProperty('--sc3-before-scale', state.before.scale.toFixed(4));
+			controller.mobileStage.style.setProperty('--sc3-after-scale', state.after.scale.toFixed(4));
+			controller.mobileStage.style.setProperty(
+				'--sc3-before-shadow',
+				state.before.shadow.toFixed(3),
+			);
+			controller.mobileStage.style.setProperty('--sc3-after-shadow', state.after.shadow.toFixed(3));
+			controller.mobileStage.style.setProperty(
+				'--sc3-before-overlay',
+				state.before.overlay.toFixed(3),
+			);
+			controller.mobileStage.style.setProperty(
+				'--sc3-after-overlay',
+				state.after.overlay.toFixed(3),
+			);
+			controller.mobileStage.style.setProperty('--sc3-before-z', `${state.before.z}`);
+			controller.mobileStage.style.setProperty('--sc3-after-z', `${state.after.z}`);
+			controller.mobileStage.style.setProperty('--sc3-before-tag-opacity', `${beforeTagOpacity}`);
+			controller.mobileStage.style.setProperty('--sc3-after-tag-opacity', `${afterTagOpacity}`);
+		};
+
+		const getActiveController = () =>
+			controllers.find((controller) => controller.panel.classList.contains('active'));
+
+		const pauseAutoCycle = () => {
+			clearTimers();
+		};
+
+		const queueAutoCycle = (delay = IDLE_RESUME) => {
+			pauseAutoCycle();
+			schedule(runCycle, delay);
+		};
+
+		const settleSlide = (controller, slide, { restartAuto = true } = {}) => {
+			controller.slide = slide;
+			controller.panel.setAttribute('data-mobile-slide', slide);
+			applyVisualState(controller, slideToValue(slide), false);
+			if (restartAuto) queueAutoCycle();
+		};
+
+		const releasePointer = (controller) => {
+			if (controller.pointerId === null) return;
+			if (
+				typeof controller.mobileStage.releasePointerCapture === 'function' &&
+				controller.mobileStage.hasPointerCapture?.(controller.pointerId)
+			) {
+				controller.mobileStage.releasePointerCapture(controller.pointerId);
+			}
+			controller.pointerId = null;
+		};
+
+		const finishInteraction = (controller, shouldSettle = true) => {
+			if (controller.rafId) {
+				cancelAnimationFrame(controller.rafId);
+				controller.rafId = 0;
+			}
+			releasePointer(controller);
+			controller.lockedAxis = null;
+			controller.dragging = false;
+			controller.startValue = slideToValue(controller.slide);
+			const nextSlide = controller.progress >= 0.5 ? 'after' : 'before';
+			if (shouldSettle) {
+				settleSlide(controller, nextSlide);
+			} else {
+				controller.mobileStage.dataset.dragging = 'false';
+				controller.panel.removeAttribute('data-dragging');
+			}
+		};
+
+		const runCycle = () => {
+			const controller = getActiveController();
+			if (!controller) {
+				schedule(runCycle, 1000);
+				return;
+			}
+
+			const startSlide = controller.slide;
+			settleSlide(controller, startSlide, { restartAuto: false });
+
+			if (startSlide === 'before') {
+				schedule(() => {
+					const activeController = getActiveController();
+					if (!activeController || activeController !== controller || controller.dragging) return;
+					settleSlide(controller, 'after', { restartAuto: false });
+				}, AUTO_INPUT_HOLD);
+
+				schedule(() => {
+					const activeController = getActiveController();
+					if (!activeController || activeController !== controller || controller.dragging) return;
+					settleSlide(controller, 'before', { restartAuto: false });
+				}, AUTO_INPUT_HOLD + AUTO_OUTPUT_HOLD);
+
+				schedule(
+					() => {
+						runCycle();
+					},
+					AUTO_INPUT_HOLD + AUTO_OUTPUT_HOLD + TRANSITION_BUFFER,
+				);
+				return;
+			}
+
+			schedule(() => {
+				const activeController = getActiveController();
+				if (!activeController || activeController !== controller || controller.dragging) return;
+				settleSlide(controller, 'before', { restartAuto: false });
+			}, AUTO_OUTPUT_HOLD);
+
+			schedule(() => {
+				runCycle();
+			}, AUTO_OUTPUT_HOLD + TRANSITION_BUFFER);
+		};
+
+		document.querySelectorAll('.sc3__panel').forEach((panel) => {
+			const mobileStage = panel.querySelector('.sc3__mobile-stage');
+			const beforeCard = panel.querySelector('.sc3__mobile-card--before');
+			if (!mobileStage || !beforeCard) return;
+
+			const controller = {
+				panel,
+				mobileStage,
+				beforeCard,
+				slide: panel.getAttribute('data-mobile-slide') === 'after' ? 'after' : 'before',
+				progress: 0,
+				startValue: 0,
+				pointerId: null,
+				lockedAxis: null,
+				dragging: false,
+				startX: 0,
+				startY: 0,
+				rafId: 0,
+				pendingProgress: null,
+			};
+
+			const renderDrag = () => {
+				controller.rafId = 0;
+				if (controller.pendingProgress === null) return;
+				applyVisualState(controller, controller.pendingProgress, true);
+			};
+
+			const requestRender = (progress) => {
+				controller.pendingProgress = progress;
+				if (!controller.rafId) {
+					controller.rafId = requestAnimationFrame(renderDrag);
+				}
+			};
+
+			const onPointerDown = (event) => {
+				if (!isMob() || !panel.classList.contains('active')) return;
+				if (event.button !== undefined && event.button !== 0) return;
+				controller.pointerId = event.pointerId;
+				controller.lockedAxis = null;
+				controller.dragging = false;
+				controller.startX = event.clientX;
+				controller.startY = event.clientY;
+				controller.startValue = slideToValue(controller.slide);
+				controller.pendingProgress = controller.startValue;
+				pauseAutoCycle();
+				if (typeof mobileStage.setPointerCapture === 'function') {
+					mobileStage.setPointerCapture(event.pointerId);
+				}
+			};
+
+			const onPointerMove = (event) => {
+				if (controller.pointerId !== event.pointerId) return;
+
+				const deltaX = event.clientX - controller.startX;
+				const deltaY = event.clientY - controller.startY;
+
+				if (!controller.lockedAxis) {
+					if (Math.abs(deltaX) < PAN_INTENT && Math.abs(deltaY) < PAN_INTENT) return;
+					controller.lockedAxis = Math.abs(deltaX) > Math.abs(deltaY) ? 'x' : 'y';
+				}
+
+				if (controller.lockedAxis !== 'x') return;
+
+				controller.dragging = true;
+				const passiveOffset = getPassiveOffset(controller);
+				const nextProgress = clamp(controller.startValue - deltaX / passiveOffset, 0, 1);
+				requestRender(nextProgress);
+			};
+
+			const onPointerEnd = (event) => {
+				if (controller.pointerId !== event.pointerId) return;
+				finishInteraction(controller, true);
+			};
+
+			mobileStage.addEventListener('pointerdown', onPointerDown);
+			mobileStage.addEventListener('pointermove', onPointerMove);
+			mobileStage.addEventListener('pointerup', onPointerEnd);
+			mobileStage.addEventListener('pointercancel', onPointerEnd);
+
+			settleSlide(controller, controller.slide, { restartAuto: false });
+			controllers.push(controller);
+
+			controller.cleanup = () => {
+				if (controller.rafId) cancelAnimationFrame(controller.rafId);
+				releasePointer(controller);
+				mobileStage.removeEventListener('pointerdown', onPointerDown);
+				mobileStage.removeEventListener('pointermove', onPointerMove);
+				mobileStage.removeEventListener('pointerup', onPointerEnd);
+				mobileStage.removeEventListener('pointercancel', onPointerEnd);
+			};
+		});
+
+		queueAutoCycle(0);
+
+		window[cleanupKey] = () => {
+			clearTimers();
+			controllers.forEach((controller) => controller.cleanup?.());
+		};
+	};
+
+	window.__initMobShowcaseCycle = initMobShowcaseCycle;
+	initMobShowcaseCycle();
+	document.addEventListener('astro:after-swap', initMobShowcaseCycle);
+	if (!window.__mobShowcaseResizeHandler) {
+		window.__mobShowcaseResizeHandler = () => {
+			if (window.innerWidth <= 900) {
+				initMobShowcaseCycle();
+			} else if (typeof window.__mobShowcaseCycleCleanup === 'function') {
+				window.__mobShowcaseCycleCleanup();
+			}
+		};
+		window.addEventListener('resize', window.__mobShowcaseResizeHandler);
+	}
 </script>
