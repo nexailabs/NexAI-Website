@@ -654,9 +654,7 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 			overflow: visible;
 			isolation: isolate;
 			transform-origin: center center;
-			transition:
-				transform 0.58s cubic-bezier(0.22, 1, 0.36, 1),
-				z-index 0.58s cubic-bezier(0.22, 1, 0.36, 1);
+			transition: transform 0.58s cubic-bezier(0.22, 1, 0.36, 1);
 			will-change: transform;
 		}
 
@@ -837,15 +835,40 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 			grid-template-columns: repeat(2, 1fr) !important;
 		}
 	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.sc3__panel,
+		.sc3__col,
+		.sc3__mobile-card,
+		.sc3__mobile-card-frame,
+		.sc3__mobile-card-frame::after,
+		.sc3__mobile-bookmark,
+		.sc3__nav-item {
+			transition: none !important;
+			animation: none !important;
+		}
+	}
 </style>
 
 <script is:inline>
 	const initSc3 = () => {
-		const navItems = document.querySelectorAll('.sc3__nav-item');
+		const cleanupKey = '__sc3TabsCleanup';
+		if (typeof window[cleanupKey] === 'function') window[cleanupKey]();
+
+		const navItems = Array.from(document.querySelectorAll('.sc3__nav-item'));
+		const panels = Array.from(document.querySelectorAll('.sc3__panel'));
+		if (!navItems.length || !panels.length) return;
 		let switching = false;
+		const listeners = [];
+		const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		panels.forEach((panel) => {
+			const isActive = panel.classList.contains('active');
+			panel.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+		});
 
 		navItems.forEach((item) => {
-			item.addEventListener('click', () => {
+			const onClick = () => {
 				if (switching) return;
 				const target = item.getAttribute('data-target');
 				const currentActive = document.querySelector('.sc3__panel.active');
@@ -856,6 +879,9 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 
 				navItems.forEach((n) => n.classList.remove('active'));
 				item.classList.add('active');
+				panels.forEach((panel) =>
+					panel.setAttribute('aria-hidden', panel === nextPanel ? 'false' : 'true'),
+				);
 
 				if (currentActive) {
 					currentActive.classList.add('leaving');
@@ -865,13 +891,46 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 				requestAnimationFrame(() => {
 					nextPanel.classList.add('active');
 
-					setTimeout(() => {
+					if (typeof window.__initMobShowcaseCycle === 'function') {
+						window.__initMobShowcaseCycle();
+					}
+
+					if (prefersReducedMotion) {
 						if (currentActive) currentActive.classList.remove('leaving');
 						switching = false;
-					}, 550);
+						return;
+					}
+
+					const releaseSwitch = () => {
+						if (currentActive) currentActive.classList.remove('leaving');
+						switching = false;
+					};
+
+					let settled = false;
+					const onTransitionDone = (event) => {
+						if (event.target !== nextPanel || event.propertyName !== 'opacity') return;
+						if (settled) return;
+						settled = true;
+						nextPanel.removeEventListener('transitionend', onTransitionDone);
+						releaseSwitch();
+					};
+
+					nextPanel.addEventListener('transitionend', onTransitionDone);
+					window.setTimeout(() => {
+						if (settled) return;
+						settled = true;
+						nextPanel.removeEventListener('transitionend', onTransitionDone);
+						releaseSwitch();
+					}, 680);
 				});
-			});
+			};
+			item.addEventListener('click', onClick);
+			listeners.push(() => item.removeEventListener('click', onClick));
 		});
+
+		window[cleanupKey] = () => {
+			listeners.forEach((removeListener) => removeListener());
+		};
 	};
 
 	initSc3();
@@ -927,20 +986,22 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 
 		const getVisualState = (controller, progress) => {
 			const passiveOffset = getPassiveOffset(controller);
+			const zSwapThreshold = controller.slide === 'before' ? 0.58 : 0.42;
+			const afterOnTop = progress >= zSwapThreshold;
 			return {
 				before: {
 					x: lerp(0, -passiveOffset, progress),
 					scale: lerp(1, PASSIVE_SCALE, progress),
 					shadow: lerp(ACTIVE_SHADOW, PASSIVE_SHADOW, progress),
 					overlay: lerp(ACTIVE_OVERLAY, PASSIVE_OVERLAY, progress),
-					z: progress >= 0.5 ? 2 : 4,
+					z: afterOnTop ? 2 : 4,
 				},
 				after: {
 					x: lerp(passiveOffset, 0, progress),
 					scale: lerp(PASSIVE_SCALE, 1, progress),
 					shadow: lerp(PASSIVE_SHADOW, ACTIVE_SHADOW, progress),
 					overlay: lerp(PASSIVE_OVERLAY, ACTIVE_OVERLAY, progress),
-					z: progress >= 0.5 ? 4 : 2,
+					z: afterOnTop ? 4 : 2,
 				},
 			};
 		};
@@ -1135,6 +1196,7 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 				if (controller.lockedAxis !== 'x') return;
 
 				controller.dragging = true;
+				event.preventDefault();
 				const passiveOffset = getPassiveOffset(controller);
 				const nextProgress = clamp(controller.startValue - deltaX / passiveOffset, 0, 1);
 				requestRender(nextProgress);

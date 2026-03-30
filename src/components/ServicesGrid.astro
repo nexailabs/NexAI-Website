@@ -39,6 +39,20 @@ const { eyebrow, heading, subheading, cards, class: className } = Astro.props;
 		padding-bottom: clamp(3rem, 6vw, 4rem);
 	}
 
+	:global(.reveal-up) {
+		opacity: 0;
+		transform: translate3d(0, 22px, 0);
+		transition:
+			opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+			transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+		will-change: opacity, transform;
+	}
+
+	:global(.reveal-up.is-visible) {
+		opacity: 1;
+		transform: translate3d(0, 0, 0);
+	}
+
 	.services-section__heading {
 		text-align: center;
 		max-width: 600px;
@@ -130,4 +144,47 @@ const { eyebrow, heading, subheading, cards, class: className } = Astro.props;
 			grid-template-columns: repeat(3, 1fr);
 		}
 	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:global(.reveal-up) {
+			opacity: 1;
+			transform: none;
+			transition: none;
+		}
+	}
 </style>
+
+<script is:inline>
+	const revealCleanupKey = '__servicesRevealCleanup';
+	const initServicesReveal = () => {
+		if (typeof window[revealCleanupKey] === 'function') {
+			window[revealCleanupKey]();
+		}
+
+		const targets = Array.from(document.querySelectorAll('.reveal-up'));
+		if (!targets.length) return;
+
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			targets.forEach((target) => target.classList.add('is-visible'));
+			return;
+		}
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (!entry.isIntersecting) return;
+					entry.target.classList.add('is-visible');
+					observer.unobserve(entry.target);
+				});
+			},
+			{ threshold: 0.2, rootMargin: '0px 0px -8% 0px' },
+		);
+
+		targets.forEach((target) => observer.observe(target));
+
+		window[revealCleanupKey] = () => observer.disconnect();
+	};
+
+	initServicesReveal();
+	document.addEventListener('astro:after-swap', initServicesReveal);
+</script>
