@@ -20,6 +20,12 @@ interface Props {
 
 const { categories } = Astro.props;
 
+const aspectDims: Record<string, { w: number; h: number }> = {
+	'3x4': { w: 600, h: 800 },
+	'2x3': { w: 600, h: 900 },
+	'1x1': { w: 600, h: 600 },
+};
+
 const placeholderSvg = `<svg class="sc3__ph-icon" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>`;
 const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 0 40 60" fill="none"><circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1"/><path d="M10 58V34a10 10 0 0120 0v24" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>`;
 ---
@@ -50,7 +56,13 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 								<div class="sc3__mobile-card sc3__mobile-card--before">
 									<span class="sc3__mobile-bookmark sc3__mobile-bookmark--before">Before</span>
 									<div class="sc3__mobile-card-frame">
-										<img src={cat.inputMain} alt={`${cat.label} raw input`} loading="lazy" />
+										<img
+											src={cat.inputMain}
+											alt={`${cat.label} raw input`}
+											width="600"
+											height="800"
+											loading="lazy"
+										/>
 									</div>
 								</div>
 								<div class="sc3__mobile-card sc3__mobile-card--after">
@@ -62,7 +74,13 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 												const slot = cat.outputs[outputIdx];
 												return slot?.src ? (
 													<div class={`sc3__mobile-output sc3__mobile-output--${pos}`}>
-														<img src={slot.src} alt={slot.alt} loading="lazy" />
+														<img
+															src={slot.src}
+															alt={slot.alt}
+															width="600"
+															height="800"
+															loading="lazy"
+														/>
 													</div>
 												) : (
 													<div class={`sc3__mobile-output sc3__mobile-output--${pos}`} />
@@ -80,7 +98,13 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 							<div class="sc3__input-group">
 								<div class:list={['sc3__input-main', { sc3__placeholder: !cat.inputMain }]}>
 									{cat.inputMain ? (
-										<img src={cat.inputMain} alt="Raw Garment" />
+										<img
+											src={cat.inputMain}
+											alt="Raw Garment"
+											width="600"
+											height="800"
+											loading="lazy"
+										/>
 									) : (
 										<Fragment set:html={placeholderSvgLg} />
 									)}
@@ -89,14 +113,26 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 								<div class="sc3__input-side">
 									<div class:list={['sc3__in-top', { sc3__placeholder: !cat.inputSideTop }]}>
 										{cat.inputSideTop ? (
-											<img src={cat.inputSideTop} alt="Side input" />
+											<img
+												src={cat.inputSideTop}
+												alt="Side input"
+												width="600"
+												height="800"
+												loading="lazy"
+											/>
 										) : (
 											<Fragment set:html={placeholderSvg} />
 										)}
 									</div>
 									<div class:list={['sc3__in-bottom', { sc3__placeholder: !cat.inputSideBottom }]}>
 										{cat.inputSideBottom ? (
-											<img src={cat.inputSideBottom} alt="Side input" />
+											<img
+												src={cat.inputSideBottom}
+												alt="Side input"
+												width="600"
+												height="800"
+												loading="lazy"
+											/>
 										) : (
 											<Fragment set:html={placeholderSvg} />
 										)}
@@ -134,7 +170,13 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 											]}
 										>
 											{slot.src ? (
-												<img src={slot.src} alt={slot.alt} loading="lazy" />
+												<img
+													src={slot.src}
+													alt={slot.alt}
+													width={aspectDims[slot.aspect].w}
+													height={aspectDims[slot.aspect].h}
+													loading="lazy"
+												/>
 											) : (
 												<>
 													<Fragment set:html={placeholderSvg} />
@@ -158,7 +200,13 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 												]}
 											>
 												{slot.src ? (
-													<img src={slot.src} alt={slot.alt} loading="lazy" />
+													<img
+														src={slot.src}
+														alt={slot.alt}
+														width={aspectDims[slot.aspect].w}
+														height={aspectDims[slot.aspect].h}
+														loading="lazy"
+													/>
 												) : (
 													<>
 														<Fragment set:html={placeholderSvg} />
@@ -181,7 +229,13 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 											]}
 										>
 											{slot.src ? (
-												<img src={slot.src} alt={slot.alt} loading="lazy" />
+												<img
+													src={slot.src}
+													alt={slot.alt}
+													width={aspectDims[slot.aspect].w}
+													height={aspectDims[slot.aspect].h}
+													loading="lazy"
+												/>
 											) : (
 												<>
 													<Fragment set:html={placeholderSvg} />
