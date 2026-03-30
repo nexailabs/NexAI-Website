@@ -9,6 +9,7 @@ interface Props {
 	ogImage?: string;
 	canonicalUrl?: string;
 	showNavbar?: boolean;
+	mainClass?: string;
 }
 
 const {
@@ -17,6 +18,7 @@ const {
 	ogImage = '/assets/og-default.png',
 	canonicalUrl,
 	showNavbar = true,
+	mainClass,
 } = Astro.props;
 
 const resolvedCanonical = canonicalUrl || Astro.url.href;
@@ -28,7 +30,7 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content={description} />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="color-scheme" content="dark" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
@@ -65,7 +67,9 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 	<body>
 		<a class="skip-to-content" href="#main-content">Skip to content</a>
 		{showNavbar && <Navbar />}
-		<slot />
+		<main id="main-content" class={mainClass} tabindex="-1">
+			<slot />
+		</main>
 
 		<!-- Global Scripts -->
 		<script src="../scripts/lenis.ts"></script>
