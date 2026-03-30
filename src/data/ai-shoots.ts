@@ -17,6 +17,8 @@ export interface NavLink {
 export interface BrandLogo {
 	src: string;
 	alt: string;
+	width: number;
+	height: number;
 }
 
 export interface ServiceCard {
@@ -94,17 +96,17 @@ export const heroDecks: HeroImage[][] = [heroDeckD, heroDeckC, heroDeckB, heroDe
 
 // ── Brand logos (marquee) ──
 export const brandLogos: BrandLogo[] = [
-	{ src: '/assets/brands/Banno.png', alt: 'Banno' },
-	{ src: '/assets/brands/DBJ.png', alt: 'DBJ' },
-	{ src: '/assets/brands/GANGA ONG.png', alt: 'Ganga' },
-	{ src: '/assets/brands/INDO ERA PNG.png', alt: 'Indo Era' },
-	{ src: '/assets/brands/JANASYA.png', alt: 'Janasya' },
-	{ src: '/assets/brands/JUGO.png', alt: 'Jugo' },
-	{ src: '/assets/brands/STF.png', alt: 'STF' },
-	{ src: '/assets/brands/leemboodi.png', alt: 'Leemboodi' },
-	{ src: '/assets/brands/skylee.png', alt: 'Skylee' },
-	{ src: '/assets/brands/xyxx.png', alt: 'XYXX' },
-	{ src: '/assets/brands/yufta.png', alt: 'Yufta' },
+	{ src: '/assets/brands/Banno.png', alt: 'Banno', width: 282, height: 199 },
+	{ src: '/assets/brands/DBJ.png', alt: 'DBJ', width: 275, height: 168 },
+	{ src: '/assets/brands/GANGA ONG.png', alt: 'Ganga', width: 307, height: 212 },
+	{ src: '/assets/brands/INDO ERA PNG.png', alt: 'Indo Era', width: 370, height: 223 },
+	{ src: '/assets/brands/JANASYA.png', alt: 'Janasya', width: 260, height: 208 },
+	{ src: '/assets/brands/JUGO.png', alt: 'Jugo', width: 203, height: 180 },
+	{ src: '/assets/brands/STF.png', alt: 'STF', width: 389, height: 162 },
+	{ src: '/assets/brands/leemboodi.png', alt: 'Leemboodi', width: 1479, height: 633 },
+	{ src: '/assets/brands/skylee.png', alt: 'Skylee', width: 303, height: 143 },
+	{ src: '/assets/brands/xyxx.png', alt: 'XYXX', width: 240, height: 151 },
+	{ src: '/assets/brands/yufta.png', alt: 'Yufta', width: 253, height: 208 },
 ];
 
 // ── Showcase categories ──
