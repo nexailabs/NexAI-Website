@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://nexailabs.com', // Placeholder
+	site: 'https://nexailabs.com',
 	integrations: [sitemap()],
 	prefetch: true, // Enable prefetching for faster navigation
 	experimental: {
