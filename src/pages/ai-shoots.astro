@@ -21,6 +21,8 @@ import {
 	description="Premium AI fashion photography for D2C brands."
 	showNavbar={false}
 >
+	<link slot="head" rel="preload" as="image" href={heroDecks[0][heroDecks[0].length - 1].src} />
+
 	<main class="shoots-page">
 		<Navbar
 			navLinks={heroNavLinks}
