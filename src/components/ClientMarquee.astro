@@ -2,6 +2,8 @@
 interface BrandLogo {
 	src: string;
 	alt: string;
+	width: number;
+	height: number;
 }
 
 interface Props {
@@ -14,10 +16,18 @@ const { brands } = Astro.props;
 <div class="client-marquee" aria-label="Our Trusted Brands">
 	<div class="client-marquee__track">
 		<div class="client-marquee__list">
-			{brands.map((b) => <img src={b.src} alt={b.alt} loading="lazy" />)}
+			{
+				brands.map((b) => (
+					<img src={b.src} alt={b.alt} width={b.width} height={b.height} loading="lazy" />
+				))
+			}
 		</div>
 		<div class="client-marquee__list" aria-hidden="true">
-			{brands.map((b) => <img src={b.src} alt="" loading="lazy" />)}
+			{
+				brands.map((b) => (
+					<img src={b.src} alt="" width={b.width} height={b.height} loading="lazy" />
+				))
+			}
 		</div>
 	</div>
 </div>
