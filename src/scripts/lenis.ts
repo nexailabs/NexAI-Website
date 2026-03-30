@@ -31,9 +31,10 @@ function initLenis() {
 initLenis();
 
 // Handle View Transitions (Astro)
-document.addEventListener('astro:page-load', () => {
-	// If we needed to re-init specific page logic, we'd do it here.
-	// Since Lenis is global and we want it to persist smoothly,
-	// we might just need to refresh ScrollTrigger.
+document.addEventListener('astro:page-load', async () => {
+	// Wait for all images to decode before recalculating scroll positions.
+	// This prevents ScrollTrigger from measuring the page height before
+	// images have loaded, which causes broken trigger positions.
+	await Promise.all([...document.images].map((img) => img.decode().catch(() => {})));
 	ScrollTrigger.refresh();
 });
