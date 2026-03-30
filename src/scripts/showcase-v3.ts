@@ -6,6 +6,22 @@ let resizeHandler: (() => void) | null = null;
 
 // ─── Tab Logic ───────────────────────────────────────────────────────────────
 
+function lockStageHeight(currentActive: HTMLElement | null, nextPanel: HTMLElement) {
+	const stage = nextPanel.closest<HTMLElement>('.sc3__stage');
+	if (!stage) return () => {};
+
+	const currentHeight = currentActive?.offsetHeight ?? 0;
+	const nextHeight = nextPanel.offsetHeight;
+	const lockHeight = Math.max(currentHeight, nextHeight);
+
+	if (lockHeight > 0) {
+		stage.style.height = `${lockHeight}px`;
+	}
+
+	return () => {
+		stage.style.removeProperty('height');
+	};
+}
 function activateTab(
 	tab: HTMLElement,
 	navItems: HTMLElement[],
@@ -36,6 +52,8 @@ function activateTab(
 		panel.setAttribute('aria-hidden', panel === nextPanel ? 'false' : 'true'),
 	);
 
+	const releaseStageHeight = lockStageHeight(currentActive, nextPanel);
+
 	if (currentActive) {
 		currentActive.classList.add('leaving');
 		currentActive.classList.remove('active');
@@ -48,12 +66,14 @@ function activateTab(
 		initMobShowcaseCycle();
 
 		if (prefersReducedMotion) {
+			releaseStageHeight();
 			if (currentActive) currentActive.classList.remove('leaving');
 			switching.value = false;
 			return;
 		}
 
 		const releaseSwitch = () => {
+			releaseStageHeight();
 			if (currentActive) currentActive.classList.remove('leaving');
 			switching.value = false;
 		};

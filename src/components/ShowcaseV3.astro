@@ -336,7 +336,7 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 	.sc3__stage {
 		position: relative;
 		width: 100%;
-		min-height: min(50vh, 22rem);
+		min-height: clamp(22rem, 48vw, 34rem);
 	}
 
 	/* ── Panel: OVERLAY CROSSFADE ── */
@@ -344,10 +344,10 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 		position: absolute;
 		inset: 0;
 		display: grid;
-		grid-template-columns: clamp(14rem, 20vw, 22rem) auto 1fr;
+		grid-template-columns: minmax(18rem, 0.95fr) clamp(2.25rem, 4vw, 4rem) minmax(22rem, 1.2fr);
 		grid-template-rows: 1fr;
-		gap: clamp(1rem, 2vw, 2.5rem);
-		align-items: center;
+		gap: clamp(1rem, 2vw, 2.25rem);
+		align-items: start;
 		opacity: 0;
 		pointer-events: none;
 		transform: scale(0.97);
@@ -372,6 +372,7 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 		display: flex;
 		flex-direction: column;
 		gap: 0.65rem;
+		min-width: 0;
 		animation: sc3FadeUp 0.6s ease both;
 	}
 	.sc3__col--right {
@@ -479,12 +480,15 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 	/* ── Input Group ── */
 	.sc3__input-group {
 		display: grid;
-		grid-template-columns: 2fr 1fr;
+		grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
 		gap: 0.5rem;
 		max-width: 100%;
+		align-items: stretch;
 		overflow: hidden;
 	}
 	.sc3__input-main {
+		position: relative;
+		display: block;
 		border-radius: 1rem;
 		overflow: hidden;
 		border: 1px solid rgba(200, 170, 100, 0.2);
@@ -503,18 +507,31 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 	}
 	.sc3__in-top,
 	.sc3__in-bottom {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		border-radius: 0.75rem;
 		overflow: hidden;
 		border: 1px solid rgba(255, 255, 255, 0.06);
-		flex: 1;
+		aspect-ratio: 3 / 4;
+	}
+
+	.sc3__in-top img,
+	.sc3__in-bottom img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
 	}
 
 	/* ── Output Bento Grid ── */
 	.sc3__outputs-bento {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr) minmax(0, 1fr);
 		gap: 0.5rem;
 		max-width: 100%;
+		align-items: start;
 		overflow: hidden;
 	}
 	.sc3__ob-col {
@@ -524,6 +541,10 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 		min-width: 0;
 	}
 	.sc3__ob-card {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		border-radius: 0.75rem;
 		overflow: hidden;
 		border: 1px solid rgba(200, 170, 100, 0.18);
@@ -546,11 +567,8 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 
 	/* ── Responsive ── */
 	@media (max-width: 1100px) {
-		.sc3__shell {
-			grid-template-columns: clamp(9rem, 14vw, 11rem) 1fr;
-		}
 		.sc3__panel {
-			grid-template-columns: clamp(8rem, 12vw, 10.5rem) auto 1fr;
+			grid-template-columns: minmax(14rem, 0.95fr) clamp(1.5rem, 3vw, 2.25rem) minmax(16rem, 1.05fr);
 		}
 	}
 	@media (max-width: 900px) {
