@@ -6,14 +6,21 @@ import '../styles/global.css';
 interface Props {
 	title: string;
 	description?: string;
+	ogImage?: string;
+	canonicalUrl?: string;
 	showNavbar?: boolean;
 }
 
 const {
 	title,
 	description = 'NexAI Labs - Business Growth on Autopilot',
+	ogImage = '/assets/og-default.jpg',
+	canonicalUrl,
 	showNavbar = true,
 } = Astro.props;
+
+const resolvedCanonical = canonicalUrl || Astro.url.href;
+const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, Astro.site).href;
 ---
 
 <!doctype html>
@@ -25,6 +32,21 @@ const {
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+
+		<!-- SEO -->
+		<link rel="canonical" href={resolvedCanonical} />
+
+		<!-- Open Graph -->
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={resolvedOgImage} />
+		<meta property="og:url" content={resolvedCanonical} />
+
+		<!-- Twitter -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
 
 		<!-- View Transitions -->
 		<ClientRouter />
