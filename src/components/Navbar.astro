@@ -1,9 +1,5 @@
 ---
-interface NavLink {
-	label: string;
-	href: string;
-	caption: string;
-}
+import type { NavLink } from '../types/ai-shoots';
 
 interface Props {
 	navLinks?: NavLink[];
@@ -124,6 +120,8 @@ const {
 		const panel = root.querySelector('[data-nav-panel]');
 		const closers = root.querySelectorAll('[data-nav-close]');
 
+		let trapListener = null;
+
 		const syncScrollState = () => {
 			root.classList.toggle('is-scrolled', window.scrollY > 24);
 		};
@@ -134,6 +132,11 @@ const {
 			trigger?.setAttribute('aria-label', 'Open navigation');
 			panel?.setAttribute('aria-hidden', 'true');
 			document.body.classList.remove('nav-open');
+			if (trapListener) {
+				document.removeEventListener('keydown', trapListener);
+				trapListener = null;
+			}
+			trigger?.focus();
 		};
 
 		const openMenu = () => {
@@ -142,6 +145,24 @@ const {
 			trigger?.setAttribute('aria-label', 'Close navigation');
 			panel?.setAttribute('aria-hidden', 'false');
 			document.body.classList.add('nav-open');
+
+			const focusables = [...panel.querySelectorAll('a, button'), trigger].filter(Boolean);
+
+			if (focusables.length) focusables[0].focus();
+
+			trapListener = (e) => {
+				if (e.key !== 'Tab' || !focusables.length) return;
+				const first = focusables[0];
+				const last = focusables[focusables.length - 1];
+				if (e.shiftKey && document.activeElement === first) {
+					e.preventDefault();
+					last.focus();
+				} else if (!e.shiftKey && document.activeElement === last) {
+					e.preventDefault();
+					first.focus();
+				}
+			};
+			document.addEventListener('keydown', trapListener);
 		};
 
 		trigger?.addEventListener('click', () => {

@@ -1,45 +1,17 @@
+import type {
+	HeroImage,
+	NavLink,
+	BrandLogo,
+	ServiceCard,
+	ShowcaseSlot,
+	ShowcaseCategory,
+} from '../types/ai-shoots';
+
+export type { HeroImage, NavLink, BrandLogo, ServiceCard, ShowcaseSlot, ShowcaseCategory };
+
 // ── ImageKit helpers ──
 export const ik = 'https://ik.imagekit.io/nexailabs';
 export const tr = '?tr=w-600,f-auto,q-80';
-
-// ── Types ──
-export interface HeroImage {
-	src: string;
-	alt: string;
-}
-
-export interface NavLink {
-	label: string;
-	href: string;
-	caption: string;
-}
-
-export interface BrandLogo {
-	src: string;
-	alt: string;
-	width: number;
-	height: number;
-}
-
-export interface ServiceCard {
-	title: string;
-	description: string;
-}
-
-export interface ShowcaseSlot {
-	src?: string;
-	alt: string;
-	aspect: '3x4' | '2x3' | '1x1';
-}
-
-export interface ShowcaseCategory {
-	id: string;
-	label: string;
-	inputMain?: string;
-	inputSideTop?: string;
-	inputSideBottom?: string;
-	outputs: ShowcaseSlot[];
-}
 
 // ── Page constants ──
 export const bookingUrl = 'https://cal.com/nexailabs/15min';
