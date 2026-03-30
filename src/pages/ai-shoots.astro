@@ -21,36 +21,49 @@ import {
 	description="Premium AI fashion photography for D2C brands."
 	ogImage="/assets/og-ai-shoots.png"
 	showNavbar={false}
+	mainClass="shoots-page"
 >
 	<link slot="head" rel="preload" as="image" href={heroDecks[0][heroDecks[0].length - 1].src} />
+	<script
+		slot="head"
+		type="application/ld+json"
+		set:html={JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'Organization',
+			name: 'NexAI Labs',
+			url: 'https://nexailabs.com',
+			logo: 'https://nexailabs.com/assets/og-default.png',
+			description: 'Building AI Agents for Businesses',
+			email: 'hello@nexailabs.com',
+			sameAs: [],
+		})}
+	/>
 
-	<main class="shoots-page" id="main-content">
-		<Navbar
-			navLinks={heroNavLinks}
-			topHref="#top"
-			brandAriaLabel="NexAI Labs AI Shoots home"
-			ctaHref={bookingUrl}
-			ctaLabel="Book a Call"
-			email={email}
-			takeoverMeta="India / Remote"
-			panelId="ai-shoots-nav-takeover"
-		/>
+	<Navbar
+		navLinks={heroNavLinks}
+		topHref="#top"
+		brandAriaLabel="NexAI Labs AI Shoots home"
+		ctaHref={bookingUrl}
+		ctaLabel="Book a Call"
+		email={email}
+		takeoverMeta="India / Remote"
+		panelId="ai-shoots-nav-takeover"
+	/>
 
-		<section class="shoots-hero" id="top">
-			<ShootsHero decks={heroDecks} />
-			<ClientMarquee brands={brandLogos} />
-		</section>
+	<section class="shoots-hero" id="top">
+		<ShootsHero decks={heroDecks} />
+		<ClientMarquee brands={brandLogos} />
+	</section>
 
-		<ShowcaseV3 categories={showcaseCategories} />
+	<ShowcaseV3 categories={showcaseCategories} />
 
-		<ServicesGrid
-			eyebrow="AI Photoshoot Services"
-			heading="Transform your fashion brand with AI-powered visuals"
-			subheading="We create premium on-model imagery that accelerates your collection launches while reducing production costs and time-to-market."
-			cards={serviceCards}
-			class="reveal-up"
-		/>
-	</main>
+	<ServicesGrid
+		eyebrow="AI Photoshoot Services"
+		heading="Transform your fashion brand with AI-powered visuals"
+		subheading="We create premium on-model imagery that accelerates your collection launches while reducing production costs and time-to-market."
+		cards={serviceCards}
+		class="reveal-up"
+	/>
 </Layout>
 
 <style>
