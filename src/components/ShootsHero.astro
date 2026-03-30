@@ -122,8 +122,8 @@ const { decks } = Astro.props;
 		letter-spacing: -0.06em;
 		line-height: 0.88;
 		transition:
-			transform 0.82s cubic-bezier(0.16, 1, 0.3, 1),
-			opacity 0.34s ease;
+			transform 0.86s cubic-bezier(0.22, 1, 0.36, 1),
+			opacity 0.32s ease;
 		will-change: transform, opacity;
 		white-space: nowrap;
 	}
@@ -276,6 +276,15 @@ const { decks } = Astro.props;
 		border-color: rgba(255, 255, 255, 0.5);
 		transform: scale(1.1);
 	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.shoots-hero__title-word,
+		.shoots-hero__card,
+		.shoots-hero__dock-thumb {
+			transition: none !important;
+			animation: none !important;
+		}
+	}
 </style>
 
 <script is:inline>
@@ -305,6 +314,7 @@ const { decks } = Astro.props;
 		const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 		let activeIndex = 0;
 		let cycleTimer;
+		let cycleEpoch = 0;
 		let spreadScale = 1;
 		let centerOffset = 0;
 		let resizeRaf = 0;
@@ -315,9 +325,13 @@ const { decks } = Astro.props;
 		const getCards = (deck) => Array.from(deck.querySelectorAll('[data-hero-card]'));
 
 		const schedule = (fn, delay) => {
-			const id = window.setTimeout(fn, delay);
-			timers.push(id);
-			return id;
+			const epochAtSchedule = cycleEpoch;
+			const wrappedId = window.setTimeout(() => {
+				if (epochAtSchedule !== cycleEpoch) return;
+				fn();
+			}, delay);
+			timers.push(wrappedId);
+			return wrappedId;
 		};
 
 		const scheduleRaf = (fn) => {
@@ -354,7 +368,7 @@ const { decks } = Astro.props;
 
 		const setTitleState = ({ shift = 0, opacity = 1 }, animate = true) => {
 			const transition = animate
-				? 'transform 0.82s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.34s ease'
+				? 'transform 0.86s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.32s ease'
 				: 'none';
 
 			if (titleLeft instanceof HTMLElement) {
@@ -557,6 +571,7 @@ const { decks } = Astro.props;
 		};
 
 		const runCycle = () => {
+			cycleEpoch += 1;
 			cancelAndClearRafs();
 			const isLoopRestart = activeIndex === 0 && !forceImmediate;
 			forceImmediate = false;
@@ -568,7 +583,7 @@ const { decks } = Astro.props;
 
 			const deck = decks[activeIndex];
 			const titleShift = getTitleShift();
-			const cycleStart = isLoopRestart ? 2000 : 0;
+			const cycleStart = isLoopRestart ? 900 : 0;
 			let cards = [];
 			let spreadUnit = 0;
 
@@ -703,9 +718,22 @@ const { decks } = Astro.props;
 
 		runCycle();
 
+		let lastViewportModeIsMobile = isMobile();
 		const handleResize = () => {
 			if (resizeRaf) cancelAnimationFrame(resizeRaf);
 			resizeRaf = requestAnimationFrame(() => {
+				const viewportIsMobile = isMobile();
+				if (viewportIsMobile !== lastViewportModeIsMobile) {
+					lastViewportModeIsMobile = viewportIsMobile;
+					clearScheduledTimers();
+					clearTimeout(cycleTimer);
+					cancelAndClearRafs();
+					decks.forEach((d) => hideDeck(d));
+					setTitleState({ shift: viewportIsMobile ? -120 : getTitleShift(), opacity: 1 }, false);
+					forceImmediate = true;
+					runCycle();
+					return;
+				}
 				applyDesktopLayoutForResize();
 			});
 		};
