@@ -640,7 +640,8 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 			width: min(100%, 22rem);
 			min-height: 26rem;
 			margin: 0 auto;
-			overflow: visible;
+			overflow-x: clip;
+			overflow-y: visible;
 			isolation: isolate;
 			touch-action: pan-y;
 			user-select: none;
@@ -651,7 +652,7 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 			position: absolute;
 			left: 50%;
 			top: 50%;
-			width: 76%;
+			width: min(76%, calc(100% - 1rem));
 			aspect-ratio: 3 / 4;
 			overflow: visible;
 			isolation: isolate;
