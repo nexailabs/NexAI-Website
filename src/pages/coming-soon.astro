@@ -1,5 +1,17 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const launchChecklist = [
+	'Model QA and edge-case tuning',
+	'New motion-driven product walkthrough',
+	'Faster booking flow + smart routing',
+];
+
+const expectedDrops = [
+	{ label: 'Private beta updates', value: 'Weekly' },
+	{ label: 'Response time target', value: '< 24h' },
+	{ label: 'Current stage', value: 'Final polish' },
+];
 ---
 
 <Layout
@@ -7,17 +19,51 @@ import Layout from '../layouts/Layout.astro';
 	description="Something new is brewing. Stay tuned."
 	mainClass="coming-soon"
 >
+	<div class="coming-soon__aurora" aria-hidden="true"></div>
 	<div class="coming-soon__inner">
 		<div class="coming-soon__grid" aria-hidden="true">
-			{Array.from({ length: 25 }).map(() => <span />)}
+			{Array.from({ length: 49 }).map(() => <span />)}
 		</div>
-		<span class="coming-soon__tag">IN THE PIPELINE</span>
-		<h1 class="coming-soon__heading">Coming Soon</h1>
-		<p class="coming-soon__body">
-			We're training the models, tuning the prompts, and shipping fast.<br />
-			This one's not ready yet — but it will be.
-		</p>
-		<a href="/ai-shoots" class="coming-soon__home">Back to Studio</a>
+
+		<section class="coming-soon__hero" aria-label="Coming soon announcement">
+			<span class="coming-soon__tag">IN THE PIPELINE</span>
+			<h1 class="coming-soon__heading">Building something unfairly good.</h1>
+			<p class="coming-soon__body">
+				We’re shipping the next NexAI Labs experience with better speed, cleaner UX, and sharper
+				outcomes. This page is in final production.
+			</p>
+
+			<div class="coming-soon__actions">
+				<a href="/ai-shoots" class="coming-soon__button coming-soon__button--primary"
+					>Back to Studio</a
+				>
+				<a href="/contact" class="coming-soon__button coming-soon__button--ghost">Book a Call</a>
+			</div>
+		</section>
+
+		<section class="coming-soon__panel" aria-label="Launch status">
+			<h2 class="coming-soon__panel-title">Launch status</h2>
+			<ul class="coming-soon__list">
+				{
+					launchChecklist.map((item) => (
+						<li>
+							<span class="coming-soon__dot" aria-hidden="true" />
+							{item}
+						</li>
+					))
+				}
+			</ul>
+			<div class="coming-soon__stats">
+				{
+					expectedDrops.map((drop) => (
+						<article class="coming-soon__stat">
+							<p class="coming-soon__stat-label">{drop.label}</p>
+							<p class="coming-soon__stat-value">{drop.value}</p>
+						</article>
+					))
+				}
+			</div>
+		</section>
 	</div>
 </Layout>
 
@@ -27,110 +73,263 @@ import Layout from '../layouts/Layout.astro';
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		padding: var(--space-lg) var(--space-sm);
-		background: var(--color-bg);
+		padding: clamp(1.5rem, 3vw, 2.5rem);
+		background:
+			radial-gradient(circle at 15% 15%, rgba(78, 201, 180, 0.14), transparent 42%),
+			radial-gradient(circle at 85% 0%, rgba(116, 139, 253, 0.14), transparent 44%), var(--color-bg);
 		position: relative;
 		overflow: hidden;
+	}
+
+	.coming-soon__aurora {
+		position: absolute;
+		inset: -20% -10%;
+		background:
+			radial-gradient(circle at 20% 40%, rgba(78, 201, 180, 0.15), transparent 30%),
+			radial-gradient(circle at 80% 60%, rgba(78, 201, 180, 0.12), transparent 35%);
+		filter: blur(40px);
+		animation: aurora-float 8s ease-in-out infinite;
+		pointer-events: none;
 	}
 
 	.coming-soon__grid {
 		position: absolute;
 		inset: 0;
 		display: grid;
-		grid-template-columns: repeat(5, 1fr);
-		grid-template-rows: repeat(5, 1fr);
+		grid-template-columns: repeat(7, 1fr);
+		grid-template-rows: repeat(7, 1fr);
 		gap: 1px;
-		opacity: 0.04;
+		opacity: 0.1;
+		mask-image: radial-gradient(circle at center, black 45%, transparent 90%);
 	}
 
 	.coming-soon__grid span {
-		border: 1px solid rgba(255, 255, 255, 0.3);
-		animation: grid-pulse 4s ease-in-out infinite;
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		animation: grid-pulse 5s ease-in-out infinite;
 	}
 
 	.coming-soon__grid span:nth-child(odd) {
-		animation-delay: -2s;
+		animation-delay: -2.5s;
 	}
 
 	.coming-soon__inner {
 		position: relative;
 		z-index: 1;
+		display: grid;
+		grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+		gap: clamp(1rem, 2.8vw, 2rem);
+		width: min(1120px, 100%);
+	}
+
+	.coming-soon__hero,
+	.coming-soon__panel {
+		background: rgba(9, 12, 18, 0.72);
+		backdrop-filter: blur(16px);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-radius: 1.25rem;
+		box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+	}
+
+	.coming-soon__hero {
 		display: flex;
 		flex-direction: column;
-		align-items: center;
-		text-align: center;
-		gap: 1.5rem;
-		max-width: 520px;
+		align-items: flex-start;
+		gap: 1.35rem;
+		padding: clamp(1.5rem, 3vw, 2.5rem);
 	}
 
 	.coming-soon__tag {
 		font-size: 0.72rem;
-		font-weight: 600;
-		letter-spacing: 0.22em;
+		font-weight: 700;
+		letter-spacing: 0.2em;
 		text-transform: uppercase;
 		color: var(--color-brand-cyan);
-		padding: 0.4rem 1rem;
-		border: 1px solid rgba(78, 201, 180, 0.2);
+		padding: 0.45rem 1rem;
+		border: 1px solid rgba(78, 201, 180, 0.25);
 		border-radius: 999px;
-		background: rgba(78, 201, 180, 0.06);
+		background: rgba(78, 201, 180, 0.1);
 	}
 
 	.coming-soon__heading {
-		font-size: clamp(3rem, 10vw, 6rem);
+		font-size: clamp(2.2rem, 6vw, 4.8rem);
 		font-weight: 800;
-		line-height: 0.9;
-		background: var(--color-brand-gradient);
+		line-height: 0.95;
+		letter-spacing: -0.04em;
+		margin: 0;
+		max-width: 14ch;
+		text-wrap: balance;
+		background: linear-gradient(180deg, #fff 0%, #8ef3e2 90%);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-clip: text;
-		letter-spacing: -0.04em;
 	}
 
 	.coming-soon__body {
-		font-size: 1rem;
+		font-size: clamp(1rem, 1.9vw, 1.15rem);
 		color: var(--color-text-muted);
 		line-height: 1.7;
+		max-width: 50ch;
+		margin: 0;
 	}
 
-	.coming-soon__home {
+	.coming-soon__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+	}
+
+	.coming-soon__button {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		padding: 0.85rem 1.75rem;
+		padding: 0.85rem 1.5rem;
 		border-radius: 999px;
-		border: 1px solid var(--color-border);
-		background: rgba(255, 255, 255, 0.03);
-		color: var(--color-text-main);
-		font-size: 0.92rem;
-		font-weight: 600;
-		letter-spacing: 0.04em;
-		text-decoration: none;
+		font-size: 0.88rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
 		text-transform: uppercase;
+		text-decoration: none;
 		transition:
+			transform 0.2s ease,
 			border-color 0.2s ease,
-			transform 0.2s ease;
+			background 0.2s ease;
 	}
 
-	.coming-soon__home:hover,
-	.coming-soon__home:focus-visible {
+	.coming-soon__button--primary {
+		background: linear-gradient(90deg, rgba(78, 201, 180, 0.9), rgba(78, 201, 180, 0.72));
+		color: #02120f;
+		border: 1px solid transparent;
+	}
+
+	.coming-soon__button--ghost {
+		background: rgba(255, 255, 255, 0.04);
+		color: var(--color-text-main);
+		border: 1px solid var(--color-border);
+	}
+
+	.coming-soon__button:hover,
+	.coming-soon__button:focus-visible {
+		transform: translateY(-2px);
 		border-color: var(--color-border-hover);
-		transform: translateY(-1px);
 		outline: none;
+	}
+
+	.coming-soon__panel {
+		padding: clamp(1.25rem, 2.5vw, 2rem);
+		display: flex;
+		flex-direction: column;
+		gap: 1.1rem;
+	}
+
+	.coming-soon__panel-title {
+		margin: 0;
+		font-size: 0.9rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.78);
+	}
+
+	.coming-soon__list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 0.7rem;
+	}
+
+	.coming-soon__list li {
+		display: flex;
+		align-items: center;
+		gap: 0.65rem;
+		color: var(--color-text-muted);
+		font-size: 0.97rem;
+	}
+
+	.coming-soon__dot {
+		width: 0.5rem;
+		height: 0.5rem;
+		border-radius: 50%;
+		background: var(--color-brand-cyan);
+		box-shadow: 0 0 0.6rem rgba(78, 201, 180, 0.85);
+		flex-shrink: 0;
+	}
+
+	.coming-soon__stats {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 0.65rem;
+	}
+
+	.coming-soon__stat {
+		padding: 0.8rem;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-radius: 0.8rem;
+		background: rgba(255, 255, 255, 0.02);
+	}
+
+	.coming-soon__stat-label {
+		margin: 0;
+		font-size: 0.68rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.52);
+	}
+
+	.coming-soon__stat-value {
+		margin: 0.35rem 0 0;
+		font-size: 1.05rem;
+		font-weight: 700;
+		color: var(--color-text-main);
 	}
 
 	@keyframes grid-pulse {
 		0%,
 		100% {
-			opacity: 0.3;
+			opacity: 0.25;
 		}
 		50% {
 			opacity: 1;
 		}
 	}
 
+	@keyframes aurora-float {
+		0%,
+		100% {
+			transform: translateY(0px) scale(1);
+		}
+		50% {
+			transform: translateY(-12px) scale(1.03);
+		}
+	}
+
+	@media (max-width: 980px) {
+		.coming-soon__inner {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 600px) {
+		.coming-soon {
+			padding-inline: 1rem;
+		}
+
+		.coming-soon__heading {
+			max-width: 11ch;
+		}
+
+		.coming-soon__stats {
+			grid-template-columns: 1fr;
+		}
+	}
+
 	@media (prefers-reduced-motion: reduce) {
-		.coming-soon__grid span {
+		.coming-soon__grid span,
+		.coming-soon__aurora {
 			animation: none !important;
+		}
+
+		.coming-soon__button {
+			transition: none;
 		}
 	}
 </style>
