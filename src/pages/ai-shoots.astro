@@ -62,8 +62,8 @@ import {
 	}
 
 	.shoots-hero {
-		--shoots-marquee-space: clamp(7.5rem, 11vw, 10rem);
-		min-height: 100vh;
+		--shoots-marquee-space: clamp(7.75rem, 10vw, 10.5rem);
+		min-height: 100svh;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -71,12 +71,13 @@ import {
 		padding-top: calc(var(--header-height, 5rem) + 1rem);
 		padding-bottom: var(--shoots-marquee-space);
 		box-sizing: border-box;
-		overflow: hidden;
+		overflow-x: clip;
+		overflow-y: visible;
 	}
 
 	@media (max-width: 720px) {
 		.shoots-hero {
-			--shoots-marquee-space: 9rem;
+			--shoots-marquee-space: 9.5rem;
 			padding-top: calc(var(--header-height, 5rem) + 0.5rem);
 		}
 	}
