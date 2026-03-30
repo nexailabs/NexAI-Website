@@ -166,6 +166,7 @@ interface MobController {
 	panel: HTMLElement;
 	mobileStage: HTMLElement;
 	beforeCard: HTMLElement;
+	afterCard: HTMLElement;
 	slide: 'before' | 'after';
 	progress: number;
 	startValue: number;
@@ -201,7 +202,9 @@ function mobClearTimers() {
 }
 
 function getPassiveOffset(ctrl: MobController) {
-	const baseWidth = ctrl.beforeCard?.offsetWidth || ctrl.mobileStage.clientWidth * 0.76;
+	const beforeWidth = ctrl.beforeCard?.offsetWidth || 0;
+	const afterWidth = ctrl.afterCard?.offsetWidth || 0;
+	const baseWidth = Math.max(beforeWidth, afterWidth, ctrl.mobileStage.clientWidth * 0.76);
 	return (baseWidth * (1 - PASSIVE_SCALE + 2 * PASSIVE_VISIBLE_RATIO * PASSIVE_SCALE)) / 2;
 }
 
@@ -350,12 +353,14 @@ function initMobShowcaseCycle() {
 	document.querySelectorAll<HTMLElement>('.sc3__panel').forEach((panel) => {
 		const mobileStage = panel.querySelector<HTMLElement>('.sc3__mobile-stage');
 		const beforeCard = panel.querySelector<HTMLElement>('.sc3__mobile-card--before');
-		if (!mobileStage || !beforeCard) return;
+		const afterCard = panel.querySelector<HTMLElement>('.sc3__mobile-card--after');
+		if (!mobileStage || !beforeCard || !afterCard) return;
 
 		const ctrl: MobController = {
 			panel,
 			mobileStage,
 			beforeCard,
+			afterCard,
 			slide: panel.getAttribute('data-mobile-slide') === 'after' ? 'after' : 'before',
 			progress: 0,
 			startValue: 0,
@@ -376,6 +381,7 @@ function initMobShowcaseCycle() {
 
 		const requestRender = (progress: number) => {
 			ctrl.pendingProgress = progress;
+			ctrl.progress = progress;
 			if (!ctrl.rafId) {
 				ctrl.rafId = requestAnimationFrame(renderDrag);
 			}
@@ -419,6 +425,9 @@ function initMobShowcaseCycle() {
 
 		const onPointerEnd = (event: PointerEvent) => {
 			if (ctrl.pointerId !== event.pointerId) return;
+			if (ctrl.pendingProgress !== null) {
+				ctrl.progress = ctrl.pendingProgress;
+			}
 			finishInteraction(ctrl, true);
 		};
 
@@ -426,6 +435,7 @@ function initMobShowcaseCycle() {
 		mobileStage.addEventListener('pointermove', onPointerMove);
 		mobileStage.addEventListener('pointerup', onPointerEnd);
 		mobileStage.addEventListener('pointercancel', onPointerEnd);
+		mobileStage.addEventListener('lostpointercapture', onPointerEnd);
 
 		settleSlide(ctrl, ctrl.slide, { restartAuto: false });
 		mobControllers.push(ctrl);
@@ -437,6 +447,7 @@ function initMobShowcaseCycle() {
 			mobileStage.removeEventListener('pointermove', onPointerMove);
 			mobileStage.removeEventListener('pointerup', onPointerEnd);
 			mobileStage.removeEventListener('pointercancel', onPointerEnd);
+			mobileStage.removeEventListener('lostpointercapture', onPointerEnd);
 		};
 	});
 
