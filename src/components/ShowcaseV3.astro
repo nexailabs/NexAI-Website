@@ -1,18 +1,5 @@
 ---
-interface ShowcaseSlot {
-	src?: string;
-	alt: string;
-	aspect: '3x4' | '2x3' | '1x1';
-}
-
-interface ShowcaseCategory {
-	id: string;
-	label: string;
-	inputMain?: string;
-	inputSideTop?: string;
-	inputSideBottom?: string;
-	outputs: ShowcaseSlot[];
-}
+import type { ShowcaseCategory } from '../types/ai-shoots';
 
 interface Props {
 	categories: ShowcaseCategory[];
