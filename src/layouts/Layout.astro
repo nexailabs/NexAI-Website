@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import Navbar from '../components/Navbar.astro';
+import CustomCursor from '../components/CustomCursor.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -66,6 +67,7 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 	</head>
 	<body>
 		<a class="skip-to-content" href="#main-content">Skip to content</a>
+		<CustomCursor />
 		{showNavbar && <Navbar />}
 		<main id="main-content" class={mainClass} tabindex="-1">
 			<slot />

@@ -1,48 +1,61 @@
 ---
-import type { NavLink } from '../types/ai-shoots';
+import type { NavGroup } from '../types/ai-shoots';
 
 interface Props {
-	navLinks?: NavLink[];
+	navGroups?: NavGroup[];
 	topHref?: string;
 	brandAriaLabel?: string;
 	ctaHref?: string;
 	ctaLabel?: string;
 	email?: string;
-	takeoverMeta?: string;
 	panelId?: string;
 }
 
-const defaultNavLinks: NavLink[] = [
+const defaultNavGroups: NavGroup[] = [
 	{
-		label: 'Services',
-		href: '#services',
-		caption: 'Core automation offers across sales, content, workflow, and support.',
+		label: 'NexAI Studio',
+		href: '/ai-shoots',
+		caption: 'AI-powered photoshoots for fashion brands.',
+		children: [
+			{ label: 'Ethnic Wear', href: '/coming-soon' },
+			{ label: 'Saree', href: '/coming-soon' },
+			{ label: 'Video Gen', href: '/coming-soon' },
+		],
 	},
 	{
-		label: 'Process',
-		href: '#process',
-		caption: 'How NexAI audits, builds, and ships systems without bloated delivery cycles.',
+		label: 'Agent Lab',
+		href: '/coming-soon',
+		caption: 'Custom AI agents built for your workflow.',
 	},
 	{
-		label: 'Work',
-		href: '#work',
-		caption: 'Selected proof, case-study signals, and productized outcomes from recent work.',
+		label: 'Prompt Hub',
+		href: '/coming-soon',
+		caption: 'Curated prompts, skills, and SOPs we swear by.',
 	},
 	{
-		label: 'FAQ',
-		href: '#faq',
-		caption: 'Buying-friction answers on delivery speed, tooling, fit, and reliability.',
+		label: 'App Vault',
+		href: '/coming-soon',
+		caption: 'The best AI tools we use and recommend.',
+	},
+	{
+		label: 'AI Drops',
+		href: '/coming-soon',
+		caption: "Dispatches on what we're building and learning.",
+	},
+	{
+		label: 'Catch Us',
+		href: '/coming-soon',
+		caption: "Let's talk — no pitch decks, just coffee.",
 	},
 ];
 
 const {
-	navLinks = defaultNavLinks,
+	navGroups = defaultNavGroups,
 	topHref = '#top',
 	brandAriaLabel = 'NexAI Labs home',
 	ctaHref = 'https://cal.com/nexailabs/15min',
 	ctaLabel = 'Book a Call',
 	email = 'hello@nexailabs.com',
-	takeoverMeta = 'India / Remote',
 	panelId = 'primary-nav-takeover',
 } = Astro.props;
 ---
@@ -82,20 +95,52 @@ const {
 
 	<div class="prod-signal-nav__takeover" id={panelId} data-nav-panel aria-hidden="true">
 		<div class="prod-signal-nav__takeover-shell container">
-			<div class="prod-signal-nav__takeover-meta">
-				<span>{takeoverMeta}</span>
-			</div>
-
 			<nav class="prod-signal-nav__list" aria-label="Primary">
 				{
-					navLinks.map((link) => (
-						<a class="prod-signal-nav__item" href={link.href} data-nav-close>
-							<div class="prod-signal-nav__item-copy">
-								<strong class="prod-signal-nav__label">{link.label}</strong>
-								<small>{link.caption}</small>
+					navGroups.map((group) =>
+						group.children && group.children.length > 0 ? (
+							<div class="prod-signal-nav__item" data-nav-group>
+								<div class="prod-signal-nav__item-header">
+									<a href={group.href} class="prod-signal-nav__item-link" data-nav-close>
+										<div class="prod-signal-nav__item-copy">
+											<strong class="prod-signal-nav__label">{group.label}</strong>
+											{group.caption && <small>{group.caption}</small>}
+										</div>
+									</a>
+									<button
+										class="prod-signal-nav__expand"
+										data-nav-expand
+										aria-expanded="false"
+										aria-label={`Expand ${group.label}`}
+									>
+										<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+											<path
+												d="M5 8l5 5 5-5"
+												stroke="currentColor"
+												stroke-width="1.5"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+											/>
+										</svg>
+									</button>
+								</div>
+								<div class="prod-signal-nav__sub" data-nav-sub hidden>
+									{group.children.map((child) => (
+										<a href={child.href} class="prod-signal-nav__sub-link" data-nav-close>
+											{child.label}
+										</a>
+									))}
+								</div>
 							</div>
-						</a>
-					))
+						) : (
+							<a class="prod-signal-nav__item" href={group.href} data-nav-close>
+								<div class="prod-signal-nav__item-copy">
+									<strong class="prod-signal-nav__label">{group.label}</strong>
+									{group.caption && <small>{group.caption}</small>}
+								</div>
+							</a>
+						),
+					)
 				}
 			</nav>
 
@@ -142,14 +187,14 @@ const {
 		gap: 1rem;
 		padding: 0.4rem 0 0.1rem;
 		transition:
-			padding 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-			margin 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-			border-color 0.45s ease,
-			border-radius 0.45s ease,
-			background 0.45s ease,
-			backdrop-filter 0.45s ease,
-			box-shadow 0.45s ease,
-			opacity 0.35s ease;
+			padding 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+			margin 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+			border-color 0.5s ease,
+			border-radius 0.5s ease,
+			background 0.5s ease,
+			backdrop-filter 0.5s ease,
+			box-shadow 0.5s ease,
+			opacity 0.3s ease;
 	}
 
 	.prod-signal-nav.is-scrolled .prod-signal-nav__bar {
@@ -175,6 +220,8 @@ const {
 	.prod-signal-nav__brand,
 	.prod-signal-nav__cta,
 	.prod-signal-nav__item,
+	.prod-signal-nav__item-link,
+	.prod-signal-nav__sub-link,
 	.prod-signal-nav__panel-cta,
 	.prod-signal-nav__panel-email {
 		color: inherit;
@@ -196,12 +243,18 @@ const {
 		height: 2rem;
 		display: block;
 		flex: none;
+		background: transparent;
+		mix-blend-mode: screen;
 	}
 
 	.prod-signal-nav__line {
 		height: 1px;
 		background: linear-gradient(90deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.04));
-		transition: opacity 0.35s ease;
+		transition: opacity 0.3s ease;
+	}
+
+	.prod-signal-nav.is-scrolled .prod-signal-nav__line {
+		opacity: 0.4;
 	}
 
 	.prod-signal-nav__actions {
@@ -223,26 +276,33 @@ const {
 		font-size: 0.92rem;
 		font-weight: 600;
 		transition:
-			transform 0.32s ease,
-			border-color 0.32s ease,
-			background 0.32s ease,
-			opacity 0.32s ease;
+			transform 0.3s ease,
+			border-color 0.3s ease,
+			background 0.3s ease,
+			opacity 0.3s ease;
 	}
 
 	.prod-signal-nav__cta:hover,
+	.prod-signal-nav__panel-cta:hover {
+		transform: translateY(-1px);
+		border-color: rgba(255, 255, 255, 0.24);
+		background: rgba(255, 255, 255, 0.06);
+	}
+
 	.prod-signal-nav__cta:focus-visible,
-	.prod-signal-nav__panel-cta:hover,
 	.prod-signal-nav__panel-cta:focus-visible {
 		transform: translateY(-1px);
 		border-color: rgba(255, 255, 255, 0.24);
 		background: rgba(255, 255, 255, 0.06);
-		outline: none;
+		outline: 2px solid rgba(255, 255, 255, 0.5);
+		outline-offset: 2px;
 	}
 
 	.prod-signal-nav[data-open='true'] .prod-signal-nav__cta {
 		opacity: 0;
 		transform: translateY(-6px);
 		pointer-events: none;
+		visibility: hidden;
 	}
 
 	.prod-signal-nav__trigger {
@@ -259,10 +319,10 @@ const {
 		backdrop-filter: blur(12px);
 		cursor: pointer;
 		transition:
-			transform 0.42s cubic-bezier(0.16, 1, 0.3, 1),
-			border-color 0.42s ease,
-			background 0.42s ease,
-			box-shadow 0.42s ease;
+			transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+			border-color 0.3s ease,
+			background 0.3s ease,
+			box-shadow 0.3s ease;
 	}
 
 	.prod-signal-nav__trigger:hover,
@@ -300,8 +360,8 @@ const {
 		background: rgba(255, 255, 255, 0.98);
 		transform-origin: center;
 		transition:
-			transform 0.46s cubic-bezier(0.16, 1, 0.3, 1),
-			opacity 0.34s ease;
+			transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+			opacity 0.3s ease;
 	}
 
 	.prod-signal-nav__trigger-core i:nth-child(1) {
@@ -319,6 +379,10 @@ const {
 	.prod-signal-nav[data-open='true'] .prod-signal-nav__trigger {
 		border-color: rgba(255, 255, 255, 0.26);
 		background: rgba(10, 11, 12, 0.98);
+	}
+
+	.prod-signal-nav[data-open='true'] .prod-signal-nav__trigger-core i {
+		background: rgba(255, 255, 255, 0.8);
 	}
 
 	.prod-signal-nav[data-open='true'] .prod-signal-nav__trigger-core::before {
@@ -349,8 +413,8 @@ const {
 		visibility: hidden;
 		pointer-events: none;
 		transition:
-			opacity 0.45s ease,
-			visibility 0s linear 0.45s;
+			opacity 0.5s ease,
+			visibility 0s linear 0.5s;
 	}
 
 	.prod-signal-nav[data-open='true'] .prod-signal-nav__takeover {
@@ -358,46 +422,38 @@ const {
 		visibility: visible;
 		pointer-events: auto;
 		transition:
-			opacity 0.45s ease,
+			opacity 0.5s ease,
 			visibility 0s linear 0s;
 	}
 
 	.prod-signal-nav__takeover-shell {
 		display: grid;
-		grid-template-rows: auto 1fr auto;
-		min-height: 100vh;
-		padding-top: 7rem;
-		padding-bottom: 2rem;
-	}
-
-	.prod-signal-nav__takeover-meta {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding-top: 1rem;
-		font-size: 0.76rem;
-		letter-spacing: 0.18em;
-		text-transform: uppercase;
-		color: rgba(255, 255, 255, 0.42);
+		grid-template-rows: 1fr auto;
+		height: 100vh;
+		height: 100dvh;
+		padding-top: clamp(4rem, 10dvh, 7rem);
+		padding-bottom: clamp(1rem, 3dvh, 2rem);
 	}
 
 	.prod-signal-nav__list {
 		display: grid;
 		align-content: start;
 		gap: 0;
-		padding-top: 2.25rem;
+		padding-top: clamp(0.5rem, 1.5dvh, 1.5rem);
 	}
+
+	/* ── Nav items (shared) ── */
 
 	.prod-signal-nav__item {
 		display: block;
-		padding: 1.35rem 0 1.2rem;
+		padding: clamp(0.35rem, 1dvh, 0.9rem) 0;
 		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 		opacity: 0;
 		transform: translateY(24px);
 		transition:
-			transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
-			opacity 0.52s ease,
-			border-color 0.42s ease;
+			transform 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+			opacity 0.5s ease,
+			border-color 0.3s ease;
 	}
 
 	.prod-signal-nav[data-open='true'] .prod-signal-nav__item {
@@ -406,54 +462,65 @@ const {
 	}
 
 	.prod-signal-nav[data-open='true'] .prod-signal-nav__item:nth-child(1) {
-		transition-delay: 0.08s;
+		transition-delay: 0.06s;
 	}
 	.prod-signal-nav[data-open='true'] .prod-signal-nav__item:nth-child(2) {
-		transition-delay: 0.16s;
+		transition-delay: 0.12s;
 	}
 	.prod-signal-nav[data-open='true'] .prod-signal-nav__item:nth-child(3) {
-		transition-delay: 0.24s;
+		transition-delay: 0.18s;
 	}
 	.prod-signal-nav[data-open='true'] .prod-signal-nav__item:nth-child(4) {
-		transition-delay: 0.32s;
+		transition-delay: 0.24s;
+	}
+	.prod-signal-nav[data-open='true'] .prod-signal-nav__item:nth-child(5) {
+		transition-delay: 0.3s;
+	}
+	.prod-signal-nav[data-open='true'] .prod-signal-nav__item:nth-child(6) {
+		transition-delay: 0.36s;
 	}
 
 	.prod-signal-nav__item-copy {
 		display: grid;
-		gap: 0.65rem;
+		gap: clamp(0.15rem, 0.5dvh, 0.45rem);
 	}
 
 	.prod-signal-nav__label {
 		display: inline-block;
-		font-size: clamp(3.25rem, 8vw, 5.3rem);
+		font-size: clamp(1.6rem, 4dvh, 4rem);
 		line-height: 0.92;
 		font-weight: 600;
 		letter-spacing: -0.045em;
 		transition:
-			transform 0.52s cubic-bezier(0.16, 1, 0.3, 1),
-			letter-spacing 0.52s ease,
-			color 0.42s ease,
-			text-shadow 0.42s ease;
+			transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+			letter-spacing 0.5s ease,
+			color 0.3s ease,
+			text-shadow 0.3s ease;
 	}
 
 	.prod-signal-nav__item-copy small {
 		max-width: 38rem;
 		color: rgba(255, 255, 255, 0.48);
-		font-size: 0.96rem;
-		line-height: 1.6;
+		font-size: clamp(0.65rem, 1.1dvh, 0.88rem);
+		line-height: 1.5;
 		transition:
-			color 0.42s ease,
-			transform 0.52s cubic-bezier(0.16, 1, 0.3, 1);
+			color 0.3s ease,
+			transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 	}
 
+	/* Hover — applies to both plain items and item-link inside groups */
 	.prod-signal-nav__item:hover,
-	.prod-signal-nav__item:focus-visible {
+	.prod-signal-nav__item:focus-visible,
+	.prod-signal-nav__item-link:hover,
+	.prod-signal-nav__item-link:focus-visible {
 		border-color: rgba(255, 255, 255, 0.12);
 		outline: none;
 	}
 
-	.prod-signal-nav__item:hover .prod-signal-nav__label,
-	.prod-signal-nav__item:focus-visible .prod-signal-nav__label {
+	.prod-signal-nav__item:hover > .prod-signal-nav__item-copy .prod-signal-nav__label,
+	.prod-signal-nav__item:focus-visible > .prod-signal-nav__item-copy .prod-signal-nav__label,
+	.prod-signal-nav__item-link:hover .prod-signal-nav__label,
+	.prod-signal-nav__item-link:focus-visible .prod-signal-nav__label {
 		font-family: 'Cormorant Garamond', serif;
 		font-style: italic;
 		font-weight: 600;
@@ -462,18 +529,109 @@ const {
 		text-shadow: 0 0 24px rgba(255, 255, 255, 0.04);
 	}
 
-	.prod-signal-nav__item:hover .prod-signal-nav__item-copy small,
-	.prod-signal-nav__item:focus-visible .prod-signal-nav__item-copy small {
+	.prod-signal-nav__item:hover > .prod-signal-nav__item-copy small,
+	.prod-signal-nav__item:focus-visible > .prod-signal-nav__item-copy small,
+	.prod-signal-nav__item-link:hover small,
+	.prod-signal-nav__item-link:focus-visible small {
 		color: rgba(255, 255, 255, 0.68);
 		transform: translateX(10px);
 	}
+
+	/* ── Collapsible group (items with children) ── */
+
+	.prod-signal-nav__item-header {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+	}
+
+	.prod-signal-nav__item-link {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.prod-signal-nav__expand {
+		all: unset;
+		cursor: pointer;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.4rem;
+		height: 2.4rem;
+		flex: none;
+		border-radius: 999px;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		color: rgba(255, 255, 255, 0.5);
+		transition:
+			transform 0.3s ease,
+			color 0.3s ease,
+			border-color 0.3s ease,
+			background 0.3s ease;
+	}
+
+	.prod-signal-nav__expand:hover,
+	.prod-signal-nav__expand:focus-visible {
+		color: rgba(255, 255, 255, 0.9);
+		border-color: rgba(255, 255, 255, 0.24);
+		background: rgba(255, 255, 255, 0.04);
+		outline: none;
+	}
+
+	.prod-signal-nav__expand svg {
+		transition: transform 0.3s ease;
+	}
+
+	.prod-signal-nav__expand[aria-expanded='true'] svg {
+		transform: rotate(180deg);
+	}
+
+	.prod-signal-nav__sub {
+		display: grid;
+		grid-template-rows: 0fr;
+		transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.prod-signal-nav__sub[hidden] {
+		display: grid;
+		grid-template-rows: 0fr;
+	}
+
+	.prod-signal-nav__sub:not([hidden]) {
+		grid-template-rows: 1fr;
+	}
+
+	.prod-signal-nav__sub > * {
+		overflow: hidden;
+	}
+
+	.prod-signal-nav__sub-link {
+		display: block;
+		padding: clamp(0.3rem, 0.6dvh, 0.5rem) 0 clamp(0.3rem, 0.6dvh, 0.5rem) 1.2rem;
+		font-size: clamp(0.82rem, 1.4dvh, 1.05rem);
+		color: rgba(255, 255, 255, 0.55);
+		border-left: 2px solid rgba(255, 255, 255, 0.1);
+		transition:
+			color 0.3s ease,
+			border-color 0.3s ease,
+			padding-left 0.3s ease;
+	}
+
+	.prod-signal-nav__sub-link:hover,
+	.prod-signal-nav__sub-link:focus-visible {
+		color: rgba(255, 255, 255, 0.9);
+		border-left-color: rgba(78, 201, 180, 0.6);
+		padding-left: 1.5rem;
+		outline: none;
+	}
+
+	/* ── Footer ── */
 
 	.prod-signal-nav__takeover-foot {
 		display: flex;
 		align-items: flex-end;
 		justify-content: space-between;
 		gap: 1rem;
-		padding-top: 2rem;
+		padding-top: clamp(0.5rem, 1.5dvh, 1.5rem);
 	}
 
 	.prod-signal-nav__panel-email {
@@ -481,7 +639,7 @@ const {
 		letter-spacing: 0.16em;
 		text-transform: uppercase;
 		color: rgba(255, 255, 255, 0.5);
-		transition: color 0.32s ease;
+		transition: color 0.3s ease;
 	}
 
 	.prod-signal-nav__panel-email:hover,
@@ -489,6 +647,8 @@ const {
 		color: rgba(255, 255, 255, 0.78);
 		outline: none;
 	}
+
+	/* ── Responsive ── */
 
 	@media (max-width: 900px) {
 		.prod-signal-nav {
@@ -500,21 +660,17 @@ const {
 		}
 
 		.prod-signal-nav__takeover-shell {
-			padding-top: 6.35rem;
-			padding-bottom: 1.35rem;
-		}
-
-		.prod-signal-nav__list {
-			padding-top: 1.75rem;
+			padding-top: clamp(3.5rem, 9dvh, 6.35rem);
+			padding-bottom: clamp(0.75rem, 2dvh, 1.35rem);
 		}
 
 		.prod-signal-nav__label {
-			font-size: clamp(2.9rem, 13vw, 4rem);
+			font-size: clamp(1.4rem, 3.5dvh, 3rem);
 		}
 
 		.prod-signal-nav__item-copy small {
 			max-width: none;
-			font-size: 0.9rem;
+			font-size: clamp(0.6rem, 1dvh, 0.82rem);
 		}
 
 		.prod-signal-nav__takeover-foot {
@@ -545,13 +701,8 @@ const {
 			height: 3.35rem;
 		}
 
-		.prod-signal-nav__takeover-meta {
-			font-size: 0.68rem;
-			letter-spacing: 0.14em;
-		}
-
 		.prod-signal-nav__item {
-			padding: 1.1rem 0 1rem;
+			padding: clamp(0.25rem, 0.8dvh, 0.7rem) 0;
 		}
 	}
 
@@ -568,13 +719,25 @@ const {
 	@keyframes prod-signal-pulse {
 		0%,
 		100% {
-			transform: scale(0.92);
-			opacity: 0.45;
+			transform: scale(0.85);
+			opacity: 0.3;
 		}
 
 		50% {
-			transform: scale(1);
-			opacity: 0.9;
+			transform: scale(1.05);
+			opacity: 1;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.prod-signal-nav__trigger-core::before,
+		.prod-signal-nav__trigger-core i,
+		.prod-signal-nav__item,
+		.prod-signal-nav__label,
+		.prod-signal-nav__sub,
+		.prod-signal-nav__expand svg {
+			transition: none !important;
+			animation: none !important;
 		}
 	}
 </style>

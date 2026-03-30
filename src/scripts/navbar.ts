@@ -26,9 +26,18 @@ function init() {
 	const trigger = root.querySelector<HTMLButtonElement>('[data-nav-trigger]');
 	const panel = root.querySelector<HTMLElement>('[data-nav-panel]');
 	const closers = root.querySelectorAll<HTMLElement>('[data-nav-close]');
+	const expandButtons = root.querySelectorAll<HTMLButtonElement>('[data-nav-expand]');
 
 	const syncScrollState = () => {
 		root.classList.toggle('is-scrolled', window.scrollY > 24);
+	};
+
+	const collapseAllSubs = () => {
+		expandButtons.forEach((btn) => {
+			btn.setAttribute('aria-expanded', 'false');
+			const sub = btn.closest('[data-nav-group]')?.querySelector<HTMLElement>('[data-nav-sub]');
+			if (sub) sub.hidden = true;
+		});
 	};
 
 	const closeMenu = () => {
@@ -37,6 +46,7 @@ function init() {
 		trigger?.setAttribute('aria-label', 'Open navigation');
 		panel?.setAttribute('aria-hidden', 'true');
 		document.body.classList.remove('nav-open');
+		collapseAllSubs();
 		if (trapListener) {
 			document.removeEventListener('keydown', trapListener);
 			trapListener = null;
@@ -51,9 +61,10 @@ function init() {
 		panel?.setAttribute('aria-hidden', 'false');
 		document.body.classList.add('nav-open');
 
-		const focusables = [...(panel?.querySelectorAll('a, button') ?? []), trigger].filter(
-			Boolean,
-		) as HTMLElement[];
+		const focusables = [
+			...(panel?.querySelectorAll('a:not([disabled]), button:not([disabled])') ?? []),
+			trigger,
+		].filter(Boolean) as HTMLElement[];
 
 		if (focusables.length) focusables[0].focus();
 
@@ -82,6 +93,32 @@ function init() {
 
 	closers.forEach((link) => {
 		link.addEventListener('click', () => closeMenu());
+	});
+
+	// Collapsible subcategory toggles (accordion — one open at a time)
+	expandButtons.forEach((btn) => {
+		btn.addEventListener('click', () => {
+			const group = btn.closest('[data-nav-group]');
+			const sub = group?.querySelector<HTMLElement>('[data-nav-sub]');
+			if (!sub) return;
+
+			const isOpen = btn.getAttribute('aria-expanded') === 'true';
+
+			// Close all others first (accordion)
+			expandButtons.forEach((otherBtn) => {
+				if (otherBtn !== btn) {
+					otherBtn.setAttribute('aria-expanded', 'false');
+					const otherSub = otherBtn
+						.closest('[data-nav-group]')
+						?.querySelector<HTMLElement>('[data-nav-sub]');
+					if (otherSub) otherSub.hidden = true;
+				}
+			});
+
+			// Toggle this one
+			btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+			sub.hidden = isOpen;
+		});
 	});
 
 	scrollHandler = syncScrollState;
