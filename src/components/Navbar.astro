@@ -13,6 +13,11 @@ interface Props {
 
 const defaultNavGroups: NavGroup[] = [
 	{
+		label: 'Agent Lab',
+		href: '/coming-soon',
+		caption: 'Custom AI agents built for your workflow.',
+	},
+	{
 		label: 'NexAI Studio',
 		href: '/ai-shoots',
 		caption: 'AI-powered photoshoots for fashion brands.',
@@ -21,11 +26,6 @@ const defaultNavGroups: NavGroup[] = [
 			{ label: 'Saree', href: '/coming-soon' },
 			{ label: 'Video Gen', href: '/coming-soon' },
 		],
-	},
-	{
-		label: 'Agent Lab',
-		href: '/coming-soon',
-		caption: 'Custom AI agents built for your workflow.',
 	},
 	{
 		label: 'Prompt Hub',
@@ -65,7 +65,7 @@ const {
 		<div class="prod-signal-nav__bar">
 			<a href={topHref} class="prod-signal-nav__brand" aria-label={brandAriaLabel}>
 				<img src="/assets/logo/nexai-icon.png" alt="" width="40" height="40" />
-				<span>NexAI Labs</span>
+				<span>NEXAI LABS</span>
 			</a>
 
 			<div class="prod-signal-nav__line" aria-hidden="true"></div>
@@ -95,54 +95,88 @@ const {
 
 	<div class="prod-signal-nav__takeover" id={panelId} data-nav-panel aria-hidden="true">
 		<div class="prod-signal-nav__takeover-shell container">
-			<nav class="prod-signal-nav__list" aria-label="Primary">
-				{
-					navGroups.map((group) =>
-						group.children && group.children.length > 0 ? (
-							<div class="prod-signal-nav__item" data-nav-group>
-								<div class="prod-signal-nav__item-header">
-									<a href={group.href} class="prod-signal-nav__item-link" data-nav-close>
-										<div class="prod-signal-nav__item-copy">
-											<strong class="prod-signal-nav__label">{group.label}</strong>
-											{group.caption && <small>{group.caption}</small>}
-										</div>
-									</a>
-									<button
-										class="prod-signal-nav__expand"
-										data-nav-expand
-										aria-expanded="false"
-										aria-label={`Expand ${group.label}`}
+			<div class="prod-signal-nav__columns">
+				<nav class="prod-signal-nav__list" aria-label="Primary">
+					{
+						navGroups.map((group) =>
+							group.children && group.children.length > 0 ? (
+								<div
+									class="prod-signal-nav__item prod-signal-nav__item--has-children"
+									data-nav-group
+								>
+									<div class="prod-signal-nav__item-header">
+										<a href={group.href} class="prod-signal-nav__item-link" data-nav-close>
+											<div class="prod-signal-nav__item-copy">
+												<strong class="prod-signal-nav__label">{group.label}</strong>
+												{group.caption && <small>{group.caption}</small>}
+											</div>
+										</a>
+										<button
+											class="prod-signal-nav__expand"
+											data-nav-expand
+											aria-expanded="false"
+											aria-label={`Expand ${group.label}`}
+										>
+											<svg
+												width="24"
+												height="24"
+												viewBox="0 0 24 24"
+												fill="none"
+												aria-hidden="true"
+											>
+												<path
+													d="M6 9l6 6 6-6"
+													stroke="currentColor"
+													stroke-width="1.5"
+													stroke-linecap="round"
+													stroke-linejoin="round"
+												/>
+											</svg>
+										</button>
+									</div>
+									{/* Mobile: inline collapsible sub-menu */}
+									<div
+										class="prod-signal-nav__sub prod-signal-nav__sub--mobile"
+										data-nav-sub
+										hidden
 									>
-										<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-											<path
-												d="M5 8l5 5 5-5"
-												stroke="currentColor"
-												stroke-width="1.5"
-												stroke-linecap="round"
-												stroke-linejoin="round"
-											/>
-										</svg>
-									</button>
+										{group.children.map((child) => (
+											<a href={child.href} class="prod-signal-nav__sub-link" data-nav-close>
+												{child.label}
+											</a>
+										))}
+									</div>
 								</div>
-								<div class="prod-signal-nav__sub" data-nav-sub hidden>
-									{group.children.map((child) => (
-										<a href={child.href} class="prod-signal-nav__sub-link" data-nav-close>
+							) : (
+								<a class="prod-signal-nav__item" href={group.href} data-nav-close>
+									<div class="prod-signal-nav__item-copy">
+										<strong class="prod-signal-nav__label">{group.label}</strong>
+										{group.caption && <small>{group.caption}</small>}
+									</div>
+								</a>
+							),
+						)
+					}
+				</nav>
+
+				{/* Desktop: flyout sub-panel (col 2) */}
+				<div class="prod-signal-nav__flyout" data-nav-flyout aria-hidden="true">
+					{
+						navGroups
+							.filter((g) => g.children && g.children.length > 0)
+							.map((group) => (
+								<div class="prod-signal-nav__flyout-group" data-flyout-for={group.label} hidden>
+									<span class="prod-signal-nav__flyout-title">{group.label}</span>
+									{group.children!.map((child) => (
+										<a href={child.href} class="prod-signal-nav__flyout-link" data-nav-close>
 											{child.label}
 										</a>
 									))}
 								</div>
-							</div>
-						) : (
-							<a class="prod-signal-nav__item" href={group.href} data-nav-close>
-								<div class="prod-signal-nav__item-copy">
-									<strong class="prod-signal-nav__label">{group.label}</strong>
-									{group.caption && <small>{group.caption}</small>}
-								</div>
-							</a>
-						),
-					)
-				}
-			</nav>
+							))
+					}
+				</div>
+			</div>
 
 			<div class="prod-signal-nav__takeover-foot">
 				<a class="prod-signal-nav__panel-cta" href={ctaHref} target="_blank" rel="noreferrer">
@@ -157,6 +191,8 @@ const {
 <script src="../scripts/navbar.ts"></script>
 
 <style>
+	/* ── Fixed header shell ── */
+
 	.prod-signal-nav {
 		position: fixed;
 		inset: 0 0 auto;
@@ -217,24 +253,30 @@ const {
 		box-shadow: none;
 	}
 
+	/* ── Links reset ── */
+
 	.prod-signal-nav__brand,
 	.prod-signal-nav__cta,
 	.prod-signal-nav__item,
 	.prod-signal-nav__item-link,
 	.prod-signal-nav__sub-link,
+	.prod-signal-nav__flyout-link,
 	.prod-signal-nav__panel-cta,
 	.prod-signal-nav__panel-email {
 		color: inherit;
 		text-decoration: none;
 	}
 
+	/* ── Brand ── */
+
 	.prod-signal-nav__brand {
 		display: inline-flex;
 		align-items: center;
 		gap: 0.75rem;
-		font-size: 0.98rem;
-		font-weight: 600;
-		letter-spacing: 0.08em;
+		font-family: 'Montserrat', sans-serif;
+		font-size: 0.95rem;
+		font-weight: 700;
+		letter-spacing: 0.1em;
 		text-transform: uppercase;
 	}
 
@@ -247,6 +289,8 @@ const {
 		mix-blend-mode: screen;
 	}
 
+	/* ── Divider line ── */
+
 	.prod-signal-nav__line {
 		height: 1px;
 		background: linear-gradient(90deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.04));
@@ -256,6 +300,8 @@ const {
 	.prod-signal-nav.is-scrolled .prod-signal-nav__line {
 		opacity: 0.4;
 	}
+
+	/* ── Actions (CTA + trigger) ── */
 
 	.prod-signal-nav__actions {
 		display: flex;
@@ -304,6 +350,8 @@ const {
 		pointer-events: none;
 		visibility: hidden;
 	}
+
+	/* ── Trigger (hamburger / X) ── */
 
 	.prod-signal-nav__trigger {
 		position: relative;
@@ -367,11 +415,9 @@ const {
 	.prod-signal-nav__trigger-core i:nth-child(1) {
 		transform: rotate(0deg);
 	}
-
 	.prod-signal-nav__trigger-core i:nth-child(2) {
 		transform: rotate(60deg);
 	}
-
 	.prod-signal-nav__trigger-core i:nth-child(3) {
 		transform: rotate(120deg);
 	}
@@ -380,27 +426,24 @@ const {
 		border-color: rgba(255, 255, 255, 0.26);
 		background: rgba(10, 11, 12, 0.98);
 	}
-
 	.prod-signal-nav[data-open='true'] .prod-signal-nav__trigger-core i {
 		background: rgba(255, 255, 255, 0.8);
 	}
-
 	.prod-signal-nav[data-open='true'] .prod-signal-nav__trigger-core::before {
 		animation: none;
 		opacity: 0.82;
 	}
-
 	.prod-signal-nav[data-open='true'] .prod-signal-nav__trigger-core i:nth-child(1) {
 		transform: rotate(45deg);
 	}
-
 	.prod-signal-nav[data-open='true'] .prod-signal-nav__trigger-core i:nth-child(2) {
 		opacity: 0;
 	}
-
 	.prod-signal-nav[data-open='true'] .prod-signal-nav__trigger-core i:nth-child(3) {
 		transform: rotate(-45deg);
 	}
+
+	/* ── Takeover panel ── */
 
 	.prod-signal-nav__takeover {
 		position: fixed;
@@ -435,6 +478,16 @@ const {
 		padding-bottom: clamp(1rem, 3dvh, 2rem);
 	}
 
+	/* ── Columns wrapper (desktop: 2-col, mobile: single col) ── */
+
+	.prod-signal-nav__columns {
+		display: grid;
+		grid-template-columns: 1fr;
+		min-height: 0;
+	}
+
+	/* ── Nav list ── */
+
 	.prod-signal-nav__list {
 		display: grid;
 		align-content: start;
@@ -446,7 +499,7 @@ const {
 
 	.prod-signal-nav__item {
 		display: block;
-		padding: clamp(0.35rem, 1dvh, 0.9rem) 0;
+		padding: clamp(0.5rem, 1.3dvh, 1rem) 0;
 		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 		opacity: 0;
 		transform: translateY(24px);
@@ -482,7 +535,7 @@ const {
 
 	.prod-signal-nav__item-copy {
 		display: grid;
-		gap: clamp(0.15rem, 0.5dvh, 0.45rem);
+		gap: clamp(0.2rem, 0.6dvh, 0.5rem);
 	}
 
 	.prod-signal-nav__label {
@@ -501,14 +554,14 @@ const {
 	.prod-signal-nav__item-copy small {
 		max-width: 38rem;
 		color: rgba(255, 255, 255, 0.48);
-		font-size: clamp(0.65rem, 1.1dvh, 0.88rem);
+		font-size: clamp(0.78rem, 1.4dvh, 1rem);
 		line-height: 1.5;
 		transition:
 			color 0.3s ease,
 			transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 	}
 
-	/* Hover — applies to both plain items and item-link inside groups */
+	/* Hover for plain items and item-links */
 	.prod-signal-nav__item:hover,
 	.prod-signal-nav__item:focus-visible,
 	.prod-signal-nav__item-link:hover,
@@ -537,12 +590,12 @@ const {
 		transform: translateX(10px);
 	}
 
-	/* ── Collapsible group (items with children) ── */
+	/* ── Collapsible group header ── */
 
 	.prod-signal-nav__item-header {
 		display: flex;
 		align-items: center;
-		gap: 0.75rem;
+		gap: 0.5rem;
 	}
 
 	.prod-signal-nav__item-link {
@@ -550,64 +603,60 @@ const {
 		min-width: 0;
 	}
 
+	/* ── Expand button (mobile only — minimal arrow) ── */
+
 	.prod-signal-nav__expand {
 		all: unset;
 		cursor: pointer;
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		width: 2.4rem;
-		height: 2.4rem;
-		flex: none;
-		border-radius: 999px;
-		border: 1px solid rgba(255, 255, 255, 0.1);
-		color: rgba(255, 255, 255, 0.5);
+		padding: 0.25rem;
+		color: rgba(255, 255, 255, 0.4);
 		transition:
-			transform 0.3s ease,
 			color 0.3s ease,
-			border-color 0.3s ease,
-			background 0.3s ease;
+			transform 0.3s ease;
 	}
 
 	.prod-signal-nav__expand:hover,
 	.prod-signal-nav__expand:focus-visible {
-		color: rgba(255, 255, 255, 0.9);
-		border-color: rgba(255, 255, 255, 0.24);
-		background: rgba(255, 255, 255, 0.04);
+		color: rgba(255, 255, 255, 0.8);
 		outline: none;
 	}
 
 	.prod-signal-nav__expand svg {
-		transition: transform 0.3s ease;
+		transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 	}
 
 	.prod-signal-nav__expand[aria-expanded='true'] svg {
 		transform: rotate(180deg);
 	}
 
-	.prod-signal-nav__sub {
+	/* ── Mobile sub-menu (collapsible) ── */
+
+	.prod-signal-nav__sub--mobile {
 		display: grid;
 		grid-template-rows: 0fr;
 		transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 	}
 
-	.prod-signal-nav__sub[hidden] {
+	.prod-signal-nav__sub--mobile[hidden] {
 		display: grid;
 		grid-template-rows: 0fr;
 	}
 
-	.prod-signal-nav__sub:not([hidden]) {
+	.prod-signal-nav__sub--mobile:not([hidden]) {
 		grid-template-rows: 1fr;
 	}
 
-	.prod-signal-nav__sub > * {
+	.prod-signal-nav__sub--mobile > * {
 		overflow: hidden;
 	}
 
 	.prod-signal-nav__sub-link {
 		display: block;
-		padding: clamp(0.3rem, 0.6dvh, 0.5rem) 0 clamp(0.3rem, 0.6dvh, 0.5rem) 1.2rem;
-		font-size: clamp(0.82rem, 1.4dvh, 1.05rem);
+		padding: clamp(0.4rem, 0.8dvh, 0.7rem) 0 clamp(0.4rem, 0.8dvh, 0.7rem) 1.4rem;
+		font-size: clamp(1rem, 1.8dvh, 1.3rem);
 		color: rgba(255, 255, 255, 0.55);
 		border-left: 2px solid rgba(255, 255, 255, 0.1);
 		transition:
@@ -620,8 +669,69 @@ const {
 	.prod-signal-nav__sub-link:focus-visible {
 		color: rgba(255, 255, 255, 0.9);
 		border-left-color: rgba(78, 201, 180, 0.6);
-		padding-left: 1.5rem;
+		padding-left: 1.8rem;
 		outline: none;
+	}
+
+	/* ── Desktop flyout (col 2 — hidden on mobile) ── */
+
+	.prod-signal-nav__flyout {
+		display: none;
+	}
+
+	.prod-signal-nav__flyout-group {
+		display: grid;
+		gap: 0.5rem;
+		padding: 1.5rem 0 1.5rem 2.5rem;
+		border-left: 1px solid rgba(255, 255, 255, 0.08);
+		opacity: 0;
+		transform: translateX(20px);
+		transition:
+			opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+			transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.prod-signal-nav__flyout-group:not([hidden]) {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+	.prod-signal-nav__flyout-title {
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.35);
+		margin-bottom: 0.5rem;
+	}
+
+	.prod-signal-nav__flyout-link {
+		display: block;
+		padding: 0.65rem 0;
+		font-size: clamp(1.2rem, 2dvh, 1.6rem);
+		font-weight: 500;
+		color: rgba(255, 255, 255, 0.6);
+		transition:
+			color 0.25s ease,
+			transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.prod-signal-nav__flyout-link:hover,
+	.prod-signal-nav__flyout-link:focus-visible {
+		color: rgba(255, 255, 255, 0.95);
+		transform: translateX(8px);
+		outline: none;
+	}
+
+	/* Stagger flyout children */
+	.prod-signal-nav__flyout-link:nth-child(2) {
+		transition-delay: 0.04s;
+	}
+	.prod-signal-nav__flyout-link:nth-child(3) {
+		transition-delay: 0.08s;
+	}
+	.prod-signal-nav__flyout-link:nth-child(4) {
+		transition-delay: 0.12s;
 	}
 
 	/* ── Footer ── */
@@ -648,7 +758,37 @@ const {
 		outline: none;
 	}
 
-	/* ── Responsive ── */
+	/* ── Desktop (>900px): 2-column layout ── */
+
+	@media (min-width: 901px) {
+		.prod-signal-nav__columns {
+			grid-template-columns: 1fr 1fr;
+			gap: 2rem;
+			align-items: start;
+		}
+
+		.prod-signal-nav__flyout {
+			display: grid;
+			align-content: center;
+			min-height: 0;
+		}
+
+		/* Hide mobile expand button + mobile sub-menu on desktop */
+		.prod-signal-nav__expand {
+			display: none;
+		}
+
+		.prod-signal-nav__sub--mobile {
+			display: none !important;
+		}
+
+		/* Highlight active group on hover */
+		.prod-signal-nav__item--has-children {
+			cursor: default;
+		}
+	}
+
+	/* ── Tablet / mobile (≤900px) ── */
 
 	@media (max-width: 900px) {
 		.prod-signal-nav {
@@ -670,12 +810,17 @@ const {
 
 		.prod-signal-nav__item-copy small {
 			max-width: none;
-			font-size: clamp(0.6rem, 1dvh, 0.82rem);
+			font-size: clamp(0.72rem, 1.2dvh, 0.92rem);
 		}
 
 		.prod-signal-nav__takeover-foot {
 			flex-direction: column;
 			align-items: flex-start;
+		}
+
+		/* Hide desktop flyout */
+		.prod-signal-nav__flyout {
+			display: none !important;
 		}
 	}
 
@@ -686,14 +831,14 @@ const {
 		}
 
 		.prod-signal-nav__brand {
-			gap: 0.55rem;
-			font-size: 0.8rem;
-			letter-spacing: 0.06em;
+			gap: 0.5rem;
+			font-size: 0.72rem;
+			letter-spacing: 0.08em;
 		}
 
 		.prod-signal-nav__brand img {
-			width: 1.7rem;
-			height: 1.7rem;
+			width: 2.2rem;
+			height: 2.2rem;
 		}
 
 		.prod-signal-nav__trigger {
@@ -702,19 +847,11 @@ const {
 		}
 
 		.prod-signal-nav__item {
-			padding: clamp(0.25rem, 0.8dvh, 0.7rem) 0;
+			padding: clamp(0.3rem, 0.9dvh, 0.75rem) 0;
 		}
 	}
 
-	@media (max-width: 380px) {
-		.prod-signal-nav__brand span {
-			display: none;
-		}
-
-		.prod-signal-nav__bar {
-			gap: 0.5rem;
-		}
-	}
+	/* ── Animations ── */
 
 	@keyframes prod-signal-pulse {
 		0%,
@@ -722,7 +859,6 @@ const {
 			transform: scale(0.85);
 			opacity: 0.3;
 		}
-
 		50% {
 			transform: scale(1.05);
 			opacity: 1;
@@ -734,7 +870,8 @@ const {
 		.prod-signal-nav__trigger-core i,
 		.prod-signal-nav__item,
 		.prod-signal-nav__label,
-		.prod-signal-nav__sub,
+		.prod-signal-nav__sub--mobile,
+		.prod-signal-nav__flyout-group,
 		.prod-signal-nav__expand svg {
 			transition: none !important;
 			animation: none !important;

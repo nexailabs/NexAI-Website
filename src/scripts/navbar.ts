@@ -27,6 +27,9 @@ function init() {
 	const panel = root.querySelector<HTMLElement>('[data-nav-panel]');
 	const closers = root.querySelectorAll<HTMLElement>('[data-nav-close]');
 	const expandButtons = root.querySelectorAll<HTMLButtonElement>('[data-nav-expand]');
+	const navGroups = root.querySelectorAll<HTMLElement>('[data-nav-group]');
+	const flyout = root.querySelector<HTMLElement>('[data-nav-flyout]');
+	const flyoutGroups = root.querySelectorAll<HTMLElement>('[data-flyout-for]');
 
 	const syncScrollState = () => {
 		root.classList.toggle('is-scrolled', window.scrollY > 24);
@@ -40,6 +43,12 @@ function init() {
 		});
 	};
 
+	const hideAllFlyouts = () => {
+		flyoutGroups.forEach((g) => {
+			g.hidden = true;
+		});
+	};
+
 	const closeMenu = () => {
 		root.dataset.open = 'false';
 		trigger?.setAttribute('aria-expanded', 'false');
@@ -47,6 +56,7 @@ function init() {
 		panel?.setAttribute('aria-hidden', 'true');
 		document.body.classList.remove('nav-open');
 		collapseAllSubs();
+		hideAllFlyouts();
 		if (trapListener) {
 			document.removeEventListener('keydown', trapListener);
 			trapListener = null;
@@ -95,7 +105,7 @@ function init() {
 		link.addEventListener('click', () => closeMenu());
 	});
 
-	// Collapsible subcategory toggles (accordion — one open at a time)
+	// Mobile: collapsible subcategory toggles (accordion)
 	expandButtons.forEach((btn) => {
 		btn.addEventListener('click', () => {
 			const group = btn.closest('[data-nav-group]');
@@ -115,11 +125,55 @@ function init() {
 				}
 			});
 
-			// Toggle this one
 			btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
 			sub.hidden = isOpen;
 		});
 	});
+
+	// Desktop: hover flyout for groups with children
+	const isDesktop = () => window.innerWidth > 900;
+	let flyoutTimeout: ReturnType<typeof setTimeout> | null = null;
+
+	navGroups.forEach((group) => {
+		const label = group.querySelector<HTMLElement>('.prod-signal-nav__label')?.textContent?.trim();
+		if (!label) return;
+
+		group.addEventListener('mouseenter', () => {
+			if (!isDesktop() || !flyout) return;
+			if (flyoutTimeout) {
+				clearTimeout(flyoutTimeout);
+				flyoutTimeout = null;
+			}
+
+			// Show matching flyout group, hide others
+			flyoutGroups.forEach((fg) => {
+				fg.hidden = fg.getAttribute('data-flyout-for') !== label;
+			});
+		});
+
+		group.addEventListener('mouseleave', () => {
+			if (!isDesktop()) return;
+			flyoutTimeout = setTimeout(() => {
+				hideAllFlyouts();
+			}, 200);
+		});
+	});
+
+	// Keep flyout open when mouse moves into it
+	if (flyout) {
+		flyout.addEventListener('mouseenter', () => {
+			if (flyoutTimeout) {
+				clearTimeout(flyoutTimeout);
+				flyoutTimeout = null;
+			}
+		});
+
+		flyout.addEventListener('mouseleave', () => {
+			flyoutTimeout = setTimeout(() => {
+				hideAllFlyouts();
+			}, 200);
+		});
+	}
 
 	scrollHandler = syncScrollState;
 	window.addEventListener('scroll', scrollHandler, { passive: true });
