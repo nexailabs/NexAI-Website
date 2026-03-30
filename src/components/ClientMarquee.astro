@@ -39,7 +39,7 @@ const { brands } = Astro.props;
 		left: 0;
 		width: 100%;
 		z-index: 10;
-		padding: 1rem 0 2.5rem 0;
+		padding: 0.85rem 0 2.5rem 0;
 		overflow: hidden;
 		background: transparent;
 		border-top: none;
@@ -57,11 +57,11 @@ const { brands } = Astro.props;
 		display: flex;
 		align-items: center;
 		justify-content: space-around;
-		gap: clamp(3rem, 5vw, 6rem);
-		padding: 0 clamp(1.5rem, 3vw, 3rem);
+		gap: clamp(2.2rem, 5vw, 6rem);
+		padding: 0 clamp(1rem, 3vw, 3rem);
 	}
 	.client-marquee__list img {
-		height: clamp(3.5rem, 6vw, 5.5rem);
+		height: clamp(2.4rem, 5vw, 4.2rem);
 		width: auto;
 		max-width: 320px;
 		object-fit: contain;
@@ -73,6 +73,11 @@ const { brands } = Astro.props;
 		opacity: 1;
 		transform: scale(1.05);
 		filter: grayscale(0) brightness(1);
+	}
+	@media (max-width: 720px) {
+		.client-marquee__list {
+			gap: clamp(1.5rem, 7vw, 2.5rem);
+		}
 	}
 	@keyframes scrollMarquee {
 		0% {
