@@ -34,8 +34,13 @@ const { decks } = Astro.props;
 										<img
 											src={item.src}
 											alt={item.alt}
+											width="600"
+											height="800"
 											loading={deckIndex === 0 && index === deck.length - 1 ? 'eager' : 'lazy'}
 											decoding="async"
+											fetchpriority={
+												deckIndex === 0 && index === deck.length - 1 ? 'high' : undefined
+											}
 										/>
 									</span>
 								))}
@@ -58,7 +63,7 @@ const { decks } = Astro.props;
 					data-hero-thumb={i}
 					aria-label={deck[0].alt}
 				>
-					<img src={deck[0].src} alt="" loading="lazy" decoding="async" />
+					<img src={deck[0].src} alt="" width="600" height="800" loading="lazy" decoding="async" />
 				</button>
 			))
 		}
