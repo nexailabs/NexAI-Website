@@ -1,6 +1,32 @@
 /* src/styles/global.css */
 
 /* -------------------------------------------------------------------------- */
+/*                             SKIP TO CONTENT                                */
+/* -------------------------------------------------------------------------- */
+
+.skip-to-content {
+	position: fixed;
+	top: -100%;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 9999;
+	padding: 0.75rem 1.5rem;
+	background: var(--color-surface-elevated, #18191b);
+	color: #fff;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 0.5rem;
+	font-size: 0.9rem;
+	text-decoration: none;
+	transition: top 0.2s ease;
+}
+
+.skip-to-content:focus {
+	top: 1rem;
+	outline: 2px solid var(--color-brand-cyan, #4ec9b4);
+	outline-offset: 2px;
+}
+
+/* -------------------------------------------------------------------------- */
 /*                               DESIGN TOKENS                                */
 /* -------------------------------------------------------------------------- */
 
@@ -32,6 +58,16 @@
 	/* Borders */
 	--color-border: rgba(255, 255, 255, 0.12);
 	--color-border-hover: rgba(255, 255, 255, 0.24);
+
+	/*
+	 * Canonical Breakpoints (for reference — CSS vars can't be used in @media)
+	 * --bp-phone-sm:  380px   (iPhone SE, tiny phones — navbar text hidden)
+	 * --bp-phone:     600px   (showcase column collapse)
+	 * --bp-tablet-sm: 640px   (navbar compact mode)
+	 * --bp-tablet:    720px   (hero mobile/desktop switch, JS isMobile())
+	 * --bp-tablet-lg: 900px   (showcase mobile/desktop switch, nav CTA hidden)
+	 * --bp-desktop:   1100px  (hero title-row max-width kicks in)
+	 */
 
 	/* Section gradients */
 	--gradient-hero:
@@ -65,6 +101,10 @@
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
+}
+
+img {
+	background: var(--color-surface, #0a0a0a);
 }
 
 html {
