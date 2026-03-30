@@ -9,6 +9,8 @@ gsap.registerPlugin(ScrollTrigger);
 let lenis: Lenis | null = null;
 
 function initLenis() {
+	if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
 	lenis = new Lenis({
 		duration: 1.2,
 		easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Expo.out
