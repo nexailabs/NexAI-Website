@@ -210,21 +210,31 @@ const { decks } = Astro.props;
 		.shoots-hero__title-row {
 			width: 100%;
 			min-height: clamp(17rem, 68vh, 23rem);
-			display: flex;
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
 			align-items: center;
-			justify-content: center;
-			gap: clamp(0.2rem, 1vw, 0.4rem);
+			justify-items: center;
+			column-gap: clamp(0.2rem, 1.5vw, 0.45rem);
 		}
 
 		.shoots-hero__title-word {
-			font-size: clamp(1.1rem, 5.2vw, 2rem);
-			letter-spacing: -0.04em;
+			flex: none;
+			font-size: clamp(1rem, 5.1vw, 1.9rem);
+			letter-spacing: -0.03em;
+		}
+
+		.shoots-hero__title-word--left {
+			justify-self: end;
+		}
+
+		.shoots-hero__title-word--right {
+			justify-self: start;
 		}
 
 		.shoots-hero__stack-stage,
 		.shoots-hero__card {
-			--hero-card-width: clamp(9.5rem, 52vw, 14rem);
-			--hero-card-height: clamp(12.8rem, 69vw, 18.8rem);
+			--hero-card-width: clamp(11rem, 60vw, 16rem);
+			--hero-card-height: clamp(14.75rem, 80.4vw, 21.4rem);
 			width: var(--hero-card-width);
 			height: var(--hero-card-height);
 			border-radius: 1rem;
