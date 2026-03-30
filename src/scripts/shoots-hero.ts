@@ -69,10 +69,23 @@ function init() {
 	};
 
 	const getMobileTitleShift = () => {
+		if (!titleLeft || !titleRight) {
+			return { togetherShift: 0, splitShift: 0 };
+		}
+
 		const viewportWidth = window.innerWidth;
-		const togetherShift = Math.max(28, Math.min(46, viewportWidth * 0.12));
-		const splitShift = Math.max(74, Math.min(124, viewportWidth * 0.26));
-		return { togetherShift, splitShift };
+		const edgeInset = Math.max(8, Math.min(16, viewportWidth * 0.025));
+		const centerGap = Math.max(6, Math.min(14, viewportWidth * 0.03));
+		const leftRect = titleLeft.getBoundingClientRect();
+		const rightRect = titleRight.getBoundingClientRect();
+
+		const maxLeftShift = Math.max(0, leftRect.left - edgeInset);
+		const maxRightShift = Math.max(0, viewportWidth - edgeInset - rightRect.right);
+		const maxSafeShift = Math.min(maxLeftShift, maxRightShift);
+		const preferredShift = Math.max(18, Math.min(44, viewportWidth * 0.09));
+		const splitShift = Math.max(0, Math.min(preferredShift, maxSafeShift + centerGap));
+
+		return { togetherShift: 0, splitShift };
 	};
 
 	const setTitleState = (
@@ -119,6 +132,7 @@ function init() {
 	};
 
 	const isMobile = () => window.innerWidth <= 720;
+	const getInitialTitleShift = () => (isMobile() ? 0 : getTitleShift());
 
 	const getSpreadUnit = (cards: HTMLElement[]) => {
 		if (!cards.length) return 0;
@@ -242,7 +256,7 @@ function init() {
 	};
 
 	decks.forEach((deck) => hideDeck(deck));
-	setTitleState({ shift: isMobile() ? -120 : getTitleShift(), opacity: 1 }, false);
+	setTitleState({ shift: getInitialTitleShift(), opacity: 1 }, false);
 
 	if (prefersReducedMotion) {
 		const activeDeck = decks[0];
@@ -317,7 +331,7 @@ function init() {
 			const cardCount = Math.max(1, getCards(deck).length);
 			const dealInterval = Math.max(240, Math.floor(dealWindow / cardCount));
 
-			setTitleState({ shift: togetherShift, opacity: 1 }, !isLoopRestart);
+			setTitleState({ shift: togetherShift, opacity: 1 }, false);
 
 			const deckStartAt = isLoopRestart ? cycleStart : 0;
 			schedule(() => {
@@ -438,7 +452,7 @@ function init() {
 				clearTimeout(cycleTimer);
 				cancelAndClearRafs();
 				decks.forEach((d) => hideDeck(d));
-				setTitleState({ shift: viewportIsMobile ? -120 : getTitleShift(), opacity: 1 }, false);
+				setTitleState({ shift: getInitialTitleShift(), opacity: 1 }, false);
 				forceImmediate = true;
 				runCycle();
 				return;
@@ -455,7 +469,7 @@ function init() {
 			clearTimeout(cycleTimer);
 			cancelAndClearRafs();
 			decks.forEach((d) => hideDeck(d));
-			setTitleState({ shift: isMobile() ? -120 : getTitleShift(), opacity: 1 }, false);
+			setTitleState({ shift: getInitialTitleShift(), opacity: 1 }, false);
 			activeIndex = i;
 			forceImmediate = true;
 			runCycle();
