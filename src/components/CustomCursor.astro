@@ -1,0 +1,71 @@
+<div class="cursor" data-custom-cursor aria-hidden="true">
+	<div class="cursor__ring"></div>
+	<div class="cursor__dot"></div>
+</div>
+
+<script src="../scripts/custom-cursor.ts"></script>
+
+<style>
+	.cursor {
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 9999;
+		pointer-events: none;
+		mix-blend-mode: difference;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+	}
+
+	.cursor--visible {
+		opacity: 1;
+	}
+
+	.cursor__ring {
+		position: absolute;
+		top: -20px;
+		left: -20px;
+		width: 40px;
+		height: 40px;
+		border: 1.5px solid rgba(255, 255, 255, 0.5);
+		border-radius: 50%;
+		transition:
+			width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+			height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+			top 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+			left 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+			border-color 0.3s ease,
+			opacity 0.3s ease;
+	}
+
+	.cursor--hover .cursor__ring {
+		width: 56px;
+		height: 56px;
+		top: -28px;
+		left: -28px;
+		border-color: rgba(255, 255, 255, 0.8);
+	}
+
+	.cursor--click .cursor__ring {
+		width: 32px;
+		height: 32px;
+		top: -16px;
+		left: -16px;
+	}
+
+	.cursor__dot {
+		position: absolute;
+		top: -3px;
+		left: -3px;
+		width: 6px;
+		height: 6px;
+		background: #fff;
+		border-radius: 50%;
+	}
+
+	@media (pointer: coarse) {
+		.cursor {
+			display: none !important;
+		}
+	}
+</style>

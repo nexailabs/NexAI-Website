@@ -1,0 +1,136 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+	title="Coming Soon | NexAI Labs"
+	description="Something new is brewing. Stay tuned."
+	mainClass="coming-soon"
+>
+	<div class="coming-soon__inner">
+		<div class="coming-soon__grid" aria-hidden="true">
+			{Array.from({ length: 25 }).map(() => <span />)}
+		</div>
+		<span class="coming-soon__tag">IN THE PIPELINE</span>
+		<h1 class="coming-soon__heading">Coming Soon</h1>
+		<p class="coming-soon__body">
+			We're training the models, tuning the prompts, and shipping fast.<br />
+			This one's not ready yet — but it will be.
+		</p>
+		<a href="/ai-shoots" class="coming-soon__home">Back to Studio</a>
+	</div>
+</Layout>
+
+<style>
+	.coming-soon {
+		min-height: 100vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: var(--space-lg) var(--space-sm);
+		background: var(--color-bg);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.coming-soon__grid {
+		position: absolute;
+		inset: 0;
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		grid-template-rows: repeat(5, 1fr);
+		gap: 1px;
+		opacity: 0.04;
+	}
+
+	.coming-soon__grid span {
+		border: 1px solid rgba(255, 255, 255, 0.3);
+		animation: grid-pulse 4s ease-in-out infinite;
+	}
+
+	.coming-soon__grid span:nth-child(odd) {
+		animation-delay: -2s;
+	}
+
+	.coming-soon__inner {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: 1.5rem;
+		max-width: 520px;
+	}
+
+	.coming-soon__tag {
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		color: var(--color-brand-cyan);
+		padding: 0.4rem 1rem;
+		border: 1px solid rgba(78, 201, 180, 0.2);
+		border-radius: 999px;
+		background: rgba(78, 201, 180, 0.06);
+	}
+
+	.coming-soon__heading {
+		font-size: clamp(3rem, 10vw, 6rem);
+		font-weight: 800;
+		line-height: 0.9;
+		background: var(--color-brand-gradient);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		letter-spacing: -0.04em;
+	}
+
+	.coming-soon__body {
+		font-size: 1rem;
+		color: var(--color-text-muted);
+		line-height: 1.7;
+	}
+
+	.coming-soon__home {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.85rem 1.75rem;
+		border-radius: 999px;
+		border: 1px solid var(--color-border);
+		background: rgba(255, 255, 255, 0.03);
+		color: var(--color-text-main);
+		font-size: 0.92rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-decoration: none;
+		text-transform: uppercase;
+		transition:
+			border-color 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	.coming-soon__home:hover,
+	.coming-soon__home:focus-visible {
+		border-color: var(--color-border-hover);
+		transform: translateY(-1px);
+		outline: none;
+	}
+
+	@keyframes grid-pulse {
+		0%,
+		100% {
+			opacity: 0.3;
+		}
+		50% {
+			opacity: 1;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.coming-soon__grid span {
+			animation: none !important;
+		}
+	}
+</style>

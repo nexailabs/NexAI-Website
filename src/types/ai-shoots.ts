@@ -9,6 +9,13 @@ export interface NavLink {
 	caption: string;
 }
 
+export interface NavGroup {
+	label: string;
+	href: string;
+	caption?: string;
+	children?: { label: string; href: string }[];
+}
+
 export interface BrandLogo {
 	src: string;
 	alt: string;

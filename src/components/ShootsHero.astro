@@ -79,7 +79,7 @@ const { decks } = Astro.props;
 		);
 		padding-top: clamp(1.25rem, 4vh, 3rem);
 		padding-bottom: clamp(1rem, 3vh, 2rem);
-		row-gap: clamp(1rem, 2.6vh, 2rem);
+		row-gap: clamp(1.5rem, 3.5vh, 3rem);
 	}
 
 	.shoots-hero__copy {
@@ -104,14 +104,15 @@ const { decks } = Astro.props;
 
 	.shoots-hero__title-row {
 		width: min(100%, 92rem);
-		min-height: clamp(22rem, 40vh, 28rem);
+		min-height: clamp(22rem, 45vh, 34rem);
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		gap: clamp(1.2rem, 2vw, 2.2rem);
+		gap: clamp(1.6rem, 2.8vw, 3rem);
 	}
 
 	.shoots-hero__title-word {
+		flex: 1;
 		display: block;
 		min-width: 0;
 		color: #fff;
@@ -126,6 +127,14 @@ const { decks } = Astro.props;
 		white-space: nowrap;
 	}
 
+	.shoots-hero__title-word--left {
+		text-align: right;
+	}
+
+	.shoots-hero__title-word--right {
+		text-align: left;
+	}
+
 	.shoots-hero__visual {
 		flex: none;
 		display: grid;
@@ -133,8 +142,8 @@ const { decks } = Astro.props;
 	}
 
 	.shoots-hero__stack-stage {
-		--hero-card-width: clamp(11rem, 15vw, 22rem);
-		--hero-card-height: clamp(15rem, 21vw, 30rem);
+		--hero-card-width: clamp(11rem, 18vw, 28rem);
+		--hero-card-height: clamp(15rem, 25vw, 37.5rem);
 		position: relative;
 		width: var(--hero-card-width);
 		height: var(--hero-card-height);
@@ -175,7 +184,7 @@ const { decks } = Astro.props;
 	@media (max-width: 1100px) {
 		.shoots-hero__title-row {
 			min-height: 21rem;
-			gap: 1.15rem;
+			gap: clamp(1.2rem, 2.4vw, 2rem);
 		}
 
 		.shoots-hero__title-word {

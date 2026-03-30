@@ -24,7 +24,7 @@ function init() {
 	let cycleTimer: number;
 	let cycleEpoch = 0;
 	let spreadScale = 1;
-	let centerOffset = 0;
+	const centerOffset = 0; // CSS flex:1 on title words keeps stage centered; no JS offset needed
 	let resizeRaf = 0;
 	const timers: number[] = [];
 	const rafIds = new Set<number>();
@@ -125,10 +125,10 @@ function init() {
 		const width = cards[0].offsetWidth || 0;
 		const total = cards.length;
 		const viewportWidth = window.innerWidth;
-		const sideInset = Math.max(120, Math.min(360, viewportWidth * 0.18));
-		const cardToTextGap = Math.max(18, Math.min(34, viewportWidth * 0.017));
+		const sideInset = Math.max(60, Math.min(200, viewportWidth * 0.08));
+		const cardToTextGap = Math.max(10, Math.min(24, viewportWidth * 0.01));
 		const available = Math.max(0, viewportWidth - 2 * (sideInset + cardToTextGap));
-		const gap = Math.max(15, Math.min(20, viewportWidth * 0.011));
+		const gap = Math.max(8, Math.min(16, viewportWidth * 0.008));
 		const idealUnit = width + gap;
 		const totalSpread = (total - 1) * idealUnit + width;
 
@@ -138,14 +138,14 @@ function init() {
 		}
 
 		const scaled = available / totalSpread;
-		spreadScale = Math.max(0.72, Math.min(1, scaled));
+		spreadScale = Math.max(0.82, Math.min(1, scaled));
 		return idealUnit * spreadScale;
 	};
 
 	const getSpreadTitleShift = () => {
 		if (!titleLeft || !titleRight) return 0;
 		const viewportWidth = window.innerWidth;
-		const sideInset = Math.max(90, Math.min(220, viewportWidth * 0.12));
+		const sideInset = Math.max(40, Math.min(140, viewportWidth * 0.06));
 		const leftRect = titleLeft.getBoundingClientRect();
 		const rightRect = titleRight.getBoundingClientRect();
 		const leftShift = leftRect.right - sideInset;
@@ -153,12 +153,7 @@ function init() {
 		return Math.max(0, Math.min(leftShift, rightShift));
 	};
 
-	const getViewportCenterOffset = () => {
-		const stageRect = stage.getBoundingClientRect();
-		const offset = window.innerWidth / 2 - (stageRect.left + stageRect.width / 2);
-		const maxOffset = Math.max(80, Math.min(200, window.innerWidth * 0.12));
-		return Math.max(-maxOffset, Math.min(maxOffset, offset));
-	};
+	// centerOffset removed — CSS flex:1 on title words centers the stage naturally
 
 	interface CardState {
 		x: number;
@@ -243,7 +238,7 @@ function init() {
 	};
 
 	const refreshCenterOffset = () => {
-		centerOffset = isMobile() ? 0 : getViewportCenterOffset();
+		// no-op: centerOffset is always 0 with flex:1 CSS fix
 	};
 
 	decks.forEach((deck) => hideDeck(deck));
