@@ -78,6 +78,7 @@
 	/* Typography */
 	--font-main: 'Inter', system-ui, -apple-system, sans-serif;
 	--font-display: 'Inter', sans-serif;
+	--font-accent: 'Cormorant Garamond', serif;
 
 	/* Spacing */
 	--space-xs: 0.5rem;
