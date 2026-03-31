@@ -23,6 +23,7 @@ function init() {
 	const flyoutGroups = root.querySelectorAll<HTMLElement>('[data-flyout-for]');
 	const pageContent = document.querySelector<HTMLElement>('[data-page-content]');
 	const brand = root.querySelector<HTMLElement>('.prod-signal-nav__brand');
+	const headerCta = root.querySelector<HTMLElement>('.prod-signal-nav__cta');
 
 	const syncScrollState = () => {
 		root.classList.toggle('is-scrolled', window.scrollY > 24);
@@ -54,6 +55,7 @@ function init() {
 		document.body.classList.remove('nav-open');
 		pageContent?.removeAttribute('inert');
 		brand?.removeAttribute('tabindex');
+		headerCta?.removeAttribute('tabindex');
 		collapseAllSubs();
 		hideAllFlyouts();
 		trigger?.focus();
@@ -86,6 +88,7 @@ function init() {
 		document.body.classList.add('nav-open');
 		pageContent?.setAttribute('inert', '');
 		brand?.setAttribute('tabindex', '-1');
+		headerCta?.setAttribute('tabindex', '-1');
 
 		// Focus first visible link — suppress flyout so sub-cats don't auto-show
 		suppressFlyout = true;
