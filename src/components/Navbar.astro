@@ -793,8 +793,12 @@ const {
 			cursor: default;
 		}
 
-		/* Active parent: cyan text highlight (no bulky border bar) */
+		/* Active parent: cyan italic while flyout is showing */
 		.prod-signal-nav__item--has-children[data-flyout-active='true'] .prod-signal-nav__label {
+			font-family: 'Cormorant Garamond', serif;
+			font-style: italic;
+			font-weight: 600;
+			letter-spacing: -0.015em;
 			color: var(--color-brand-cyan, #4ec9b4);
 		}
 
