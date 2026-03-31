@@ -1,0 +1,99 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+---
+
+<Layout
+	title="Menswear AI Photoshoots | NexAI Studio"
+	description="AI-generated menswear photography — sherwanis, kurtas, and casual wear on virtual models."
+	mainClass="category-page"
+>
+	<section class="category-page__hero">
+		<a href="/studio/showcase" class="category-page__back">&larr; All Categories</a>
+		<span class="category-page__tag">MENSWEAR</span>
+		<h1 class="category-page__heading">Menswear</h1>
+		<p class="category-page__body">
+			Sherwanis, kurtas, and casual menswear on AI-generated models. Scale your men's catalog
+			without scheduling a single shoot.
+		</p>
+		<a href="https://cal.com/nexailabs/15min" class="category-page__cta">Book a Call</a>
+	</section>
+</Layout>
+
+<style>
+	.category-page {
+		min-height: 100vh;
+		background: var(--color-bg);
+		padding: calc(var(--header-height, 5rem) + 3rem) var(--space-sm) var(--space-lg);
+	}
+
+	.category-page__hero {
+		max-width: 640px;
+		margin: 0 auto;
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1.25rem;
+	}
+
+	.category-page__back {
+		font-size: 0.85rem;
+		color: var(--color-text-muted);
+		text-decoration: none;
+		transition: color 0.2s ease;
+	}
+
+	.category-page__back:hover {
+		color: var(--color-brand-cyan);
+	}
+
+	.category-page__tag {
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		color: var(--color-brand-cyan);
+		padding: 0.4rem 1rem;
+		border: 1px solid rgba(78, 201, 180, 0.2);
+		border-radius: 999px;
+		background: rgba(78, 201, 180, 0.06);
+	}
+
+	.category-page__heading {
+		font-size: clamp(2.5rem, 8vw, 5rem);
+		font-weight: 800;
+		line-height: 0.95;
+		background: var(--color-brand-gradient);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		letter-spacing: -0.04em;
+	}
+
+	.category-page__body {
+		font-size: 1.05rem;
+		color: var(--color-text-muted);
+		line-height: 1.7;
+		max-width: 480px;
+	}
+
+	.category-page__cta {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.85rem 1.75rem;
+		border-radius: 999px;
+		background: var(--color-brand-gradient);
+		color: var(--color-bg);
+		font-size: 0.92rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		text-decoration: none;
+		text-transform: uppercase;
+		transition: transform 0.2s ease;
+	}
+
+	.category-page__cta:hover {
+		transform: translateY(-1px);
+	}
+</style>

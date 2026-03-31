@@ -1,0 +1,160 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+
+const categories = [
+	{
+		label: 'Ethnic Wear',
+		href: '/studio/showcase/ethnic-wear',
+		description: 'Kurtas, suits, and traditional wear styled with AI models.',
+	},
+	{
+		label: 'Saree',
+		href: '/studio/showcase/saree',
+		description: 'Draping styles, pallu shots, and heritage looks — all AI-generated.',
+	},
+	{
+		label: 'Jewelry',
+		href: '/studio/showcase/jewelry',
+		description: 'Fine jewelry and statement pieces on AI-generated models.',
+	},
+	{
+		label: 'Menswear',
+		href: '/studio/showcase/menswear',
+		description: 'Sherwanis, kurtas, and casual menswear styled with AI.',
+	},
+	{
+		label: 'Unstitched',
+		href: '/studio/showcase/unstitched',
+		description: 'Fabric sets and unstitched material presented on AI models.',
+	},
+];
+---
+
+<Layout
+	title="Showcase | NexAI Studio"
+	description="Browse AI-powered photoshoot categories — ethnic wear, saree, jewelry, menswear, and more."
+	mainClass="showcase-landing"
+>
+	<section class="showcase-landing__hero">
+		<span class="showcase-landing__tag">SHOWCASE</span>
+		<h1 class="showcase-landing__heading">AI Photoshoot Categories</h1>
+		<p class="showcase-landing__body">
+			Explore our portfolio across garment types. Every image is AI-generated — no physical
+			photoshoots, no compromises on quality.
+		</p>
+	</section>
+
+	<section class="showcase-landing__grid">
+		{
+			categories.map((cat) => (
+				<a href={cat.href} class="showcase-card">
+					<h2 class="showcase-card__title">{cat.label}</h2>
+					<p class="showcase-card__desc">{cat.description}</p>
+					<span class="showcase-card__arrow">&rarr;</span>
+				</a>
+			))
+		}
+	</section>
+</Layout>
+
+<style>
+	.showcase-landing {
+		min-height: 100vh;
+		background: var(--color-bg);
+		padding: calc(var(--header-height, 5rem) + 3rem) var(--space-sm) var(--space-lg);
+	}
+
+	.showcase-landing__hero {
+		max-width: 640px;
+		margin: 0 auto var(--space-lg);
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1.25rem;
+	}
+
+	.showcase-landing__tag {
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		color: var(--color-brand-cyan);
+		padding: 0.4rem 1rem;
+		border: 1px solid rgba(78, 201, 180, 0.2);
+		border-radius: 999px;
+		background: rgba(78, 201, 180, 0.06);
+	}
+
+	.showcase-landing__heading {
+		font-size: clamp(2rem, 5vw, 3.5rem);
+		font-weight: 800;
+		line-height: 1;
+		background: var(--color-brand-gradient);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		letter-spacing: -0.03em;
+	}
+
+	.showcase-landing__body {
+		font-size: 1.05rem;
+		color: var(--color-text-muted);
+		line-height: 1.7;
+	}
+
+	.showcase-landing__grid {
+		max-width: 900px;
+		margin: 0 auto;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+		gap: 1.25rem;
+	}
+
+	.showcase-card {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		padding: 2rem;
+		border: 1px solid var(--color-border);
+		border-radius: 1rem;
+		background: rgba(255, 255, 255, 0.02);
+		text-decoration: none;
+		transition:
+			border-color 0.25s ease,
+			transform 0.25s ease,
+			background 0.25s ease;
+	}
+
+	.showcase-card:hover,
+	.showcase-card:focus-visible {
+		border-color: var(--color-brand-cyan);
+		background: rgba(78, 201, 180, 0.04);
+		transform: translateY(-2px);
+		outline: none;
+	}
+
+	.showcase-card__title {
+		font-size: 1.25rem;
+		font-weight: 700;
+		color: var(--color-text-main);
+		letter-spacing: -0.01em;
+	}
+
+	.showcase-card__desc {
+		font-size: 0.9rem;
+		color: var(--color-text-muted);
+		line-height: 1.6;
+		flex: 1;
+	}
+
+	.showcase-card__arrow {
+		font-size: 1.25rem;
+		color: var(--color-brand-cyan);
+		transition: transform 0.2s ease;
+	}
+
+	.showcase-card:hover .showcase-card__arrow {
+		transform: translateX(4px);
+	}
+</style>

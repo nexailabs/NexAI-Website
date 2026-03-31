@@ -1,0 +1,105 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout
+	title="Gallery | NexAI Studio"
+	description="Before & after AI transformations — see how we turn garment photos into campaign-ready visuals."
+	mainClass="gallery-page"
+>
+	<section class="gallery-page__hero">
+		<span class="gallery-page__tag">GALLERY</span>
+		<h1 class="gallery-page__heading">Before &amp; After</h1>
+		<p class="gallery-page__body">
+			From raw garment photos to campaign-ready AI visuals. See the transformations across
+			categories and styles.
+		</p>
+	</section>
+
+	<section class="gallery-page__coming-soon">
+		<p class="gallery-page__notice">Full gallery coming soon. In the meantime —</p>
+		<a href="https://cal.com/nexailabs/15min" class="gallery-page__cta"
+			>Book a Call to See Our Portfolio</a
+		>
+	</section>
+</Layout>
+
+<style>
+	.gallery-page {
+		min-height: 100vh;
+		background: var(--color-bg);
+		padding: calc(var(--header-height, 5rem) + 3rem) var(--space-sm) var(--space-lg);
+	}
+
+	.gallery-page__hero {
+		max-width: 640px;
+		margin: 0 auto 4rem;
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1.25rem;
+	}
+
+	.gallery-page__tag {
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		color: var(--color-brand-cyan);
+		padding: 0.4rem 1rem;
+		border: 1px solid rgba(78, 201, 180, 0.2);
+		border-radius: 999px;
+		background: rgba(78, 201, 180, 0.06);
+	}
+
+	.gallery-page__heading {
+		font-size: clamp(2.5rem, 8vw, 5rem);
+		font-weight: 800;
+		line-height: 0.95;
+		background: var(--color-brand-gradient);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		letter-spacing: -0.04em;
+	}
+
+	.gallery-page__body {
+		font-size: 1.05rem;
+		color: var(--color-text-muted);
+		line-height: 1.7;
+	}
+
+	.gallery-page__coming-soon {
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1.5rem;
+	}
+
+	.gallery-page__notice {
+		font-size: 1rem;
+		color: var(--color-text-muted);
+	}
+
+	.gallery-page__cta {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.85rem 1.75rem;
+		border-radius: 999px;
+		background: var(--color-brand-gradient);
+		color: var(--color-bg);
+		font-size: 0.92rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		text-decoration: none;
+		text-transform: uppercase;
+		transition: transform 0.2s ease;
+	}
+
+	.gallery-page__cta:hover {
+		transform: translateY(-1px);
+	}
+</style>

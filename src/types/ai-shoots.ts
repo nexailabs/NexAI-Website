@@ -1,19 +1,8 @@
+export type { NavGroup, NavLink } from './navigation';
+
 export interface HeroImage {
 	src: string;
 	alt: string;
-}
-
-export interface NavLink {
-	label: string;
-	href: string;
-	caption: string;
-}
-
-export interface NavGroup {
-	label: string;
-	href: string;
-	caption?: string;
-	children?: { label: string; href: string }[];
 }
 
 export interface BrandLogo {

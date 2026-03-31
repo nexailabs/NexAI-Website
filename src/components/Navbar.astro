@@ -1,8 +1,8 @@
 ---
-import type { NavGroup } from '../types/ai-shoots';
+import type { NavGroup } from '../types/navigation';
 
 interface Props {
-	navGroups?: NavGroup[];
+	navGroups: NavGroup[];
 	topHref?: string;
 	brandAriaLabel?: string;
 	ctaHref?: string;
@@ -11,46 +11,8 @@ interface Props {
 	panelId?: string;
 }
 
-const defaultNavGroups: NavGroup[] = [
-	{
-		label: 'Agent Lab',
-		href: '/coming-soon',
-		caption: 'Custom AI agents built for your workflow.',
-	},
-	{
-		label: 'NexAI Studio',
-		href: '/ai-shoots',
-		caption: 'AI-powered photoshoots for fashion brands.',
-		children: [
-			{ label: 'Ethnic Wear', href: '/coming-soon' },
-			{ label: 'Saree', href: '/coming-soon' },
-			{ label: 'Video Gen', href: '/coming-soon' },
-		],
-	},
-	{
-		label: 'Prompt Hub',
-		href: '/coming-soon',
-		caption: 'Curated prompts, skills, and SOPs we swear by.',
-	},
-	{
-		label: 'App Vault',
-		href: '/coming-soon',
-		caption: 'The best AI tools we use and recommend.',
-	},
-	{
-		label: 'AI Drops',
-		href: '/coming-soon',
-		caption: "Dispatches on what we're building and learning.",
-	},
-	{
-		label: 'Catch Us',
-		href: '/coming-soon',
-		caption: "Let's talk — no pitch decks, just coffee.",
-	},
-];
-
 const {
-	navGroups = defaultNavGroups,
+	navGroups,
 	topHref = '#top',
 	brandAriaLabel = 'NexAI Labs home',
 	ctaHref = 'https://cal.com/nexailabs/15min',
