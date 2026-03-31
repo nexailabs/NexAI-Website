@@ -101,7 +101,7 @@ const {
 									<div
 										class="prod-signal-nav__sub prod-signal-nav__sub--mobile"
 										data-nav-sub
-										hidden
+										aria-hidden="true"
 									>
 										<div class="prod-signal-nav__sub-inner">
 											{group.children.map((child) => (
@@ -131,7 +131,11 @@ const {
 						navGroups
 							.filter((g) => g.children && g.children.length > 0)
 							.map((group) => (
-								<div class="prod-signal-nav__flyout-group" data-flyout-for={group.id} hidden>
+								<div
+									class="prod-signal-nav__flyout-group"
+									data-flyout-for={group.id}
+									aria-hidden="true"
+								>
 									{group.children!.map((child) => (
 										<a href={child.href} class="prod-signal-nav__flyout-link" data-nav-close>
 											<strong>{child.label}</strong>
@@ -606,12 +610,7 @@ const {
 		transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 	}
 
-	.prod-signal-nav__sub--mobile[hidden] {
-		display: grid;
-		grid-template-rows: 0fr;
-	}
-
-	.prod-signal-nav__sub--mobile:not([hidden]) {
+	.prod-signal-nav__sub--mobile[aria-hidden='false'] {
 		grid-template-rows: 1fr;
 	}
 
@@ -677,7 +676,7 @@ const {
 			transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 	}
 
-	.prod-signal-nav__flyout-group:not([hidden]) {
+	.prod-signal-nav__flyout-group[aria-hidden='false'] {
 		opacity: 1;
 		transform: translateX(0);
 	}
