@@ -117,19 +117,29 @@ function init() {
 
 			const isOpen = btn.getAttribute('aria-expanded') === 'true';
 
-			// Close all others first (accordion)
+			// Close all others first (accordion) + clear active state
 			expandButtons.forEach((otherBtn) => {
 				if (otherBtn !== btn) {
 					otherBtn.setAttribute('aria-expanded', 'false');
-					const otherSub = otherBtn
-						.closest('[data-nav-group]')
-						?.querySelector<HTMLElement>('[data-nav-sub]');
+					const otherGroup = otherBtn.closest<HTMLElement>('[data-nav-group]');
+					const otherSub = otherGroup?.querySelector<HTMLElement>('[data-nav-sub]');
 					if (otherSub) otherSub.hidden = true;
+					otherGroup?.removeAttribute('data-flyout-active');
 				}
 			});
 
 			btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
 			sub.hidden = isOpen;
+
+			// Set active state for cyan italic highlight
+			const parentGroup = btn.closest<HTMLElement>('[data-nav-group]');
+			if (parentGroup) {
+				if (isOpen) {
+					parentGroup.removeAttribute('data-flyout-active');
+				} else {
+					parentGroup.setAttribute('data-flyout-active', 'true');
+				}
+			}
 		});
 	});
 
