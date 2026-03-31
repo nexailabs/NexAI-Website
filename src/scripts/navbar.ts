@@ -47,6 +47,9 @@ function init() {
 		flyoutGroups.forEach((g) => {
 			g.hidden = true;
 		});
+		navGroups.forEach((g) => {
+			g.removeAttribute('data-flyout-active');
+		});
 	};
 
 	const closeMenu = () => {
@@ -145,9 +148,16 @@ function init() {
 				flyoutTimeout = null;
 			}
 
-			// Show matching flyout group, hide others
+			// Show matching flyout group, hide others + highlight parent
 			flyoutGroups.forEach((fg) => {
 				fg.hidden = fg.getAttribute('data-flyout-for') !== groupId;
+			});
+			navGroups.forEach((g) => {
+				if (g === group) {
+					g.setAttribute('data-flyout-active', 'true');
+				} else {
+					g.removeAttribute('data-flyout-active');
+				}
 			});
 		});
 
