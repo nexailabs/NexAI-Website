@@ -115,7 +115,11 @@ function init() {
 		const cardRect = sampleCard ? sampleCard.getBoundingClientRect() : { height: stageRect.height };
 		const cardHeight = cardRect.height || stageRect.height;
 		const stageCenterY = stageRect.top + stageRect.height / 2;
-		return -(stageCenterY + cardHeight / 2 + 48);
+		const offset = -(stageCenterY + cardHeight / 2 + 48);
+		// Ensure cards always travel upward — when hero is scrolled off-screen,
+		// stageCenterY goes very negative which flips offset positive (downward).
+		const minTravel = -(stageRect.height / 2 + cardHeight / 2 + 48);
+		return Math.min(offset, minTravel);
 	};
 
 	const getStackZIndex = (index: number, total: number) => total - index;
@@ -125,7 +129,7 @@ function init() {
 		return {
 			x: 0,
 			y: yOffset + behind * 4,
-			scale: 1 - behind * 0.012,
+			scale: 0.9 - behind * 0.012,
 			opacity: 1,
 			zIndex: getStackZIndex(index, total),
 		};
