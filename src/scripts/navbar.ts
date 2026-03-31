@@ -135,8 +135,8 @@ function init() {
 	let flyoutTimeout: ReturnType<typeof setTimeout> | null = null;
 
 	navGroups.forEach((group) => {
-		const label = group.querySelector<HTMLElement>('.prod-signal-nav__label')?.textContent?.trim();
-		if (!label) return;
+		const groupId = group.getAttribute('data-nav-group-id');
+		if (!groupId) return;
 
 		group.addEventListener('mouseenter', () => {
 			if (!isDesktop() || !flyout) return;
@@ -147,7 +147,7 @@ function init() {
 
 			// Show matching flyout group, hide others
 			flyoutGroups.forEach((fg) => {
-				fg.hidden = fg.getAttribute('data-flyout-for') !== label;
+				fg.hidden = fg.getAttribute('data-flyout-for') !== groupId;
 			});
 		});
 

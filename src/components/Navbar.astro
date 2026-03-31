@@ -65,6 +65,7 @@ const {
 								<div
 									class="prod-signal-nav__item prod-signal-nav__item--has-children"
 									data-nav-group
+									data-nav-group-id={group.id}
 								>
 									<div class="prod-signal-nav__item-header">
 										<a href={group.href} class="prod-signal-nav__item-link" data-nav-close>
@@ -127,11 +128,11 @@ const {
 						navGroups
 							.filter((g) => g.children && g.children.length > 0)
 							.map((group) => (
-								<div class="prod-signal-nav__flyout-group" data-flyout-for={group.label} hidden>
-									<span class="prod-signal-nav__flyout-title">{group.label}</span>
+								<div class="prod-signal-nav__flyout-group" data-flyout-for={group.id} hidden>
 									{group.children!.map((child) => (
 										<a href={child.href} class="prod-signal-nav__flyout-link" data-nav-close>
-											{child.label}
+											<strong>{child.label}</strong>
+											{child.caption && <small>{child.caption}</small>}
 										</a>
 									))}
 								</div>
@@ -644,8 +645,7 @@ const {
 	.prod-signal-nav__flyout-group {
 		display: grid;
 		gap: 0;
-		padding: 2rem 0 2rem 3rem;
-		border-left: 1px solid rgba(255, 255, 255, 0.08);
+		padding-left: clamp(1.5rem, 3vw, 3rem);
 		opacity: 0;
 		transform: translateX(20px);
 		transition:
@@ -658,33 +658,45 @@ const {
 		transform: translateX(0);
 	}
 
-	.prod-signal-nav__flyout-title {
-		font-size: 0.78rem;
-		font-weight: 600;
-		letter-spacing: 0.16em;
-		text-transform: uppercase;
-		color: rgba(255, 255, 255, 0.4);
-		margin-bottom: 1.2rem;
+	.prod-signal-nav__flyout-link {
+		display: grid;
+		gap: clamp(0.3rem, 0.8dvh, 0.65rem);
+		padding: clamp(0.75rem, 2dvh, 1.5rem) 0;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+		transition: border-color 0.3s ease;
 	}
 
-	.prod-signal-nav__flyout-link {
-		display: block;
-		padding: clamp(0.6rem, 1.5dvh, 1.1rem) 0;
-		font-size: clamp(1.4rem, 3.5dvh, 3rem);
+	.prod-signal-nav__flyout-link strong {
+		display: inline-block;
+		font-size: clamp(1.6rem, 4dvh, 4rem);
+		line-height: 0.92;
 		font-weight: 600;
 		letter-spacing: -0.045em;
-		line-height: 0.92;
-		color: rgba(255, 255, 255, 0.7);
-		border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+		color: rgba(255, 255, 255, 0.85);
 		transition:
-			color 0.3s ease,
 			transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
 			letter-spacing 0.5s ease,
+			color 0.3s ease,
 			text-shadow 0.3s ease;
+	}
+
+	.prod-signal-nav__flyout-link small {
+		color: rgba(255, 255, 255, 0.48);
+		font-size: clamp(0.78rem, 1.4dvh, 1rem);
+		line-height: 1.5;
+		transition:
+			color 0.3s ease,
+			transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 	}
 
 	.prod-signal-nav__flyout-link:hover,
 	.prod-signal-nav__flyout-link:focus-visible {
+		border-color: rgba(255, 255, 255, 0.12);
+		outline: none;
+	}
+
+	.prod-signal-nav__flyout-link:hover strong,
+	.prod-signal-nav__flyout-link:focus-visible strong {
 		font-family: 'Cormorant Garamond', serif;
 		font-style: italic;
 		font-weight: 600;
@@ -692,25 +704,29 @@ const {
 		color: rgba(255, 255, 255, 0.95);
 		transform: translateX(10px);
 		text-shadow: 0 0 24px rgba(255, 255, 255, 0.04);
-		border-bottom-color: rgba(255, 255, 255, 0.1);
-		outline: none;
+	}
+
+	.prod-signal-nav__flyout-link:hover small,
+	.prod-signal-nav__flyout-link:focus-visible small {
+		color: rgba(255, 255, 255, 0.68);
+		transform: translateX(10px);
 	}
 
 	/* Stagger flyout children */
+	.prod-signal-nav__flyout-link:nth-child(1) {
+		transition-delay: 0.04s;
+	}
 	.prod-signal-nav__flyout-link:nth-child(2) {
-		transition-delay: 0.05s;
+		transition-delay: 0.08s;
 	}
 	.prod-signal-nav__flyout-link:nth-child(3) {
-		transition-delay: 0.1s;
+		transition-delay: 0.12s;
 	}
 	.prod-signal-nav__flyout-link:nth-child(4) {
-		transition-delay: 0.15s;
+		transition-delay: 0.16s;
 	}
 	.prod-signal-nav__flyout-link:nth-child(5) {
 		transition-delay: 0.2s;
-	}
-	.prod-signal-nav__flyout-link:nth-child(6) {
-		transition-delay: 0.25s;
 	}
 
 	/* ── Footer ── */
@@ -742,14 +758,16 @@ const {
 	@media (min-width: 901px) {
 		.prod-signal-nav__columns {
 			grid-template-columns: 1fr 1fr;
-			gap: 2rem;
-			align-items: start;
+			gap: 0;
+			align-items: stretch;
 		}
 
 		.prod-signal-nav__flyout {
 			display: grid;
-			align-content: center;
+			align-content: start;
 			min-height: 0;
+			padding-top: clamp(1rem, 2.5dvh, 2rem);
+			border-left: 1px solid rgba(255, 255, 255, 0.06);
 		}
 
 		/* Hide mobile expand button + mobile sub-menu on desktop */
