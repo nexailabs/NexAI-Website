@@ -1,20 +1,8 @@
-let scrollHandler: (() => void) | null = null;
-let escapeHandler: ((e: KeyboardEvent) => void) | null = null;
-let trapListener: ((e: KeyboardEvent) => void) | null = null;
+let controller: AbortController | null = null;
 
 function cleanupListeners() {
-	if (scrollHandler) {
-		window.removeEventListener('scroll', scrollHandler);
-		scrollHandler = null;
-	}
-	if (escapeHandler) {
-		document.removeEventListener('keydown', escapeHandler);
-		escapeHandler = null;
-	}
-	if (trapListener) {
-		document.removeEventListener('keydown', trapListener);
-		trapListener = null;
-	}
+	controller?.abort();
+	controller = null;
 }
 
 function init() {
@@ -23,6 +11,9 @@ function init() {
 	const root = document.querySelector<HTMLElement>('[data-prod-signal-nav]');
 	if (!root) return;
 
+	controller = new AbortController();
+	const { signal } = controller;
+
 	const trigger = root.querySelector<HTMLButtonElement>('[data-nav-trigger]');
 	const panel = root.querySelector<HTMLElement>('[data-nav-panel]');
 	const closers = root.querySelectorAll<HTMLElement>('[data-nav-close]');
@@ -30,6 +21,7 @@ function init() {
 	const navGroups = root.querySelectorAll<HTMLElement>('[data-nav-group]');
 	const flyout = root.querySelector<HTMLElement>('[data-nav-flyout]');
 	const flyoutGroups = root.querySelectorAll<HTMLElement>('[data-flyout-for]');
+	const mainContent = document.querySelector('main');
 
 	const syncScrollState = () => {
 		root.classList.toggle('is-scrolled', window.scrollY > 24);
@@ -39,14 +31,15 @@ function init() {
 		expandButtons.forEach((btn) => {
 			btn.setAttribute('aria-expanded', 'false');
 			const sub = btn.closest('[data-nav-group]')?.querySelector<HTMLElement>('[data-nav-sub]');
-			if (sub) sub.hidden = true;
+			if (sub) sub.setAttribute('aria-hidden', 'true');
 		});
 	};
 
 	const hideAllFlyouts = () => {
 		flyoutGroups.forEach((g) => {
-			g.hidden = true;
+			g.setAttribute('aria-hidden', 'true');
 		});
+		flyout?.setAttribute('aria-hidden', 'true');
 		navGroups.forEach((g) => {
 			g.removeAttribute('data-flyout-active');
 		});
@@ -56,91 +49,103 @@ function init() {
 		root.dataset.open = 'false';
 		trigger?.setAttribute('aria-expanded', 'false');
 		trigger?.setAttribute('aria-label', 'Open navigation');
+		panel?.removeAttribute('aria-hidden');
 		panel?.setAttribute('aria-hidden', 'true');
 		document.body.classList.remove('nav-open');
+		mainContent?.removeAttribute('inert');
 		collapseAllSubs();
 		hideAllFlyouts();
-		if (trapListener) {
-			document.removeEventListener('keydown', trapListener);
-			trapListener = null;
-		}
 		trigger?.focus();
+	};
+
+	// Dynamic focus trap — recomputes visible focusables on every Tab
+	const trapHandler = (e: KeyboardEvent) => {
+		if (e.key !== 'Tab' || !panel) return;
+		const live = [...panel.querySelectorAll<HTMLElement>('a, button')]
+			.filter((el) => !el.closest('[aria-hidden="true"]'))
+			.concat(trigger ? [trigger] : []);
+
+		if (!live.length) return;
+		const first = live[0];
+		const last = live[live.length - 1];
+		if (e.shiftKey && document.activeElement === first) {
+			e.preventDefault();
+			last.focus();
+		} else if (!e.shiftKey && document.activeElement === last) {
+			e.preventDefault();
+			first.focus();
+		}
 	};
 
 	const openMenu = () => {
 		root.dataset.open = 'true';
 		trigger?.setAttribute('aria-expanded', 'true');
 		trigger?.setAttribute('aria-label', 'Close navigation');
-		panel?.setAttribute('aria-hidden', 'false');
+		panel?.removeAttribute('aria-hidden');
 		document.body.classList.add('nav-open');
+		mainContent?.setAttribute('inert', '');
 
-		const focusables = [
-			...(panel?.querySelectorAll('a:not([disabled]), button:not([disabled])') ?? []),
-			trigger,
-		].filter(Boolean) as HTMLElement[];
+		// Focus first visible link
+		const firstLink = panel?.querySelector<HTMLElement>(
+			'a:not([disabled]), button:not([disabled])',
+		);
+		(firstLink ?? trigger)?.focus();
 
-		if (focusables.length) focusables[0].focus();
-
-		trapListener = (e: KeyboardEvent) => {
-			if (e.key !== 'Tab' || !focusables.length) return;
-			const first = focusables[0];
-			const last = focusables[focusables.length - 1];
-			if (e.shiftKey && document.activeElement === first) {
-				e.preventDefault();
-				last.focus();
-			} else if (!e.shiftKey && document.activeElement === last) {
-				e.preventDefault();
-				first.focus();
-			}
-		};
-		document.addEventListener('keydown', trapListener);
+		document.addEventListener('keydown', trapHandler, { signal });
 	};
 
-	trigger?.addEventListener('click', () => {
-		if (root.dataset.open === 'true') {
-			closeMenu();
-			return;
-		}
-		openMenu();
-	});
+	trigger?.addEventListener(
+		'click',
+		() => {
+			if (root.dataset.open === 'true') {
+				closeMenu();
+				return;
+			}
+			openMenu();
+		},
+		{ signal },
+	);
 
 	closers.forEach((link) => {
-		link.addEventListener('click', () => closeMenu());
+		link.addEventListener('click', () => closeMenu(), { signal });
 	});
 
 	// Mobile: collapsible subcategory toggles (accordion)
 	expandButtons.forEach((btn) => {
-		btn.addEventListener('click', () => {
-			const group = btn.closest('[data-nav-group]');
-			const sub = group?.querySelector<HTMLElement>('[data-nav-sub]');
-			if (!sub) return;
+		btn.addEventListener(
+			'click',
+			() => {
+				const group = btn.closest<HTMLElement>('[data-nav-group]');
+				const sub = group?.querySelector<HTMLElement>('[data-nav-sub]');
+				if (!sub) return;
 
-			const isOpen = btn.getAttribute('aria-expanded') === 'true';
+				const isOpen = btn.getAttribute('aria-expanded') === 'true';
 
-			// Close all others first (accordion) + clear active state
-			expandButtons.forEach((otherBtn) => {
-				if (otherBtn !== btn) {
-					otherBtn.setAttribute('aria-expanded', 'false');
-					const otherGroup = otherBtn.closest<HTMLElement>('[data-nav-group]');
-					const otherSub = otherGroup?.querySelector<HTMLElement>('[data-nav-sub]');
-					if (otherSub) otherSub.hidden = true;
-					otherGroup?.removeAttribute('data-flyout-active');
+				// Close all others first (accordion)
+				expandButtons.forEach((otherBtn) => {
+					if (otherBtn !== btn) {
+						otherBtn.setAttribute('aria-expanded', 'false');
+						const otherGroup = otherBtn.closest<HTMLElement>('[data-nav-group]');
+						const otherSub = otherGroup?.querySelector<HTMLElement>('[data-nav-sub]');
+						if (otherSub) otherSub.setAttribute('aria-hidden', 'true');
+						otherGroup?.removeAttribute('data-flyout-active');
+					}
+				});
+
+				btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+				sub.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
+
+				// Active state for cyan italic highlight
+				if (group) {
+					if (isOpen) {
+						group.removeAttribute('data-flyout-active');
+					} else {
+						group.setAttribute('data-flyout-active', 'true');
+					}
 				}
-			});
-
-			btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
-			sub.hidden = isOpen;
-
-			// Set active state for cyan italic highlight
-			const parentGroup = btn.closest<HTMLElement>('[data-nav-group]');
-			if (parentGroup) {
-				if (isOpen) {
-					parentGroup.removeAttribute('data-flyout-active');
-				} else {
-					parentGroup.setAttribute('data-flyout-active', 'true');
-				}
-			}
-		});
+			},
+			{ signal },
+		);
 	});
 
 	// Desktop: hover flyout for groups with children
@@ -151,59 +156,80 @@ function init() {
 		const groupId = group.getAttribute('data-nav-group-id');
 		if (!groupId) return;
 
-		group.addEventListener('mouseenter', () => {
-			if (!isDesktop() || !flyout) return;
-			if (flyoutTimeout) {
-				clearTimeout(flyoutTimeout);
-				flyoutTimeout = null;
-			}
-
-			// Show matching flyout group, hide others + highlight parent
-			flyoutGroups.forEach((fg) => {
-				fg.hidden = fg.getAttribute('data-flyout-for') !== groupId;
-			});
-			navGroups.forEach((g) => {
-				if (g === group) {
-					g.setAttribute('data-flyout-active', 'true');
-				} else {
-					g.removeAttribute('data-flyout-active');
+		group.addEventListener(
+			'mouseenter',
+			() => {
+				if (!isDesktop() || !flyout) return;
+				if (flyoutTimeout) {
+					clearTimeout(flyoutTimeout);
+					flyoutTimeout = null;
 				}
-			});
-		});
 
-		group.addEventListener('mouseleave', () => {
-			if (!isDesktop()) return;
-			flyoutTimeout = setTimeout(() => {
-				hideAllFlyouts();
-			}, 200);
-		});
+				// Show matching flyout group, hide others
+				flyoutGroups.forEach((fg) => {
+					const match = fg.getAttribute('data-flyout-for') === groupId;
+					fg.setAttribute('aria-hidden', match ? 'false' : 'true');
+				});
+				flyout.setAttribute('aria-hidden', 'false');
+
+				navGroups.forEach((g) => {
+					if (g === group) {
+						g.setAttribute('data-flyout-active', 'true');
+					} else {
+						g.removeAttribute('data-flyout-active');
+					}
+				});
+			},
+			{ signal },
+		);
+
+		group.addEventListener(
+			'mouseleave',
+			() => {
+				if (!isDesktop()) return;
+				flyoutTimeout = setTimeout(() => {
+					hideAllFlyouts();
+				}, 200);
+			},
+			{ signal },
+		);
 	});
 
 	// Keep flyout open when mouse moves into it
 	if (flyout) {
-		flyout.addEventListener('mouseenter', () => {
-			if (flyoutTimeout) {
-				clearTimeout(flyoutTimeout);
-				flyoutTimeout = null;
-			}
-		});
+		flyout.addEventListener(
+			'mouseenter',
+			() => {
+				if (flyoutTimeout) {
+					clearTimeout(flyoutTimeout);
+					flyoutTimeout = null;
+				}
+			},
+			{ signal },
+		);
 
-		flyout.addEventListener('mouseleave', () => {
-			flyoutTimeout = setTimeout(() => {
-				hideAllFlyouts();
-			}, 200);
-		});
+		flyout.addEventListener(
+			'mouseleave',
+			() => {
+				flyoutTimeout = setTimeout(() => {
+					hideAllFlyouts();
+				}, 200);
+			},
+			{ signal },
+		);
 	}
 
-	scrollHandler = syncScrollState;
-	window.addEventListener('scroll', scrollHandler, { passive: true });
+	window.addEventListener('scroll', syncScrollState, { passive: true, signal });
 
-	escapeHandler = (event: KeyboardEvent) => {
-		if (event.key === 'Escape' && root.dataset.open === 'true') {
-			closeMenu();
-		}
-	};
-	document.addEventListener('keydown', escapeHandler);
+	document.addEventListener(
+		'keydown',
+		(event: KeyboardEvent) => {
+			if (event.key === 'Escape' && root.dataset.open === 'true') {
+				closeMenu();
+			}
+		},
+		{ signal },
+	);
 
 	syncScrollState();
 }
