@@ -19,7 +19,7 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 
 <section class="sc3" id="showcase">
 	<div class="container sc3__shell">
-		<nav class="sc3__nav">
+		<div class="sc3__nav">
 			<ul class="sc3__nav-list" role="tablist" aria-label="Showcase categories">
 				{
 					categories.map((cat, i) => (
@@ -39,7 +39,7 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 					))
 				}
 			</ul>
-		</nav>
+		</div>
 
 		<div class="sc3__stage">
 			{
@@ -144,17 +144,7 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 						</div>
 
 						{/* Arrow Bridge */}
-						<div class="sc3__arrow">
-							<svg width="48" height="24" viewBox="0 0 48 24" fill="none">
-								<path
-									d="M0 12h44m0 0l-8-8m8 8l-8 8"
-									stroke="currentColor"
-									stroke-width="1.5"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-								/>
-							</svg>
-						</div>
+						<div class="sc3__arrow" aria-hidden="true" />
 
 						{/* Right Output Block */}
 						<div class="sc3__col sc3__col--right">
@@ -297,7 +287,10 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 		padding: 0.8rem 1.6rem;
 		cursor: pointer;
 		text-align: center;
-		transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+		transition:
+			color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+			border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+			box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 		position: relative;
 		overflow: hidden;
 	}
@@ -316,6 +309,10 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 	}
 	.sc3__nav-item:hover::before {
 		opacity: 1;
+	}
+	.sc3__nav-item:focus-visible {
+		outline: 2px solid var(--color-brand-cyan);
+		outline-offset: 2px;
 	}
 	.sc3__nav-text {
 		position: relative;
@@ -425,9 +422,6 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 	.sc3__panel.active .sc3__arrow {
 		opacity: 0.5;
 		animation: sc3ConnectPulse 2.5s ease-in-out infinite alternate;
-	}
-	.sc3__arrow svg {
-		display: none;
 	}
 	@keyframes sc3ConnectPulse {
 		0% {

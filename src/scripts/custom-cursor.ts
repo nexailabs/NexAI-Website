@@ -1,5 +1,3 @@
-import gsap from 'gsap';
-
 let cleanup: (() => void) | null = null;
 
 function init() {
@@ -24,22 +22,24 @@ function init() {
 	let ringX = -100;
 	let ringY = -100;
 	let revealed = false;
+	let rafId: number | null = null;
 
 	// Lerp factor: lower = more lag (0.12 gives a smooth 1-2 frame trailing feel)
 	const RING_LERP = 0.12;
 
-	// GSAP ticker runs every frame — batched with Lenis scroll updates
 	const tick = () => {
 		// Dot snaps immediately
-		gsap.set(dot, { x: mouseX, y: mouseY });
+		dot.style.transform = `translate3d(${mouseX}px,${mouseY}px,0)`;
 
 		// Ring lerps toward mouse
 		ringX += (mouseX - ringX) * RING_LERP;
 		ringY += (mouseY - ringY) * RING_LERP;
-		gsap.set(ring, { x: ringX, y: ringY });
+		ring.style.transform = `translate3d(${ringX}px,${ringY}px,0)`;
+
+		rafId = requestAnimationFrame(tick);
 	};
 
-	gsap.ticker.add(tick);
+	rafId = requestAnimationFrame(tick);
 
 	const onMouseMove = (e: MouseEvent) => {
 		mouseX = e.clientX;
@@ -82,7 +82,8 @@ function init() {
 	document.addEventListener('mouseup', onMouseUp);
 
 	cleanup = () => {
-		gsap.ticker.remove(tick);
+		if (rafId !== null) cancelAnimationFrame(rafId);
+		rafId = null;
 		window.removeEventListener('mousemove', onMouseMove);
 		document.removeEventListener('mouseover', onMouseOver);
 		document.removeEventListener('mouseout', onMouseOut);

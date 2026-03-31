@@ -47,13 +47,17 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:image" content={resolvedOgImage} />
+		<meta property="og:image:alt" content={description} />
 		<meta property="og:url" content={resolvedCanonical} />
+		<meta property="og:site_name" content="NexAI Labs" />
+		<meta property="og:locale" content="en_IN" />
 
 		<!-- Twitter -->
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={resolvedOgImage} />
+		<meta name="twitter:image:alt" content={description} />
 
 		<!-- View Transitions -->
 		<ClientRouter />
@@ -68,6 +72,7 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 		<slot name="head" />
 	</head>
 	<body>
+		<a class="skip-to-content" href="#main-content">Skip to content</a>
 		<slot name="navbar">
 			<Navbar
 				navGroups={navConfig.navGroups}
@@ -77,7 +82,6 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 			/>
 		</slot>
 		<div data-page-content>
-			<a class="skip-to-content" href="#main-content">Skip to content</a>
 			<CustomCursor />
 			<main id="main-content" class={mainClass} tabindex="-1">
 				<slot />

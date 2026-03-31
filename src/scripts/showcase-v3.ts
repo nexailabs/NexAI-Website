@@ -484,10 +484,20 @@ function init() {
 	initTabs();
 	initMobShowcaseCycle();
 
-	if (!resizeHandler) {
-		resizeHandler = onResize;
-		window.addEventListener('resize', resizeHandler);
+	resizeHandler = onResize;
+	window.addEventListener('resize', resizeHandler);
+}
+
+function cleanup() {
+	tabCleanup?.();
+	tabCleanup = null;
+	mobCleanup?.();
+	mobCleanup = null;
+	if (resizeHandler) {
+		window.removeEventListener('resize', resizeHandler);
+		resizeHandler = null;
 	}
 }
 
 document.addEventListener('astro:page-load', init);
+document.addEventListener('astro:before-swap', cleanup);
