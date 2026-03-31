@@ -103,12 +103,14 @@ const {
 										data-nav-sub
 										hidden
 									>
-										{group.children.map((child) => (
-											<a href={child.href} class="prod-signal-nav__sub-link" data-nav-close>
-												<strong>{child.label}</strong>
-												{child.caption && <small>{child.caption}</small>}
-											</a>
-										))}
+										<div class="prod-signal-nav__sub-inner">
+											{group.children.map((child) => (
+												<a href={child.href} class="prod-signal-nav__sub-link" data-nav-close>
+													<strong>{child.label}</strong>
+													{child.caption && <small>{child.caption}</small>}
+												</a>
+											))}
+										</div>
 									</div>
 								</div>
 							) : (
@@ -613,8 +615,9 @@ const {
 		grid-template-rows: 1fr;
 	}
 
-	.prod-signal-nav__sub--mobile > * {
+	.prod-signal-nav__sub-inner {
 		overflow: hidden;
+		min-height: 0;
 	}
 
 	.prod-signal-nav__sub-link {
