@@ -41,6 +41,18 @@ const main: NavConfig = {
 	],
 	topHref: '/',
 	brandAriaLabel: 'NexAI Labs home',
+	socials: [
+		{
+			platform: 'instagram',
+			href: 'https://www.instagram.com/nexailabs/',
+			label: 'NexAI Labs on Instagram',
+		},
+		{
+			platform: 'linkedin',
+			href: 'https://www.linkedin.com/company/nexailabs/',
+			label: 'NexAI Labs on LinkedIn',
+		},
+	],
 };
 
 const studio: NavConfig = {
@@ -98,6 +110,18 @@ const studio: NavConfig = {
 	],
 	topHref: '/studio',
 	brandAriaLabel: 'NexAI Studio home',
+	socials: [
+		{
+			platform: 'instagram',
+			href: 'https://www.instagram.com/nexai.photoshoots/',
+			label: 'NexAI Studio on Instagram',
+		},
+		{
+			platform: 'linkedin',
+			href: 'https://www.linkedin.com/company/nexailabs/',
+			label: 'NexAI Labs on LinkedIn',
+		},
+	],
 };
 
 export const navConfigs: Record<string, NavConfig> = { main, studio };
