@@ -21,7 +21,7 @@ function init() {
 	const navGroups = root.querySelectorAll<HTMLElement>('[data-nav-group]');
 	const flyout = root.querySelector<HTMLElement>('[data-nav-flyout]');
 	const flyoutGroups = root.querySelectorAll<HTMLElement>('[data-flyout-for]');
-	const mainContent = document.querySelector('main');
+	const pageContent = document.querySelector<HTMLElement>('[data-page-content]');
 
 	const syncScrollState = () => {
 		root.classList.toggle('is-scrolled', window.scrollY > 24);
@@ -51,7 +51,7 @@ function init() {
 		trigger?.setAttribute('aria-label', 'Open navigation');
 		panel?.setAttribute('aria-hidden', 'true');
 		document.body.classList.remove('nav-open');
-		mainContent?.removeAttribute('inert');
+		pageContent?.removeAttribute('inert');
 		collapseAllSubs();
 		hideAllFlyouts();
 		trigger?.focus();
@@ -82,7 +82,7 @@ function init() {
 		trigger?.setAttribute('aria-label', 'Close navigation');
 		panel?.removeAttribute('aria-hidden');
 		document.body.classList.add('nav-open');
-		mainContent?.setAttribute('inert', '');
+		pageContent?.setAttribute('inert', '');
 
 		// Focus first visible link
 		const firstLink = panel?.querySelector<HTMLElement>(
@@ -147,37 +147,55 @@ function init() {
 		);
 	});
 
-	// Desktop: hover flyout for groups with children
+	// Desktop: hover + keyboard flyout for groups with children
 	const isDesktop = () => window.innerWidth > 900;
 	let flyoutTimeout: ReturnType<typeof setTimeout> | null = null;
+
+	const clearFlyoutTimeout = () => {
+		if (flyoutTimeout) {
+			clearTimeout(flyoutTimeout);
+			flyoutTimeout = null;
+		}
+	};
+
+	const showFlyoutForGroup = (group: HTMLElement) => {
+		if (!flyout) return;
+		const groupId = group.getAttribute('data-nav-group-id');
+		if (!groupId) return;
+
+		clearFlyoutTimeout();
+
+		flyoutGroups.forEach((fg) => {
+			const match = fg.getAttribute('data-flyout-for') === groupId;
+			fg.setAttribute('aria-hidden', match ? 'false' : 'true');
+		});
+		flyout.setAttribute('aria-hidden', 'false');
+
+		navGroups.forEach((g) => {
+			if (g === group) {
+				g.setAttribute('data-flyout-active', 'true');
+			} else {
+				g.removeAttribute('data-flyout-active');
+			}
+		});
+	};
+
+	const scheduleFlyoutClose = () => {
+		flyoutTimeout = setTimeout(() => {
+			hideAllFlyouts();
+		}, 200);
+	};
 
 	navGroups.forEach((group) => {
 		const groupId = group.getAttribute('data-nav-group-id');
 		if (!groupId) return;
 
+		// Hover activation
 		group.addEventListener(
 			'mouseenter',
 			() => {
-				if (!isDesktop() || !flyout) return;
-				if (flyoutTimeout) {
-					clearTimeout(flyoutTimeout);
-					flyoutTimeout = null;
-				}
-
-				// Show matching flyout group, hide others
-				flyoutGroups.forEach((fg) => {
-					const match = fg.getAttribute('data-flyout-for') === groupId;
-					fg.setAttribute('aria-hidden', match ? 'false' : 'true');
-				});
-				flyout.setAttribute('aria-hidden', 'false');
-
-				navGroups.forEach((g) => {
-					if (g === group) {
-						g.setAttribute('data-flyout-active', 'true');
-					} else {
-						g.removeAttribute('data-flyout-active');
-					}
-				});
+				if (!isDesktop()) return;
+				showFlyoutForGroup(group);
 			},
 			{ signal },
 		);
@@ -186,23 +204,40 @@ function init() {
 			'mouseleave',
 			() => {
 				if (!isDesktop()) return;
-				flyoutTimeout = setTimeout(() => {
-					hideAllFlyouts();
-				}, 200);
+				scheduleFlyoutClose();
+			},
+			{ signal },
+		);
+
+		// Keyboard activation (mirrors hover)
+		group.addEventListener(
+			'focusin',
+			() => {
+				if (!isDesktop()) return;
+				showFlyoutForGroup(group);
+			},
+			{ signal },
+		);
+
+		group.addEventListener(
+			'focusout',
+			(e) => {
+				if (!isDesktop()) return;
+				const related = (e as FocusEvent).relatedTarget as HTMLElement | null;
+				if (!related || (!group.contains(related) && !flyout?.contains(related))) {
+					scheduleFlyoutClose();
+				}
 			},
 			{ signal },
 		);
 	});
 
-	// Keep flyout open when mouse moves into it
+	// Keep flyout open when mouse/focus moves into it
 	if (flyout) {
 		flyout.addEventListener(
 			'mouseenter',
 			() => {
-				if (flyoutTimeout) {
-					clearTimeout(flyoutTimeout);
-					flyoutTimeout = null;
-				}
+				clearFlyoutTimeout();
 			},
 			{ signal },
 		);
@@ -210,9 +245,27 @@ function init() {
 		flyout.addEventListener(
 			'mouseleave',
 			() => {
-				flyoutTimeout = setTimeout(() => {
-					hideAllFlyouts();
-				}, 200);
+				scheduleFlyoutClose();
+			},
+			{ signal },
+		);
+
+		flyout.addEventListener(
+			'focusin',
+			() => {
+				clearFlyoutTimeout();
+			},
+			{ signal },
+		);
+
+		flyout.addEventListener(
+			'focusout',
+			(e) => {
+				const related = (e as FocusEvent).relatedTarget as HTMLElement | null;
+				const anyGroupHasFocus = [...navGroups].some((g) => g.contains(related));
+				if (!related || (!flyout.contains(related) && !anyGroupHasFocus)) {
+					scheduleFlyoutClose();
+				}
 			},
 			{ signal },
 		);
