@@ -1,26 +1,16 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Navbar from '../components/Navbar.astro';
-import ShootsHero from '../components/ShootsHero.astro';
-import ClientMarquee from '../components/ClientMarquee.astro';
-import ShowcaseV3 from '../components/ShowcaseV3.astro';
-import ServicesGrid from '../components/ServicesGrid.astro';
-import {
-	bookingUrl,
-	email,
-	heroNavLinks,
-	heroDecks,
-	brandLogos,
-	showcaseCategories,
-	serviceCards,
-} from '../data/ai-shoots';
+import Layout from '../../layouts/Layout.astro';
+import ShootsHero from '../../components/ShootsHero.astro';
+import ClientMarquee from '../../components/ClientMarquee.astro';
+import ShowcaseV3 from '../../components/ShowcaseV3.astro';
+import ServicesGrid from '../../components/ServicesGrid.astro';
+import { heroDecks, brandLogos, showcaseCategories, serviceCards } from '../../data/ai-shoots';
 ---
 
 <Layout
 	title="AI Photoshoots for Fashion Brands | NexAI Labs"
 	description="Premium AI fashion photography for D2C brands."
 	ogImage="/assets/og-ai-shoots.png"
-	showNavbar={false}
 	mainClass="shoots-page"
 >
 	<link slot="head" rel="preload" as="image" href={heroDecks[0][heroDecks[0].length - 1].src} />
@@ -37,17 +27,6 @@ import {
 			email: 'hello@nexailabs.com',
 			sameAs: [],
 		})}
-	/>
-
-	<Navbar
-		navLinks={heroNavLinks}
-		topHref="#top"
-		brandAriaLabel="NexAI Labs AI Shoots home"
-		ctaHref={bookingUrl}
-		ctaLabel="Book a Call"
-		email={email}
-		takeoverMeta="India / Remote"
-		panelId="ai-shoots-nav-takeover"
 	/>
 
 	<section class="shoots-hero" id="top">

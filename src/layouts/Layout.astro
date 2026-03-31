@@ -2,6 +2,7 @@
 import { ClientRouter } from 'astro:transitions';
 import Navbar from '../components/Navbar.astro';
 import CustomCursor from '../components/CustomCursor.astro';
+import { navConfigs } from '../config/navigation';
 import '../styles/global.css';
 
 interface Props {
@@ -9,7 +10,6 @@ interface Props {
 	description?: string;
 	ogImage?: string;
 	canonicalUrl?: string;
-	showNavbar?: boolean;
 	mainClass?: string;
 }
 
@@ -18,9 +18,11 @@ const {
 	description = 'Building AI Agents for Businesses',
 	ogImage = '/assets/og-default.png',
 	canonicalUrl,
-	showNavbar = true,
 	mainClass,
 } = Astro.props;
+
+const section = Astro.url.pathname.split('/')[1] || 'main';
+const navConfig = navConfigs[section] ?? navConfigs.main;
 
 const resolvedCanonical = canonicalUrl || Astro.url.href;
 const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, Astro.site).href;
@@ -68,7 +70,13 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 	<body>
 		<a class="skip-to-content" href="#main-content">Skip to content</a>
 		<CustomCursor />
-		{showNavbar && <Navbar />}
+		<slot name="navbar">
+			<Navbar
+				navGroups={navConfig.navGroups}
+				topHref={navConfig.topHref}
+				brandAriaLabel={navConfig.brandAriaLabel}
+			/>
+		</slot>
 		<main id="main-content" class={mainClass} tabindex="-1">
 			<slot />
 		</main>
