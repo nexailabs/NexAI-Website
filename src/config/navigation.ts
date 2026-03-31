@@ -33,7 +33,7 @@ const main: NavConfig = {
 			caption: "Let's talk — no pitch decks, just coffee.",
 		},
 	],
-	topHref: '#top',
+	topHref: '/',
 	brandAriaLabel: 'NexAI Labs home',
 };
 
