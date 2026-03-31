@@ -105,7 +105,8 @@ const {
 									>
 										{group.children.map((child) => (
 											<a href={child.href} class="prod-signal-nav__sub-link" data-nav-close>
-												{child.label}
+												<strong>{child.label}</strong>
+												{child.caption && <small>{child.caption}</small>}
 											</a>
 										))}
 									</div>
@@ -574,7 +575,7 @@ const {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		padding: 0.25rem;
+		padding: 0.5rem;
 		color: rgba(255, 255, 255, 0.4);
 		transition:
 			color 0.3s ease,
@@ -617,23 +618,44 @@ const {
 	}
 
 	.prod-signal-nav__sub-link {
-		display: block;
-		padding: clamp(0.4rem, 0.8dvh, 0.7rem) 0 clamp(0.4rem, 0.8dvh, 0.7rem) 1.4rem;
-		font-size: clamp(1rem, 1.8dvh, 1.3rem);
-		color: rgba(255, 255, 255, 0.55);
-		border-left: 2px solid rgba(255, 255, 255, 0.1);
+		display: grid;
+		gap: clamp(0.15rem, 0.4dvh, 0.35rem);
+		padding: clamp(0.5rem, 1dvh, 0.85rem) 0 clamp(0.5rem, 1dvh, 0.85rem) 1.4rem;
+		border-left: 2px solid rgba(78, 201, 180, 0.25);
 		transition:
-			color 0.3s ease,
 			border-color 0.3s ease,
 			padding-left 0.3s ease;
 	}
 
+	.prod-signal-nav__sub-link strong {
+		font-size: clamp(1.1rem, 2dvh, 1.4rem);
+		font-weight: 600;
+		color: rgba(255, 255, 255, 0.7);
+		transition: color 0.3s ease;
+	}
+
+	.prod-signal-nav__sub-link small {
+		color: rgba(255, 255, 255, 0.4);
+		font-size: clamp(0.7rem, 1.1dvh, 0.88rem);
+		line-height: 1.4;
+		transition: color 0.3s ease;
+	}
+
 	.prod-signal-nav__sub-link:hover,
 	.prod-signal-nav__sub-link:focus-visible {
-		color: rgba(255, 255, 255, 0.9);
 		border-left-color: rgba(78, 201, 180, 0.6);
 		padding-left: 1.8rem;
 		outline: none;
+	}
+
+	.prod-signal-nav__sub-link:hover strong,
+	.prod-signal-nav__sub-link:focus-visible strong {
+		color: rgba(255, 255, 255, 0.95);
+	}
+
+	.prod-signal-nav__sub-link:hover small,
+	.prod-signal-nav__sub-link:focus-visible small {
+		color: rgba(255, 255, 255, 0.6);
 	}
 
 	/* ── Desktop flyout (col 2 — hidden on mobile) ── */
@@ -792,18 +814,38 @@ const {
 		.prod-signal-nav__item--has-children {
 			cursor: default;
 		}
+	}
 
-		/* Active parent: cyan italic while flyout is showing */
-		.prod-signal-nav__item--has-children[data-flyout-active='true'] .prod-signal-nav__label {
-			font-family: 'Cormorant Garamond', serif;
-			font-style: italic;
-			font-weight: 600;
-			letter-spacing: -0.015em;
-			color: var(--color-brand-cyan, #4ec9b4);
+	/* ── Active parent: cyan italic (works on both desktop + mobile) ── */
+
+	.prod-signal-nav__item--has-children[data-flyout-active='true'] .prod-signal-nav__label {
+		font-family: 'Cormorant Garamond', serif;
+		font-style: italic;
+		font-weight: 600;
+		letter-spacing: -0.015em;
+		color: var(--color-brand-cyan, #4ec9b4);
+	}
+
+	.prod-signal-nav__item--has-children[data-flyout-active='true'] small {
+		color: rgba(255, 255, 255, 0.68);
+	}
+
+	/* ── Disable italic hover on touch devices (prevents sticky :hover) ── */
+
+	@media (pointer: coarse) {
+		.prod-signal-nav__item:hover > .prod-signal-nav__item-copy .prod-signal-nav__label,
+		.prod-signal-nav__item-link:hover .prod-signal-nav__label {
+			font-family: inherit;
+			font-style: normal;
+			letter-spacing: -0.045em;
+			transform: none;
+			text-shadow: none;
 		}
 
-		.prod-signal-nav__item--has-children[data-flyout-active='true'] small {
-			color: rgba(255, 255, 255, 0.68);
+		.prod-signal-nav__item:hover > .prod-signal-nav__item-copy small,
+		.prod-signal-nav__item-link:hover small {
+			color: rgba(255, 255, 255, 0.48);
+			transform: none;
 		}
 	}
 
