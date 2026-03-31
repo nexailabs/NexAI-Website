@@ -5,10 +5,11 @@ export interface NavLink {
 }
 
 export interface NavGroup {
+	id: string;
 	label: string;
 	href: string;
 	caption?: string;
-	children?: { label: string; href: string }[];
+	children?: NavGroup[];
 }
 
 export interface NavConfig {
