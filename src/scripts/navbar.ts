@@ -49,7 +49,6 @@ function init() {
 		root.dataset.open = 'false';
 		trigger?.setAttribute('aria-expanded', 'false');
 		trigger?.setAttribute('aria-label', 'Open navigation');
-		panel?.removeAttribute('aria-hidden');
 		panel?.setAttribute('aria-hidden', 'true');
 		document.body.classList.remove('nav-open');
 		mainContent?.removeAttribute('inert');
@@ -60,7 +59,7 @@ function init() {
 
 	// Dynamic focus trap — recomputes visible focusables on every Tab
 	const trapHandler = (e: KeyboardEvent) => {
-		if (e.key !== 'Tab' || !panel) return;
+		if (e.key !== 'Tab' || !panel || root.dataset.open !== 'true') return;
 		const live = [...panel.querySelectorAll<HTMLElement>('a, button')]
 			.filter((el) => !el.closest('[aria-hidden="true"]'))
 			.concat(trigger ? [trigger] : []);
