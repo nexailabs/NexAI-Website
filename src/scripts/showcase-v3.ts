@@ -41,6 +41,12 @@ function activateTab(
 		currentActive.classList.remove('active');
 	}
 
+	// Lock stage height to prevent layout jump during crossfade
+	const stage = document.querySelector<HTMLElement>('.sc3__stage');
+	if (stage && currentActive) {
+		stage.style.minHeight = `${currentActive.offsetHeight}px`;
+	}
+
 	requestAnimationFrame(() => {
 		nextPanel.classList.add('active');
 
@@ -49,12 +55,14 @@ function activateTab(
 
 		if (prefersReducedMotion) {
 			if (currentActive) currentActive.classList.remove('leaving');
+			if (stage) stage.style.minHeight = '';
 			switching.value = false;
 			return;
 		}
 
 		const releaseSwitch = () => {
 			if (currentActive) currentActive.classList.remove('leaving');
+			if (stage) stage.style.minHeight = '';
 			switching.value = false;
 		};
 
