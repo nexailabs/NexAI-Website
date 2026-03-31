@@ -51,11 +51,36 @@ const studio: NavConfig = {
 			href: '/studio/showcase',
 			caption: 'AI photoshoot portfolio across categories',
 			children: [
-				{ id: 'ethnic-wear', label: 'Ethnic Wear', href: '/studio/showcase/ethnic-wear' },
-				{ id: 'saree', label: 'Saree', href: '/studio/showcase/saree' },
-				{ id: 'jewelry', label: 'Jewelry', href: '/studio/showcase/jewelry' },
-				{ id: 'menswear', label: 'Menswear', href: '/studio/showcase/menswear' },
-				{ id: 'unstitched', label: 'Unstitched', href: '/studio/showcase/unstitched' },
+				{
+					id: 'ethnic-wear',
+					label: 'Ethnic Wear',
+					href: '/studio/showcase/ethnic-wear',
+					caption: 'Kurtas, lehengas, and salwar suits.',
+				},
+				{
+					id: 'saree',
+					label: 'Saree',
+					href: '/studio/showcase/saree',
+					caption: 'Drapes perfected by AI.',
+				},
+				{
+					id: 'jewelry',
+					label: 'Jewelry',
+					href: '/studio/showcase/jewelry',
+					caption: 'Rings, necklaces, and accessories.',
+				},
+				{
+					id: 'menswear',
+					label: 'Menswear',
+					href: '/studio/showcase/menswear',
+					caption: 'Shirts, suits, and kurtas.',
+				},
+				{
+					id: 'unstitched',
+					label: 'Unstitched',
+					href: '/studio/showcase/unstitched',
+					caption: 'Fabric rolls and cut pieces.',
+				},
 			],
 		},
 		{
