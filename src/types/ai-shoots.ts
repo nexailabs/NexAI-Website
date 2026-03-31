@@ -3,18 +3,8 @@ export interface HeroImage {
 	alt: string;
 }
 
-export interface NavLink {
-	label: string;
-	href: string;
-	caption: string;
-}
-
-export interface NavGroup {
-	label: string;
-	href: string;
-	caption?: string;
-	children?: { label: string; href: string }[];
-}
+// Re-exported from navigation.ts for backwards compatibility
+export type { NavLink, NavGroup } from './navigation';
 
 export interface BrandLogo {
 	src: string;
