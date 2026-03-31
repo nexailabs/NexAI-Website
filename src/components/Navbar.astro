@@ -1,5 +1,5 @@
 ---
-import type { NavGroup } from '../types/navigation';
+import type { NavGroup, SocialLink } from '../types/navigation';
 
 interface Props {
 	navGroups: NavGroup[];
@@ -8,8 +8,19 @@ interface Props {
 	ctaHref?: string;
 	ctaLabel?: string;
 	email?: string;
+	socials?: SocialLink[];
 	panelId?: string;
 }
+
+const socialIcons: Record<string, string> = {
+	instagram:
+		'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>',
+	linkedin:
+		'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>',
+	x: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>',
+	youtube:
+		'<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.19a3.02 3.02 0 00-2.12-2.14C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.38.55A3.02 3.02 0 00.5 6.19 31.7 31.7 0 000 12a31.7 31.7 0 00.5 5.81 3.02 3.02 0 002.12 2.14c1.88.55 9.38.55 9.38.55s7.5 0 9.38-.55a3.02 3.02 0 002.12-2.14A31.7 31.7 0 0024 12a31.7 31.7 0 00-.5-5.81zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"/></svg>',
+};
 
 const {
 	navGroups,
@@ -18,6 +29,7 @@ const {
 	ctaHref = 'https://cal.com/nexailabs/15min',
 	ctaLabel = 'Book a Call',
 	email = 'hello@nexailabs.com',
+	socials = [],
 	panelId = 'primary-nav-takeover',
 } = Astro.props;
 ---
@@ -149,10 +161,29 @@ const {
 			</div>
 
 			<div class="prod-signal-nav__takeover-foot">
-				<a class="prod-signal-nav__panel-cta" href={ctaHref} target="_blank" rel="noreferrer">
-					{ctaLabel}
-				</a>
-				<a class="prod-signal-nav__panel-email" href={`mailto:${email}`}>{email}</a>
+				<div class="prod-signal-nav__foot-row">
+					<a class="prod-signal-nav__panel-cta" href={ctaHref} target="_blank" rel="noreferrer">
+						{ctaLabel}
+					</a>
+					<a class="prod-signal-nav__panel-email" href={`mailto:${email}`}>{email}</a>
+				</div>
+				{
+					socials && socials.length > 0 && (
+						<div class="prod-signal-nav__socials">
+							{socials.map((s) => (
+								<a
+									href={s.href}
+									class="prod-signal-nav__social-link"
+									target="_blank"
+									rel="noreferrer"
+									aria-label={s.label}
+								>
+									<Fragment set:html={socialIcons[s.platform] || ''} />
+								</a>
+							))}
+						</div>
+					)
+				}
 			</div>
 		</div>
 	</div>
@@ -771,11 +802,46 @@ const {
 
 	.prod-signal-nav__takeover-foot {
 		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 1.5rem;
+		flex-direction: column;
+		gap: 1.2rem;
 		padding-top: clamp(1.5rem, 3dvh, 2.5rem);
 		border-top: 1px solid rgba(255, 255, 255, 0.06);
+	}
+
+	.prod-signal-nav__foot-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		width: 100%;
+	}
+
+	.prod-signal-nav__socials {
+		display: flex;
+		gap: 0.75rem;
+	}
+
+	.prod-signal-nav__social-link {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.4rem;
+		height: 2.4rem;
+		border-radius: 999px;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		color: var(--color-text-subtle);
+		transition:
+			color 0.3s ease,
+			border-color 0.3s ease,
+			transform 0.3s ease;
+	}
+
+	.prod-signal-nav__social-link:hover,
+	.prod-signal-nav__social-link:focus-visible {
+		color: rgba(255, 255, 255, 0.9);
+		border-color: var(--color-border-hover);
+		transform: translateY(-2px);
+		outline: none;
 	}
 
 	.prod-signal-nav__panel-email {
@@ -898,9 +964,12 @@ const {
 		}
 
 		.prod-signal-nav__takeover-foot {
-			flex-direction: column;
-			align-items: flex-start;
 			gap: 1rem;
+		}
+
+		.prod-signal-nav__foot-row {
+			flex-wrap: wrap;
+			gap: 0.75rem;
 		}
 
 		/* Hide desktop flyout */

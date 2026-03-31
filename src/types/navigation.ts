@@ -12,6 +12,12 @@ export interface NavGroup {
 	children?: NavGroup[];
 }
 
+export interface SocialLink {
+	platform: 'instagram' | 'linkedin' | 'x' | 'youtube';
+	href: string;
+	label: string;
+}
+
 export interface NavConfig {
 	navGroups: NavGroup[];
 	topHref?: string;
@@ -19,4 +25,5 @@ export interface NavConfig {
 	ctaHref?: string;
 	ctaLabel?: string;
 	email?: string;
+	socials?: SocialLink[];
 }
