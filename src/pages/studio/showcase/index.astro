@@ -1,0 +1,177 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+
+const categories = [
+	{
+		label: 'Ethnic Wear',
+		href: '/studio/showcase/ethnic-wear',
+		description: 'Kurtas, lehengas, salwar suits',
+	},
+	{
+		label: 'Saree',
+		href: '/studio/showcase/saree',
+		description: 'Traditional and contemporary drapes',
+	},
+	{
+		label: 'Jewelry',
+		href: '/studio/showcase/jewelry',
+		description: 'Earrings, necklaces, bridal sets',
+	},
+	{
+		label: 'Menswear',
+		href: '/studio/showcase/menswear',
+		description: 'Shirts, kurtas, sherwanis',
+	},
+	{
+		label: 'Unstitched',
+		href: '/studio/showcase/unstitched',
+		description: 'Fabric suits and dress material',
+	},
+];
+---
+
+<Layout title="Showcase | NexAI Studio" description="AI photoshoot portfolio across categories.">
+	<div class="showcase-index">
+		<div class="showcase-index__inner">
+			<span class="showcase-index__tag">STUDIO</span>
+			<h1 class="showcase-index__heading">Showcase</h1>
+			<p class="showcase-index__body">AI photoshoot portfolio across categories.</p>
+
+			<div class="showcase-index__grid">
+				{
+					categories.map((cat) => (
+						<a href={cat.href} class="showcase-index__card">
+							<strong class="showcase-index__card-label">{cat.label}</strong>
+							<span class="showcase-index__card-desc">{cat.description}</span>
+						</a>
+					))
+				}
+			</div>
+
+			<a href="/studio" class="showcase-index__back">Back to Studio</a>
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.showcase-index {
+		min-height: 100vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: var(--space-lg) var(--space-sm);
+		background: var(--color-bg);
+	}
+
+	.showcase-index__inner {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: 1.5rem;
+		max-width: 720px;
+		width: 100%;
+	}
+
+	.showcase-index__tag {
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		color: var(--color-brand-cyan);
+		padding: 0.4rem 1rem;
+		border: 1px solid rgba(78, 201, 180, 0.2);
+		border-radius: 999px;
+		background: rgba(78, 201, 180, 0.06);
+	}
+
+	.showcase-index__heading {
+		font-size: clamp(3rem, 10vw, 6rem);
+		font-weight: 800;
+		line-height: 0.9;
+		background: var(--color-brand-gradient);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		letter-spacing: -0.04em;
+	}
+
+	.showcase-index__body {
+		font-size: 1rem;
+		color: var(--color-text-muted);
+		line-height: 1.7;
+	}
+
+	.showcase-index__grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+		gap: var(--space-sm);
+		width: 100%;
+		margin-top: var(--space-md);
+	}
+
+	.showcase-index__card {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xs);
+		padding: 1.5rem;
+		border: 1px solid var(--color-border);
+		border-radius: 1rem;
+		background: var(--color-surface);
+		text-decoration: none;
+		color: inherit;
+		transition:
+			border-color 0.2s ease,
+			transform 0.2s ease,
+			background 0.2s ease;
+	}
+
+	.showcase-index__card:hover,
+	.showcase-index__card:focus-visible {
+		border-color: var(--color-border-hover);
+		background: var(--color-surface-hover);
+		transform: translateY(-2px);
+		outline: 2px solid rgba(255, 255, 255, 0.5);
+		outline-offset: 2px;
+	}
+
+	.showcase-index__card-label {
+		font-size: 1.15rem;
+		font-weight: 600;
+		color: var(--color-text-main);
+	}
+
+	.showcase-index__card-desc {
+		font-size: 0.85rem;
+		color: var(--color-text-muted);
+		line-height: 1.5;
+	}
+
+	.showcase-index__back {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.85rem 1.75rem;
+		border-radius: 999px;
+		border: 1px solid var(--color-border);
+		background: rgba(255, 255, 255, 0.03);
+		color: var(--color-text-main);
+		font-size: 0.92rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-decoration: none;
+		text-transform: uppercase;
+		margin-top: var(--space-md);
+		transition:
+			border-color 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	.showcase-index__back:hover,
+	.showcase-index__back:focus-visible {
+		border-color: var(--color-border-hover);
+		transform: translateY(-1px);
+		outline: 2px solid rgba(255, 255, 255, 0.5);
+		outline-offset: 2px;
+	}
+</style>
