@@ -645,7 +645,6 @@ const {
 	.prod-signal-nav__flyout-group {
 		display: grid;
 		gap: 0;
-		padding-left: clamp(1.5rem, 3vw, 3rem);
 		opacity: 0;
 		transform: translateX(20px);
 		transition:
@@ -767,6 +766,7 @@ const {
 			align-content: start;
 			min-height: 0;
 			padding-top: clamp(1rem, 2.5dvh, 2rem);
+			padding-left: clamp(1.5rem, 3vw, 3rem);
 			border-left: 1px solid rgba(255, 255, 255, 0.06);
 		}
 
@@ -782,6 +782,21 @@ const {
 		/* Highlight active group on hover */
 		.prod-signal-nav__item--has-children {
 			cursor: default;
+		}
+
+		/* Active parent highlight when flyout is showing */
+		.prod-signal-nav__item--has-children[data-flyout-active='true'] {
+			border-left: 3px solid rgba(78, 201, 180, 0.6);
+			padding-left: 1rem;
+			border-bottom-color: rgba(255, 255, 255, 0.12);
+		}
+
+		.prod-signal-nav__item--has-children[data-flyout-active='true'] .prod-signal-nav__label {
+			color: rgba(255, 255, 255, 1);
+		}
+
+		.prod-signal-nav__item--has-children[data-flyout-active='true'] small {
+			color: rgba(255, 255, 255, 0.65);
 		}
 	}
 
