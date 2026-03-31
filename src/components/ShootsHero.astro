@@ -52,7 +52,7 @@ const { decks } = Astro.props;
 		</div>
 	</div>
 
-	<nav class="shoots-hero__dock" data-hero-dock aria-label="Browse collections">
+	<div role="group" class="shoots-hero__dock" data-hero-dock aria-label="Browse collections">
 		{
 			decks.map((deck, i) => (
 				<button
@@ -64,7 +64,7 @@ const { decks } = Astro.props;
 				</button>
 			))
 		}
-	</nav>
+	</div>
 </div>
 
 <style>
@@ -287,6 +287,11 @@ const { decks } = Astro.props;
 		height: 100%;
 		object-fit: cover;
 		display: block;
+	}
+
+	.shoots-hero__dock-thumb:focus-visible {
+		outline: 2px solid rgba(255, 255, 255, 0.7);
+		outline-offset: 2px;
 	}
 
 	.shoots-hero__dock-thumb--active {

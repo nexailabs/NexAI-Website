@@ -5,6 +5,7 @@ import ClientMarquee from '../../components/ClientMarquee.astro';
 import ShowcaseV3 from '../../components/ShowcaseV3.astro';
 import ServicesGrid from '../../components/ServicesGrid.astro';
 import { heroDecks, brandLogos, showcaseCategories, serviceCards } from '../../data/ai-shoots';
+import { site } from '../../config/site';
 ---
 
 <Layout
@@ -20,11 +21,11 @@ import { heroDecks, brandLogos, showcaseCategories, serviceCards } from '../../d
 		set:html={JSON.stringify({
 			'@context': 'https://schema.org',
 			'@type': 'Organization',
-			name: 'NexAI Labs',
-			url: 'https://nexailabs.com',
-			logo: 'https://nexailabs.com/assets/og-default.png',
-			description: 'Building AI Agents for Businesses',
-			email: 'hello@nexailabs.com',
+			name: site.name,
+			url: site.url,
+			logo: `${site.url}/assets/og-default.png`,
+			description: site.description,
+			email: site.email,
 			sameAs: [],
 		})}
 	/>

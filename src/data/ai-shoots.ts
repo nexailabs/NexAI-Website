@@ -1,29 +1,21 @@
 import type {
 	HeroImage,
-	NavLink,
 	BrandLogo,
 	ServiceCard,
 	ShowcaseSlot,
 	ShowcaseCategory,
 } from '../types/ai-shoots';
 
-export type { HeroImage, NavLink, BrandLogo, ServiceCard, ShowcaseSlot, ShowcaseCategory };
+export type { HeroImage, BrandLogo, ServiceCard, ShowcaseCategory };
 
 // ── ImageKit helpers ──
 export const ik = 'https://ik.imagekit.io/nexailabs';
 export const tr = '?tr=w-600,f-auto,q-80';
 
-// ── Page constants ──
-export const bookingUrl = 'https://cal.com/nexailabs/15min';
-export const email = 'hello@nexailabs.com';
-
-// ── Hero nav links ──
-export const heroNavLinks: NavLink[] = [
-	{ label: 'Services', href: '#services', caption: 'AI photoshoots for fashion brands.' },
-	{ label: 'Process', href: '#process', caption: 'How the creative pipeline works.' },
-	{ label: 'Work', href: '#work', caption: 'Selected visual directions and outputs.' },
-	{ label: 'FAQ', href: '#faq', caption: 'Answers on delivery, quality, and workflow.' },
-];
+// ── Page constants (from shared config) ──
+import { site } from '../config/site';
+export const bookingUrl = site.bookingUrl;
+export const email = site.email;
 
 // ── Hero image decks ──
 export const heroDeckA: HeroImage[] = [
@@ -84,11 +76,11 @@ export const brandLogos: BrandLogo[] = [
 // ── Showcase categories ──
 // Output pattern is always: [3x4, 1x1, 2x3, 1x1, 3x4]
 const placeholderOutputs: ShowcaseSlot[] = [
-	{ alt: 'Pose 1', aspect: '3x4' },
-	{ alt: 'Pose 2', aspect: '1x1' },
-	{ alt: 'Pose 3', aspect: '2x3' },
-	{ alt: 'Pose 4', aspect: '1x1' },
-	{ alt: 'Pose 5', aspect: '3x4' },
+	{ alt: 'AI-generated model pose — full-length front view', aspect: '3x4' },
+	{ alt: 'AI-generated model pose — detail crop', aspect: '1x1' },
+	{ alt: 'AI-generated model pose — three-quarter angle', aspect: '2x3' },
+	{ alt: 'AI-generated model pose — accessory detail', aspect: '1x1' },
+	{ alt: 'AI-generated model pose — alternate angle', aspect: '3x4' },
 ];
 
 export const showcaseCategories: ShowcaseCategory[] = [
@@ -102,11 +94,27 @@ export const showcaseCategories: ShowcaseCategory[] = [
 		label: 'Flat Lay',
 		inputMain: '/assets/ai-shoots/services/flat-lay-raw.jpg',
 		outputs: [
-			{ src: '/assets/ai-shoots/services/flat-lay-ai-1.jpeg', alt: 'Pose 1', aspect: '3x4' },
-			{ src: '/assets/ai-shoots/services/flat-lay-ai-2.jpeg', alt: 'Pose 2', aspect: '1x1' },
-			{ src: '/assets/ai-shoots/services/flat-lay-ai-3.jpeg', alt: 'Pose 3', aspect: '2x3' },
-			{ src: '/assets/ai-shoots/services/flat-lay-ai-4.jpeg', alt: 'Pose 4', aspect: '1x1' },
-			{ alt: 'Pose 5', aspect: '3x4' },
+			{
+				src: '/assets/ai-shoots/services/flat-lay-ai-1.jpeg',
+				alt: 'Flat-lay garment AI output — styled front view',
+				aspect: '3x4',
+			},
+			{
+				src: '/assets/ai-shoots/services/flat-lay-ai-2.jpeg',
+				alt: 'Flat-lay garment AI output — detail crop',
+				aspect: '1x1',
+			},
+			{
+				src: '/assets/ai-shoots/services/flat-lay-ai-3.jpeg',
+				alt: 'Flat-lay garment AI output — angled layout',
+				aspect: '2x3',
+			},
+			{
+				src: '/assets/ai-shoots/services/flat-lay-ai-4.jpeg',
+				alt: 'Flat-lay garment AI output — accessory pairing',
+				aspect: '1x1',
+			},
+			{ alt: 'Flat-lay garment AI output — alternate arrangement', aspect: '3x4' },
 		],
 	},
 	{
@@ -124,11 +132,27 @@ export const showcaseCategories: ShowcaseCategory[] = [
 		label: 'Saree',
 		inputMain: '/assets/ai-shoots/services/saree-raw.jpeg',
 		outputs: [
-			{ src: '/assets/ai-shoots/services/saree-ai-1.jpg', alt: 'Pose 1', aspect: '3x4' },
-			{ src: '/assets/ai-shoots/services/saree-ai-2.jpg', alt: 'Pose 2', aspect: '1x1' },
-			{ src: '/assets/ai-shoots/services/saree-ai-3.jpg', alt: 'Pose 3', aspect: '2x3' },
-			{ src: '/assets/ai-shoots/services/saree-ai-4.jpeg', alt: 'Pose 4', aspect: '1x1' },
-			{ alt: 'Pose 5', aspect: '3x4' },
+			{
+				src: '/assets/ai-shoots/services/saree-ai-1.jpg',
+				alt: 'Saree AI photoshoot — standing drape pose',
+				aspect: '3x4',
+			},
+			{
+				src: '/assets/ai-shoots/services/saree-ai-2.jpg',
+				alt: 'Saree AI photoshoot — pallu detail',
+				aspect: '1x1',
+			},
+			{
+				src: '/assets/ai-shoots/services/saree-ai-3.jpg',
+				alt: 'Saree AI photoshoot — side profile',
+				aspect: '2x3',
+			},
+			{
+				src: '/assets/ai-shoots/services/saree-ai-4.jpeg',
+				alt: 'Saree AI photoshoot — border detail',
+				aspect: '1x1',
+			},
+			{ alt: 'Saree AI photoshoot — alternate pose', aspect: '3x4' },
 		],
 	},
 	{

@@ -22,6 +22,8 @@ function init() {
 	const flyout = root.querySelector<HTMLElement>('[data-nav-flyout]');
 	const flyoutGroups = root.querySelectorAll<HTMLElement>('[data-flyout-for]');
 	const pageContent = document.querySelector<HTMLElement>('[data-page-content]');
+	const brand = root.querySelector<HTMLElement>('.prod-signal-nav__brand');
+	const headerCta = root.querySelector<HTMLElement>('.prod-signal-nav__cta');
 
 	const syncScrollState = () => {
 		root.classList.toggle('is-scrolled', window.scrollY > 24);
@@ -52,6 +54,8 @@ function init() {
 		panel?.setAttribute('aria-hidden', 'true');
 		document.body.classList.remove('nav-open');
 		pageContent?.removeAttribute('inert');
+		brand?.removeAttribute('tabindex');
+		headerCta?.removeAttribute('tabindex');
 		collapseAllSubs();
 		hideAllFlyouts();
 		trigger?.focus();
@@ -83,6 +87,8 @@ function init() {
 		panel?.removeAttribute('aria-hidden');
 		document.body.classList.add('nav-open');
 		pageContent?.setAttribute('inert', '');
+		brand?.setAttribute('tabindex', '-1');
+		headerCta?.setAttribute('tabindex', '-1');
 
 		// Focus first visible link
 		const firstLink = panel?.querySelector<HTMLElement>(
@@ -149,6 +155,18 @@ function init() {
 
 	// Desktop: hover + keyboard flyout for groups with children
 	const isDesktop = () => window.innerWidth > 900;
+
+	// On desktop, remove expand buttons from tab order (focusin handles flyout)
+	const syncExpandTabindex = () => {
+		const desktop = isDesktop();
+		expandButtons.forEach((btn) => {
+			if (desktop) btn.setAttribute('tabindex', '-1');
+			else btn.removeAttribute('tabindex');
+		});
+	};
+	syncExpandTabindex();
+	window.addEventListener('resize', syncExpandTabindex, { signal });
+
 	let flyoutTimeout: ReturnType<typeof setTimeout> | null = null;
 
 	const clearFlyoutTimeout = () => {

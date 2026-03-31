@@ -12,7 +12,7 @@ interface Props {
 const { eyebrow, heading, subheading, cards, class: className } = Astro.props;
 ---
 
-<section class:list={['services-section section-block container', className]} id="services">
+<section class:list={['services-section container', className]} id="services">
 	<div class="services-section__heading">
 		<p class="services-section__eyebrow">{eyebrow}</p>
 		<h2>{heading}</h2>
@@ -93,8 +93,10 @@ const { eyebrow, heading, subheading, cards, class: className } = Astro.props;
 		border-radius: 1.5rem;
 		padding: 2rem;
 		text-align: center;
-		transition: all 0.3s ease;
-		backdrop-filter: blur(10px);
+		transition:
+			transform 0.3s ease,
+			border-color 0.3s ease,
+			background 0.3s ease;
 	}
 
 	.services-section__card:hover {
