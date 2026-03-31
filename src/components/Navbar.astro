@@ -178,18 +178,6 @@ const {
 			</div>
 
 			<div class="prod-signal-nav__takeover-foot">
-				<div class="prod-signal-nav__foot-row">
-					<a
-						class="prod-signal-nav__panel-cta"
-						href={ctaHref}
-						target="_blank"
-						rel="noreferrer"
-						aria-label={`${ctaLabel} (opens in new tab)`}
-					>
-						{ctaLabel}
-					</a>
-					<a class="prod-signal-nav__panel-email" href={`mailto:${email}`}>{email}</a>
-				</div>
 				{
 					socials && socials.length > 0 && (
 						<div class="prod-signal-nav__socials">
@@ -207,6 +195,7 @@ const {
 						</div>
 					)
 				}
+				<a class="prod-signal-nav__panel-email" href={`mailto:${email}`}>{email}</a>
 			</div>
 		</div>
 	</div>
@@ -285,7 +274,6 @@ const {
 	.prod-signal-nav__item-link,
 	.prod-signal-nav__sub-link,
 	.prod-signal-nav__flyout-link,
-	.prod-signal-nav__panel-cta,
 	.prod-signal-nav__panel-email {
 		color: inherit;
 		text-decoration: none;
@@ -334,8 +322,7 @@ const {
 		justify-self: end;
 	}
 
-	.prod-signal-nav__cta,
-	.prod-signal-nav__panel-cta {
+	.prod-signal-nav__cta {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
@@ -352,27 +339,18 @@ const {
 			opacity 0.3s ease;
 	}
 
-	.prod-signal-nav__cta:hover,
-	.prod-signal-nav__panel-cta:hover {
+	.prod-signal-nav__cta:hover {
 		transform: translateY(-1px);
 		border-color: var(--color-border-hover);
 		background: rgba(255, 255, 255, 0.06);
 	}
 
-	.prod-signal-nav__cta:focus-visible,
-	.prod-signal-nav__panel-cta:focus-visible {
+	.prod-signal-nav__cta:focus-visible {
 		transform: translateY(-1px);
 		border-color: var(--color-border-hover);
 		background: rgba(255, 255, 255, 0.06);
 		outline: 2px solid rgba(255, 255, 255, 0.5);
 		outline-offset: 2px;
-	}
-
-	.prod-signal-nav[data-open='true'] .prod-signal-nav__cta {
-		opacity: 0;
-		transform: translateY(-6px);
-		pointer-events: none;
-		visibility: hidden;
 	}
 
 	/* ── Trigger (hamburger / X) ── */
@@ -685,10 +663,7 @@ const {
 		display: grid;
 		gap: clamp(0.15rem, 0.4dvh, 0.35rem);
 		padding: clamp(0.5rem, 1dvh, 0.85rem) 0 clamp(0.5rem, 1dvh, 0.85rem) 1.4rem;
-		border-left: 2px solid rgba(78, 201, 180, 0.25);
-		transition:
-			border-color 0.3s ease,
-			padding-left 0.3s ease;
+		transition: padding-left 0.3s ease;
 	}
 
 	.prod-signal-nav__sub-link strong {
@@ -707,7 +682,6 @@ const {
 
 	.prod-signal-nav__sub-link:hover,
 	.prod-signal-nav__sub-link:focus-visible {
-		border-left-color: rgba(78, 201, 180, 0.6);
 		padding-left: 1.8rem;
 		outline: none;
 	}
@@ -825,18 +799,10 @@ const {
 
 	.prod-signal-nav__takeover-foot {
 		display: flex;
-		flex-direction: column;
+		align-items: center;
 		gap: 1.2rem;
 		padding-top: clamp(1.5rem, 3dvh, 2.5rem);
 		border-top: 1px solid rgba(255, 255, 255, 0.06);
-	}
-
-	.prod-signal-nav__foot-row {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 1rem;
-		width: 100%;
 	}
 
 	.prod-signal-nav__socials {
@@ -868,6 +834,7 @@ const {
 	}
 
 	.prod-signal-nav__panel-email {
+		margin-left: auto;
 		font-family: var(--font-brand);
 		font-size: 0.82rem;
 		font-weight: 600;
@@ -933,20 +900,6 @@ const {
 		}
 	}
 
-	/* ── Active parent: cyan italic (works on both desktop + mobile) ── */
-
-	.prod-signal-nav__item--has-children[data-flyout-active='true'] .prod-signal-nav__label {
-		font-family: var(--font-accent);
-		font-style: italic;
-		font-weight: 600;
-		letter-spacing: -0.015em;
-		color: var(--color-brand-cyan, #4ec9b4);
-	}
-
-	.prod-signal-nav__item--has-children[data-flyout-active='true'] small {
-		color: rgba(255, 255, 255, 0.68);
-	}
-
 	/* ── Disable italic hover on touch devices (prevents sticky :hover) ── */
 
 	@media (pointer: coarse) {
@@ -992,11 +945,6 @@ const {
 		}
 
 		.prod-signal-nav__takeover-foot {
-			gap: 1rem;
-		}
-
-		.prod-signal-nav__foot-row {
-			flex-wrap: wrap;
 			gap: 0.75rem;
 		}
 
