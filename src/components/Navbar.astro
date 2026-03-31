@@ -193,8 +193,8 @@ const {
 		gap: 1rem;
 		padding: 0.4rem 0 0.1rem;
 		transition:
-			padding 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-			margin 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+			padding 0.5s var(--ease-out-expo),
+			margin 0.5s var(--ease-out-expo),
 			border-color 0.5s ease,
 			border-radius 0.5s ease,
 			background 0.5s ease,
@@ -301,14 +301,14 @@ const {
 	.prod-signal-nav__cta:hover,
 	.prod-signal-nav__panel-cta:hover {
 		transform: translateY(-1px);
-		border-color: rgba(255, 255, 255, 0.24);
+		border-color: var(--color-border-hover);
 		background: rgba(255, 255, 255, 0.06);
 	}
 
 	.prod-signal-nav__cta:focus-visible,
 	.prod-signal-nav__panel-cta:focus-visible {
 		transform: translateY(-1px);
-		border-color: rgba(255, 255, 255, 0.24);
+		border-color: var(--color-border-hover);
 		background: rgba(255, 255, 255, 0.06);
 		outline: 2px solid rgba(255, 255, 255, 0.5);
 		outline-offset: 2px;
@@ -337,7 +337,7 @@ const {
 		backdrop-filter: blur(12px);
 		cursor: pointer;
 		transition:
-			transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+			transform 0.3s var(--ease-out-expo),
 			border-color 0.3s ease,
 			background 0.3s ease,
 			box-shadow 0.3s ease;
@@ -378,7 +378,7 @@ const {
 		background: rgba(255, 255, 255, 0.98);
 		transform-origin: center;
 		transition:
-			transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+			transform 0.5s var(--ease-out-expo),
 			opacity 0.3s ease;
 	}
 
@@ -421,7 +421,8 @@ const {
 		z-index: 1;
 		background:
 			radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.035), transparent 24%),
-			radial-gradient(circle at 78% 76%, rgba(255, 255, 255, 0.02), transparent 30%), #050607;
+			radial-gradient(circle at 78% 76%, rgba(255, 255, 255, 0.02), transparent 30%),
+			var(--color-bg);
 		opacity: 0;
 		visibility: hidden;
 		pointer-events: none;
@@ -474,7 +475,7 @@ const {
 		opacity: 0;
 		transform: translateY(24px);
 		transition:
-			transform 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+			transform 0.75s var(--ease-out-expo),
 			opacity 0.5s ease,
 			border-color 0.3s ease;
 	}
@@ -515,7 +516,7 @@ const {
 		font-weight: 600;
 		letter-spacing: -0.045em;
 		transition:
-			transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+			transform 0.5s var(--ease-out-expo),
 			letter-spacing 0.5s ease,
 			color 0.3s ease,
 			text-shadow 0.3s ease;
@@ -528,7 +529,7 @@ const {
 		line-height: 1.5;
 		transition:
 			color 0.3s ease,
-			transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+			transform 0.5s var(--ease-out-expo);
 	}
 
 	/* Hover for plain items and item-links */
@@ -536,7 +537,7 @@ const {
 	.prod-signal-nav__item:focus-visible,
 	.prod-signal-nav__item-link:hover,
 	.prod-signal-nav__item-link:focus-visible {
-		border-color: rgba(255, 255, 255, 0.12);
+		border-color: var(--color-border);
 		outline: none;
 	}
 
@@ -544,7 +545,7 @@ const {
 	.prod-signal-nav__item:focus-visible > .prod-signal-nav__item-copy .prod-signal-nav__label,
 	.prod-signal-nav__item-link:hover .prod-signal-nav__label,
 	.prod-signal-nav__item-link:focus-visible .prod-signal-nav__label {
-		font-family: 'Cormorant Garamond', serif;
+		font-family: var(--font-accent);
 		font-style: italic;
 		font-weight: 600;
 		letter-spacing: -0.015em;
@@ -595,7 +596,7 @@ const {
 	}
 
 	.prod-signal-nav__expand svg {
-		transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+		transition: transform 0.35s var(--ease-out-expo);
 	}
 
 	.prod-signal-nav__expand[aria-expanded='true'] svg {
@@ -607,11 +608,18 @@ const {
 	.prod-signal-nav__sub--mobile {
 		display: grid;
 		grid-template-rows: 0fr;
-		transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+		visibility: hidden;
+		transition:
+			grid-template-rows 0.35s var(--ease-out-expo),
+			visibility 0s linear 0.35s;
 	}
 
 	.prod-signal-nav__sub--mobile[aria-hidden='false'] {
 		grid-template-rows: 1fr;
+		visibility: visible;
+		transition:
+			grid-template-rows 0.35s var(--ease-out-expo),
+			visibility 0s linear 0s;
 	}
 
 	.prod-signal-nav__sub-inner {
@@ -670,15 +678,22 @@ const {
 		display: grid;
 		gap: 0;
 		opacity: 0;
+		visibility: hidden;
 		transform: translateX(20px);
 		transition:
-			opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-			transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+			opacity 0.4s var(--ease-out-expo),
+			transform 0.4s var(--ease-out-expo),
+			visibility 0s linear 0.4s;
 	}
 
 	.prod-signal-nav__flyout-group[aria-hidden='false'] {
 		opacity: 1;
+		visibility: visible;
 		transform: translateX(0);
+		transition:
+			opacity 0.4s var(--ease-out-expo),
+			transform 0.4s var(--ease-out-expo),
+			visibility 0s linear 0s;
 	}
 
 	.prod-signal-nav__flyout-link {
@@ -697,7 +712,7 @@ const {
 		letter-spacing: -0.045em;
 		color: rgba(255, 255, 255, 1);
 		transition:
-			transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+			transform 0.5s var(--ease-out-expo),
 			letter-spacing 0.5s ease,
 			color 0.3s ease,
 			text-shadow 0.3s ease;
@@ -709,18 +724,18 @@ const {
 		line-height: 1.5;
 		transition:
 			color 0.3s ease,
-			transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+			transform 0.5s var(--ease-out-expo);
 	}
 
 	.prod-signal-nav__flyout-link:hover,
 	.prod-signal-nav__flyout-link:focus-visible {
-		border-color: rgba(255, 255, 255, 0.12);
+		border-color: var(--color-border);
 		outline: none;
 	}
 
 	.prod-signal-nav__flyout-link:hover strong,
 	.prod-signal-nav__flyout-link:focus-visible strong {
-		font-family: 'Cormorant Garamond', serif;
+		font-family: var(--font-accent);
 		font-style: italic;
 		font-weight: 600;
 		letter-spacing: -0.015em;
@@ -821,7 +836,7 @@ const {
 	/* ── Active parent: cyan italic (works on both desktop + mobile) ── */
 
 	.prod-signal-nav__item--has-children[data-flyout-active='true'] .prod-signal-nav__label {
-		font-family: 'Cormorant Garamond', serif;
+		font-family: var(--font-accent);
 		font-style: italic;
 		font-weight: 600;
 		letter-spacing: -0.015em;
