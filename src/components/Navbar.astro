@@ -67,7 +67,15 @@ const {
 		</div>
 	</div>
 
-	<div class="prod-signal-nav__takeover" id={panelId} data-nav-panel aria-hidden="true">
+	<div
+		class="prod-signal-nav__takeover"
+		id={panelId}
+		data-nav-panel
+		role="dialog"
+		aria-modal="true"
+		aria-label="Navigation menu"
+		aria-hidden="true"
+	>
 		<div class="prod-signal-nav__takeover-shell container">
 			<div class="prod-signal-nav__columns">
 				<nav class="prod-signal-nav__list" aria-label="Primary">
@@ -90,6 +98,7 @@ const {
 											class="prod-signal-nav__expand"
 											data-nav-expand
 											aria-expanded="false"
+											aria-controls={`sub-${group.id}`}
 											aria-label={`Expand ${group.label}`}
 										>
 											<svg
@@ -113,6 +122,7 @@ const {
 									<div
 										class="prod-signal-nav__sub prod-signal-nav__sub--mobile"
 										data-nav-sub
+										id={`sub-${group.id}`}
 										aria-hidden="true"
 									>
 										<div class="prod-signal-nav__sub-inner">
@@ -891,9 +901,14 @@ const {
 			border-left: 1px solid rgba(255, 255, 255, 0.03);
 		}
 
-		/* Hide mobile expand button + mobile sub-menu on desktop */
+		/* Expand button: sr-only on desktop (keyboard-accessible but visually hidden) */
 		.prod-signal-nav__expand {
-			display: none;
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			overflow: hidden;
+			clip: rect(0, 0, 0, 0);
+			white-space: nowrap;
 		}
 
 		.prod-signal-nav__sub--mobile {

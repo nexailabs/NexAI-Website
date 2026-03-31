@@ -68,8 +68,6 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 		<slot name="head" />
 	</head>
 	<body>
-		<a class="skip-to-content" href="#main-content">Skip to content</a>
-		<CustomCursor />
 		<slot name="navbar">
 			<Navbar
 				navGroups={navConfig.navGroups}
@@ -78,9 +76,13 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 				socials={navConfig.socials}
 			/>
 		</slot>
-		<main id="main-content" class={mainClass} tabindex="-1">
-			<slot />
-		</main>
+		<div data-page-content>
+			<a class="skip-to-content" href="#main-content">Skip to content</a>
+			<CustomCursor />
+			<main id="main-content" class={mainClass} tabindex="-1">
+				<slot />
+			</main>
+		</div>
 
 		<!-- Global Scripts -->
 		<script src="../scripts/lenis.ts"></script>
