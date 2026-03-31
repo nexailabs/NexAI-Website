@@ -771,23 +771,29 @@ const {
 
 	.prod-signal-nav__takeover-foot {
 		display: flex;
-		align-items: flex-end;
+		align-items: center;
 		justify-content: space-between;
-		gap: 1rem;
-		padding-top: clamp(0.5rem, 1.5dvh, 1.5rem);
+		gap: 1.5rem;
+		padding-top: clamp(1.5rem, 3dvh, 2.5rem);
+		border-top: 1px solid rgba(255, 255, 255, 0.06);
 	}
 
 	.prod-signal-nav__panel-email {
-		font-size: 0.86rem;
-		letter-spacing: 0.16em;
+		font-family: 'Montserrat', sans-serif;
+		font-size: 0.82rem;
+		font-weight: 600;
+		letter-spacing: 0.14em;
 		text-transform: uppercase;
-		color: rgba(255, 255, 255, 0.5);
-		transition: color 0.3s ease;
+		color: var(--color-text-subtle);
+		transition:
+			color 0.3s ease,
+			letter-spacing 0.3s ease;
 	}
 
 	.prod-signal-nav__panel-email:hover,
 	.prod-signal-nav__panel-email:focus-visible {
-		color: rgba(255, 255, 255, 0.78);
+		color: rgba(255, 255, 255, 0.85);
+		letter-spacing: 0.18em;
 		outline: none;
 	}
 
@@ -878,8 +884,8 @@ const {
 		}
 
 		.prod-signal-nav__takeover-shell {
-			padding-top: clamp(3.5rem, 9dvh, 6.35rem);
-			padding-bottom: clamp(0.75rem, 2dvh, 1.35rem);
+			padding-top: clamp(5rem, 12dvh, 8rem);
+			padding-bottom: clamp(1.5rem, 3dvh, 2.5rem);
 		}
 
 		.prod-signal-nav__label {
@@ -894,6 +900,7 @@ const {
 		.prod-signal-nav__takeover-foot {
 			flex-direction: column;
 			align-items: flex-start;
+			gap: 1rem;
 		}
 
 		/* Hide desktop flyout */
