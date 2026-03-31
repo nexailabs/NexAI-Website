@@ -461,6 +461,17 @@ function init() {
 				runCycle();
 				return;
 			}
+			if (viewportIsMobile) {
+				// Same-mode mobile resize (e.g. orientation change) — restart cycle
+				clearScheduledTimers();
+				clearTimeout(cycleTimer);
+				cancelAndClearRafs();
+				decks.forEach((d) => hideDeck(d));
+				setTitleState({ shift: 0, opacity: 1 }, false);
+				forceImmediate = true;
+				runCycle();
+				return;
+			}
 			applyDesktopLayoutForResize();
 		});
 	};

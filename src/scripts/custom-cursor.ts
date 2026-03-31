@@ -23,11 +23,30 @@ function init() {
 	let ringY = -100;
 	let revealed = false;
 	let rafId: number | null = null;
+	let loopActive = false;
+	let idleTimer: number | null = null;
 
 	// Lerp factor: lower = more lag (0.12 gives a smooth 1-2 frame trailing feel)
 	const RING_LERP = 0.12;
 
+	const startLoop = () => {
+		if (loopActive) return;
+		loopActive = true;
+		rafId = requestAnimationFrame(tick);
+	};
+
+	const stopLoop = () => {
+		if (!loopActive) return;
+		loopActive = false;
+		if (rafId !== null) {
+			cancelAnimationFrame(rafId);
+			rafId = null;
+		}
+	};
+
 	const tick = () => {
+		if (!loopActive) return;
+
 		// Dot snaps immediately
 		dot.style.transform = `translate3d(${mouseX}px,${mouseY}px,0)`;
 
@@ -39,8 +58,6 @@ function init() {
 		rafId = requestAnimationFrame(tick);
 	};
 
-	rafId = requestAnimationFrame(tick);
-
 	const onMouseMove = (e: MouseEvent) => {
 		mouseX = e.clientX;
 		mouseY = e.clientY;
@@ -48,6 +65,9 @@ function init() {
 			cursor.classList.add('cursor--visible');
 			revealed = true;
 		}
+		startLoop();
+		if (idleTimer) clearTimeout(idleTimer);
+		idleTimer = window.setTimeout(stopLoop, 2000);
 	};
 
 	// Event delegation for hover — handles dynamic elements without re-querying
@@ -82,8 +102,9 @@ function init() {
 	document.addEventListener('mouseup', onMouseUp);
 
 	cleanup = () => {
-		if (rafId !== null) cancelAnimationFrame(rafId);
-		rafId = null;
+		stopLoop();
+		if (idleTimer) clearTimeout(idleTimer);
+		idleTimer = null;
 		window.removeEventListener('mousemove', onMouseMove);
 		document.removeEventListener('mouseover', onMouseOver);
 		document.removeEventListener('mouseout', onMouseOut);
