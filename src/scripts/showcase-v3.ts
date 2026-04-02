@@ -1,4 +1,5 @@
 // ── ShowcaseV3: Tab switching + ARIA keyboard nav + Mobile before/after cycle ──
+export {};
 
 let tabCleanup: (() => void) | null = null;
 let mobCleanup: (() => void) | null = null;
@@ -500,4 +501,4 @@ function cleanup() {
 }
 
 document.addEventListener('astro:page-load', init);
-document.addEventListener('astro:before-swap', cleanup);
+document.addEventListener('astro:before-swap', () => cleanup());
