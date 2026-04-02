@@ -28,6 +28,8 @@ function init() {
 	let spreadScale = 1;
 	const centerOffset = 0; // CSS flex:1 on title words keeps stage centered; no JS offset needed
 	let resizeRaf = 0;
+	const MOBILE_BREAKPOINT = 720;
+	const MOBILE_EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
 	const timers: number[] = [];
 	const rafIds = new Set<number>();
 	const listeners: (() => void)[] = [];
@@ -65,7 +67,7 @@ function init() {
 	};
 
 	const getTitleShift = () => {
-		if (window.innerWidth <= 720) return -48;
+		if (window.innerWidth <= MOBILE_BREAKPOINT) return -48;
 		const desktopShift = window.innerWidth * -0.078;
 		return Math.max(-120, Math.min(-80, desktopShift));
 	};
@@ -91,7 +93,9 @@ function init() {
 		animate = true,
 	) => {
 		const transition = animate
-			? 'transform 0.86s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.32s ease'
+			? isMobile()
+				? `transform 0.7s ${MOBILE_EASE}, opacity 0.3s ${MOBILE_EASE}`
+				: 'transform 0.86s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.32s ease'
 			: 'none';
 
 		if (titleLeft) {
@@ -134,7 +138,7 @@ function init() {
 		};
 	};
 
-	const isMobile = () => window.innerWidth <= 720;
+	const isMobile = () => window.innerWidth <= MOBILE_BREAKPOINT;
 	const getInitialTitleShift = () => (isMobile() ? 0 : getTitleShift());
 
 	const getSpreadUnit = (cards: HTMLElement[]) => {
@@ -212,11 +216,16 @@ function init() {
 		rotate: 0,
 	});
 
-	const applyState = (card: HTMLElement, state: CardState, animate = true) => {
+	const applyState = (
+		card: HTMLElement,
+		state: CardState,
+		animate = true,
+		transitionOverride?: string,
+	) => {
 		const ease = isMobile()
-			? 'transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease'
+			? `transform 0.55s ${MOBILE_EASE}, opacity 0.25s ${MOBILE_EASE}`
 			: 'transform 0.88s cubic-bezier(0.16, 1, 0.3, 1)';
-		card.style.transition = animate ? ease : 'none';
+		card.style.transition = animate ? (transitionOverride ?? ease) : 'none';
 		const rotate = state.rotate ? `rotate(${state.rotate}deg)` : '';
 		card.style.transform = `translate(-50%, -50%) translate3d(${state.x}px, ${state.y}px, 0) scale(${state.scale}) ${rotate}`;
 		card.style.transformOrigin = '50% 50%';
@@ -244,14 +253,33 @@ function init() {
 		});
 
 		scheduleRaf(() => {
-			scheduleRaf(() => {
-				cards.forEach((card, index) => {
-					applyState(card, holdState(index, cards.length, centerOffset), true);
-				});
+			cards.forEach((card) => {
+				void getComputedStyle(card).transform;
+			});
+			cards.forEach((card, index) => {
+				applyState(card, holdState(index, cards.length, centerOffset), true);
 			});
 		});
 
 		return cards;
+	};
+
+	const showDeckForMobileDeal = (deck: HTMLElement, cards: HTMLElement[]) => {
+		const entryOffset = Math.min(-40, -(window.innerHeight * 0.08));
+		deck.style.opacity = '1';
+		deck.style.visibility = 'visible';
+
+		cards.forEach((card, index) => {
+			card.style.transition = 'none';
+			card.style.transform = `translate(-50%, -50%) translate3d(0px, ${entryOffset}px, 0) scale(0.92)`;
+			card.style.opacity = '0';
+			card.style.zIndex = `${50 + index}`;
+		});
+	};
+
+	type TimelineStep = { delay: number; action: () => void };
+	const runTimeline = (steps: TimelineStep[]) => {
+		steps.forEach((step) => schedule(step.action, step.delay));
 	};
 
 	const refreshCenterOffset = () => {
@@ -313,11 +341,12 @@ function init() {
 
 		const deck = decks[activeIndex];
 		const titleShift = getTitleShift();
-		const cycleStart = isLoopRestart ? 900 : 0;
+		const desktopCycleStart = isLoopRestart ? 900 : 0;
+		const mobileCycleStart = isLoopRestart ? 200 : 0;
 		let cards: HTMLElement[] = [];
 		let spreadUnit = 0;
 
-		const startDeck = () => {
+		const startDeckDesktop = () => {
 			refreshCenterOffset();
 			cards = showDeck(deck);
 			activeCards = cards;
@@ -325,153 +354,191 @@ function init() {
 			spreadUnit = getSpreadUnit(cards);
 		};
 
+		const startDeckMobile = () => {
+			refreshCenterOffset();
+			cards = getCards(deck);
+			activeCards = cards;
+			activeDesktopPhase = 'idle';
+			showDeckForMobileDeal(deck, cards);
+		};
+
 		if (isMobile()) {
 			const { togetherShift, splitShift } = getMobileTitleShift();
-			const mobileCycleDuration = 5800;
-			const dealStartOffset = 760;
-			const dealWindow = 1800;
-			const settleBuffer = 460;
-			const cardCount = Math.max(1, getCards(deck).length);
-			const dealInterval = Math.max(240, Math.floor(dealWindow / cardCount));
+			const mobileCards = getCards(deck);
+			const cardCount = Math.max(1, mobileCards.length);
+			const viewportHeight = window.innerHeight;
+			const viewportWidth = window.innerWidth;
+			const dealStartOffset = Math.max(500, viewportHeight * 0.08);
+			const dealWindow = Math.max(1000, cardCount * 280);
+			const settleBuffer = Math.max(300, viewportHeight * 0.05);
+			const dealInterval = Math.max(
+				200,
+				Math.floor(viewportWidth * 0.005),
+				Math.floor(dealWindow / cardCount),
+			);
+			const cardEntryDuration = 550;
+			const cardExitDuration = 420;
+			const baseTime = mobileCycleStart + dealStartOffset + settleBuffer + cardExitDuration + 380;
+			const perCardTime = Math.max(120, dealInterval);
+			const mobileCycleDuration = baseTime + cardCount * perCardTime;
 
 			setTitleState({ shift: togetherShift, opacity: 1 }, false);
+			runTimeline([{ delay: mobileCycleStart, action: startDeckMobile }]);
 
-			const deckStartAt = isLoopRestart ? cycleStart : 0;
-			schedule(() => {
-				startDeck();
-			}, deckStartAt);
+			const dealStart = mobileCycleStart + dealStartOffset;
+			const mobileSteps: TimelineStep[] = [
+				{
+					delay: dealStart,
+					action: () => {
+						setTitleState({ shift: splitShift, opacity: 1 }, true);
+					},
+				},
+			];
 
-			schedule(() => {
-				setTitleState({ shift: splitShift, opacity: 1 }, true);
-			}, deckStartAt + 100);
-
-			const dealStart = deckStartAt + dealStartOffset;
-			schedule(() => {
-				const entryOffset = Math.min(-40, -(window.innerHeight * 0.08));
-				cards.forEach((card, index) => {
-					schedule(() => {
+			mobileCards.forEach((card, index) => {
+				mobileSteps.push({
+					delay: dealStart + index * dealInterval,
+					action: () => {
 						card.style.transition = 'none';
-						card.style.transform = `translate(-50%, -50%) translate3d(0px, ${entryOffset}px, 0) scale(0.92)`;
-						card.style.opacity = '0';
-						card.style.zIndex = `${50 + index}`;
-
-						scheduleRaf(() => {
-							scheduleRaf(() => {
-								card.style.transition =
-									'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.24s ease';
-								card.style.transform = 'translate(-50%, -50%) translate3d(0px, 0px, 0) scale(1)';
-								card.style.opacity = '1';
-							});
-						});
-					}, index * dealInterval);
+						void getComputedStyle(card).transform;
+						card.style.transition = `transform ${cardEntryDuration}ms ${MOBILE_EASE}, opacity 220ms ${MOBILE_EASE}`;
+						card.style.transform = 'translate(-50%, -50%) translate3d(0px, 0px, 0) scale(1)';
+						card.style.opacity = '1';
+					},
 				});
-			}, dealStart);
+			});
 
 			const exitStart = dealStart + cardCount * dealInterval + settleBuffer;
-
-			schedule(() => {
-				cards.forEach((card, index) => {
-					applyState(card, exitState(index, cards.length), true);
-				});
-			}, exitStart);
-
-			schedule(() => {
-				setTitleState({ shift: togetherShift, opacity: 1 }, true);
-			}, exitStart + 80);
-
-			schedule(() => {
-				hideDeck(deck);
-			}, exitStart + 720);
+			mobileSteps.push(
+				{
+					delay: exitStart,
+					action: () => {
+						cards.forEach((card, index) => {
+							applyState(
+								card,
+								exitState(index, cards.length),
+								true,
+								`transform ${cardExitDuration}ms ${MOBILE_EASE}, opacity 220ms ${MOBILE_EASE}`,
+							);
+						});
+					},
+				},
+				{
+					delay: exitStart + 40,
+					action: () => {
+						setTitleState({ shift: togetherShift, opacity: 1 }, true);
+					},
+				},
+				{
+					delay: exitStart + cardExitDuration + 120,
+					action: () => {
+						hideDeck(deck);
+					},
+				},
+			);
+			runTimeline(mobileSteps);
 
 			activeIndex = (activeIndex + 1) % decks.length;
-			cycleTimer = window.setTimeout(
-				runCycle,
-				Math.max(deckStartAt + mobileCycleDuration, exitStart + 1000),
-			);
+			cycleTimer = window.setTimeout(runCycle, Math.max(mobileCycleDuration, exitStart + 800));
 		} else {
 			if (isLoopRestart) {
-				schedule(startDeck, cycleStart);
+				schedule(startDeckDesktop, desktopCycleStart);
 			} else {
-				startDeck();
+				startDeckDesktop();
 			}
 
 			schedule(() => {
 				setTitleState({ shift: 0, opacity: 1 }, true);
-			}, cycleStart + 80);
+			}, desktopCycleStart + 80);
 
 			schedule(() => {
 				const spreadShift = getSpreadTitleShift();
 				setTitleState({ shift: spreadShift, opacity: 1 }, true);
 				activeDesktopPhase = 'spread';
-			}, cycleStart + 1540);
+			}, desktopCycleStart + 1540);
 
 			schedule(() => {
 				cards.forEach((card, index) => {
 					applyState(card, spreadState(index, cards.length, spreadUnit, centerOffset), true);
 				});
-			}, cycleStart + 1540);
+			}, desktopCycleStart + 1540);
 
 			schedule(() => {
 				setTitleState({ shift: 0, opacity: 1 }, true);
 				activeDesktopPhase = 'stack';
-			}, cycleStart + 4540);
+			}, desktopCycleStart + 4540);
 
 			schedule(() => {
 				cards.forEach((card, index) => {
 					applyState(card, holdState(index, cards.length, centerOffset), true);
 				});
-			}, cycleStart + 4540);
+			}, desktopCycleStart + 4540);
 
 			schedule(() => {
 				cards.forEach((card, index) => {
 					applyState(card, exitState(index, cards.length, centerOffset), true);
 				});
-			}, cycleStart + 5520);
+			}, desktopCycleStart + 5520);
 
 			schedule(() => {
 				setTitleState({ shift: titleShift, opacity: 1 }, true);
-			}, cycleStart + 5520);
+			}, desktopCycleStart + 5520);
 
 			schedule(() => {
 				hideDeck(deck);
 				activeCards = [];
 				activeDesktopPhase = 'idle';
-			}, cycleStart + 6360);
+			}, desktopCycleStart + 6360);
 
 			activeIndex = (activeIndex + 1) % decks.length;
-			cycleTimer = window.setTimeout(runCycle, cycleStart + 6680);
+			cycleTimer = window.setTimeout(runCycle, desktopCycleStart + 6680);
 		}
 	};
 
 	runCycle();
 
 	let lastViewportModeIsMobile = isMobile();
+	let lastKnownWidth = window.innerWidth;
+	let lastKnownOrientation = window.innerWidth >= window.innerHeight ? 'landscape' : 'portrait';
+
+	const restartCycle = (titleStateShift: number) => {
+		clearScheduledTimers();
+		clearTimeout(cycleTimer);
+		cancelAndClearRafs();
+		decks.forEach((d) => hideDeck(d));
+		setTitleState({ shift: titleStateShift, opacity: 1 }, false);
+		forceImmediate = true;
+		runCycle();
+	};
+
 	const handleResize = () => {
 		if (resizeRaf) cancelAnimationFrame(resizeRaf);
 		resizeRaf = requestAnimationFrame(() => {
 			const viewportIsMobile = isMobile();
+			const width = window.innerWidth;
+			const orientation = width >= window.innerHeight ? 'landscape' : 'portrait';
+
 			if (viewportIsMobile !== lastViewportModeIsMobile) {
 				lastViewportModeIsMobile = viewportIsMobile;
-				clearScheduledTimers();
-				clearTimeout(cycleTimer);
-				cancelAndClearRafs();
-				decks.forEach((d) => hideDeck(d));
-				setTitleState({ shift: getInitialTitleShift(), opacity: 1 }, false);
-				forceImmediate = true;
-				runCycle();
+				lastKnownWidth = width;
+				lastKnownOrientation = orientation;
+				restartCycle(getInitialTitleShift());
 				return;
 			}
+
 			if (viewportIsMobile) {
-				// Same-mode mobile resize (e.g. orientation change) — restart cycle
-				clearScheduledTimers();
-				clearTimeout(cycleTimer);
-				cancelAndClearRafs();
-				decks.forEach((d) => hideDeck(d));
-				setTitleState({ shift: 0, opacity: 1 }, false);
-				forceImmediate = true;
-				runCycle();
+				const widthDelta = Math.abs(width - lastKnownWidth);
+				const orientationChanged = orientation !== lastKnownOrientation;
+				const significantWidthChange = widthDelta > 50;
+				if (!orientationChanged && !significantWidthChange) return;
+
+				lastKnownWidth = width;
+				lastKnownOrientation = orientation;
+				restartCycle(0);
 				return;
 			}
+			lastKnownWidth = width;
+			lastKnownOrientation = orientation;
 			applyDesktopLayoutForResize();
 		});
 	};
