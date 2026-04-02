@@ -30,6 +30,7 @@ function init() {
 	let resizeRaf = 0;
 	const MOBILE_BREAKPOINT = 720;
 	const MOBILE_EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
+	const DESKTOP_EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
 	const timers: number[] = [];
 	const rafIds = new Set<number>();
 	const listeners: (() => void)[] = [];
@@ -95,7 +96,7 @@ function init() {
 		const transition = animate
 			? isMobile()
 				? `transform 0.7s ${MOBILE_EASE}, opacity 0.3s ${MOBILE_EASE}`
-				: 'transform 0.86s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.32s ease'
+				: `transform 0.86s ${DESKTOP_EASE}, opacity 0.32s ${DESKTOP_EASE}`
 			: 'none';
 
 		if (titleLeft) {
@@ -145,11 +146,12 @@ function init() {
 		if (!cards.length) return 0;
 		const width = cards[0].offsetWidth || 0;
 		const total = cards.length;
-		const viewportWidth = window.innerWidth;
-		const sideInset = Math.max(60, Math.min(200, viewportWidth * 0.08));
-		const cardToTextGap = Math.max(10, Math.min(24, viewportWidth * 0.01));
-		const available = Math.max(0, viewportWidth - 2 * (sideInset + cardToTextGap));
-		const gap = Math.max(8, Math.min(16, viewportWidth * 0.008));
+		const container = document.querySelector<HTMLElement>('.shoots-hero__title-row');
+		const contentWidth = container ? container.clientWidth : window.innerWidth;
+		const sideInset = Math.max(60, Math.min(200, contentWidth * 0.08));
+		const cardToTextGap = Math.max(10, Math.min(24, contentWidth * 0.01));
+		const available = Math.max(0, contentWidth - 2 * (sideInset + cardToTextGap));
+		const gap = Math.max(8, Math.min(16, contentWidth * 0.008));
 		const idealUnit = width + gap;
 		const totalSpread = (total - 1) * idealUnit + width;
 
@@ -165,12 +167,15 @@ function init() {
 
 	const getSpreadTitleShift = () => {
 		if (!titleLeft || !titleRight) return 0;
-		const viewportWidth = window.innerWidth;
-		const sideInset = Math.max(40, Math.min(140, viewportWidth * 0.06));
+		const container = document.querySelector<HTMLElement>('.shoots-hero__title-row');
+		const contentWidth = container ? container.clientWidth : window.innerWidth;
+		const contentLeft = container ? container.getBoundingClientRect().left : 0;
+		const contentRight = contentLeft + contentWidth;
+		const sideInset = Math.max(40, Math.min(140, contentWidth * 0.06));
 		const leftRect = titleLeft.getBoundingClientRect();
 		const rightRect = titleRight.getBoundingClientRect();
-		const leftShift = leftRect.right - sideInset;
-		const rightShift = viewportWidth - sideInset - rightRect.left;
+		const leftShift = leftRect.right - (contentLeft + sideInset);
+		const rightShift = contentRight - sideInset - rightRect.left;
 		return Math.max(0, Math.min(leftShift, rightShift));
 	};
 
@@ -224,7 +229,7 @@ function init() {
 	) => {
 		const ease = isMobile()
 			? `transform 0.55s ${MOBILE_EASE}, opacity 0.25s ${MOBILE_EASE}`
-			: 'transform 0.88s cubic-bezier(0.16, 1, 0.3, 1)';
+			: `transform 0.86s ${DESKTOP_EASE}, opacity 0.32s ${DESKTOP_EASE}`;
 		card.style.transition = animate ? (transitionOverride ?? ease) : 'none';
 		const rotate = state.rotate ? `rotate(${state.rotate}deg)` : '';
 		card.style.transform = `translate(-50%, -50%) translate3d(${state.x}px, ${state.y}px, 0) scale(${state.scale}) ${rotate}`;
@@ -309,6 +314,9 @@ function init() {
 	let forceImmediate = false;
 	let activeCards: HTMLElement[] = [];
 	let activeDesktopPhase: 'idle' | 'stack' | 'spread' = 'idle';
+	let activeDeckIndex = -1;
+	let dockTransitionInProgress = false;
+	let dockTransitionToken = 0;
 
 	const applyDesktopLayoutForResize = () => {
 		if (isMobile() || !activeCards.length) return;
@@ -340,6 +348,7 @@ function init() {
 		});
 
 		const deck = decks[activeIndex];
+		activeDeckIndex = activeIndex;
 		const titleShift = getTitleShift();
 		const desktopCycleStart = isLoopRestart ? 900 : 0;
 		const mobileCycleStart = isLoopRestart ? 200 : 0;
@@ -502,13 +511,23 @@ function init() {
 	let lastKnownOrientation = window.innerWidth >= window.innerHeight ? 'landscape' : 'portrait';
 
 	const restartCycle = (titleStateShift: number) => {
+		dockTransitionInProgress = false;
+		dockTransitionToken += 1;
 		clearScheduledTimers();
 		clearTimeout(cycleTimer);
 		cancelAndClearRafs();
 		decks.forEach((d) => hideDeck(d));
+		activeCards = [];
+		activeDesktopPhase = 'idle';
+		activeDeckIndex = -1;
 		setTitleState({ shift: titleStateShift, opacity: 1 }, false);
 		forceImmediate = true;
 		runCycle();
+	};
+
+	const hardCutToDeck = (index: number) => {
+		activeIndex = index;
+		restartCycle(getInitialTitleShift());
 	};
 
 	const handleResize = () => {
@@ -547,14 +566,44 @@ function init() {
 
 	thumbs.forEach((thumb, i) => {
 		const onThumbClick = () => {
+			if (isMobile()) {
+				hardCutToDeck(i);
+				return;
+			}
+
+			if (dockTransitionInProgress) {
+				hardCutToDeck(i);
+				return;
+			}
+
+			if (!activeCards.length || activeDeckIndex < 0) {
+				hardCutToDeck(i);
+				return;
+			}
+
 			clearScheduledTimers();
 			clearTimeout(cycleTimer);
 			cancelAndClearRafs();
-			decks.forEach((d) => hideDeck(d));
-			setTitleState({ shift: getInitialTitleShift(), opacity: 1 }, false);
-			activeIndex = i;
-			forceImmediate = true;
-			runCycle();
+			dockTransitionInProgress = true;
+			const token = ++dockTransitionToken;
+			const transition = `transform 200ms ${DESKTOP_EASE}, opacity 180ms ${DESKTOP_EASE}`;
+
+			activeCards.forEach((card, index) => {
+				applyState(card, exitState(index, activeCards.length, centerOffset), true, transition);
+			});
+			setTitleState({ shift: getTitleShift(), opacity: 1 }, true);
+
+			schedule(() => {
+				if (token !== dockTransitionToken) return;
+				hideDeck(decks[activeDeckIndex]);
+				activeCards = [];
+				activeDesktopPhase = 'idle';
+				activeDeckIndex = -1;
+				dockTransitionInProgress = false;
+				activeIndex = i;
+				forceImmediate = true;
+				runCycle();
+			}, 220);
 		};
 		thumb.addEventListener('click', onThumbClick);
 		listeners.push(() => thumb.removeEventListener('click', onThumbClick));
