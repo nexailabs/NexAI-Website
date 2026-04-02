@@ -1,10 +1,4 @@
-import type {
-	HeroImage,
-	BrandLogo,
-	ServiceCard,
-	ShowcaseSlot,
-	ShowcaseCategory,
-} from '../types/ai-shoots';
+import type { HeroImage, BrandLogo, ServiceCard, ShowcaseCategory } from '../types/ai-shoots';
 
 export type { HeroImage, BrandLogo, ServiceCard, ShowcaseCategory };
 
@@ -120,91 +114,201 @@ export const brandLogos: BrandLogo[] = [
 ];
 
 // ── Showcase categories ──
-// Output pattern is always: [3x4, 1x1, 2x3, 1x1, 3x4]
-const placeholderOutputs: ShowcaseSlot[] = [
-	{ alt: 'AI-generated model pose — full-length front view', aspect: '3x4' },
-	{ alt: 'AI-generated model pose — detail crop', aspect: '1x1' },
-	{ alt: 'AI-generated model pose — three-quarter angle', aspect: '2x3' },
-	{ alt: 'AI-generated model pose — accessory detail', aspect: '1x1' },
-	{ alt: 'AI-generated model pose — alternate angle', aspect: '3x4' },
-];
-
+// Output aspect pattern: [3x4, 1x1, 2x3, 1x1, 3x4]
 export const showcaseCategories: ShowcaseCategory[] = [
 	{
-		id: 'mannequin',
-		label: 'Mannequin',
-		outputs: placeholderOutputs,
-	},
-	{
-		id: 'flat-lay',
-		label: 'Flat Lay',
-		inputMain: `${ik}/studio/services/flat-lay-raw.jpg${tr.showcase}`,
+		id: 'kurta-sets',
+		label: 'Kurta Sets',
+		inputMain: `${ik}/studio/showcase/yufta/yufta-input-01.jpg${tr.showcase}`,
+		inputSideTop: `${ik}/studio/showcase/yufta/yufta-input-02.jpg${tr.showcase}`,
+		inputSideBottom: `${ik}/studio/showcase/yufta/yufta-input-03.jpg${tr.showcase}`,
 		outputs: [
 			{
-				src: `${ik}/studio/services/flat-lay-ai-01.jpg${tr.showcase}`,
-				alt: 'Flat-lay garment AI output — styled front view',
+				src: `${ik}/studio/showcase/yufta/yufta-output-01.jpg${tr.showcase}`,
+				alt: 'Kurta set AI output — full-length front view',
 				aspect: '3x4',
 			},
 			{
-				src: `${ik}/studio/services/flat-lay-ai-02.jpg${tr.showcase}`,
-				alt: 'Flat-lay garment AI output — detail crop',
+				src: `${ik}/studio/showcase/yufta/yufta-output-02.jpg${tr.showcase}`,
+				alt: 'Kurta set AI output — detail crop',
 				aspect: '1x1',
 			},
 			{
-				src: `${ik}/studio/services/flat-lay-ai-03.jpg${tr.showcase}`,
-				alt: 'Flat-lay garment AI output — angled layout',
+				src: `${ik}/studio/showcase/yufta/yufta-output-03.jpg${tr.showcase}`,
+				alt: 'Kurta set AI output — three-quarter angle',
 				aspect: '2x3',
 			},
 			{
-				src: `${ik}/studio/services/flat-lay-ai-04.jpg${tr.showcase}`,
-				alt: 'Flat-lay garment AI output — accessory pairing',
+				src: `${ik}/studio/showcase/yufta/yufta-output-04.jpg${tr.showcase}`,
+				alt: 'Kurta set AI output — accessory detail',
 				aspect: '1x1',
 			},
-			{ alt: 'Flat-lay garment AI output — alternate arrangement', aspect: '3x4' },
+			{
+				src: `${ik}/studio/showcase/yufta/yufta-output-05.jpg${tr.showcase}`,
+				alt: 'Kurta set AI output — alternate angle',
+				aspect: '3x4',
+			},
 		],
 	},
 	{
-		id: 'unstitched',
-		label: 'Unstitched',
-		outputs: placeholderOutputs,
-	},
-	{
-		id: 'three-piece',
-		label: '3-Piece',
-		outputs: placeholderOutputs,
+		id: 'western-wear',
+		label: 'Western Wear',
+		inputMain: `${ik}/studio/showcase/selvia/selvia-input-01.jpg${tr.showcase}`,
+		outputs: [
+			{
+				src: `${ik}/studio/showcase/selvia/selvia-output-01.jpg${tr.showcase}`,
+				alt: 'Western wear AI output — full-length front view',
+				aspect: '3x4',
+			},
+			{
+				src: `${ik}/studio/showcase/selvia/selvia-output-02.jpg${tr.showcase}`,
+				alt: 'Western wear AI output — detail crop',
+				aspect: '1x1',
+			},
+			{
+				src: `${ik}/studio/showcase/selvia/selvia-output-03.jpg${tr.showcase}`,
+				alt: 'Western wear AI output — three-quarter angle',
+				aspect: '2x3',
+			},
+			{
+				src: `${ik}/studio/showcase/selvia/selvia-output-04.jpg${tr.showcase}`,
+				alt: 'Western wear AI output — accessory detail',
+				aspect: '1x1',
+			},
+			{
+				src: `${ik}/studio/showcase/selvia/selvia-output-05.jpg${tr.showcase}`,
+				alt: 'Western wear AI output — alternate angle',
+				aspect: '3x4',
+			},
+		],
 	},
 	{
 		id: 'saree',
 		label: 'Saree',
-		inputMain: `${ik}/studio/services/saree-raw.jpg${tr.showcase}`,
+		inputMain: `${ik}/studio/showcase/rasvidha/rasvidha-input-01.jpg${tr.showcase}`,
 		outputs: [
 			{
-				src: `${ik}/studio/services/saree-ai-01.jpg${tr.showcase}`,
-				alt: 'Saree AI photoshoot — standing drape pose',
+				src: `${ik}/studio/showcase/rasvidha/rasvidha-output-01.jpg${tr.showcase}`,
+				alt: 'Saree AI output — standing drape pose',
 				aspect: '3x4',
 			},
 			{
-				src: `${ik}/studio/services/saree-ai-02.jpg${tr.showcase}`,
-				alt: 'Saree AI photoshoot — pallu detail',
+				src: `${ik}/studio/showcase/rasvidha/rasvidha-output-02.jpg${tr.showcase}`,
+				alt: 'Saree AI output — pallu detail',
 				aspect: '1x1',
 			},
 			{
-				src: `${ik}/studio/services/saree-ai-03.jpg${tr.showcase}`,
-				alt: 'Saree AI photoshoot — side profile',
+				src: `${ik}/studio/showcase/rasvidha/rasvidha-output-03.jpg${tr.showcase}`,
+				alt: 'Saree AI output — side profile',
 				aspect: '2x3',
 			},
 			{
-				src: `${ik}/studio/services/saree-ai-04.jpg${tr.showcase}`,
-				alt: 'Saree AI photoshoot — border detail',
+				src: `${ik}/studio/showcase/rasvidha/rasvidha-output-04.jpg${tr.showcase}`,
+				alt: 'Saree AI output — border detail',
 				aspect: '1x1',
 			},
-			{ alt: 'Saree AI photoshoot — alternate pose', aspect: '3x4' },
+			{
+				src: `${ik}/studio/showcase/rasvidha/rasvidha-output-05.jpg${tr.showcase}`,
+				alt: 'Saree AI output — alternate pose',
+				aspect: '3x4',
+			},
 		],
 	},
 	{
 		id: 'menswear',
 		label: 'Menswear',
-		outputs: placeholderOutputs,
+		inputMain: `${ik}/studio/showcase/xyxx/xyxx-input-01.png${tr.showcase}`,
+		outputs: [
+			{
+				src: `${ik}/studio/showcase/xyxx/xyxx-output-01.jpg${tr.showcase}`,
+				alt: 'Menswear AI output — full-length front view',
+				aspect: '3x4',
+			},
+			{
+				src: `${ik}/studio/showcase/xyxx/xyxx-output-02.jpg${tr.showcase}`,
+				alt: 'Menswear AI output — detail crop',
+				aspect: '1x1',
+			},
+			{
+				src: `${ik}/studio/showcase/xyxx/xyxx-output-03.jpg${tr.showcase}`,
+				alt: 'Menswear AI output — three-quarter angle',
+				aspect: '2x3',
+			},
+			{
+				src: `${ik}/studio/showcase/xyxx/xyxx-output-04.jpg${tr.showcase}`,
+				alt: 'Menswear AI output — accessory detail',
+				aspect: '1x1',
+			},
+			{
+				src: `${ik}/studio/showcase/xyxx/xyxx-output-05.jpg${tr.showcase}`,
+				alt: 'Menswear AI output — alternate angle',
+				aspect: '3x4',
+			},
+		],
+	},
+	{
+		id: 'jewelry',
+		label: 'Jewelry',
+		inputMain: `${ik}/studio/showcase/dbj/dbj-input-01.png${tr.showcase}`,
+		outputs: [
+			{
+				src: `${ik}/studio/showcase/dbj/dbj-output-01.jpg${tr.showcase}`,
+				alt: 'Jewelry AI output — full-length front view',
+				aspect: '3x4',
+			},
+			{
+				src: `${ik}/studio/showcase/dbj/dbj-output-02.jpg${tr.showcase}`,
+				alt: 'Jewelry AI output — detail crop',
+				aspect: '1x1',
+			},
+			{
+				src: `${ik}/studio/showcase/dbj/dbj-output-03.jpg${tr.showcase}`,
+				alt: 'Jewelry AI output — three-quarter angle',
+				aspect: '2x3',
+			},
+			{
+				src: `${ik}/studio/showcase/dbj/dbj-output-04.jpg${tr.showcase}`,
+				alt: 'Jewelry AI output — accessory detail',
+				aspect: '1x1',
+			},
+			{
+				src: `${ik}/studio/showcase/dbj/dbj-output-05.jpg${tr.showcase}`,
+				alt: 'Jewelry AI output — alternate angle',
+				aspect: '3x4',
+			},
+		],
+	},
+	{
+		id: 'cosmetics',
+		label: 'Cosmetics',
+		inputMain: `${ik}/studio/showcase/thrive/thrive-input-01.jpg${tr.showcase}`,
+		outputs: [
+			{
+				src: `${ik}/studio/showcase/thrive/thrive-output-01.png${tr.showcase}`,
+				alt: 'Cosmetics AI output — product front view',
+				aspect: '3x4',
+			},
+			{
+				src: `${ik}/studio/showcase/thrive/thrive-output-02.png${tr.showcase}`,
+				alt: 'Cosmetics AI output — detail crop',
+				aspect: '1x1',
+			},
+			{
+				src: `${ik}/studio/showcase/thrive/thrive-output-03.png${tr.showcase}`,
+				alt: 'Cosmetics AI output — angled view',
+				aspect: '2x3',
+			},
+			{
+				src: `${ik}/studio/showcase/thrive/thrive-output-04.png${tr.showcase}`,
+				alt: 'Cosmetics AI output — lifestyle detail',
+				aspect: '1x1',
+			},
+			{
+				src: `${ik}/studio/showcase/thrive/thrive-output-05.png${tr.showcase}`,
+				alt: 'Cosmetics AI output — alternate angle',
+				aspect: '3x4',
+			},
+		],
 	},
 ];
 
