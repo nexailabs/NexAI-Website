@@ -53,11 +53,11 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 						aria-hidden={i !== 0 ? 'true' : 'false'}
 					>
 						{/* Mobile Before/After Stage */}
-						{cat.inputMain && (
-							<div class="sc3__mobile-stage">
-								<div class="sc3__mobile-card sc3__mobile-card--before">
-									<span class="sc3__mobile-bookmark sc3__mobile-bookmark--before">Before</span>
-									<div class="sc3__mobile-card-frame">
+						<div class="sc3__mobile-stage">
+							<div class="sc3__mobile-card sc3__mobile-card--before">
+								<span class="sc3__mobile-bookmark sc3__mobile-bookmark--before">Before</span>
+								<div class="sc3__mobile-card-frame">
+									{cat.inputMain ? (
 										<img
 											src={cat.inputMain}
 											alt={`${cat.label} raw input`}
@@ -65,34 +65,43 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 											height="800"
 											loading="lazy"
 										/>
-									</div>
-								</div>
-								<div class="sc3__mobile-card sc3__mobile-card--after">
-									<span class="sc3__mobile-bookmark sc3__mobile-bookmark--after">After</span>
-									<div class="sc3__mobile-card-frame sc3__mobile-card-frame--collage">
-										<div class="sc3__mobile-output-grid">
-											{[1, 2, 0, 3].map((outputIdx, gridIdx) => {
-												const pos = ['tl', 'tr', 'bl', 'br'][gridIdx];
-												const slot = cat.outputs[outputIdx];
-												return slot?.src ? (
-													<div class={`sc3__mobile-output sc3__mobile-output--${pos}`}>
-														<img
-															src={slot.src}
-															alt={slot.alt}
-															width="600"
-															height="800"
-															loading="lazy"
-														/>
-													</div>
-												) : (
-													<div class={`sc3__mobile-output sc3__mobile-output--${pos}`} />
-												);
-											})}
+									) : (
+										<div class="sc3__mobile-ph">
+											<Fragment set:html={placeholderSvgLg} />
+											<span class="sc3__ph-text">Input coming soon</span>
 										</div>
+									)}
+								</div>
+							</div>
+							<div class="sc3__mobile-card sc3__mobile-card--after">
+								<span class="sc3__mobile-bookmark sc3__mobile-bookmark--after">After</span>
+								<div class="sc3__mobile-card-frame sc3__mobile-card-frame--collage">
+									<div class="sc3__mobile-output-grid">
+										{[1, 2, 0, 3].map((outputIdx, gridIdx) => {
+											const pos = ['tl', 'tr', 'bl', 'br'][gridIdx];
+											const slot = cat.outputs[outputIdx];
+											return slot?.src ? (
+												<div class={`sc3__mobile-output sc3__mobile-output--${pos}`}>
+													<img
+														src={slot.src}
+														alt={slot.alt}
+														width="600"
+														height="800"
+														loading="lazy"
+													/>
+												</div>
+											) : (
+												<div class={`sc3__mobile-output sc3__mobile-output--${pos}`}>
+													<div class="sc3__mobile-output-ph">
+														<Fragment set:html={placeholderSvg} />
+													</div>
+												</div>
+											);
+										})}
 									</div>
 								</div>
 							</div>
-						)}
+						</div>
 
 						{/* Left Input Block */}
 						<div class="sc3__col sc3__col--left">
@@ -655,7 +664,7 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 			position: absolute;
 			left: 50%;
 			top: 50%;
-			width: min(76%, calc(100% - 1rem));
+			width: min(74%, calc(100% - 1.25rem));
 			aspect-ratio: 3 / 4;
 			overflow: visible;
 			isolation: isolate;
@@ -684,6 +693,7 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 			white-space: nowrap;
 			pointer-events: none;
 			transition: opacity 0.24s ease;
+			text-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.45);
 		}
 
 		.sc3__mobile-bookmark::after {
@@ -704,12 +714,12 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 		}
 
 		.sc3__mobile-bookmark--before {
-			left: 0.62rem;
+			left: 0.28rem;
 			opacity: var(--sc3-before-tag-opacity);
 		}
 
 		.sc3__mobile-bookmark--after {
-			right: 0.62rem;
+			right: 0.28rem;
 			opacity: var(--sc3-after-tag-opacity);
 		}
 
@@ -729,6 +739,19 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 			transition:
 				box-shadow 0.58s cubic-bezier(0.22, 1, 0.36, 1),
 				filter 0.58s cubic-bezier(0.22, 1, 0.36, 1);
+		}
+
+		.sc3__mobile-ph {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			gap: 0.75rem;
+			background:
+				radial-gradient(circle at top center, rgba(78, 201, 180, 0.08), transparent 64%),
+				rgba(255, 255, 255, 0.02);
 		}
 
 		.sc3__mobile-stage[data-dragging='true'] .sc3__mobile-card-frame {
@@ -810,6 +833,15 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 			overflow: hidden;
 			border-radius: 0.9rem;
 			background: rgba(255, 255, 255, 0.04);
+		}
+
+		.sc3__mobile-output-ph {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: rgba(255, 255, 255, 0.02);
 		}
 
 		.sc3__mobile-output img {
