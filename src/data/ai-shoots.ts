@@ -9,8 +9,7 @@ import type {
 export type { HeroImage, BrandLogo, ServiceCard, ShowcaseCategory };
 
 // ── ImageKit helpers ──
-export const ik = 'https://ik.imagekit.io/nexailabs';
-export const tr = '?tr=w-600,f-auto,q-80';
+import { ik, tr } from '../config/imagekit';
 
 // ── Page constants (from shared config) ──
 import { site } from '../config/site';
@@ -19,58 +18,105 @@ export const email = site.email;
 
 // ── Hero image decks ──
 export const heroDeckA: HeroImage[] = [
-	{ src: `${ik}/dbj-jewelry-01.jpg${tr}`, alt: 'Dhwani Bansal Jewelry — earring mirror closeup' },
-	{ src: `${ik}/dbj-jewelry-02.jpg${tr}`, alt: 'Dhwani Bansal Jewelry — gold leaf earring' },
-	{ src: `${ik}/dbj-jewelry-03.jpg${tr}`, alt: 'Dhwani Bansal Jewelry — two models dining' },
-	{ src: `${ik}/dbj-jewelry-04.jpg${tr}`, alt: 'Dhwani Bansal Jewelry — bridal styling' },
-	{ src: `${ik}/dbj-jewelry-05.jpg${tr}`, alt: 'Dhwani Bansal Jewelry — heritage look' },
+	{
+		src: `${ik}/studio/hero/dbj/dbj-01.jpg${tr.hero}`,
+		alt: 'Dhwani Bansal Jewelry — earring mirror closeup',
+	},
+	{
+		src: `${ik}/studio/hero/dbj/dbj-02.jpg${tr.hero}`,
+		alt: 'Dhwani Bansal Jewelry — gold leaf earring',
+	},
+	{
+		src: `${ik}/studio/hero/dbj/dbj-03.jpg${tr.hero}`,
+		alt: 'Dhwani Bansal Jewelry — two models dining',
+	},
+	{
+		src: `${ik}/studio/hero/dbj/dbj-04.jpg${tr.hero}`,
+		alt: 'Dhwani Bansal Jewelry — bridal styling',
+	},
+	{
+		src: `${ik}/studio/hero/dbj/dbj-05.jpg${tr.hero}`,
+		alt: 'Dhwani Bansal Jewelry — heritage look',
+	},
 ];
 
 export const heroDeckB: HeroImage[] = [
 	{
-		src: `${ik}/leemboodi-saree-01.jpg${tr}`,
+		src: `${ik}/studio/hero/leemboodi/leemboodi-01.jpg${tr.hero}`,
 		alt: 'Leemboodi — bandhani saree heritage courtyard',
 	},
-	{ src: `${ik}/leemboodi-saree-02.jpg${tr}`, alt: 'Leemboodi — colorful saree outdoor' },
 	{
-		src: `${ik}/leemboodi-saree-03.jpg${tr}`,
+		src: `${ik}/studio/hero/leemboodi/leemboodi-02.jpg${tr.hero}`,
+		alt: 'Leemboodi — colorful saree outdoor',
+	},
+	{
+		src: `${ik}/studio/hero/leemboodi/leemboodi-03.jpg${tr.hero}`,
 		alt: 'Leemboodi — white bandhani saree sunset arch',
 	},
-	{ src: `${ik}/leemboodi-saree-04.jpg${tr}`, alt: 'Leemboodi — saree editorial palace' },
-	{ src: `${ik}/leemboodi-saree-05.jpg${tr}`, alt: 'Leemboodi — saree detail shot' },
+	{
+		src: `${ik}/studio/hero/leemboodi/leemboodi-04.jpg${tr.hero}`,
+		alt: 'Leemboodi — saree editorial palace',
+	},
+	{
+		src: `${ik}/studio/hero/leemboodi/leemboodi-05.jpg${tr.hero}`,
+		alt: 'Leemboodi — saree detail shot',
+	},
 ];
 
 export const heroDeckC: HeroImage[] = [
-	{ src: `${ik}/soilearth-product-01.jpg${tr}`, alt: 'Soil & Earth — product flat-lay oils' },
-	{ src: `${ik}/soilearth-product-02.jpg${tr}`, alt: 'Soil & Earth — hair oil botanical' },
-	{ src: `${ik}/soilearth-product-03.jpg${tr}`, alt: 'Soil & Earth — oudhwood soap' },
-	{ src: `${ik}/soilearth-product-04.jpg${tr}`, alt: 'Soil & Earth — product lifestyle' },
-	{ src: `${ik}/soilearth-product-05.jpg${tr}`, alt: 'Soil & Earth — skincare range' },
+	{
+		src: `${ik}/studio/hero/soilearth/soilearth-01.jpg${tr.hero}`,
+		alt: 'Soil & Earth — product flat-lay oils',
+	},
+	{
+		src: `${ik}/studio/hero/soilearth/soilearth-02.jpg${tr.hero}`,
+		alt: 'Soil & Earth — hair oil botanical',
+	},
+	{
+		src: `${ik}/studio/hero/soilearth/soilearth-03.jpg${tr.hero}`,
+		alt: 'Soil & Earth — oudhwood soap',
+	},
+	{
+		src: `${ik}/studio/hero/soilearth/soilearth-04.jpg${tr.hero}`,
+		alt: 'Soil & Earth — product lifestyle',
+	},
+	{
+		src: `${ik}/studio/hero/soilearth/soilearth-05.jpg${tr.hero}`,
+		alt: 'Soil & Earth — skincare range',
+	},
 ];
 
 export const heroDeckD: HeroImage[] = [
-	{ src: `${ik}/yufta-dress-01.jpg${tr}`, alt: 'Yufta — boho print dress model' },
-	{ src: `${ik}/yufta-dress-02.jpg${tr}`, alt: 'Yufta — floral dress studio' },
-	{ src: `${ik}/yufta-dress-03.jpg${tr}`, alt: 'Yufta — print dress walking pose' },
-	{ src: `${ik}/yufta-dress-04.jpg${tr}`, alt: 'Yufta — summer dress detail' },
-	{ src: `${ik}/yufta-dress-05.jpg${tr}`, alt: 'Yufta — casual wear studio' },
+	{ src: `${ik}/studio/hero/yufta/yufta-01.jpg${tr.hero}`, alt: 'Yufta — boho print dress model' },
+	{ src: `${ik}/studio/hero/yufta/yufta-02.jpg${tr.hero}`, alt: 'Yufta — floral dress studio' },
+	{
+		src: `${ik}/studio/hero/yufta/yufta-03.jpg${tr.hero}`,
+		alt: 'Yufta — print dress walking pose',
+	},
+	{ src: `${ik}/studio/hero/yufta/yufta-04.jpg${tr.hero}`, alt: 'Yufta — summer dress detail' },
+	{ src: `${ik}/studio/hero/yufta/yufta-05.jpg${tr.hero}`, alt: 'Yufta — casual wear studio' },
 ];
 
 export const heroDecks: HeroImage[][] = [heroDeckD, heroDeckC, heroDeckB, heroDeckA];
 
 // ── Brand logos (marquee) ──
 export const brandLogos: BrandLogo[] = [
-	{ src: '/assets/brands/Banno.png', alt: 'Banno', width: 282, height: 199 },
-	{ src: '/assets/brands/DBJ.png', alt: 'DBJ', width: 275, height: 168 },
-	{ src: '/assets/brands/GANGA ONG.png', alt: 'Ganga', width: 307, height: 212 },
-	{ src: '/assets/brands/INDO ERA PNG.png', alt: 'Indo Era', width: 370, height: 223 },
-	{ src: '/assets/brands/JANASYA.png', alt: 'Janasya', width: 260, height: 208 },
-	{ src: '/assets/brands/JUGO.png', alt: 'Jugo', width: 203, height: 180 },
-	{ src: '/assets/brands/STF.png', alt: 'STF', width: 389, height: 162 },
-	{ src: '/assets/brands/leemboodi.png', alt: 'Leemboodi', width: 1479, height: 633 },
-	{ src: '/assets/brands/skylee.png', alt: 'Skylee', width: 303, height: 143 },
-	{ src: '/assets/brands/xyxx.png', alt: 'XYXX', width: 240, height: 151 },
-	{ src: '/assets/brands/yufta.png', alt: 'Yufta', width: 253, height: 208 },
+	{ src: `${ik}/studio/brands/banno.png${tr.logo}`, alt: 'Banno', width: 282, height: 199 },
+	{ src: `${ik}/studio/brands/dbj.png${tr.logo}`, alt: 'DBJ', width: 275, height: 168 },
+	{ src: `${ik}/studio/brands/ganga.png${tr.logo}`, alt: 'Ganga', width: 307, height: 212 },
+	{ src: `${ik}/studio/brands/indo-era.png${tr.logo}`, alt: 'Indo Era', width: 370, height: 223 },
+	{ src: `${ik}/studio/brands/janasya.png${tr.logo}`, alt: 'Janasya', width: 260, height: 208 },
+	{ src: `${ik}/studio/brands/jugo.png${tr.logo}`, alt: 'Jugo', width: 203, height: 180 },
+	{ src: `${ik}/studio/brands/stf.png${tr.logo}`, alt: 'STF', width: 389, height: 162 },
+	{
+		src: `${ik}/studio/brands/leemboodi.png${tr.logo}`,
+		alt: 'Leemboodi',
+		width: 1479,
+		height: 633,
+	},
+	{ src: `${ik}/studio/brands/skylee.png${tr.logo}`, alt: 'Skylee', width: 303, height: 143 },
+	{ src: `${ik}/studio/brands/xyxx.png${tr.logo}`, alt: 'XYXX', width: 240, height: 151 },
+	{ src: `${ik}/studio/brands/yufta.png${tr.logo}`, alt: 'Yufta', width: 253, height: 208 },
 ];
 
 // ── Showcase categories ──
@@ -92,25 +138,25 @@ export const showcaseCategories: ShowcaseCategory[] = [
 	{
 		id: 'flat-lay',
 		label: 'Flat Lay',
-		inputMain: '/assets/ai-shoots/services/flat-lay-raw.jpg',
+		inputMain: `${ik}/studio/services/flat-lay-raw.jpg${tr.showcase}`,
 		outputs: [
 			{
-				src: '/assets/ai-shoots/services/flat-lay-ai-1.jpeg',
+				src: `${ik}/studio/services/flat-lay-ai-01.jpg${tr.showcase}`,
 				alt: 'Flat-lay garment AI output — styled front view',
 				aspect: '3x4',
 			},
 			{
-				src: '/assets/ai-shoots/services/flat-lay-ai-2.jpeg',
+				src: `${ik}/studio/services/flat-lay-ai-02.jpg${tr.showcase}`,
 				alt: 'Flat-lay garment AI output — detail crop',
 				aspect: '1x1',
 			},
 			{
-				src: '/assets/ai-shoots/services/flat-lay-ai-3.jpeg',
+				src: `${ik}/studio/services/flat-lay-ai-03.jpg${tr.showcase}`,
 				alt: 'Flat-lay garment AI output — angled layout',
 				aspect: '2x3',
 			},
 			{
-				src: '/assets/ai-shoots/services/flat-lay-ai-4.jpeg',
+				src: `${ik}/studio/services/flat-lay-ai-04.jpg${tr.showcase}`,
 				alt: 'Flat-lay garment AI output — accessory pairing',
 				aspect: '1x1',
 			},
@@ -130,25 +176,25 @@ export const showcaseCategories: ShowcaseCategory[] = [
 	{
 		id: 'saree',
 		label: 'Saree',
-		inputMain: '/assets/ai-shoots/services/saree-raw.jpeg',
+		inputMain: `${ik}/studio/services/saree-raw.jpg${tr.showcase}`,
 		outputs: [
 			{
-				src: '/assets/ai-shoots/services/saree-ai-1.jpg',
+				src: `${ik}/studio/services/saree-ai-01.jpg${tr.showcase}`,
 				alt: 'Saree AI photoshoot — standing drape pose',
 				aspect: '3x4',
 			},
 			{
-				src: '/assets/ai-shoots/services/saree-ai-2.jpg',
+				src: `${ik}/studio/services/saree-ai-02.jpg${tr.showcase}`,
 				alt: 'Saree AI photoshoot — pallu detail',
 				aspect: '1x1',
 			},
 			{
-				src: '/assets/ai-shoots/services/saree-ai-3.jpg',
+				src: `${ik}/studio/services/saree-ai-03.jpg${tr.showcase}`,
 				alt: 'Saree AI photoshoot — side profile',
 				aspect: '2x3',
 			},
 			{
-				src: '/assets/ai-shoots/services/saree-ai-4.jpeg',
+				src: `${ik}/studio/services/saree-ai-04.jpg${tr.showcase}`,
 				alt: 'Saree AI photoshoot — border detail',
 				aspect: '1x1',
 			},
