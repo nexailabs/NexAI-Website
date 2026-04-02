@@ -76,16 +76,12 @@ function init() {
 		}
 
 		const viewportWidth = window.innerWidth;
-		const edgeInset = Math.max(8, Math.min(16, viewportWidth * 0.025));
-		const centerGap = Math.max(6, Math.min(14, viewportWidth * 0.03));
 		const leftRect = titleLeft.getBoundingClientRect();
 		const rightRect = titleRight.getBoundingClientRect();
 
-		const maxLeftShift = Math.max(0, leftRect.left - edgeInset);
-		const maxRightShift = Math.max(0, viewportWidth - edgeInset - rightRect.right);
-		const maxSafeShift = Math.min(maxLeftShift, maxRightShift);
-		const preferredShift = Math.max(18, Math.min(44, viewportWidth * 0.09));
-		const splitShift = Math.max(0, Math.min(preferredShift, maxSafeShift + centerGap));
+		const leftCenter = leftRect.left + leftRect.width / 2;
+		const rightCenter = rightRect.left + rightRect.width / 2;
+		const splitShift = Math.min(leftCenter, viewportWidth - rightCenter);
 
 		return { togetherShift: 0, splitShift };
 	};
@@ -128,9 +124,10 @@ function init() {
 
 	const stackedState = (index: number, total: number, yOffset = 0) => {
 		const behind = index;
+		const stackGap = Math.max(3, window.innerHeight * 0.005);
 		return {
 			x: 0,
-			y: yOffset + behind * 4,
+			y: yOffset + behind * stackGap,
 			scale: 0.9 - behind * 0.012,
 			opacity: 1,
 			zIndex: getStackZIndex(index, total),
@@ -346,14 +343,15 @@ function init() {
 
 			schedule(() => {
 				setTitleState({ shift: splitShift, opacity: 1 }, true);
-			}, deckStartAt + 420);
+			}, deckStartAt + 100);
 
 			const dealStart = deckStartAt + dealStartOffset;
 			schedule(() => {
+				const entryOffset = Math.min(-40, -(window.innerHeight * 0.08));
 				cards.forEach((card, index) => {
 					schedule(() => {
 						card.style.transition = 'none';
-						card.style.transform = 'translate(-50%, -50%) translate3d(0px, -56px, 0) scale(0.92)';
+						card.style.transform = `translate(-50%, -50%) translate3d(0px, ${entryOffset}px, 0) scale(0.92)`;
 						card.style.opacity = '0';
 						card.style.zIndex = `${50 + index}`;
 
