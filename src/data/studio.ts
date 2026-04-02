@@ -1,4 +1,4 @@
-import type { HeroImage, BrandLogo, ServiceCard, ShowcaseCategory } from '../types/ai-shoots';
+import type { HeroImage, BrandLogo, ServiceCard, ShowcaseCategory } from '../types/studio';
 
 export type { HeroImage, BrandLogo, ServiceCard, ShowcaseCategory };
 

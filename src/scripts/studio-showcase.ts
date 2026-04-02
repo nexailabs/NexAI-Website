@@ -1,4 +1,4 @@
-// ── ShowcaseV3: Tab switching + ARIA keyboard nav + Mobile before/after cycle ──
+// ── StudioShowcase: Tab switching + ARIA keyboard nav + Mobile before/after cycle ──
 export {};
 
 let tabCleanup: (() => void) | null = null;
