@@ -1,3 +1,5 @@
+export {};
+
 let controller: AbortController | null = null;
 
 function cleanupListeners() {
