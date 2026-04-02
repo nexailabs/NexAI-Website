@@ -55,49 +55,99 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 						{/* Mobile Before/After Stage */}
 						<div class="sc3__mobile-stage">
 							<div class="sc3__mobile-card sc3__mobile-card--before">
-								<span class="sc3__mobile-bookmark sc3__mobile-bookmark--before">Before</span>
-								<div class="sc3__mobile-card-frame">
-									{cat.inputMain ? (
-										<img
-											src={cat.inputMain}
-											alt={`${cat.label} raw input`}
-											width="600"
-											height="800"
-											loading="lazy"
-										/>
-									) : (
-										<div class="sc3__mobile-ph">
-											<Fragment set:html={placeholderSvgLg} />
-											<span class="sc3__ph-text">Input coming soon</span>
-										</div>
-									)}
+								<div class="sc3__mobile-card-frame sc3__mobile-card-frame--before">
+									<span class="sc3__mobile-tab-label sc3__mobile-tab-label--before">Before</span>
+									<div class="sc3__mobile-card-media">
+										{cat.inputMain ? (
+											cat.inputSideTop || cat.inputSideBottom ? (
+												<div
+													class:list={[
+														'sc3__mobile-before-grid',
+														{
+															'sc3__mobile-before-grid--triple':
+																cat.inputSideTop && cat.inputSideBottom,
+														},
+													]}
+												>
+													<div class="sc3__mobile-before-main">
+														<img
+															src={cat.inputMain}
+															alt={`${cat.label} raw input`}
+															width="600"
+															height="800"
+															loading="lazy"
+														/>
+													</div>
+													<div class="sc3__mobile-before-side">
+														{cat.inputSideTop && (
+															<div class="sc3__mobile-before-side-card">
+																<img
+																	src={cat.inputSideTop}
+																	alt={`${cat.label} side input top`}
+																	width="600"
+																	height="800"
+																	loading="lazy"
+																/>
+															</div>
+														)}
+														{cat.inputSideBottom && (
+															<div class="sc3__mobile-before-side-card">
+																<img
+																	src={cat.inputSideBottom}
+																	alt={`${cat.label} side input bottom`}
+																	width="600"
+																	height="800"
+																	loading="lazy"
+																/>
+															</div>
+														)}
+													</div>
+												</div>
+											) : (
+												<img
+													src={cat.inputMain}
+													alt={`${cat.label} raw input`}
+													width="600"
+													height="800"
+													loading="lazy"
+												/>
+											)
+										) : (
+											<div class="sc3__mobile-ph">
+												<Fragment set:html={placeholderSvgLg} />
+												<span class="sc3__ph-text">Input coming soon</span>
+											</div>
+										)}
+									</div>
 								</div>
 							</div>
 							<div class="sc3__mobile-card sc3__mobile-card--after">
-								<span class="sc3__mobile-bookmark sc3__mobile-bookmark--after">After</span>
 								<div class="sc3__mobile-card-frame sc3__mobile-card-frame--collage">
-									<div class="sc3__mobile-output-grid">
-										{[1, 2, 0, 3].map((outputIdx, gridIdx) => {
-											const pos = ['tl', 'tr', 'bl', 'br'][gridIdx];
-											const slot = cat.outputs[outputIdx];
-											return slot?.src ? (
-												<div class={`sc3__mobile-output sc3__mobile-output--${pos}`}>
-													<img
-														src={slot.src}
-														alt={slot.alt}
-														width="600"
-														height="800"
-														loading="lazy"
-													/>
-												</div>
-											) : (
-												<div class={`sc3__mobile-output sc3__mobile-output--${pos}`}>
-													<div class="sc3__mobile-output-ph">
-														<Fragment set:html={placeholderSvg} />
+									<span class="sc3__mobile-tab-label sc3__mobile-tab-label--after">After</span>
+									<div class="sc3__mobile-card-media">
+										<div class="sc3__mobile-output-grid">
+											{[1, 2, 0, 3].map((outputIdx, gridIdx) => {
+												const pos = ['tl', 'tr', 'bl', 'br'][gridIdx];
+												const slot = cat.outputs[outputIdx];
+												return slot?.src ? (
+													<div class={`sc3__mobile-output sc3__mobile-output--${pos}`}>
+														<img
+															src={slot.src}
+															alt={slot.alt}
+															width="600"
+															height="800"
+															loading="lazy"
+														/>
 													</div>
-												</div>
-											);
-										})}
+												) : (
+													<div class={`sc3__mobile-output sc3__mobile-output--${pos}`}>
+														<div class="sc3__mobile-output-ph">
+															<Fragment set:html={placeholderSvg} />
+														</div>
+													</div>
+												);
+											})}
+										</div>
 									</div>
 								</div>
 							</div>
@@ -685,56 +735,6 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 			will-change: transform;
 		}
 
-		.sc3__mobile-bookmark {
-			position: absolute;
-			top: -1.4rem;
-			z-index: 3;
-			min-width: 5.6rem;
-			padding: 0.46rem 0.78rem 0.64rem;
-			background: transparent;
-			border: 1px solid rgba(255, 255, 255, 0.96);
-			border-bottom: none;
-			border-radius: 0.9rem 0.9rem 0 0;
-			color: #fff;
-			font-size: 0.72rem;
-			font-weight: 900;
-			letter-spacing: 0.05em;
-			line-height: 1;
-			text-transform: uppercase;
-			text-align: center;
-			white-space: nowrap;
-			pointer-events: none;
-			transition: opacity 0.24s ease;
-			text-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.45);
-		}
-
-		.sc3__mobile-bookmark::after {
-			content: '';
-			position: absolute;
-			left: 0;
-			right: 0;
-			top: 100%;
-			height: 0.6rem;
-			background: transparent;
-			border-left: 1px solid rgba(255, 255, 255, 0.96);
-			border-right: 1px solid rgba(255, 255, 255, 0.96);
-			border-bottom: none;
-		}
-
-		.sc3__mobile-stage[data-dragging='true'] .sc3__mobile-bookmark {
-			transition: none;
-		}
-
-		.sc3__mobile-bookmark--before {
-			left: 0.28rem;
-			opacity: var(--sc3-before-tag-opacity);
-		}
-
-		.sc3__mobile-bookmark--after {
-			right: 0.28rem;
-			opacity: var(--sc3-after-tag-opacity);
-		}
-
 		.sc3__mobile-stage[data-dragging='true'] .sc3__mobile-card {
 			transition: none;
 		}
@@ -745,12 +745,102 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 			width: 100%;
 			height: 100%;
 			overflow: hidden;
-			border-radius: 1.25rem;
-			background: rgba(255, 255, 255, 0.03);
-			border: 1px solid rgba(255, 255, 255, 0.08);
+			--sc3-tab-width: 5.6rem;
+			--sc3-tab-height: 1.5rem;
+			--sc3-tab-offset: 0.78rem;
+			--sc3-card-radius: 1.25rem;
+			--sc3-tab-radius: 0.7rem;
+			background: rgba(78, 201, 180, 0.12);
+			clip-path: polygon(
+				0 var(--sc3-tab-height),
+				var(--sc3-tab-offset) var(--sc3-tab-height),
+				var(--sc3-tab-offset) 0,
+				calc(var(--sc3-tab-offset) + var(--sc3-tab-width)) 0,
+				calc(var(--sc3-tab-offset) + var(--sc3-tab-width)) var(--sc3-tab-height),
+				100% var(--sc3-tab-height),
+				100% 100%,
+				0 100%
+			);
 			transition:
 				box-shadow 0.58s cubic-bezier(0.22, 1, 0.36, 1),
 				filter 0.58s cubic-bezier(0.22, 1, 0.36, 1);
+		}
+
+		.sc3__mobile-card-frame::before {
+			content: '';
+			position: absolute;
+			inset: 1px;
+			background: rgba(15, 30, 28, 0.9);
+			clip-path: polygon(
+				0 var(--sc3-tab-height),
+				calc(var(--sc3-tab-offset) + 1px) var(--sc3-tab-height),
+				calc(var(--sc3-tab-offset) + 1px) 1px,
+				calc(var(--sc3-tab-offset) + var(--sc3-tab-width) - 1px) 1px,
+				calc(var(--sc3-tab-offset) + var(--sc3-tab-width) - 1px) var(--sc3-tab-height),
+				100% var(--sc3-tab-height),
+				100% 100%,
+				0 100%
+			);
+			z-index: 0;
+		}
+
+		.sc3__mobile-tab-label {
+			position: absolute;
+			top: 0.42rem;
+			z-index: 2;
+			color: #fff;
+			font-size: 0.62rem;
+			font-weight: 800;
+			letter-spacing: 0.09em;
+			line-height: 1;
+			text-transform: uppercase;
+			pointer-events: none;
+			text-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.45);
+			transition: opacity 0.24s ease;
+		}
+
+		.sc3__mobile-tab-label--before {
+			left: calc(var(--sc3-tab-offset) + 0.82rem);
+			opacity: var(--sc3-before-tag-opacity);
+		}
+
+		.sc3__mobile-tab-label--after {
+			right: calc(var(--sc3-tab-offset) + 0.96rem);
+			opacity: var(--sc3-after-tag-opacity);
+		}
+
+		.sc3__mobile-card-media {
+			position: relative;
+			z-index: 1;
+			width: 100%;
+			height: 100%;
+			padding-top: var(--sc3-tab-height);
+		}
+
+		.sc3__mobile-card--after .sc3__mobile-card-frame {
+			clip-path: polygon(
+				0 var(--sc3-tab-height),
+				calc(100% - var(--sc3-tab-offset) - var(--sc3-tab-width)) var(--sc3-tab-height),
+				calc(100% - var(--sc3-tab-offset) - var(--sc3-tab-width)) 0,
+				calc(100% - var(--sc3-tab-offset)) 0,
+				calc(100% - var(--sc3-tab-offset)) var(--sc3-tab-height),
+				100% var(--sc3-tab-height),
+				100% 100%,
+				0 100%
+			);
+		}
+
+		.sc3__mobile-card--after .sc3__mobile-card-frame::before {
+			clip-path: polygon(
+				0 var(--sc3-tab-height),
+				calc(100% - var(--sc3-tab-offset) - var(--sc3-tab-width) - 1px) var(--sc3-tab-height),
+				calc(100% - var(--sc3-tab-offset) - var(--sc3-tab-width) - 1px) 1px,
+				calc(100% - var(--sc3-tab-offset) - 1px) 1px,
+				calc(100% - var(--sc3-tab-offset) - 1px) var(--sc3-tab-height),
+				100% var(--sc3-tab-height),
+				100% 100%,
+				0 100%
+			);
 		}
 
 		.sc3__mobile-ph {
@@ -828,8 +918,35 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 		.sc3__mobile-card-frame--collage {
 			padding: 0.55rem;
 			background:
-				linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03)),
-				rgba(9, 16, 15, 0.92);
+				linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
+				rgba(78, 201, 180, 0.12);
+		}
+
+		.sc3__mobile-before-grid {
+			width: 100%;
+			height: 100%;
+			padding: 0.5rem;
+			display: grid;
+			grid-template-columns: 1.86fr 1fr;
+			gap: 0.45rem;
+		}
+
+		.sc3__mobile-before-main,
+		.sc3__mobile-before-side-card {
+			overflow: hidden;
+			border-radius: 0.9rem;
+			background: rgba(255, 255, 255, 0.04);
+		}
+
+		.sc3__mobile-before-side {
+			display: grid;
+			grid-template-rows: 1fr;
+			gap: 0.45rem;
+			min-height: 0;
+		}
+
+		.sc3__mobile-before-grid--triple .sc3__mobile-before-side {
+			grid-template-rows: 1fr 1fr;
 		}
 
 		.sc3__mobile-output-grid {
@@ -892,7 +1009,7 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 		.sc3__mobile-card,
 		.sc3__mobile-card-frame,
 		.sc3__mobile-card-frame::after,
-		.sc3__mobile-bookmark,
+		.sc3__mobile-tab-label,
 		.sc3__nav-item {
 			transition: none !important;
 			animation: none !important;
