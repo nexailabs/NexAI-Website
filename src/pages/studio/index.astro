@@ -1,10 +1,10 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import ShootsHero from '../../components/ShootsHero.astro';
+import StudioHero from '../../components/StudioHero.astro';
 import ClientMarquee from '../../components/ClientMarquee.astro';
-import ShowcaseV3 from '../../components/ShowcaseV3.astro';
+import StudioShowcase from '../../components/StudioShowcase.astro';
 import ServicesGrid from '../../components/ServicesGrid.astro';
-import { heroDecks, brandLogos, showcaseCategories, serviceCards } from '../../data/ai-shoots';
+import { heroDecks, brandLogos, showcaseCategories, serviceCards } from '../../data/studio';
 import { site } from '../../config/site';
 ---
 
@@ -31,11 +31,11 @@ import { site } from '../../config/site';
 	/>
 
 	<section class="shoots-hero" id="top">
-		<ShootsHero decks={heroDecks} />
+		<StudioHero decks={heroDecks} />
 		<ClientMarquee brands={brandLogos} />
 	</section>
 
-	<ShowcaseV3 categories={showcaseCategories} />
+	<StudioShowcase categories={showcaseCategories} />
 
 	<ServicesGrid
 		eyebrow="AI Photoshoot Services"
