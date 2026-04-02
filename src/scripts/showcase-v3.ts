@@ -213,8 +213,13 @@ function mobClearTimers() {
 function getPassiveOffset(ctrl: MobController) {
 	const beforeWidth = ctrl.beforeCard?.offsetWidth || 0;
 	const afterWidth = ctrl.afterCard?.offsetWidth || 0;
-	const baseWidth = Math.max(beforeWidth, afterWidth, ctrl.mobileStage.clientWidth * 0.76);
-	return (baseWidth * (1 - PASSIVE_SCALE + 2 * PASSIVE_VISIBLE_RATIO * PASSIVE_SCALE)) / 2;
+	const stageWidth = ctrl.mobileStage.clientWidth || 0;
+	const baseWidth = Math.max(beforeWidth, afterWidth, stageWidth * 0.74);
+	const scaledWidth = baseWidth * PASSIVE_SCALE;
+	const desiredPeek = scaledWidth * PASSIVE_VISIBLE_RATIO;
+	const targetOffset = (baseWidth - scaledWidth) / 2 + desiredPeek;
+	const maxContainedOffset = Math.max(0, (stageWidth - scaledWidth) / 2 - 6);
+	return clamp(targetOffset, 18, Math.max(18, maxContainedOffset));
 }
 
 function getVisualState(ctrl: MobController, progress: number) {
@@ -241,8 +246,8 @@ function getVisualState(ctrl: MobController, progress: number) {
 
 function applyVisualState(ctrl: MobController, progress: number, dragging = false) {
 	const state = getVisualState(ctrl, progress);
-	const beforeTagOpacity = progress < 0.5 ? 1 : 0;
-	const afterTagOpacity = progress >= 0.5 ? 1 : 0;
+	const beforeTagOpacity = lerp(1, 0.46, progress);
+	const afterTagOpacity = lerp(0.46, 1, progress);
 	ctrl.progress = progress;
 	ctrl.mobileStage.dataset.dragging = dragging ? 'true' : 'false';
 	if (dragging) {
