@@ -1,3 +1,5 @@
+export {};
+
 let cleanup: (() => void) | null = null;
 
 function init() {
