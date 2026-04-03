@@ -14,19 +14,45 @@ import { site } from '../../config/site';
 	ogImage="https://ik.imagekit.io/nexailabs/nexai/og/ai-shoots.png?tr=w-1200,h-630,fo-auto,f-auto,q-85"
 	mainClass="shoots-page"
 >
-	<link slot="head" rel="preload" as="image" href={heroDecks[0][heroDecks[0].length - 1].src} />
+	<link slot="head" rel="preload" as="image" href={heroDecks[0][0].src} />
 	<script
 		slot="head"
 		type="application/ld+json"
 		set:html={JSON.stringify({
 			'@context': 'https://schema.org',
-			'@type': 'Organization',
-			name: site.name,
-			url: site.url,
-			logo: 'https://ik.imagekit.io/nexailabs/nexai/og/default.png?tr=w-1200,h-630,fo-auto,f-auto,q-85',
-			description: site.description,
-			email: site.email,
-			sameAs: [],
+			'@graph': [
+				{
+					'@type': 'Organization',
+					'@id': `${site.url}/#org`,
+					name: site.name,
+					url: site.url,
+					logo: 'https://ik.imagekit.io/nexailabs/nexai/og/default.png?tr=w-1200,h-630,fo-auto,f-auto,q-85',
+					description: site.description,
+					email: site.email,
+					sameAs: [
+						'https://www.linkedin.com/company/nexailabs',
+						'https://www.instagram.com/nexailabs',
+						'https://www.youtube.com/@nexailabs',
+					],
+				},
+				{
+					'@type': 'WebPage',
+					'@id': `${site.url}/studio/`,
+					url: `${site.url}/studio/`,
+					name: 'AI Photoshoots for Fashion Brands | NexAI Labs',
+					description: 'Premium AI fashion photography for D2C brands.',
+					isPartOf: { '@id': `${site.url}/#website` },
+					about: { '@id': `${site.url}/studio/#service` },
+				},
+				{
+					'@type': 'Service',
+					'@id': `${site.url}/studio/#service`,
+					name: 'AI Fashion Photography',
+					description: 'Premium AI-powered photoshoots for fashion and D2C brands.',
+					provider: { '@id': `${site.url}/#org` },
+					serviceType: 'AI Photography',
+				},
+			],
 		})}
 	/>
 

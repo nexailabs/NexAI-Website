@@ -5,6 +5,15 @@ import CustomCursor from '../components/CustomCursor.astro';
 import { navConfigs } from '../config/navigation';
 import '../styles/global.css';
 
+// Self-hosted fonts (replaces Google Fonts CDN)
+import '@fontsource/cormorant-garamond/latin-600.css';
+import '@fontsource/cormorant-garamond/latin-600-italic.css';
+import '@fontsource/inter/latin-400.css';
+import '@fontsource/inter/latin-600.css';
+import '@fontsource/inter/latin-800.css';
+import '@fontsource/montserrat/latin-600.css';
+import '@fontsource/montserrat/latin-700.css';
+
 interface Props {
 	title: string;
 	description?: string;
@@ -24,7 +33,7 @@ const {
 const section = Astro.url.pathname.split('/')[1] || 'main';
 const navConfig = navConfigs[section] ?? navConfigs.main;
 
-const resolvedCanonical = canonicalUrl || Astro.url.href;
+const resolvedCanonical = canonicalUrl || new URL(Astro.url.pathname, Astro.site).href;
 const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, Astro.site).href;
 ---
 
@@ -62,13 +71,7 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 		<!-- View Transitions -->
 		<ClientRouter />
 
-		<!-- Google Fonts -->
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Inter:wght@400;600;800&family=Montserrat:wght@600;700&display=swap"
-			rel="stylesheet"
-		/>
+		<!-- Fonts loaded via @fontsource (self-hosted, no external requests) -->
 		<slot name="head" />
 	</head>
 	<body>

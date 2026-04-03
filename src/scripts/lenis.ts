@@ -29,8 +29,6 @@ function initLenis() {
 	rafId = requestAnimationFrame(raf);
 }
 
-initLenis();
-
 document.addEventListener('astro:page-load', initLenis);
 document.addEventListener('astro:before-swap', () => {
 	if (lenis) {
