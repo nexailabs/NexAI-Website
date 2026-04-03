@@ -30,6 +30,15 @@ function init() {
 	let lastScrollY = window.scrollY;
 
 	let revealTimer: ReturnType<typeof setTimeout> | null = null;
+	const clearRevealTimer = () => {
+		if (!revealTimer) return;
+		clearTimeout(revealTimer);
+		revealTimer = null;
+	};
+	const clearRevealClasses = () => {
+		clearRevealTimer();
+		root.classList.remove('is-revealing');
+	};
 
 	const syncScrollState = () => {
 		const y = window.scrollY;
@@ -37,11 +46,7 @@ function init() {
 
 		if (root.dataset.open !== 'true') {
 			if (scrollingDown && y > 0) {
-				if (revealTimer) {
-					clearTimeout(revealTimer);
-					revealTimer = null;
-				}
-				root.classList.remove('is-revealing');
+				clearRevealClasses();
 				root.classList.add('is-hidden');
 			} else if (root.classList.contains('is-hidden')) {
 				// 1. Strip scrolled state (bar goes transparent — no visual transition since is-hidden kills it)
@@ -58,7 +63,7 @@ function init() {
 				revealTimer = setTimeout(() => {
 					root.classList.remove('is-revealing');
 					revealTimer = null;
-				}, 900);
+				}, 1200);
 			} else {
 				root.classList.toggle('is-scrolled', y > 24);
 			}
@@ -96,6 +101,8 @@ function init() {
 		collapseAllSubs();
 		hideAllFlyouts();
 		trigger?.focus();
+		lastScrollY = window.scrollY;
+		syncScrollState();
 	};
 
 	// Dynamic focus trap — recomputes visible focusables on every Tab
@@ -118,6 +125,8 @@ function init() {
 	};
 
 	const openMenu = () => {
+		clearRevealClasses();
+		root.classList.remove('is-hidden');
 		root.dataset.open = 'true';
 		trigger?.setAttribute('aria-expanded', 'true');
 		trigger?.setAttribute('aria-label', 'Close navigation');
