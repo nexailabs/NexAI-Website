@@ -84,7 +84,8 @@ function init() {
 
 		const leftCenter = leftRect.left + leftRect.width / 2;
 		const rightCenter = rightRect.left + rightRect.width / 2;
-		const splitShift = Math.min(leftCenter, viewportWidth - rightCenter);
+		const baseShift = Math.min(leftCenter, viewportWidth - rightCenter);
+		const splitShift = baseShift + 20;
 
 		return { togetherShift: 0, splitShift };
 	};
@@ -376,15 +377,9 @@ function init() {
 			const mobileCards = getCards(deck);
 			const cardCount = Math.max(1, mobileCards.length);
 			const viewportHeight = window.innerHeight;
-			const viewportWidth = window.innerWidth;
 			const dealStartOffset = Math.max(500, viewportHeight * 0.08);
-			const dealWindow = Math.max(1000, cardCount * 280);
-			const settleBuffer = Math.max(300, viewportHeight * 0.05);
-			const dealInterval = Math.max(
-				200,
-				Math.floor(viewportWidth * 0.005),
-				Math.floor(dealWindow / cardCount),
-			);
+			const dealInterval = 1000;
+			const settleBuffer = 0;
 			const cardEntryDuration = 550;
 			const cardExitDuration = 420;
 			const baseTime = mobileCycleStart + dealStartOffset + settleBuffer + cardExitDuration + 380;
