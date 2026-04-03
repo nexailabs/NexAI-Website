@@ -564,6 +564,22 @@ function init() {
 
 	window.addEventListener('resize', handleResize);
 
+	let paused = false;
+	const onVisibilityChange = () => {
+		if (document.hidden) {
+			if (cycleTimer) {
+				clearTimeout(cycleTimer);
+				cycleTimer = null as unknown as number;
+			}
+			cycleEpoch++;
+			paused = true;
+		} else if (paused) {
+			paused = false;
+			restartCycle(getInitialTitleShift());
+		}
+	};
+	document.addEventListener('visibilitychange', onVisibilityChange);
+
 	thumbs.forEach((thumb, i) => {
 		const onThumbClick = () => {
 			if (isMobile()) {
@@ -617,6 +633,7 @@ function init() {
 		if (resizeRaf) cancelAnimationFrame(resizeRaf);
 		clearTimeout(cycleTimer);
 		window.removeEventListener('resize', handleResize);
+		document.removeEventListener('visibilitychange', onVisibilityChange);
 	};
 }
 

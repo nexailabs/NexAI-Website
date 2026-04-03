@@ -1,11 +1,21 @@
 ---
 import type { HeroImage } from '../types/studio';
+import { tr } from '../config/imagekit';
 
 interface Props {
 	decks: HeroImage[][];
 }
 
 const { decks } = Astro.props;
+
+const heroSrcset = (src: string) => {
+	const base = src.replace(tr.hero, '');
+	return [
+		`${base}?tr=w-400,h-533,fo-auto,f-auto,q-80 400w`,
+		`${base}?tr=w-600,h-800,fo-auto,f-auto,q-80 600w`,
+		`${base}?tr=w-900,h-1200,fo-auto,f-auto,q-80 900w`,
+	].join(', ');
+};
 ---
 
 <div class="container shoots-hero__shell">
@@ -30,14 +40,14 @@ const { decks } = Astro.props;
 									>
 										<img
 											src={item.src}
+											srcset={heroSrcset(item.src)}
+											sizes="(max-width: 720px) 60vw, 18vw"
 											alt={item.alt}
 											width="600"
 											height="800"
-											loading={deckIndex === 0 && index === deck.length - 1 ? 'eager' : 'lazy'}
+											loading={deckIndex === 0 && index === 0 ? 'eager' : 'lazy'}
 											decoding="async"
-											fetchpriority={
-												deckIndex === 0 && index === deck.length - 1 ? 'high' : undefined
-											}
+											fetchpriority={deckIndex === 0 && index === 0 ? 'high' : undefined}
 										/>
 									</span>
 								))}
@@ -60,7 +70,14 @@ const { decks } = Astro.props;
 					data-hero-thumb={i}
 					aria-label={deck[0].alt}
 				>
-					<img src={deck[0].src} alt="" width="600" height="800" loading="lazy" decoding="async" />
+					<img
+						src={deck[0].src.replace(tr.hero, tr.thumb)}
+						alt=""
+						width="200"
+						height="200"
+						loading="lazy"
+						decoding="async"
+					/>
 				</button>
 			))
 		}
