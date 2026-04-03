@@ -55,7 +55,7 @@ const {
 					class="prod-signal-nav__cta"
 					href={ctaHref}
 					target="_blank"
-					rel="noreferrer"
+					rel="noopener noreferrer"
 					aria-label={`${ctaLabel} (opens in new tab)`}
 				>
 					{ctaLabel}
@@ -191,7 +191,7 @@ const {
 									href={s.href}
 									class="prod-signal-nav__social-link"
 									target="_blank"
-									rel="noreferrer"
+									rel="noopener noreferrer"
 									aria-label={`${s.label} (opens in new tab)`}
 								>
 									<Fragment set:html={socialIcons[s.platform] || ''} />
@@ -217,6 +217,19 @@ const {
 		z-index: 100;
 		padding-top: 1rem;
 		pointer-events: none;
+		transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.prod-signal-nav.is-hidden {
+		transform: translateY(-100%);
+	}
+
+	.prod-signal-nav.is-hidden .prod-signal-nav__bar {
+		transition: none;
+	}
+
+	.prod-signal-nav.is-revealing .prod-signal-nav__bar {
+		transition-delay: 0.35s;
 	}
 
 	.prod-signal-nav__inner,

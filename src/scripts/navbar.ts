@@ -27,8 +27,43 @@ function init() {
 	const brand = root.querySelector<HTMLElement>('.prod-signal-nav__brand');
 	const headerCta = root.querySelector<HTMLElement>('.prod-signal-nav__cta');
 
+	let lastScrollY = window.scrollY;
+
+	let revealTimer: ReturnType<typeof setTimeout> | null = null;
+
 	const syncScrollState = () => {
-		root.classList.toggle('is-scrolled', window.scrollY > 24);
+		const y = window.scrollY;
+		const scrollingDown = y > lastScrollY;
+
+		if (root.dataset.open !== 'true') {
+			if (scrollingDown && y > 0) {
+				if (revealTimer) {
+					clearTimeout(revealTimer);
+					revealTimer = null;
+				}
+				root.classList.remove('is-revealing');
+				root.classList.add('is-hidden');
+			} else if (root.classList.contains('is-hidden')) {
+				// 1. Strip scrolled state (bar goes transparent — no visual transition since is-hidden kills it)
+				root.classList.remove('is-scrolled');
+				// 2. Remove is-hidden (slide-down starts), add is-revealing (bar gets transition-delay)
+				root.classList.remove('is-hidden');
+				root.classList.add('is-revealing');
+				// 3. Force reflow — commit the transparent bar as the transition starting state
+				void root.offsetHeight;
+				// 4. Add is-scrolled — CSS transition-delay keeps bar transparent during slide,
+				//    then animates the highlight in after the slide completes
+				root.classList.toggle('is-scrolled', y > 24);
+				// 5. Clean up the delay class after animation completes
+				revealTimer = setTimeout(() => {
+					root.classList.remove('is-revealing');
+					revealTimer = null;
+				}, 900);
+			} else {
+				root.classList.toggle('is-scrolled', y > 24);
+			}
+		}
+		lastScrollY = y;
 	};
 
 	const collapseAllSubs = () => {
