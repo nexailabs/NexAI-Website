@@ -31,3 +31,7 @@ function init() {
 }
 
 document.addEventListener('astro:page-load', init);
+document.addEventListener('astro:before-swap', () => {
+	cleanup?.();
+	cleanup = null;
+});
