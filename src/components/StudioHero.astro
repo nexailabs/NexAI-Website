@@ -213,19 +213,20 @@ const heroSrcset = (src: string) => {
 				calc(100svh - var(--header-height, 5rem) - var(--shoots-marquee-space))
 			);
 			padding-top: clamp(0.45rem, 1.8vh, 1rem);
-			padding-bottom: clamp(0.35rem, 1.1vh, 0.6rem);
+			padding-bottom: clamp(2rem, 5vh, 4rem);
 			row-gap: clamp(0.4rem, 1.2vh, 0.8rem);
 		}
 
 		.shoots-hero__copy {
 			width: 100%;
+			padding-bottom: 4vh;
 		}
 
 		.shoots-hero__title-row {
 			width: 100%;
 			min-height: clamp(17rem, 68vh, 23rem);
 			display: grid;
-			grid-template-columns: auto auto auto;
+			grid-template-columns: 1fr auto 1fr;
 			align-items: center;
 			justify-content: center;
 			column-gap: clamp(0.4rem, 2vw, 0.8rem);
@@ -233,7 +234,7 @@ const heroSrcset = (src: string) => {
 
 		.shoots-hero__title-word {
 			flex: none;
-			font-size: clamp(1rem, 5.1vw, 1.9rem);
+			font-size: clamp(2rem, 10.2vw, 3.8rem);
 			letter-spacing: -0.03em;
 		}
 
@@ -246,31 +247,23 @@ const heroSrcset = (src: string) => {
 		}
 
 		.shoots-hero__stack-stage {
-			--hero-card-width: clamp(11rem, 60vw, 16rem);
-			--hero-card-height: clamp(14.75rem, 80.4vw, 21.4rem);
+			--hero-card-width: clamp(12.1rem, 66vw, 17.6rem);
+			--hero-card-height: clamp(16.2rem, 88.4vw, 23.5rem);
 			width: 0;
 			height: var(--hero-card-height);
 			overflow: visible;
 		}
 
 		.shoots-hero__card {
-			--hero-card-width: clamp(11rem, 60vw, 16rem);
-			--hero-card-height: clamp(14.75rem, 80.4vw, 21.4rem);
+			--hero-card-width: clamp(12.1rem, 66vw, 17.6rem);
+			--hero-card-height: clamp(16.2rem, 88.4vw, 23.5rem);
 			width: var(--hero-card-width);
 			height: var(--hero-card-height);
 			border-radius: 1rem;
 		}
 
 		.shoots-hero__dock {
-			gap: 0.55rem;
-			padding: 0.4rem;
-		}
-
-		.shoots-hero__dock-thumb {
-			width: 3rem;
-			height: 3rem;
-			aspect-ratio: auto;
-			border-radius: 0.55rem;
+			transform: scale(1.1);
 		}
 	}
 
