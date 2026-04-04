@@ -12,16 +12,44 @@ const { brands } = Astro.props;
 	<div class="client-marquee__track">
 		<div class="client-marquee__list">
 			{
-				brands.map((b) => (
-					<img src={b.src} alt={b.alt} width={b.width} height={b.height} loading="lazy" />
-				))
+				brands.map((b) => {
+					const parts = [
+						b.scale && `scale(${b.scale})`,
+						b.offsetY && `translateY(${b.offsetY})`,
+					].filter(Boolean);
+					const style = parts.length ? `transform: ${parts.join(' ')}` : '';
+					return (
+						<img
+							src={b.src}
+							alt={b.alt}
+							width={b.width}
+							height={b.height}
+							loading="lazy"
+							style={style}
+						/>
+					);
+				})
 			}
 		</div>
 		<div class="client-marquee__list" aria-hidden="true">
 			{
-				brands.map((b) => (
-					<img src={b.src} alt="" width={b.width} height={b.height} loading="lazy" />
-				))
+				brands.map((b) => {
+					const parts = [
+						b.scale && `scale(${b.scale})`,
+						b.offsetY && `translateY(${b.offsetY})`,
+					].filter(Boolean);
+					const style = parts.length ? `transform: ${parts.join(' ')}` : '';
+					return (
+						<img
+							src={b.src}
+							alt=""
+							width={b.width}
+							height={b.height}
+							loading="lazy"
+							style={style}
+						/>
+					);
+				})
 			}
 		</div>
 	</div>

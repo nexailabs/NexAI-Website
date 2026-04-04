@@ -8,6 +8,8 @@ export interface BrandLogo {
 	alt: string;
 	width: number;
 	height: number;
+	scale?: number;
+	offsetY?: string;
 }
 
 export interface ServiceCard {
