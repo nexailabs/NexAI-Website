@@ -6,6 +6,14 @@ import StudioShowcase from '../../components/StudioShowcase.astro';
 import ServicesGrid from '../../components/ServicesGrid.astro';
 import { heroDecks, brandLogos, showcaseCategories, serviceCards } from '../../data/studio';
 import { site } from '../../config/site';
+import { tr } from '../../config/imagekit';
+
+const heroBase = heroDecks[0][0].src.replace(tr.hero, '');
+const heroPreloadSrcset = [
+	`${heroBase}?tr=w-400,h-533,fo-auto,f-auto,q-80 400w`,
+	`${heroBase}?tr=w-600,h-800,fo-auto,f-auto,q-80 600w`,
+	`${heroBase}?tr=w-900,h-1200,fo-auto,f-auto,q-80 900w`,
+].join(', ');
 ---
 
 <Layout
@@ -14,7 +22,14 @@ import { site } from '../../config/site';
 	ogImage="https://ik.imagekit.io/nexailabs/nexai/og/ai-shoots.png?tr=w-1200,h-630,fo-auto,f-auto,q-85"
 	mainClass="shoots-page"
 >
-	<link slot="head" rel="preload" as="image" href={heroDecks[0][0].src} />
+	<link
+		slot="head"
+		rel="preload"
+		as="image"
+		href={heroDecks[0][0].src}
+		imagesrcset={heroPreloadSrcset}
+		imagesizes="(max-width: 720px) 60vw, 18vw"
+	/>
 	<script
 		slot="head"
 		type="application/ld+json"

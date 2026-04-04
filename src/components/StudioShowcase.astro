@@ -1,11 +1,13 @@
 ---
 import type { ShowcaseCategory } from '../types/studio';
+import { showcaseSrcset } from '../config/imagekit';
 
 interface Props {
 	categories: ShowcaseCategory[];
 }
 
 const { categories } = Astro.props;
+const scSizes = '(max-width: 900px) 80vw, 35vw';
 
 const aspectDims: Record<string, { w: number; h: number }> = {
 	'3x4': { w: 600, h: 800 },
@@ -72,6 +74,8 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 													<div class="sc3__mobile-before-main">
 														<img
 															src={cat.inputMain}
+															srcset={showcaseSrcset(cat.inputMain)}
+															sizes={scSizes}
 															alt={`${cat.label} raw input`}
 															width="600"
 															height="800"
@@ -83,6 +87,8 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 															<div class="sc3__mobile-before-side-card">
 																<img
 																	src={cat.inputSideTop}
+																	srcset={showcaseSrcset(cat.inputSideTop)}
+																	sizes={scSizes}
 																	alt={`${cat.label} side input top`}
 																	width="600"
 																	height="800"
@@ -94,6 +100,8 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 															<div class="sc3__mobile-before-side-card">
 																<img
 																	src={cat.inputSideBottom}
+																	srcset={showcaseSrcset(cat.inputSideBottom)}
+																	sizes={scSizes}
 																	alt={`${cat.label} side input bottom`}
 																	width="600"
 																	height="800"
@@ -106,6 +114,8 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 											) : (
 												<img
 													src={cat.inputMain}
+													srcset={showcaseSrcset(cat.inputMain)}
+													sizes={scSizes}
 													alt={`${cat.label} raw input`}
 													width="600"
 													height="800"
@@ -133,6 +143,8 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 													<div class={`sc3__mobile-output sc3__mobile-output--${pos}`}>
 														<img
 															src={slot.src}
+															srcset={showcaseSrcset(slot.src)}
+															sizes={scSizes}
 															alt={slot.alt}
 															width="600"
 															height="800"
@@ -161,6 +173,8 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 									{cat.inputMain ? (
 										<img
 											src={cat.inputMain}
+											srcset={showcaseSrcset(cat.inputMain)}
+											sizes={scSizes}
 											alt="Raw Garment"
 											width="600"
 											height="800"
@@ -176,6 +190,8 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 										{cat.inputSideTop ? (
 											<img
 												src={cat.inputSideTop}
+												srcset={showcaseSrcset(cat.inputSideTop)}
+												sizes={scSizes}
 												alt="Side input"
 												width="600"
 												height="800"
@@ -189,6 +205,8 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 										{cat.inputSideBottom ? (
 											<img
 												src={cat.inputSideBottom}
+												srcset={showcaseSrcset(cat.inputSideBottom)}
+												sizes={scSizes}
 												alt="Side input"
 												width="600"
 												height="800"
@@ -223,6 +241,8 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 											{slot.src ? (
 												<img
 													src={slot.src}
+													srcset={showcaseSrcset(slot.src)}
+													sizes={scSizes}
 													alt={slot.alt}
 													width={aspectDims[slot.aspect].w}
 													height={aspectDims[slot.aspect].h}
@@ -253,6 +273,8 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 												{slot.src ? (
 													<img
 														src={slot.src}
+														srcset={showcaseSrcset(slot.src)}
+														sizes={scSizes}
 														alt={slot.alt}
 														width={aspectDims[slot.aspect].w}
 														height={aspectDims[slot.aspect].h}
@@ -282,6 +304,8 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 											{slot.src ? (
 												<img
 													src={slot.src}
+													srcset={showcaseSrcset(slot.src)}
+													sizes={scSizes}
 													alt={slot.alt}
 													width={aspectDims[slot.aspect].w}
 													height={aspectDims[slot.aspect].h}
@@ -425,6 +449,9 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 		opacity: 0;
 		pointer-events: none;
 		transform: scale(1.02);
+	}
+	.sc3__panel:not(.active):not(.leaving) {
+		content-visibility: hidden;
 	}
 
 	/* ── Columns ── */
