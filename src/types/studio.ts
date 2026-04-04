@@ -12,11 +12,6 @@ export interface BrandLogo {
 	offsetY?: string;
 }
 
-export interface ServiceCard {
-	title: string;
-	description: string;
-}
-
 export interface ShowcaseSlot {
 	src?: string;
 	alt: string;
