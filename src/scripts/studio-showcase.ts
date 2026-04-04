@@ -37,19 +37,21 @@ function activateTab(
 		panel.setAttribute('aria-hidden', panel === nextPanel ? 'false' : 'true'),
 	);
 
+	// Lock stage height BEFORE removing active (panel is still position:relative)
+	const stage = document.querySelector<HTMLElement>('.sc3__stage');
+	if (stage && currentActive) {
+		stage.style.minHeight = `${currentActive.offsetHeight}px`;
+	}
+	const scrollY = window.scrollY;
+
 	if (currentActive) {
 		currentActive.classList.add('leaving');
 		currentActive.classList.remove('active');
 	}
 
-	// Lock stage height to prevent layout jump during crossfade
-	const stage = document.querySelector<HTMLElement>('.sc3__stage');
-	if (stage && currentActive) {
-		stage.style.minHeight = `${currentActive.offsetHeight}px`;
-	}
-
 	requestAnimationFrame(() => {
 		nextPanel.classList.add('active');
+		window.scrollTo({ top: scrollY, behavior: 'instant' as ScrollBehavior });
 
 		// Trigger mobile cycle reinit
 		initMobShowcaseCycle();
