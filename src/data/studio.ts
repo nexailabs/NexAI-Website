@@ -96,7 +96,7 @@ export const heroDecks: HeroImage[][] = [heroDeckD, heroDeckC, heroDeckB, heroDe
 // ── Brand logos (marquee) ──
 export const brandLogos: BrandLogo[] = [
 	{
-		src: `${ik}/studio/brands/banno.png${tr.logo}`,
+		src: `${ik}/studio/brands/banno.png${tr.logo}&updatedAt=1775297865302`,
 		alt: 'Banno',
 		width: 282,
 		height: 199,
