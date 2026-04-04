@@ -31,5 +31,10 @@ slides/
 # Claude Code local config
 .claude/
 
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+
 # internal docs (not for public repo)
 docs/NexAI Labs - Company Overview.docx

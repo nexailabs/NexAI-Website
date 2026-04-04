@@ -104,7 +104,7 @@ html {
 	font-size: 16px;
 	-webkit-font-smoothing: antialiased;
 	text-rendering: optimizeLegibility;
-	overflow-x: hidden; /* Prevent horizontal scroll from animations */
+	overflow-x: clip; /* Prevent horizontal scroll without breaking position: sticky */
 }
 
 body {
@@ -150,14 +150,12 @@ html.lenis {
 	background-clip: text;
 }
 
-/* ── Custom Cursor (hide default on mouse devices) ─────────────────────── */
+/* ── Custom Cursor (hide default only after JS confirms init) ────────── */
 
-@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
-	*,
-	*::before,
-	*::after {
-		cursor: none !important;
-	}
+html.custom-cursor-active *,
+html.custom-cursor-active *::before,
+html.custom-cursor-active *::after {
+	cursor: none !important;
 }
 
 /* ── Reduced Motion ─────────────────────────────────────────────────────── */

@@ -22,6 +22,9 @@
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
 		"type-check": "astro check",
+		"test": "playwright test",
+		"test:ui": "playwright test --ui",
+		"test:update": "playwright test --update-snapshots",
 		"prepare": "husky"
 	},
 	"lint-staged": {
@@ -48,6 +51,7 @@
 	"devDependencies": {
 		"@astrojs/check": "^0.9.8",
 		"@eslint/js": "^10.0.1",
+		"@playwright/test": "^1.59.1",
 		"eslint": "^10.1.0",
 		"eslint-plugin-astro": "^1.6.0",
 		"husky": "^9.1.7",

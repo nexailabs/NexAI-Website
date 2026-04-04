@@ -103,6 +103,9 @@ function init() {
 	document.addEventListener('mousedown', onMouseDown);
 	document.addEventListener('mouseup', onMouseUp);
 
+	// Hide native cursor only after successful init (fail-safe: no class = native cursor stays)
+	document.documentElement.classList.add('custom-cursor-active');
+
 	cleanup = () => {
 		stopLoop();
 		if (idleTimer) clearTimeout(idleTimer);
@@ -114,6 +117,7 @@ function init() {
 		document.removeEventListener('mouseenter', onMouseEnter);
 		document.removeEventListener('mousedown', onMouseDown);
 		document.removeEventListener('mouseup', onMouseUp);
+		document.documentElement.classList.remove('custom-cursor-active');
 		cursor.classList.remove('cursor--visible', 'cursor--hover', 'cursor--click');
 		revealed = false;
 	};
