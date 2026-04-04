@@ -95,22 +95,62 @@ export const heroDecks: HeroImage[][] = [heroDeckD, heroDeckC, heroDeckB, heroDe
 
 // ── Brand logos (marquee) ──
 export const brandLogos: BrandLogo[] = [
-	{ src: `${ik}/studio/brands/banno.png${tr.logo}`, alt: 'Banno', width: 282, height: 199 },
+	{
+		src: `${ik}/studio/brands/banno.png${tr.logo}`,
+		alt: 'Banno',
+		width: 282,
+		height: 199,
+		scale: 0.9,
+	},
 	{ src: `${ik}/studio/brands/dbj.png${tr.logo}`, alt: 'DBJ', width: 275, height: 168 },
 	{ src: `${ik}/studio/brands/ganga.png${tr.logo}`, alt: 'Ganga', width: 307, height: 212 },
-	{ src: `${ik}/studio/brands/indo-era.png${tr.logo}`, alt: 'Indo Era', width: 370, height: 223 },
-	{ src: `${ik}/studio/brands/janasya.png${tr.logo}`, alt: 'Janasya', width: 260, height: 208 },
-	{ src: `${ik}/studio/brands/jugo.png${tr.logo}`, alt: 'Jugo', width: 203, height: 180 },
-	{ src: `${ik}/studio/brands/stf.png${tr.logo}`, alt: 'STF', width: 389, height: 162 },
+	{
+		src: `${ik}/studio/brands/indo-era.png${tr.logo}`,
+		alt: 'Indo Era',
+		width: 370,
+		height: 223,
+		scale: 0.9,
+	},
+	{
+		src: `${ik}/studio/brands/janasya.png${tr.logo}`,
+		alt: 'Janasya',
+		width: 260,
+		height: 208,
+		scale: 1.1,
+	},
+	{
+		src: `${ik}/studio/brands/jugo.png${tr.logo}`,
+		alt: 'Jugo',
+		width: 203,
+		height: 180,
+		scale: 0.9,
+		offsetY: '0.15rem',
+	},
+	{ src: `${ik}/studio/brands/stf.png${tr.logo}`, alt: 'STF', width: 389, height: 162, scale: 0.9 },
 	{
 		src: `${ik}/studio/brands/leemboodi.png${tr.logo}`,
 		alt: 'Leemboodi',
 		width: 1479,
 		height: 633,
+		scale: 0.8,
+		offsetY: '0.3rem',
 	},
-	{ src: `${ik}/studio/brands/skylee.png${tr.logo}`, alt: 'Skylee', width: 303, height: 143 },
+	{
+		src: `${ik}/studio/brands/skylee.png${tr.logo}`,
+		alt: 'Skylee',
+		width: 303,
+		height: 143,
+		scale: 0.7,
+		offsetY: '0.15rem',
+	},
 	{ src: `${ik}/studio/brands/xyxx.png${tr.logo}`, alt: 'XYXX', width: 240, height: 151 },
-	{ src: `${ik}/studio/brands/yufta.png${tr.logo}`, alt: 'Yufta', width: 253, height: 208 },
+	{
+		src: `${ik}/studio/brands/yufta.png${tr.logo}`,
+		alt: 'Yufta',
+		width: 253,
+		height: 208,
+		offsetY: '-0.15rem',
+	},
 ];
 
 // ── Showcase categories ──
@@ -249,31 +289,31 @@ export const showcaseCategories: ShowcaseCategory[] = [
 	{
 		id: 'jewelry',
 		label: 'Jewelry',
-		inputMain: `${ik}/studio/showcase/dbj/dbj-input-01.png${tr.showcase}`,
+		inputMain: `${ik}/studio/showcase/dbj/dbj-output-01.png${tr.showcase}`,
 		outputs: [
 			{
-				src: `${ik}/studio/showcase/dbj/dbj-output-01.jpg${tr.showcase}`,
-				alt: 'Jewelry AI output — full-length front view',
+				src: `${ik}/studio/showcase/dbj/dbj-output-05.png${tr.showcase}`,
+				alt: 'Jewelry AI output — alternate angle',
 				aspect: '3x4',
 			},
 			{
-				src: `${ik}/studio/showcase/dbj/dbj-output-02.jpg${tr.showcase}`,
+				src: `${ik}/studio/showcase/dbj/dbj-output-02.png${tr.showcase}`,
 				alt: 'Jewelry AI output — detail crop',
 				aspect: '1x1',
 			},
 			{
-				src: `${ik}/studio/showcase/dbj/dbj-output-03.jpg${tr.showcase}`,
+				src: `${ik}/studio/showcase/dbj/dbj-output-03.png${tr.showcase}`,
 				alt: 'Jewelry AI output — three-quarter angle',
 				aspect: '2x3',
 			},
 			{
-				src: `${ik}/studio/showcase/dbj/dbj-output-04.jpg${tr.showcase}`,
+				src: `${ik}/studio/showcase/dbj/dbj-output-04.png${tr.showcase}`,
 				alt: 'Jewelry AI output — accessory detail',
 				aspect: '1x1',
 			},
 			{
-				src: `${ik}/studio/showcase/dbj/dbj-output-05.jpg${tr.showcase}`,
-				alt: 'Jewelry AI output — alternate angle',
+				src: `${ik}/studio/showcase/dbj/dbj-output-01.png${tr.showcase}`,
+				alt: 'Jewelry AI output — full-length front view',
 				aspect: '3x4',
 			},
 		],
