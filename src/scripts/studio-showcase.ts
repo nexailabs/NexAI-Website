@@ -467,10 +467,35 @@ function initMobShowcaseCycle() {
 		};
 	});
 
-	queueAutoCycle(0);
+	// Pause auto-cycle when showcase is off-screen
+	const scSection = document.querySelector<HTMLElement>('.sc3');
+	let scOffScreen = false;
+	let scIO: IntersectionObserver | null = null;
+	if (scSection) {
+		scIO = new IntersectionObserver(
+			([entry]) => {
+				if (!entry.isIntersecting) {
+					scOffScreen = true;
+					pauseAutoCycle();
+				} else if (scOffScreen) {
+					scOffScreen = false;
+					queueAutoCycle(1500);
+				}
+			},
+			{ threshold: 0 },
+		);
+		scIO.observe(scSection);
+	}
+
+	// Skip auto-cycle entirely under reduced motion (manual swipe still works)
+	const prefersReducedMotionMob = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	if (!prefersReducedMotionMob) {
+		queueAutoCycle(0);
+	}
 
 	mobCleanup = () => {
 		mobClearTimers();
+		scIO?.disconnect();
 		mobControllers.forEach((ctrl) => ctrl.cleanup?.());
 	};
 }
