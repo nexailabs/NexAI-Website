@@ -816,9 +816,7 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 			margin-top: calc(var(--sc3-tab-h) / 2);
 			background: rgba(15, 30, 28, 0.9);
 			border-radius: var(--sc3-radius);
-			transition:
-				box-shadow 0.58s cubic-bezier(0.22, 1, 0.36, 1),
-				filter 0.58s cubic-bezier(0.22, 1, 0.36, 1);
+			transition: box-shadow 0.58s cubic-bezier(0.22, 1, 0.36, 1);
 		}
 
 		/* Tab via ::before — same bg, overlaps body = one shape */
@@ -870,12 +868,12 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 
 		.sc3__mobile-card--before .sc3__mobile-card-body {
 			box-shadow: 0 1.2rem 2.8rem rgba(0, 0, 0, var(--sc3-before-shadow));
-			filter: brightness(calc(1 - (var(--sc3-before-overlay) * 0.16)));
+			opacity: calc(1 - (var(--sc3-before-overlay) * 0.16));
 		}
 
 		.sc3__mobile-card--after .sc3__mobile-card-body {
 			box-shadow: 0 1.2rem 2.8rem rgba(0, 0, 0, var(--sc3-after-shadow));
-			filter: brightness(calc(1 - (var(--sc3-after-overlay) * 0.16)));
+			opacity: calc(1 - (var(--sc3-after-overlay) * 0.16));
 		}
 
 		.sc3__mobile-stage[data-dragging='true'] .sc3__mobile-card-body {

@@ -26,7 +26,6 @@ function init() {
 	let cycleTimer: number;
 	let cycleEpoch = 0;
 	let spreadScale = 1;
-	const centerOffset = 0; // CSS flex:1 on title words keeps stage centered; no JS offset needed
 	let resizeRaf = 0;
 	const MOBILE_BREAKPOINT = 720;
 	const MOBILE_EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
@@ -180,8 +179,6 @@ function init() {
 		return Math.max(0, Math.min(leftShift, rightShift));
 	};
 
-	// centerOffset removed — CSS flex:1 on title words centers the stage naturally
-
 	interface CardState {
 		x: number;
 		y: number;
@@ -251,7 +248,7 @@ function init() {
 		deck.style.visibility = 'visible';
 
 		cards.forEach((card, index) => {
-			const state = entryState(index, cards.length, centerOffset);
+			const state = entryState(index, cards.length);
 			card.style.zIndex = `${state.zIndex}`;
 			card.style.opacity = '1';
 			card.style.transition = 'none';
@@ -263,7 +260,7 @@ function init() {
 				void getComputedStyle(card).transform;
 			});
 			cards.forEach((card, index) => {
-				applyState(card, holdState(index, cards.length, centerOffset), true);
+				applyState(card, holdState(index, cards.length), true);
 			});
 		});
 
@@ -288,20 +285,15 @@ function init() {
 		steps.forEach((step) => schedule(step.action, step.delay));
 	};
 
-	const refreshCenterOffset = () => {
-		// no-op: centerOffset is always 0 with flex:1 CSS fix
-	};
-
 	decks.forEach((deck) => hideDeck(deck));
 	setTitleState({ shift: getInitialTitleShift(), opacity: 1 }, false);
 
 	if (prefersReducedMotion) {
 		const activeDeck = decks[0];
-		refreshCenterOffset();
 		activeDeck.style.opacity = '1';
 		activeDeck.style.visibility = 'visible';
 		getCards(activeDeck).forEach((card, index, cards) =>
-			applyState(card, holdState(index, cards.length, centerOffset), false),
+			applyState(card, holdState(index, cards.length), false),
 		);
 		setTitleState({ shift: 0, opacity: 1 }, false);
 		cleanup = () => {
@@ -321,18 +313,17 @@ function init() {
 
 	const applyDesktopLayoutForResize = () => {
 		if (isMobile() || !activeCards.length) return;
-		refreshCenterOffset();
 		const spreadUnit = getSpreadUnit(activeCards);
 		if (activeDesktopPhase === 'spread') {
 			activeCards.forEach((card, index) => {
-				applyState(card, spreadState(index, activeCards.length, spreadUnit, centerOffset), false);
+				applyState(card, spreadState(index, activeCards.length, spreadUnit), false);
 			});
 			const spreadShift = getSpreadTitleShift();
 			setTitleState({ shift: spreadShift, opacity: 1 }, false);
 			return;
 		}
 		activeCards.forEach((card, index) => {
-			applyState(card, holdState(index, activeCards.length, centerOffset), false);
+			applyState(card, holdState(index, activeCards.length), false);
 		});
 		setTitleState({ shift: 0, opacity: 1 }, false);
 	};
@@ -357,7 +348,6 @@ function init() {
 		let spreadUnit = 0;
 
 		const startDeckDesktop = () => {
-			refreshCenterOffset();
 			cards = showDeck(deck);
 			activeCards = cards;
 			activeDesktopPhase = 'stack';
@@ -365,7 +355,6 @@ function init() {
 		};
 
 		const startDeckMobile = () => {
-			refreshCenterOffset();
 			cards = getCards(deck);
 			activeCards = cards;
 			activeDesktopPhase = 'idle';
@@ -463,7 +452,7 @@ function init() {
 
 			schedule(() => {
 				cards.forEach((card, index) => {
-					applyState(card, spreadState(index, cards.length, spreadUnit, centerOffset), true);
+					applyState(card, spreadState(index, cards.length, spreadUnit), true);
 				});
 			}, desktopCycleStart + 1540);
 
@@ -474,13 +463,13 @@ function init() {
 
 			schedule(() => {
 				cards.forEach((card, index) => {
-					applyState(card, holdState(index, cards.length, centerOffset), true);
+					applyState(card, holdState(index, cards.length), true);
 				});
 			}, desktopCycleStart + 4540);
 
 			schedule(() => {
 				cards.forEach((card, index) => {
-					applyState(card, exitState(index, cards.length, centerOffset), true);
+					applyState(card, exitState(index, cards.length), true);
 				});
 			}, desktopCycleStart + 5520);
 
@@ -560,20 +549,43 @@ function init() {
 	window.addEventListener('resize', handleResize);
 
 	let paused = false;
-	const onVisibilityChange = () => {
-		if (document.hidden) {
-			if (cycleTimer) {
-				clearTimeout(cycleTimer);
-				cycleTimer = null as unknown as number;
-			}
-			cycleEpoch++;
-			paused = true;
-		} else if (paused) {
-			paused = false;
-			restartCycle(getInitialTitleShift());
+	const pauseHero = () => {
+		if (paused) return;
+		if (cycleTimer) {
+			clearTimeout(cycleTimer);
+			cycleTimer = null as unknown as number;
 		}
+		cycleEpoch++;
+		paused = true;
+	};
+	const resumeHero = () => {
+		if (!paused) return;
+		paused = false;
+		restartCycle(getInitialTitleShift());
+	};
+
+	const onVisibilityChange = () => {
+		if (document.hidden) pauseHero();
+		else resumeHero();
 	};
 	document.addEventListener('visibilitychange', onVisibilityChange);
+
+	// Pause hero cycle when scrolled off-screen
+	const heroSection = stage.closest('.shoots-hero') ?? stage;
+	let offScreen = false;
+	const heroIO = new IntersectionObserver(
+		([entry]) => {
+			if (!entry.isIntersecting) {
+				offScreen = true;
+				pauseHero();
+			} else if (offScreen) {
+				offScreen = false;
+				if (!document.hidden) resumeHero();
+			}
+		},
+		{ threshold: 0 },
+	);
+	heroIO.observe(heroSection);
 
 	thumbs.forEach((thumb, i) => {
 		const onThumbClick = () => {
@@ -600,7 +612,7 @@ function init() {
 			const transition = `transform 200ms ${DESKTOP_EASE}, opacity 180ms ${DESKTOP_EASE}`;
 
 			activeCards.forEach((card, index) => {
-				applyState(card, exitState(index, activeCards.length, centerOffset), true, transition);
+				applyState(card, exitState(index, activeCards.length), true, transition);
 			});
 			setTitleState({ shift: getTitleShift(), opacity: 1 }, true);
 
@@ -627,6 +639,7 @@ function init() {
 		clearScheduledTimers();
 		if (resizeRaf) cancelAnimationFrame(resizeRaf);
 		clearTimeout(cycleTimer);
+		heroIO.disconnect();
 		window.removeEventListener('resize', handleResize);
 		document.removeEventListener('visibilitychange', onVisibilityChange);
 	};

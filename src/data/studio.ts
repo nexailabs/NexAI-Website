@@ -1,6 +1,6 @@
-import type { HeroImage, BrandLogo, ServiceCard, ShowcaseCategory } from '../types/studio';
+import type { HeroImage, BrandLogo, ShowcaseCategory } from '../types/studio';
 
-export type { HeroImage, BrandLogo, ServiceCard, ShowcaseCategory };
+export type { HeroImage, BrandLogo, ShowcaseCategory };
 
 // ── ImageKit helpers ──
 import { ik, tr } from '../config/imagekit';
@@ -349,24 +349,5 @@ export const showcaseCategories: ShowcaseCategory[] = [
 				aspect: '3x4',
 			},
 		],
-	},
-];
-
-// ── Service cards ──
-export const serviceCards: ServiceCard[] = [
-	{
-		title: 'AI Model Generation',
-		description:
-			"Generate diverse, customizable AI models that match your brand's aesthetic and target audience.",
-	},
-	{
-		title: 'Virtual Photoshoots',
-		description:
-			'Create unlimited variations of product shots with different poses, lighting, and backgrounds.',
-	},
-	{
-		title: 'Style & Trend Adaptation',
-		description:
-			'Quickly adapt visuals to seasonal trends, campaigns, and regional preferences without reshoots.',
 	},
 ];

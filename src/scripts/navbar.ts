@@ -1,4 +1,4 @@
-export {};
+import { stopLenis, startLenis } from './lenis';
 
 let controller: AbortController | null = null;
 
@@ -95,6 +95,7 @@ function init() {
 		trigger?.setAttribute('aria-label', 'Open navigation');
 		panel?.setAttribute('aria-hidden', 'true');
 		document.body.classList.remove('nav-open');
+		startLenis();
 		pageContent?.removeAttribute('inert');
 		brand?.removeAttribute('tabindex');
 		headerCta?.removeAttribute('tabindex');
@@ -132,6 +133,7 @@ function init() {
 		trigger?.setAttribute('aria-label', 'Close navigation');
 		panel?.removeAttribute('aria-hidden');
 		document.body.classList.add('nav-open');
+		stopLenis();
 		pageContent?.setAttribute('inert', '');
 		brand?.setAttribute('tabindex', '-1');
 		headerCta?.setAttribute('tabindex', '-1');
