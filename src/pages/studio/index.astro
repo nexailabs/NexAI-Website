@@ -3,8 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import StudioHero from '../../components/StudioHero.astro';
 import ClientMarquee from '../../components/ClientMarquee.astro';
 import StudioShowcase from '../../components/StudioShowcase.astro';
-import ServicesGrid from '../../components/ServicesGrid.astro';
-import { heroDecks, brandLogos, showcaseCategories, serviceCards } from '../../data/studio';
+import { heroDecks, brandLogos, showcaseCategories } from '../../data/studio';
 import { site } from '../../config/site';
 import { tr } from '../../config/imagekit';
 
@@ -77,14 +76,6 @@ const heroPreloadSrcset = [
 	</section>
 
 	<StudioShowcase categories={showcaseCategories} />
-
-	<ServicesGrid
-		eyebrow="AI Photoshoot Services"
-		heading="Transform your fashion brand with AI-powered visuals"
-		subheading="We create premium on-model imagery that accelerates your collection launches while reducing production costs and time-to-market."
-		cards={serviceCards}
-		class="reveal-up"
-	/>
 </Layout>
 
 <style>
