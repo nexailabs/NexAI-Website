@@ -2,6 +2,7 @@
 import { ClientRouter } from 'astro:transitions';
 import Navbar from '../components/Navbar.astro';
 import CustomCursor from '../components/CustomCursor.astro';
+import Footer from '../components/Footer.astro';
 import { navConfigs } from '../config/navigation';
 import '../styles/global.css';
 
@@ -94,6 +95,7 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 			<main id="main-content" class={mainClass} tabindex="-1">
 				<slot />
 			</main>
+			<Footer />
 		</div>
 
 		<!-- Global Scripts -->
