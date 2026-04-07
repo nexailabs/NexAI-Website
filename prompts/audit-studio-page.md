@@ -1,11 +1,3 @@
-# Studio Page Design & Architecture Audit
-
-> Use this prompt with Claude, ChatGPT, Gemini, or any LLM to get a comprehensive audit of the NexAI Studio website. Paste the prompt below along with relevant file contents.
-
----
-
-## Prompt
-
 Audit the design, animations, and file architecture of a fashion AI studio website. Be critical and specific — flag real issues with file paths and line numbers, not generic advice.
 
 ### Stack
