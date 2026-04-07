@@ -26,3 +26,15 @@ export interface ShowcaseCategory {
 	inputSideBottom?: string;
 	outputs: ShowcaseSlot[];
 }
+
+export interface ProcessStep {
+	title: string;
+	description: string;
+	image: string;
+}
+
+export interface FAQItem {
+	question: string;
+	answer: string;
+	featured?: boolean;
+}

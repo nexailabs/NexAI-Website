@@ -35,6 +35,7 @@ slides/
 /test-results/
 /playwright-report/
 /blob-report/
+.playwright-mcp/
 
 # internal docs (not for public repo)
 docs/NexAI Labs - Company Overview.docx

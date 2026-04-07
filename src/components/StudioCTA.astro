@@ -1,0 +1,125 @@
+---
+import type { HeroImage } from '../types/studio';
+import { site } from '../config/site';
+
+interface Props {
+	floats: HeroImage[];
+}
+
+const { floats } = Astro.props;
+const bookingUrl = site.bookingUrl;
+---
+
+<section class="studio-cta">
+	<div class="container studio-cta__inner">
+		<h2 class="section-title">
+			Launch your next <em>collection</em><br />without booking a <em>shoot</em>.
+		</h2>
+		<p class="section-sub">
+			We'll show you samples from brands in your category — before you commit to anything.
+		</p>
+		<a class="studio-cta__btn" href={bookingUrl} target="_blank" rel="noopener noreferrer">
+			Book a Free Call
+		</a>
+		<div class="studio-cta__proof">
+			<div class="studio-cta__avatars">
+				<img src={floats[0]?.src} alt="" class="studio-cta__avatar" loading="lazy" />
+				<img src={floats[3]?.src} alt="" class="studio-cta__avatar" loading="lazy" />
+				<img src={floats[4]?.src} alt="" class="studio-cta__avatar" loading="lazy" />
+			</div>
+			<span class="studio-cta__proof-text">
+				<strong>50+ brands</strong> trust NexAI Studio
+			</span>
+		</div>
+	</div>
+</section>
+
+<style>
+	.studio-cta {
+		position: relative;
+		padding: clamp(4rem, 8vh, 6rem) 0;
+		/* No background — shared floats zone handles the visual backdrop */
+	}
+
+	/* ── Inner content ── */
+	.studio-cta__inner {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: 1.5rem;
+	}
+
+	/* Heading/sub use global .section-title / .section-sub */
+
+	/* ── CTA button ── */
+	.studio-cta__btn {
+		display: inline-flex;
+		align-items: center;
+		padding: 0.85rem 2.2rem;
+		border-radius: 999px;
+		background: var(--color-text-main);
+		color: var(--color-bg);
+		font-family: var(--font-main);
+		font-weight: var(--fw-semibold);
+		font-size: 0.95rem;
+		text-decoration: none;
+		transition:
+			transform 0.3s var(--ease-out-expo),
+			box-shadow 0.3s var(--ease-out-expo);
+	}
+
+	.studio-cta__btn:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 0 24px rgba(78, 201, 180, 0.2);
+	}
+
+	/* ── Social proof ── */
+	.studio-cta__proof {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		margin-top: 0.5rem;
+	}
+
+	.studio-cta__avatars {
+		display: flex;
+	}
+
+	.studio-cta__avatar {
+		width: 32px;
+		height: 32px;
+		border-radius: 50%;
+		object-fit: cover;
+		border: 2px solid var(--color-bg);
+		margin-left: -8px;
+	}
+
+	.studio-cta__avatar:first-child {
+		margin-left: 0;
+	}
+
+	.studio-cta__proof-text {
+		font-family: var(--font-main);
+		font-size: var(--text-sm);
+		color: var(--color-text-muted);
+	}
+
+	.studio-cta__proof-text strong {
+		color: var(--color-text-main);
+	}
+
+	/* ── Mobile ── */
+	@media (max-width: 720px) {
+		.studio-cta {
+			padding: clamp(4rem, 10vh, 7rem) 0;
+		}
+
+		.studio-cta__proof {
+			flex-direction: column;
+			gap: 0.5rem;
+		}
+	}
+</style>

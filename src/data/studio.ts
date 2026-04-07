@@ -153,6 +153,34 @@ export const brandLogos: BrandLogo[] = [
 	},
 ];
 
+// ── CTA floating images ──
+export const ctaFloats: HeroImage[] = [
+	{
+		src: `${ik}/studio/hero/dbj/dbj-01.jpg${tr.ctaFloat}`,
+		alt: 'Jewelry editorial — earring mirror closeup',
+	},
+	{
+		src: `${ik}/studio/hero/leemboodi/leemboodi-02.jpg${tr.ctaFloat}`,
+		alt: 'Saree editorial — colorful outdoor',
+	},
+	{
+		src: `${ik}/studio/hero/soilearth/soilearth-01.jpg${tr.ctaFloat}`,
+		alt: 'Product photography — oils flat-lay',
+	},
+	{
+		src: `${ik}/studio/hero/yufta/yufta-02.jpg${tr.ctaFloat}`,
+		alt: 'Fashion editorial — floral dress studio',
+	},
+	{
+		src: `${ik}/studio/showcase/rasvidha/rasvidha-output-01.jpg${tr.ctaFloat}`,
+		alt: 'AI saree photoshoot — standing drape pose',
+	},
+	{
+		src: `${ik}/studio/showcase/xyxx/xyxx-output-01.jpg${tr.ctaFloat}`,
+		alt: 'AI menswear photoshoot — full-length front view',
+	},
+];
+
 // ── Showcase categories ──
 // Output aspect pattern: [3x4, 1x1, 2x3, 1x1, 3x4]
 export const showcaseCategories: ShowcaseCategory[] = [

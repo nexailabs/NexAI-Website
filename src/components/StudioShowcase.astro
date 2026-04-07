@@ -21,6 +21,10 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 
 <section class="sc3" id="showcase">
 	<div class="container sc3__shell">
+		<header class="section-header">
+			<h2 class="section-title">See the <em>difference</em></h2>
+			<p class="section-sub">Product in, photoshoot out. Pick a category to explore.</p>
+		</header>
 		<div class="sc3__nav">
 			<ul class="sc3__nav-list" role="tablist" aria-label="Showcase categories">
 				{
@@ -338,13 +342,13 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 
 <style is:global>
 	.sc3 {
-		padding: clamp(2rem, 4vw, 3.5rem) 0 clamp(4rem, 8vw, 7rem);
+		padding: clamp(1rem, 2vh, 1.5rem) 0 clamp(4rem, 8vh, 6rem);
 		position: relative;
 	}
 	.sc3__shell {
 		display: flex;
 		flex-direction: column;
-		gap: clamp(2rem, 4vw, 3rem);
+		gap: clamp(1.25rem, 2.5vw, 2rem);
 	}
 
 	/* ── Horizontal Top Nav ── */
@@ -409,7 +413,7 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 		z-index: 1;
 	}
 	.sc3__nav-item.active {
-		color: #fff;
+		color: var(--color-text-main);
 		background: rgba(78, 201, 180, 0.15);
 		border-color: var(--color-brand-cyan, #4ec9b4);
 		box-shadow: 0 0 24px rgba(78, 201, 180, 0.4);
@@ -831,9 +835,9 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			color: #fff;
+			color: var(--color-text-main);
 			font-size: 0.62rem;
-			font-weight: 800;
+			font-weight: var(--fw-black);
 			letter-spacing: 0.09em;
 			text-transform: uppercase;
 			text-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.45);
