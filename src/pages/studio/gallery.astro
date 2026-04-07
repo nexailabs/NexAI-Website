@@ -1,14 +1,274 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import CategoryPage from '../../components/CategoryPage.astro';
+import { galleryItems, galleryCategories } from '../../data/gallery';
+import { site } from '../../config/site';
 ---
 
-<Layout title="Gallery | NexAI Studio" description="Before & after AI transformations.">
-	<CategoryPage
-		title="Gallery"
-		tag="STUDIO"
-		description="Before & after transformations — coming soon."
-		backHref="/studio"
-		backLabel="Back to Studio"
-	/>
+<Layout
+	title="Gallery | NexAI Studio — AI Fashion Photography"
+	description="Browse AI-generated fashion photography across kurta sets, sarees, western wear, menswear, jewelry, and cosmetics. Real brands, real results."
+>
+	<section class="gallery">
+		<div class="container gallery__inner">
+			<header class="section-header">
+				<p class="section-eyebrow">Portfolio</p>
+				<h1 class="section-title">Our <em>Work</em></h1>
+				<p class="section-sub">AI-generated photoshoots for real brands. Filter by category.</p>
+			</header>
+
+			<!-- Filters -->
+			<div class="gallery__filters">
+				<div class="gallery__filter-row" data-gallery-filter="category">
+					{
+						galleryCategories.map((cat) => (
+							<button
+								class:list={[
+									'gallery__filter-btn',
+									{ 'gallery__filter-btn--active': cat.id === 'all' },
+								]}
+								data-filter-value={cat.id}
+							>
+								{cat.label}
+							</button>
+						))
+					}
+				</div>
+			</div>
+
+			<!-- Masonry grid -->
+			<div class="gallery__grid" data-gallery-grid>
+				{
+					galleryItems.map((item) => (
+						<div
+							class="gallery__item"
+							data-gallery-item
+							data-category={item.category}
+							data-type={item.type}
+							data-aspect={item.aspect}
+						>
+							<img
+								class="gallery__img"
+								src={item.src}
+								alt={item.alt}
+								loading="lazy"
+								decoding="async"
+							/>
+						</div>
+					))
+				}
+			</div>
+
+			<!-- CTA -->
+			<div class="gallery__cta">
+				<p class="gallery__cta-text">Want results like these for your brand?</p>
+				<a
+					class="gallery__cta-btn"
+					href={site.bookingUrl}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					Book a Free Call
+				</a>
+			</div>
+		</div>
+	</section>
 </Layout>
+
+<style>
+	.gallery {
+		padding: calc(var(--header-height, 5rem) + 2rem) 0 clamp(4rem, 8vh, 6rem);
+		min-height: 100vh;
+	}
+
+	.gallery__inner {
+		display: flex;
+		flex-direction: column;
+		gap: clamp(2rem, 4vh, 3rem);
+	}
+
+	/* ── Filters ── */
+	.gallery__filters {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		align-items: center;
+	}
+
+	.gallery__filter-row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		justify-content: center;
+	}
+
+	.gallery__filter-btn {
+		padding: 0.5rem 1.2rem;
+		border-radius: 999px;
+		border: 1px solid var(--color-border);
+		background: rgba(255, 255, 255, 0.03);
+		color: var(--color-text-muted);
+		font-family: var(--font-main);
+		font-size: var(--text-sm);
+		font-weight: var(--fw-semibold);
+		cursor: pointer;
+		transition:
+			color 0.2s ease,
+			border-color 0.2s ease,
+			background 0.2s ease;
+	}
+
+	.gallery__filter-btn:hover {
+		color: var(--color-text-main);
+		border-color: var(--color-border-hover);
+	}
+
+	.gallery__filter-btn--active {
+		color: var(--color-text-main);
+		border-color: var(--color-brand-cyan);
+		background: rgba(78, 201, 180, 0.1);
+	}
+
+	/* ── Masonry grid ── */
+	.gallery__grid {
+		columns: 4;
+		column-gap: 1rem;
+	}
+
+	.gallery__item {
+		break-inside: avoid;
+		margin-bottom: 1rem;
+		border-radius: 10px;
+		overflow: hidden;
+		opacity: 1;
+		transition: opacity 0.3s ease;
+	}
+
+	.gallery__item[data-hidden] {
+		display: none;
+	}
+
+	.gallery__img {
+		width: 100%;
+		display: block;
+		object-fit: cover;
+		object-position: top;
+	}
+
+	/* Aspect-aware heights for masonry */
+	.gallery__item[data-aspect='3x4'] .gallery__img {
+		aspect-ratio: 3/4;
+	}
+	.gallery__item[data-aspect='2x3'] .gallery__img {
+		aspect-ratio: 2/3;
+	}
+	.gallery__item[data-aspect='1x1'] .gallery__img {
+		aspect-ratio: 1/1;
+	}
+	.gallery__item[data-aspect='16x9'] .gallery__img {
+		aspect-ratio: 16/9;
+	}
+	.gallery__item[data-aspect='9x16'] .gallery__img {
+		aspect-ratio: 9/16;
+	}
+
+	/* ── CTA ── */
+	.gallery__cta {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+		padding-top: clamp(2rem, 4vh, 3rem);
+	}
+
+	.gallery__cta-text {
+		font-family: var(--font-main);
+		font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+		color: var(--color-text-muted);
+	}
+
+	.gallery__cta-btn {
+		display: inline-flex;
+		align-items: center;
+		padding: 0.85rem 2.2rem;
+		border-radius: 999px;
+		background: var(--color-text-main);
+		color: var(--color-bg);
+		font-family: var(--font-main);
+		font-weight: var(--fw-semibold);
+		font-size: 0.95rem;
+		text-decoration: none;
+		transition:
+			transform 0.3s var(--ease-out-expo),
+			box-shadow 0.3s var(--ease-out-expo);
+	}
+
+	.gallery__cta-btn:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 0 24px rgba(78, 201, 180, 0.2);
+	}
+
+	/* ── Tablet ── */
+	@media (max-width: 1100px) {
+		.gallery__grid {
+			columns: 3;
+		}
+	}
+
+	/* ── Mobile ── */
+	@media (max-width: 720px) {
+		.gallery__grid {
+			columns: 2;
+			column-gap: 0.75rem;
+		}
+
+		.gallery__item {
+			margin-bottom: 0.75rem;
+			border-radius: 8px;
+		}
+
+		.gallery__filter-btn {
+			font-size: var(--text-xs);
+			padding: 0.4rem 0.9rem;
+		}
+	}
+</style>
+
+<script>
+	function initGallery() {
+		const grid = document.querySelector('[data-gallery-grid]');
+		const items = document.querySelectorAll<HTMLElement>('[data-gallery-item]');
+		const categoryBtns = document.querySelectorAll<HTMLButtonElement>(
+			'[data-gallery-filter="category"] [data-filter-value]',
+		);
+
+		if (!grid || !items.length) return;
+
+		let activeCategory = 'all';
+
+		function applyFilters() {
+			items.forEach((item) => {
+				const cat = item.dataset.category || '';
+				const show = activeCategory === 'all' || cat === activeCategory;
+
+				if (show) {
+					item.removeAttribute('data-hidden');
+				} else {
+					item.setAttribute('data-hidden', '');
+				}
+			});
+		}
+
+		categoryBtns.forEach((btn) => {
+			btn.addEventListener('click', () => {
+				activeCategory = btn.dataset.filterValue || 'all';
+
+				categoryBtns.forEach((b) => b.classList.remove('gallery__filter-btn--active'));
+				btn.classList.add('gallery__filter-btn--active');
+
+				applyFilters();
+			});
+		});
+	}
+
+	document.addEventListener('astro:page-load', initGallery);
+</script>

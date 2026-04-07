@@ -519,6 +519,18 @@ function init() {
 
 	resizeHandler = onResize;
 	window.addEventListener('resize', resizeHandler);
+
+	// Activate tab from URL hash (e.g., /studio#saree)
+	const hash = window.location.hash.slice(1);
+	if (hash) {
+		const tab = document.querySelector<HTMLElement>(`.sc3__nav-item[data-target="${hash}"]`);
+		if (tab) {
+			tab.click();
+			requestAnimationFrame(() => {
+				document.querySelector('.sc3')?.scrollIntoView({ behavior: 'smooth' });
+			});
+		}
+	}
 }
 
 function cleanup() {
