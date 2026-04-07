@@ -3,7 +3,11 @@ import Layout from '../../layouts/Layout.astro';
 import StudioHero from '../../components/StudioHero.astro';
 import ClientMarquee from '../../components/ClientMarquee.astro';
 import StudioShowcase from '../../components/StudioShowcase.astro';
-import { heroDecks, brandLogos, showcaseCategories } from '../../data/studio';
+import StudioCTA from '../../components/StudioCTA.astro';
+import StudioProcess from '../../components/StudioProcess.astro';
+import StudioFAQ from '../../components/StudioFAQ.astro';
+import { heroDecks, brandLogos, showcaseCategories, ctaFloats } from '../../data/studio';
+import { processSteps, faqItems } from '../../data/studio-copy';
 import { site } from '../../config/site';
 import { tr } from '../../config/imagekit';
 
@@ -17,7 +21,7 @@ const heroPreloadSrcset = [
 
 <Layout
 	title="AI Photoshoots for Fashion Brands | NexAI Labs"
-	description="Premium AI fashion photography for D2C brands."
+	description="Turn mannequin shots into on-model photos in 3–5 days. 80% cheaper than studios. Trusted by 50+ Indian fashion brands."
 	ogImage="https://ik.imagekit.io/nexailabs/nexai/og/ai-shoots.png?tr=w-1200,h-630,fo-auto,f-auto,q-85"
 	mainClass="shoots-page"
 >
@@ -66,6 +70,15 @@ const heroPreloadSrcset = [
 					provider: { '@id': `${site.url}/#org` },
 					serviceType: 'AI Photography',
 				},
+				{
+					'@type': 'FAQPage',
+					'@id': `${site.url}/studio/#faq`,
+					mainEntity: faqItems.map((item) => ({
+						'@type': 'Question',
+						name: item.question,
+						acceptedAnswer: { '@type': 'Answer', text: item.answer },
+					})),
+				},
 			],
 		})}
 	/>
@@ -76,6 +89,56 @@ const heroPreloadSrcset = [
 	</section>
 
 	<StudioShowcase categories={showcaseCategories} />
+	<StudioProcess steps={processSteps} />
+	<div class="faq-cta-zone">
+		<!-- Sticky floating images — stay in viewport while FAQ+CTA scroll past -->
+		<div class="faq-cta-zone__floats" aria-hidden="true">
+			<img
+				class="faq-cta-zone__float faq-cta-zone__float--1"
+				src={ctaFloats[0].src}
+				alt=""
+				loading="lazy"
+				decoding="async"
+			/>
+			<img
+				class="faq-cta-zone__float faq-cta-zone__float--2"
+				src={ctaFloats[1].src}
+				alt=""
+				loading="lazy"
+				decoding="async"
+			/>
+			<img
+				class="faq-cta-zone__float faq-cta-zone__float--3"
+				src={ctaFloats[2].src}
+				alt=""
+				loading="lazy"
+				decoding="async"
+			/>
+			<img
+				class="faq-cta-zone__float faq-cta-zone__float--4"
+				src={ctaFloats[3].src}
+				alt=""
+				loading="lazy"
+				decoding="async"
+			/>
+			<img
+				class="faq-cta-zone__float faq-cta-zone__float--5"
+				src={ctaFloats[4].src}
+				alt=""
+				loading="lazy"
+				decoding="async"
+			/>
+			<img
+				class="faq-cta-zone__float faq-cta-zone__float--6"
+				src={ctaFloats[5].src}
+				alt=""
+				loading="lazy"
+				decoding="async"
+			/>
+		</div>
+		<StudioFAQ items={faqItems} />
+		<StudioCTA floats={ctaFloats} />
+	</div>
 </Layout>
 
 <style>
@@ -105,6 +168,110 @@ const heroPreloadSrcset = [
 		.shoots-hero {
 			--shoots-marquee-space: 5.75rem;
 			padding-top: calc(var(--header-height, 5rem) + 0.5rem);
+		}
+	}
+
+	/* ── FAQ + CTA shared float zone ── */
+	.faq-cta-zone {
+		position: relative;
+	}
+
+	/* Sticky container — pins to viewport while FAQ+CTA scroll past */
+	.faq-cta-zone__floats {
+		position: sticky;
+		top: 0;
+		height: 100vh;
+		margin-bottom: -100vh; /* don't take up layout space */
+		pointer-events: none;
+		z-index: 1;
+	}
+
+	.faq-cta-zone__float {
+		position: absolute;
+		border-radius: 12px;
+		object-fit: cover;
+		box-shadow:
+			0 8px 32px rgba(0, 0, 0, 0.4),
+			0 0 0 1px rgba(255, 255, 255, 0.06);
+		animation: zone-float 7s ease-in-out infinite;
+	}
+
+	/* Left cluster — 3 images stacked */
+	.faq-cta-zone__float--1 {
+		width: clamp(90px, 10vw, 140px);
+		aspect-ratio: 3/4;
+		top: 12%;
+		left: 9%;
+		transform: rotate(-5deg);
+		animation-delay: 0s;
+	}
+
+	.faq-cta-zone__float--3 {
+		width: clamp(80px, 9vw, 130px);
+		aspect-ratio: 3/4;
+		top: 40%;
+		left: 8%;
+		transform: rotate(3deg);
+		animation-delay: -2.5s;
+	}
+
+	.faq-cta-zone__float--5 {
+		width: clamp(85px, 9vw, 125px);
+		aspect-ratio: 3/4;
+		top: 65%;
+		left: 10%;
+		transform: rotate(-2deg);
+		animation-delay: -5s;
+	}
+
+	/* Right cluster — 3 images stacked */
+	.faq-cta-zone__float--2 {
+		width: clamp(95px, 11vw, 150px);
+		aspect-ratio: 3/4;
+		top: 10%;
+		right: 9%;
+		transform: rotate(4deg);
+		animation-delay: -1.2s;
+	}
+
+	.faq-cta-zone__float--4 {
+		width: clamp(80px, 9vw, 120px);
+		aspect-ratio: 3/4;
+		top: 38%;
+		right: 8%;
+		transform: rotate(-4deg);
+		animation-delay: -3.8s;
+	}
+
+	.faq-cta-zone__float--6 {
+		width: clamp(90px, 10vw, 140px);
+		aspect-ratio: 3/4;
+		top: 63%;
+		right: 10%;
+		transform: rotate(3deg);
+		animation-delay: -1.8s;
+	}
+
+	@keyframes zone-float {
+		0%,
+		100% {
+			translate: 0 0;
+		}
+		50% {
+			translate: 0 -10px;
+		}
+	}
+
+	/* Hide floats on mobile */
+	@media (max-width: 720px) {
+		.faq-cta-zone__floats {
+			display: none;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.faq-cta-zone__float {
+			animation: none;
 		}
 	}
 </style>

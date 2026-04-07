@@ -5,6 +5,8 @@ export const tr = {
 	showcase: '?tr=w-800,f-auto,q-80',
 	thumb: '?tr=w-150,h-200,fo-auto,f-auto,q-60',
 	logo: '?tr=h-80,f-auto,q-90',
+	ctaFloat: '?tr=w-280,h-370,fo-auto,f-auto,q-75',
+	processCard: '?tr=w-500,h-660,fo-auto,f-auto,q-80',
 	og: '?tr=w-1200,h-630,fo-auto,f-auto,q-85',
 	full: '?tr=f-auto,q-85',
 } as const;

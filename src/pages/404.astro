@@ -11,7 +11,7 @@ import Layout from '../layouts/Layout.astro';
 		<span class="not-found__code">404</span>
 		<h1 class="not-found__heading">Page not found</h1>
 		<p class="not-found__body">The page you're looking for doesn't exist or has been moved.</p>
-		<a href="/" class="not-found__home">Back to home</a>
+		<a href="/" class="btn-ghost">Back to home</a>
 	</div>
 </Layout>
 
@@ -58,29 +58,5 @@ import Layout from '../layouts/Layout.astro';
 		line-height: 1.6;
 	}
 
-	.not-found__home {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0.85rem 1.75rem;
-		border-radius: 999px;
-		border: 1px solid var(--color-border);
-		background: rgba(255, 255, 255, 0.03);
-		color: var(--color-text-main);
-		font-size: 0.92rem;
-		font-weight: 600;
-		letter-spacing: 0.04em;
-		text-decoration: none;
-		text-transform: uppercase;
-		transition:
-			border-color 0.2s ease,
-			transform 0.2s ease;
-	}
-
-	.not-found__home:hover,
-	.not-found__home:focus-visible {
-		border-color: var(--color-border-hover);
-		transform: translateY(-1px);
-		outline: none;
-	}
+	/* .btn-ghost from global.css */
 </style>

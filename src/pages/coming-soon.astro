@@ -11,13 +11,13 @@ import Layout from '../layouts/Layout.astro';
 		<div class="coming-soon__grid" aria-hidden="true">
 			{Array.from({ length: 25 }).map(() => <span />)}
 		</div>
-		<span class="coming-soon__tag">IN THE PIPELINE</span>
+		<span class="tag-pill">IN THE PIPELINE</span>
 		<h1 class="coming-soon__heading">Coming Soon</h1>
 		<p class="coming-soon__body">
 			We're training the models, tuning the prompts, and shipping fast.<br />
 			This one's not ready yet — but it will be.
 		</p>
-		<a href="/" class="coming-soon__home">Back to Home</a>
+		<a href="/" class="btn-ghost">Back to Home</a>
 	</div>
 </Layout>
 
@@ -63,21 +63,11 @@ import Layout from '../layouts/Layout.astro';
 		max-width: 520px;
 	}
 
-	.coming-soon__tag {
-		font-size: 0.72rem;
-		font-weight: 600;
-		letter-spacing: 0.22em;
-		text-transform: uppercase;
-		color: var(--color-brand-cyan);
-		padding: 0.4rem 1rem;
-		border: 1px solid rgba(78, 201, 180, 0.2);
-		border-radius: 999px;
-		background: rgba(78, 201, 180, 0.06);
-	}
+	/* .tag-pill from global.css */
 
 	.coming-soon__heading {
 		font-size: clamp(3rem, 10vw, 6rem);
-		font-weight: 800;
+		font-weight: var(--fw-black);
 		line-height: 0.9;
 		background: var(--color-brand-gradient);
 		-webkit-background-clip: text;
@@ -92,31 +82,7 @@ import Layout from '../layouts/Layout.astro';
 		line-height: 1.7;
 	}
 
-	.coming-soon__home {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0.85rem 1.75rem;
-		border-radius: 999px;
-		border: 1px solid var(--color-border);
-		background: rgba(255, 255, 255, 0.03);
-		color: var(--color-text-main);
-		font-size: 0.92rem;
-		font-weight: 600;
-		letter-spacing: 0.04em;
-		text-decoration: none;
-		text-transform: uppercase;
-		transition:
-			border-color 0.2s ease,
-			transform 0.2s ease;
-	}
-
-	.coming-soon__home:hover,
-	.coming-soon__home:focus-visible {
-		border-color: var(--color-border-hover);
-		transform: translateY(-1px);
-		outline: none;
-	}
+	/* .btn-ghost from global.css */
 
 	@keyframes grid-pulse {
 		0%,
