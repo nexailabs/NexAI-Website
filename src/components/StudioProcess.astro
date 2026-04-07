@@ -1,0 +1,371 @@
+---
+import type { ProcessStep } from '../types/studio';
+
+interface Props {
+	steps: ProcessStep[];
+}
+
+const { steps } = Astro.props;
+---
+
+<section class="sp" data-process-section>
+	<div class="sp__scroll" data-process-scroll>
+		<div class="sp__sticky">
+			<div class="container sp__inner">
+				<header class="section-header">
+					<h2 class="section-title">How It Works</h2>
+					<p class="section-sub">From product to photoshoot in days, not weeks.</p>
+				</header>
+
+				<!-- Steps: number → [image slot] → title + desc -->
+				<div class="sp__steps" data-process-track>
+					{
+						steps.map((step, i) => (
+							<div
+								class:list={['sp__step', { 'sp__step--active': i === 0 }]}
+								data-process-marker={i}
+							>
+								<span class="sp__num">{String(i + 1).padStart(2, '0')}</span>
+								<div class="sp__img-slot">
+									<img
+										class="sp__slot-img"
+										src={step.image}
+										alt={step.title}
+										data-process-slot={i}
+										loading="lazy"
+										decoding="async"
+									/>
+								</div>
+								<h3 class="sp__step-title">{step.title}</h3>
+								<p class="sp__step-desc">{step.description}</p>
+							</div>
+						))
+					}
+				</div>
+
+				<!-- Floating image card (slides across steps) -->
+				<div class="sp__card" data-process-card>
+					{
+						steps.map((step, i) => (
+							<img
+								class="sp__card-img"
+								src={step.image}
+								alt={step.title}
+								data-process-img={i}
+								style={i === 0 ? 'opacity:1' : 'opacity:0'}
+								loading="lazy"
+								decoding="async"
+							/>
+						))
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Mobile: vertical scroll-driven -->
+	<div class="sp__mob-scroll" data-process-mob-scroll>
+		<div class="sp__mob-sticky">
+			<div class="container sp__mob-inner">
+				<header class="section-header">
+					<h2 class="section-title">How It Works</h2>
+					<p class="section-sub">From product to photoshoot in days, not weeks.</p>
+				</header>
+				<div class="sp__mob-stage">
+					<div class="sp__mob-card" data-process-mob-card>
+						{
+							steps.map((step, i) => (
+								<img
+									class="sp__mob-card-img"
+									src={step.image}
+									alt={step.title}
+									data-process-mob-img={i}
+									style={i === 0 ? 'opacity:1' : 'opacity:0'}
+									loading="lazy"
+									decoding="async"
+								/>
+							))
+						}
+					</div>
+					<div class="sp__mob-steps">
+						{
+							steps.map((step, i) => (
+								<div
+									class:list={['sp__mob-step', { 'sp__mob-step--active': i === 0 }]}
+									data-process-mob-step={i}
+								>
+									<span class="sp__num">{String(i + 1).padStart(2, '0')}</span>
+									<h3 class="sp__mob-step-title">{step.title}</h3>
+									<p class="sp__mob-step-desc">{step.description}</p>
+								</div>
+							))
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.sp {
+		position: relative;
+		padding-top: clamp(4rem, 8vh, 6rem);
+	}
+
+	/* ── Desktop: scroll-driven ── */
+	.sp__scroll {
+		height: 300vh;
+		position: relative;
+	}
+
+	.sp__sticky {
+		position: sticky;
+		top: 0;
+		height: 100vh;
+		display: flex;
+		align-items: flex-start;
+		padding-top: clamp(2rem, 5vh, 4rem);
+	}
+
+	.sp__inner {
+		display: flex;
+		flex-direction: column;
+		gap: clamp(2.5rem, 4vh, 3.5rem);
+		width: 100%;
+		position: relative;
+	}
+
+	/* Header uses global .section-header / .section-title / .section-sub */
+
+	/* ── Steps row ── */
+	.sp__steps {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 340px));
+		gap: clamp(2rem, 4vw, 4rem);
+		justify-content: center;
+		position: relative;
+	}
+
+	.sp__step {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		text-align: left;
+		gap: 0.5rem;
+		opacity: 0.55;
+		transition: opacity 0.35s var(--ease-out-expo);
+	}
+
+	.sp__step--active {
+		opacity: 1;
+	}
+
+	.sp__num {
+		font-family: var(--font-accent);
+		font-size: clamp(1.6rem, 2.2vw, 2.2rem);
+		font-weight: var(--fw-semibold);
+		color: var(--color-brand-cyan);
+		line-height: var(--lh-tight);
+	}
+
+	/* Slot where the "ghost" image appears after the card passes */
+	.sp__img-slot {
+		width: clamp(180px, 18vw, 280px);
+		aspect-ratio: 3/4;
+		position: relative;
+		border-radius: 12px;
+		overflow: hidden;
+	}
+
+	.sp__slot-img {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: top;
+		opacity: 0;
+		transition: opacity 0.5s ease;
+	}
+
+	.sp__slot-img--visible {
+		opacity: 1;
+	}
+
+	.sp__step-title {
+		font-family: var(--font-main);
+		font-size: clamp(0.95rem, 1.15vw, 1.1rem);
+		font-weight: var(--fw-semibold);
+		color: var(--color-text-main);
+		line-height: var(--lh-ui);
+		margin-top: 0.75rem;
+		max-width: clamp(180px, 18vw, 280px);
+	}
+
+	.sp__step-desc {
+		font-family: var(--font-main);
+		font-size: clamp(0.8rem, 0.9vw, 0.9rem);
+		color: var(--color-text-muted);
+		line-height: var(--lh-body);
+		max-width: clamp(180px, 18vw, 280px);
+	}
+
+	/* ── Floating image card ── */
+	.sp__card {
+		position: absolute;
+		left: 0;
+		width: clamp(180px, 18vw, 280px);
+		aspect-ratio: 3/4;
+		border-radius: 12px;
+		overflow: hidden;
+		box-shadow:
+			0 8px 32px rgba(0, 0, 0, 0.5),
+			0 0 0 1px rgba(78, 201, 180, 0.12);
+		will-change: transform;
+		z-index: 2;
+		pointer-events: none;
+	}
+
+	.sp__card-img {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: top;
+		transition: opacity 0.4s ease;
+	}
+
+	/* ── Mobile scroll-driven (hidden on desktop) ── */
+	.sp__mob-scroll {
+		display: none;
+	}
+
+	/* ── Reduced motion ── */
+	@media (prefers-reduced-motion: reduce) {
+		.sp__scroll {
+			height: auto;
+		}
+
+		.sp__sticky {
+			position: relative;
+			height: auto;
+			padding: clamp(5rem, 12vh, 8rem) 0;
+		}
+
+		.sp__card,
+		.sp__card-img,
+		.sp__mob-card,
+		.sp__mob-card-img {
+			transition: none;
+		}
+	}
+
+	/* ── Mobile ── */
+	@media (max-width: 720px) {
+		.sp__scroll {
+			display: none;
+		}
+
+		.sp__mob-scroll {
+			display: block;
+			height: 300vh;
+			position: relative;
+		}
+
+		.sp__mob-sticky {
+			position: sticky;
+			top: 0;
+			height: 100vh;
+			display: flex;
+			align-items: center;
+		}
+
+		.sp__mob-inner {
+			display: flex;
+			flex-direction: column;
+			gap: 1.5rem;
+			width: 100%;
+		}
+
+		.sp__mob-inner .section-header {
+			text-align: center;
+		}
+
+		.sp__mob-stage {
+			display: grid;
+			grid-template-columns: 88px 1fr;
+			gap: 1.25rem;
+			position: relative;
+		}
+
+		/* Floating card — moves vertically */
+		.sp__mob-card {
+			width: 88px;
+			aspect-ratio: 3/4;
+			border-radius: 10px;
+			overflow: hidden;
+			position: absolute;
+			left: 0;
+			top: 0;
+			box-shadow:
+				0 6px 24px rgba(0, 0, 0, 0.4),
+				0 0 0 1px rgba(78, 201, 180, 0.1);
+			will-change: transform;
+			z-index: 2;
+		}
+
+		.sp__mob-card-img {
+			position: absolute;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: top;
+			transition: opacity 0.4s ease;
+		}
+
+		/* Steps column */
+		.sp__mob-steps {
+			grid-column: 2;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			min-height: 55vh;
+		}
+
+		.sp__mob-step {
+			opacity: 0.3;
+			transition: opacity 0.3s var(--ease-out-expo);
+		}
+
+		.sp__mob-step--active {
+			opacity: 1;
+		}
+
+		.sp__mob-step .sp__num {
+			font-size: var(--text-xs);
+			display: block;
+			margin-bottom: 0.15rem;
+		}
+
+		.sp__mob-step-title {
+			font-family: var(--font-main);
+			font-size: 0.95rem;
+			font-weight: var(--fw-semibold);
+			color: var(--color-text-main);
+			line-height: var(--lh-ui);
+			margin-bottom: 0.25rem;
+		}
+
+		.sp__mob-step-desc {
+			font-family: var(--font-main);
+			font-size: 0.8rem;
+			color: var(--color-text-muted);
+			line-height: var(--lh-body);
+		}
+	}
+</style>
+
+<script src="../scripts/studio-process.ts"></script>

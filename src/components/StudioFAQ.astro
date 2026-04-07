@@ -1,0 +1,212 @@
+---
+import type { FAQItem } from '../types/studio';
+
+interface Props {
+	items: FAQItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<section class="studio-faq">
+	<div class="container studio-faq__inner">
+		<header class="section-header">
+			<p class="section-eyebrow">Got questions?</p>
+			<h2 class="section-title">
+				<em>Common</em> Questions
+			</h2>
+		</header>
+		<div class="studio-faq__list" role="list">
+			{
+				items.map((item, i) => (
+					<div
+						class="studio-faq__item"
+						role="listitem"
+						data-faq-item
+						data-faq-open={i === 0 ? '' : undefined}
+					>
+						<button
+							class="studio-faq__trigger"
+							aria-expanded={i === 0 ? 'true' : 'false'}
+							data-faq-trigger
+						>
+							<span class="studio-faq__q">{item.question}</span>
+							<span class="studio-faq__icon" aria-hidden="true" />
+						</button>
+						<div class="studio-faq__answer" data-faq-answer>
+							<div class="studio-faq__answer-inner">
+								<p class="studio-faq__a">{item.answer}</p>
+							</div>
+						</div>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<style>
+	.studio-faq {
+		padding: clamp(4rem, 8vh, 6rem) 0 clamp(2.5rem, 5vh, 4rem);
+		content-visibility: auto;
+		contain-intrinsic-size: auto 700px;
+	}
+
+	.studio-faq__inner {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		flex-direction: column;
+		max-width: 54rem;
+		margin: 0 auto;
+	}
+
+	/* Header uses global .section-header / .section-title / .section-eyebrow */
+
+	/* ── Accordion list ── */
+	.studio-faq__list {
+		display: flex;
+		flex-direction: column;
+	}
+
+	/* ── Item ── */
+	.studio-faq__item {
+		border-top: 1px solid var(--color-border);
+	}
+
+	.studio-faq__item:last-child {
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	/* ── Trigger button ── */
+	.studio-faq__trigger {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 2rem;
+		width: 100%;
+		padding: clamp(1.25rem, 2.5vh, 1.75rem) 0;
+		background: none;
+		border: none;
+		cursor: pointer;
+		text-align: left;
+		color: inherit;
+	}
+
+	.studio-faq__q {
+		font-family: var(--font-main);
+		font-size: clamp(1.05rem, 1.3vw, 1.25rem);
+		font-weight: var(--fw-semibold);
+		color: var(--color-text-main);
+		line-height: var(--lh-ui);
+	}
+
+	.studio-faq__trigger:hover .studio-faq__q {
+		color: var(--color-brand-cyan);
+	}
+
+	/* ── +/× icon ── */
+	.studio-faq__icon {
+		position: relative;
+		flex-shrink: 0;
+		width: 24px;
+		height: 24px;
+	}
+
+	.studio-faq__icon::before,
+	.studio-faq__icon::after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		background: var(--color-text-muted);
+		border-radius: 1px;
+		transition: transform 0.35s var(--ease-out-expo);
+	}
+
+	/* Horizontal bar */
+	.studio-faq__icon::before {
+		width: 18px;
+		height: 1.5px;
+		transform: translate(-50%, -50%);
+	}
+
+	/* Vertical bar (rotates when open) */
+	.studio-faq__icon::after {
+		width: 1.5px;
+		height: 18px;
+		transform: translate(-50%, -50%) rotate(0deg);
+	}
+
+	[data-faq-open] .studio-faq__icon::after {
+		transform: translate(-50%, -50%) rotate(90deg);
+	}
+
+	/* ── Answer panel (animated via grid rows) ── */
+	.studio-faq__answer {
+		display: grid;
+		grid-template-rows: 0fr;
+		transition: grid-template-rows 0.4s var(--ease-out-expo);
+	}
+
+	[data-faq-open] .studio-faq__answer {
+		grid-template-rows: 1fr;
+	}
+
+	.studio-faq__answer-inner {
+		overflow: hidden;
+	}
+
+	.studio-faq__a {
+		font-family: var(--font-main);
+		font-size: clamp(0.9rem, 1.05vw, 1rem);
+		color: var(--color-text-muted);
+		line-height: var(--lh-reading);
+		margin: 0;
+		padding-bottom: clamp(1.25rem, 2.5vh, 1.75rem);
+		max-width: 72ch;
+	}
+
+	/* ── Mobile ── */
+	@media (max-width: 720px) {
+		.studio-faq__a {
+			max-width: none;
+		}
+	}
+</style>
+
+<script>
+	function initFAQ() {
+		const items = document.querySelectorAll<HTMLElement>('[data-faq-item]');
+		if (!items.length) return;
+
+		const ac = new AbortController();
+
+		items.forEach((item) => {
+			const trigger = item.querySelector<HTMLButtonElement>('[data-faq-trigger]');
+			if (!trigger) return;
+
+			trigger.addEventListener(
+				'click',
+				() => {
+					const isOpen = item.hasAttribute('data-faq-open');
+
+					items.forEach((other) => {
+						other.removeAttribute('data-faq-open');
+						other.querySelector('[data-faq-trigger]')?.setAttribute('aria-expanded', 'false');
+					});
+
+					if (!isOpen) {
+						item.setAttribute('data-faq-open', '');
+						trigger.setAttribute('aria-expanded', 'true');
+					}
+				},
+				{ signal: ac.signal },
+			);
+		});
+
+		document.addEventListener('astro:before-swap', () => ac.abort(), { once: true });
+	}
+
+	document.addEventListener('astro:page-load', initFAQ);
+</script>

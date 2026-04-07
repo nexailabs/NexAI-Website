@@ -45,6 +45,8 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="color-scheme" content="dark" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://ik.imagekit.io" crossorigin />
+		<link rel="dns-prefetch" href="https://ik.imagekit.io" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 
@@ -56,6 +58,8 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:image" content={resolvedOgImage} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
 		<meta property="og:image:alt" content={description} />
 		<meta property="og:url" content={resolvedCanonical} />
 		<meta property="og:site_name" content="NexAI Labs" />
@@ -63,6 +67,7 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 
 		<!-- Twitter -->
 		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:site" content="@nexailabs" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={resolvedOgImage} />
