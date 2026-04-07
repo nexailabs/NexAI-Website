@@ -106,7 +106,7 @@ function initMobile() {
 
 	if (!scroll || !card || steps.length < 2) return null;
 
-	let lastStep = 0;
+	let prevStep = 0;
 	let ticking = false;
 	let rafId = 0;
 
@@ -133,7 +133,10 @@ function initMobile() {
 		if (positions.length === 0) return;
 
 		const firstY = positions[0];
-		const lastY = positions[positions.length - 1];
+		// Last stop: image bottom aligns with last step's bottom
+		const finalStepEl = steps[steps.length - 1];
+		const lastStepBottom = positions[positions.length - 1] + finalStepEl.offsetHeight;
+		const lastY = lastStepBottom - card!.offsetHeight;
 		const range = lastY - firstY;
 
 		const targetY = firstY + range * p;
@@ -142,14 +145,14 @@ function initMobile() {
 		const stepCount = steps.length;
 		const step = Math.min(Math.floor(p * stepCount), stepCount - 1);
 
-		if (step !== lastStep) {
+		if (step !== prevStep) {
 			imgs.forEach((img, i) => {
 				(img as HTMLElement).style.opacity = i === step ? '1' : '0';
 			});
 			steps.forEach((s, i) => {
 				s.classList.toggle('sp__mob-step--active', i === step);
 			});
-			lastStep = step;
+			prevStep = step;
 		}
 	}
 
