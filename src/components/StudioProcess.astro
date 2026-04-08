@@ -14,7 +14,7 @@ const { steps } = Astro.props;
 			<div class="container sp__inner">
 				<header class="section-header">
 					<h2 class="section-title">How It Works</h2>
-					<p class="section-sub">From product to photoshoot in days, not weeks.</p>
+					<p class="section-sub">Product to photoshoot. Days, not weeks.</p>
 				</header>
 
 				<!-- Steps: number → [image slot] → title + desc -->
@@ -25,7 +25,7 @@ const { steps } = Astro.props;
 								class:list={['sp__step', { 'sp__step--active': i === 0 }]}
 								data-process-marker={i}
 							>
-								<span class="sp__num">{String(i + 1).padStart(2, '0')}</span>
+								<span class="sp__num">{`Day ${i + 1}`}</span>
 								<div class="sp__img-slot">
 									<img
 										class="sp__slot-img"
@@ -69,7 +69,7 @@ const { steps } = Astro.props;
 			<div class="container sp__mob-inner">
 				<header class="section-header">
 					<h2 class="section-title">How It Works</h2>
-					<p class="section-sub">From product to photoshoot in days, not weeks.</p>
+					<p class="section-sub">Product to photoshoot. Days, not weeks.</p>
 				</header>
 				<div class="sp__mob-stage">
 					<div class="sp__mob-card" data-process-mob-card>
@@ -94,7 +94,7 @@ const { steps } = Astro.props;
 									class:list={['sp__mob-step', { 'sp__mob-step--active': i === 0 }]}
 									data-process-mob-step={i}
 								>
-									<span class="sp__num">{String(i + 1).padStart(2, '0')}</span>
+									<span class="sp__num">{`Day ${i + 1}`}</span>
 									<h3 class="sp__mob-step-title">{step.title}</h3>
 									<p class="sp__mob-step-desc">{step.description}</p>
 								</div>
@@ -110,7 +110,10 @@ const { steps } = Astro.props;
 <style>
 	.sp {
 		position: relative;
-		padding-top: clamp(4rem, 8vh, 6rem);
+		padding-top: clamp(0.5rem, 1vh, 1rem);
+	}
+	.sp .section-header {
+		margin-bottom: clamp(0.5rem, 1vh, 1rem);
 	}
 
 	/* ── Desktop: scroll-driven ── */
@@ -280,7 +283,7 @@ const { steps } = Astro.props;
 
 		.sp__mob-sticky {
 			position: sticky;
-			top: 0;
+			top: clamp(4rem, 10vh, 7rem);
 			height: 100vh;
 			display: flex;
 			align-items: flex-start;

@@ -64,10 +64,16 @@ const studio: NavConfig = {
 			caption: 'AI photoshoot portfolio across categories',
 			children: [
 				{
-					id: 'ethnic-wear',
-					label: 'Ethnic Wear',
+					id: 'kurta-sets',
+					label: 'Kurta Sets',
 					href: '/studio#kurta-sets',
 					caption: 'Kurtas, lehengas, and salwar suits.',
+				},
+				{
+					id: 'western-wear',
+					label: 'Western Wear',
+					href: '/studio#western-wear',
+					caption: 'Dresses, tops, and contemporary fits.',
 				},
 				{
 					id: 'saree',
@@ -76,16 +82,16 @@ const studio: NavConfig = {
 					caption: 'Drapes perfected by AI.',
 				},
 				{
-					id: 'jewelry',
-					label: 'Jewelry',
-					href: '/studio#jewelry',
-					caption: 'Rings, necklaces, and accessories.',
-				},
-				{
 					id: 'menswear',
 					label: 'Menswear',
 					href: '/studio#menswear',
 					caption: 'Shirts, suits, and kurtas.',
+				},
+				{
+					id: 'jewelry',
+					label: 'Jewelry',
+					href: '/studio#jewelry',
+					caption: 'Rings, necklaces, and accessories.',
 				},
 				{
 					id: 'cosmetics',

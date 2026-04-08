@@ -521,16 +521,24 @@ function init() {
 	window.addEventListener('resize', resizeHandler);
 
 	// Activate tab from URL hash (e.g., /studio#saree)
+	activateFromHash();
+}
+
+function activateFromHash() {
 	const hash = window.location.hash.slice(1);
-	if (hash) {
-		const tab = document.querySelector<HTMLElement>(`.sc3__nav-item[data-target="${hash}"]`);
-		if (tab) {
-			tab.click();
-			requestAnimationFrame(() => {
-				document.querySelector('.sc3')?.scrollIntoView({ behavior: 'smooth' });
-			});
-		}
+	if (!hash) return;
+
+	const tab = document.querySelector<HTMLElement>(`.sc3__nav-item[data-target="${hash}"]`);
+	if (tab && !tab.classList.contains('active')) {
+		tab.click();
 	}
+	requestAnimationFrame(() => {
+		const el = document.querySelector('.sc3');
+		if (el) {
+			const top = el.getBoundingClientRect().top + window.scrollY + 40;
+			window.scrollTo({ top, behavior: 'smooth' });
+		}
+	});
 }
 
 function cleanup() {
@@ -546,3 +554,14 @@ function cleanup() {
 
 document.addEventListener('astro:page-load', init);
 document.addEventListener('astro:before-swap', () => cleanup());
+
+// Same-page hash links: Astro's router doesn't fire hashchange or page-load
+document.addEventListener('click', (e) => {
+	const link = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href*="#"]');
+	if (!link) return;
+	const url = new URL(link.href, window.location.origin);
+	if (url.pathname === window.location.pathname && url.hash) {
+		// Wait for hash to update, then activate tab
+		requestAnimationFrame(() => activateFromHash());
+	}
+});

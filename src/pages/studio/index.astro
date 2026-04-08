@@ -21,7 +21,7 @@ const heroPreloadSrcset = [
 
 <Layout
 	title="AI Photoshoots for Fashion Brands | NexAI Labs"
-	description="Turn mannequin shots into on-model photos in 3–5 days. 80% cheaper than studios. Trusted by 50+ Indian fashion brands."
+	description="Turn mannequin shots into on-model photos in 3-5 days. 80% cheaper than studios. Trusted by 50+ Indian fashion brands."
 	ogImage="https://ik.imagekit.io/nexailabs/nexai/og/ai-shoots.png?tr=w-1200,h-630,fo-auto,f-auto,q-85"
 	mainClass="shoots-page"
 >
@@ -58,7 +58,7 @@ const heroPreloadSrcset = [
 					'@id': `${site.url}/studio/`,
 					url: `${site.url}/studio/`,
 					name: 'AI Photoshoots for Fashion Brands | NexAI Labs',
-					description: 'Premium AI fashion photography for D2C brands.',
+					description: 'AI-generated fashion photoshoots for D2C brands.',
 					isPartOf: { '@id': `${site.url}/#website` },
 					about: { '@id': `${site.url}/studio/#service` },
 				},
@@ -66,7 +66,7 @@ const heroPreloadSrcset = [
 					'@type': 'Service',
 					'@id': `${site.url}/studio/#service`,
 					name: 'AI Fashion Photography',
-					description: 'Premium AI-powered photoshoots for fashion and D2C brands.',
+					description: 'AI photoshoots for fashion and D2C brands.',
 					provider: { '@id': `${site.url}/#org` },
 					serviceType: 'AI Photography',
 				},
@@ -91,53 +91,55 @@ const heroPreloadSrcset = [
 	<StudioShowcase categories={showcaseCategories} />
 	<StudioProcess steps={processSteps} />
 	<div class="faq-cta-zone">
-		<!-- Sticky floating images — stay in viewport while FAQ+CTA scroll past -->
-		<div class="faq-cta-zone__floats" aria-hidden="true">
-			<img
-				class="faq-cta-zone__float faq-cta-zone__float--1"
-				src={ctaFloats[0].src}
-				alt=""
-				loading="lazy"
-				decoding="async"
-			/>
-			<img
-				class="faq-cta-zone__float faq-cta-zone__float--2"
-				src={ctaFloats[1].src}
-				alt=""
-				loading="lazy"
-				decoding="async"
-			/>
-			<img
-				class="faq-cta-zone__float faq-cta-zone__float--3"
-				src={ctaFloats[2].src}
-				alt=""
-				loading="lazy"
-				decoding="async"
-			/>
-			<img
-				class="faq-cta-zone__float faq-cta-zone__float--4"
-				src={ctaFloats[3].src}
-				alt=""
-				loading="lazy"
-				decoding="async"
-			/>
-			<img
-				class="faq-cta-zone__float faq-cta-zone__float--5"
-				src={ctaFloats[4].src}
-				alt=""
-				loading="lazy"
-				decoding="async"
-			/>
-			<img
-				class="faq-cta-zone__float faq-cta-zone__float--6"
-				src={ctaFloats[5].src}
-				alt=""
-				loading="lazy"
-				decoding="async"
-			/>
+		<div class="faq-cta-zone__sticky-scope">
+			<!-- Sticky floating images — stay in viewport while FAQ+CTA scroll past -->
+			<div class="faq-cta-zone__floats" aria-hidden="true">
+				<img
+					class="faq-cta-zone__float faq-cta-zone__float--1"
+					src={ctaFloats[0].src}
+					alt=""
+					loading="lazy"
+					decoding="async"
+				/>
+				<img
+					class="faq-cta-zone__float faq-cta-zone__float--2"
+					src={ctaFloats[1].src}
+					alt=""
+					loading="lazy"
+					decoding="async"
+				/>
+				<img
+					class="faq-cta-zone__float faq-cta-zone__float--3"
+					src={ctaFloats[2].src}
+					alt=""
+					loading="lazy"
+					decoding="async"
+				/>
+				<img
+					class="faq-cta-zone__float faq-cta-zone__float--4"
+					src={ctaFloats[3].src}
+					alt=""
+					loading="lazy"
+					decoding="async"
+				/>
+				<img
+					class="faq-cta-zone__float faq-cta-zone__float--5"
+					src={ctaFloats[4].src}
+					alt=""
+					loading="lazy"
+					decoding="async"
+				/>
+				<img
+					class="faq-cta-zone__float faq-cta-zone__float--6"
+					src={ctaFloats[5].src}
+					alt=""
+					loading="lazy"
+					decoding="async"
+				/>
+			</div>
+			<StudioFAQ items={faqItems} />
+			<StudioCTA floats={ctaFloats} />
 		</div>
-		<StudioFAQ items={faqItems} />
-		<StudioCTA floats={ctaFloats} />
 	</div>
 </Layout>
 
@@ -174,16 +176,32 @@ const heroPreloadSrcset = [
 	/* ── FAQ + CTA shared float zone ── */
 	.faq-cta-zone {
 		position: relative;
+		z-index: 1;
 	}
 
-	/* Sticky container — pins to viewport while FAQ+CTA scroll past */
+	.faq-cta-zone__sticky-scope {
+		position: relative;
+	}
+
+	/* Float container — JS toggles between fixed (pinned) and absolute (locked) */
 	.faq-cta-zone__floats {
-		position: sticky;
+		position: absolute;
 		top: 0;
+		left: 0;
+		width: 100%;
 		height: 100vh;
-		margin-bottom: -100vh; /* don't take up layout space */
 		pointer-events: none;
 		z-index: 1;
+	}
+
+	.faq-cta-zone__floats--fixed {
+		position: fixed;
+	}
+
+	.faq-cta-zone__floats--bottom {
+		position: absolute;
+		top: auto;
+		bottom: 0;
 	}
 
 	.faq-cta-zone__float {
@@ -275,3 +293,51 @@ const heroPreloadSrcset = [
 		}
 	}
 </style>
+
+<script>
+	function initFloats() {
+		const scope = document.querySelector<HTMLElement>('.faq-cta-zone__sticky-scope');
+		const floats = document.querySelector<HTMLElement>('.faq-cta-zone__floats');
+		if (!scope || !floats) return;
+
+		let ticking = false;
+
+		function update() {
+			const rect = scope.getBoundingClientRect();
+
+			if (rect.top <= 0 && rect.bottom >= window.innerHeight) {
+				// Scope fills viewport — pin images fixed
+				floats.classList.add('faq-cta-zone__floats--fixed');
+				floats.classList.remove('faq-cta-zone__floats--bottom');
+			} else if (rect.top <= 0 && rect.bottom < window.innerHeight) {
+				// Scope ending — lock at bottom, scroll away naturally
+				floats.classList.remove('faq-cta-zone__floats--fixed');
+				floats.classList.add('faq-cta-zone__floats--bottom');
+			} else {
+				// Before scope — sit at top
+				floats.classList.remove('faq-cta-zone__floats--fixed');
+				floats.classList.remove('faq-cta-zone__floats--bottom');
+			}
+
+			ticking = false;
+		}
+
+		function onScroll() {
+			if (!ticking) {
+				requestAnimationFrame(update);
+				ticking = true;
+			}
+		}
+
+		window.addEventListener('scroll', onScroll, { passive: true });
+		update();
+
+		document.addEventListener(
+			'astro:before-swap',
+			() => window.removeEventListener('scroll', onScroll),
+			{ once: true },
+		);
+	}
+
+	document.addEventListener('astro:page-load', initFloats);
+</script>

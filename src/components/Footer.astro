@@ -135,6 +135,9 @@ const year = new Date().getFullYear();
 
 <style>
 	.site-footer {
+		position: relative;
+		z-index: 2;
+		background: var(--color-bg);
 		border-top: 1px solid var(--color-border);
 		padding-top: clamp(3rem, 6vh, 5rem);
 		padding-bottom: clamp(1.5rem, 3vh, 2.5rem);
@@ -212,11 +215,12 @@ const year = new Date().getFullYear();
 		color: var(--color-text-main);
 	}
 
-	/* ── Socials (desktop: text labels, mobile: icons) ── */
+	/* ── Socials (desktop: pill boxes with icon + label; mobile: icon-only squares) ── */
 	.site-footer__socials {
 		display: flex;
-		flex-direction: column;
-		gap: 0.6rem;
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 0.75rem;
 	}
 
 	.site-footer__social-icon {
@@ -226,28 +230,48 @@ const year = new Date().getFullYear();
 		font-size: var(--text-sm);
 		color: var(--color-text-muted);
 		text-decoration: none;
-		transition: color 0.2s ease;
+		border: 1px solid var(--color-border);
+		border-radius: 8px;
+		padding: 0.5rem 0.75rem;
+		background: rgba(255, 255, 255, 0.03);
+		transition:
+			color 0.2s ease,
+			border-color 0.2s ease,
+			background 0.2s ease;
 	}
 
 	.site-footer__social-icon svg {
-		display: none; /* hidden on desktop, text only */
+		display: block; /* always shown — icon + text on desktop */
+		flex-shrink: 0;
 	}
 
 	.site-footer__social-icon:hover {
-		color: var(--color-text-main);
+		color: var(--color-brand-cyan);
+		border-color: var(--color-brand-cyan);
+		background: rgba(78, 201, 180, 0.06);
 	}
 
 	.site-footer__email {
-		display: block;
-		margin-top: 0.6rem;
+		display: inline-flex;
+		align-items: center;
+		margin-top: 0.75rem;
 		font-size: var(--text-sm);
 		color: var(--color-text-muted);
 		text-decoration: none;
-		transition: color 0.2s ease;
+		border: 1px solid var(--color-border);
+		border-radius: 8px;
+		padding: 0.5rem 0.75rem;
+		background: rgba(255, 255, 255, 0.03);
+		transition:
+			color 0.2s ease,
+			border-color 0.2s ease,
+			background 0.2s ease;
 	}
 
 	.site-footer__email:hover {
-		color: var(--color-text-main);
+		color: var(--color-brand-cyan);
+		border-color: var(--color-brand-cyan);
+		background: rgba(78, 201, 180, 0.06);
 	}
 
 	.site-footer__hide-mobile {
@@ -329,7 +353,7 @@ const year = new Date().getFullYear();
 		.site-footer__heading {
 			font-size: var(--text-xs);
 			margin-bottom: 0.75rem;
-			color: var(--color-text-muted);
+			color: var(--color-text-main);
 			letter-spacing: 0.1em;
 		}
 
@@ -345,7 +369,7 @@ const year = new Date().getFullYear();
 
 		.site-footer__links li::after {
 			content: '·';
-			color: var(--color-text-dim);
+			color: var(--color-text-muted);
 			margin: 0 0.5rem;
 		}
 
@@ -357,34 +381,28 @@ const year = new Date().getFullYear();
 			display: none;
 		}
 
-		/* ── Social icons — horizontal row ── */
+		/* ── Social icons — horizontal row, icon-only squares ── */
 		.site-footer__socials {
 			flex-direction: row;
 			gap: 1rem;
 		}
 
-		.site-footer__social-icon svg {
-			display: block;
-		}
-
 		.site-footer__social-label {
-			display: none; /* hide text, show icon only */
+			display: none; /* hide text label, icon only */
 		}
 
 		.site-footer__social-icon {
 			width: 40px;
 			height: 40px;
+			padding: 0;
 			border-radius: 10px;
-			border: 1px solid var(--color-border);
-			background: rgba(255, 255, 255, 0.03);
-			display: flex;
-			align-items: center;
 			justify-content: center;
 		}
 
 		.site-footer__social-icon:hover {
 			border-color: var(--color-brand-cyan);
 			color: var(--color-brand-cyan);
+			background: rgba(78, 201, 180, 0.06);
 		}
 
 		.site-footer__email {
