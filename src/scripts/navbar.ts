@@ -1,8 +1,11 @@
 import { stopLenis, startLenis } from './lenis';
 
 let controller: AbortController | null = null;
+let onCleanup: (() => void) | null = null;
 
 function cleanupListeners() {
+	onCleanup?.();
+	onCleanup = null;
 	controller?.abort();
 	controller = null;
 }
@@ -104,6 +107,16 @@ function init() {
 		trigger?.focus();
 		lastScrollY = window.scrollY;
 		syncScrollState();
+	};
+
+	// Register cleanup for view transitions (ensures open menu state is reset)
+	onCleanup = () => {
+		if (root.dataset.open === 'true') {
+			root.dataset.open = 'false';
+			document.body.classList.remove('nav-open');
+			startLenis();
+			pageContent?.removeAttribute('inert');
+		}
 	};
 
 	// Dynamic focus trap — recomputes visible focusables on every Tab
