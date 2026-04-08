@@ -134,7 +134,7 @@ const { steps } = Astro.props;
 		height: 100svh;
 		display: flex;
 		align-items: flex-start;
-		padding-top: clamp(2rem, 5vh, 4rem);
+		padding-top: max(var(--header-height, 5.9rem), clamp(2rem, 5vh, 4rem));
 	}
 
 	.sp__inner {
