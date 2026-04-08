@@ -509,7 +509,14 @@ function onResize() {
 	resizeTimer = setTimeout(() => {
 		resizeTimer = null;
 		const nowMob = isMob();
-		if (nowMob === wasMob) return;
+		if (nowMob === wasMob) {
+			// Within same breakpoint — re-apply visual state for active mobile controller
+			if (nowMob) {
+				const active = getActiveController();
+				if (active) applyVisualState(active, active.progress, false);
+			}
+			return;
+		}
 		wasMob = nowMob;
 		if (nowMob) {
 			initMobShowcaseCycle();
