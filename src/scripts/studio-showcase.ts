@@ -4,6 +4,8 @@ export {};
 let tabCleanup: (() => void) | null = null;
 let mobCleanup: (() => void) | null = null;
 let resizeHandler: (() => void) | null = null;
+let wasMob: boolean | null = null;
+let resizeTimer: ReturnType<typeof setTimeout> | null = null;
 
 // ─── Tab Logic ───────────────────────────────────────────────────────────────
 
@@ -503,12 +505,19 @@ function initMobShowcaseCycle() {
 // ─── Resize handler ──────────────────────────────────────────────────────────
 
 function onResize() {
-	if (isMob()) {
-		initMobShowcaseCycle();
-	} else {
-		mobCleanup?.();
-		mobCleanup = null;
-	}
+	if (resizeTimer !== null) clearTimeout(resizeTimer);
+	resizeTimer = setTimeout(() => {
+		resizeTimer = null;
+		const nowMob = isMob();
+		if (nowMob === wasMob) return;
+		wasMob = nowMob;
+		if (nowMob) {
+			initMobShowcaseCycle();
+		} else {
+			mobCleanup?.();
+			mobCleanup = null;
+		}
+	}, 150);
 }
 
 // ─── Init ────────────────────────────────────────────────────────────────────
@@ -517,6 +526,7 @@ function init() {
 	initTabs();
 	initMobShowcaseCycle();
 
+	wasMob = isMob();
 	resizeHandler = onResize;
 	window.addEventListener('resize', resizeHandler);
 
@@ -550,6 +560,11 @@ function cleanup() {
 		window.removeEventListener('resize', resizeHandler);
 		resizeHandler = null;
 	}
+	if (resizeTimer !== null) {
+		clearTimeout(resizeTimer);
+		resizeTimer = null;
+	}
+	wasMob = null;
 }
 
 document.addEventListener('astro:page-load', init);

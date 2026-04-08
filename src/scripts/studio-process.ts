@@ -24,10 +24,13 @@ function initDesktop() {
 
 	const inner = scroll!.querySelector<HTMLElement>('.sp__inner');
 
-	function getSlotPositions() {
+	// Cached geometry — recomputed on init + resize only
+	let cachedPositions: { x: number; y: number }[] = [];
+	let cachedCardHalf = 0;
+
+	function cacheGeometry() {
 		const innerRect = inner!.getBoundingClientRect();
-		// Find each .sp__img-slot and get its center X + top Y
-		return Array.from(steps).map((s) => {
+		cachedPositions = Array.from(steps).map((s) => {
 			const slot = s.querySelector('.sp__img-slot');
 			if (!slot) return { x: 0, y: 0 };
 			const r = slot.getBoundingClientRect();
@@ -36,6 +39,7 @@ function initDesktop() {
 				y: r.top - innerRect.top,
 			};
 		});
+		cachedCardHalf = card!.offsetWidth / 2;
 	}
 
 	function update() {
@@ -47,32 +51,25 @@ function initDesktop() {
 
 		const p = clamp(-rect.top / scrollHeight, 0, 1);
 
-		const positions = getSlotPositions();
-		const firstX = positions[0].x;
-		const lastX = positions[positions.length - 1].x;
+		const firstX = cachedPositions[0].x;
+		const lastX = cachedPositions[cachedPositions.length - 1].x;
 		const rangeX = lastX - firstX;
 
-		// Center the floating image over the interpolated slot position
-		const cardHalf = card!.offsetWidth / 2;
-		const targetX = firstX + rangeX * p - cardHalf;
+		const targetX = firstX + rangeX * p - cachedCardHalf;
 
-		// Align Y with the slot
-		card!.style.top = `${positions[0].y}px`;
+		card!.style.top = `${cachedPositions[0].y}px`;
 		card!.style.transform = `translateX(${targetX}px)`;
 
 		const stepCount = steps.length;
 		const step = Math.min(Math.floor(p * stepCount), stepCount - 1);
 
 		if (step !== lastStep) {
-			// Crossfade floating card image
 			imgs.forEach((img, i) => {
 				(img as HTMLElement).style.opacity = i === step ? '1' : '0';
 			});
-			// Highlight active step
 			steps.forEach((s, i) => {
 				s.classList.toggle('sp__step--active', i === step);
 			});
-			// Show slot images for steps the card has passed
 			slots.forEach((slot, i) => {
 				slot.classList.toggle('sp__slot-img--visible', i < step);
 			});
@@ -87,13 +84,19 @@ function initDesktop() {
 		}
 	}
 
+	function onResize() {
+		cacheGeometry();
+		update();
+	}
+
+	cacheGeometry();
 	window.addEventListener('scroll', onScroll, { passive: true });
-	window.addEventListener('resize', update, { passive: true });
+	window.addEventListener('resize', onResize, { passive: true });
 	update();
 
 	return () => {
 		window.removeEventListener('scroll', onScroll);
-		window.removeEventListener('resize', update);
+		window.removeEventListener('resize', onResize);
 		cancelAnimationFrame(rafId);
 	};
 }
@@ -110,13 +113,24 @@ function initMobile() {
 	let ticking = false;
 	let rafId = 0;
 
-	function getStepYPositions() {
+	// Cached geometry — recomputed on init + resize only
+	let cachedStepYs: number[] = [];
+	let cachedFirstY = 0;
+	let cachedRange = 0;
+
+	function cacheGeometry() {
 		const stageRect = scroll!.querySelector('.sp__mob-stage')?.getBoundingClientRect();
-		if (!stageRect) return [];
-		return Array.from(steps).map((s) => {
+		if (!stageRect) return;
+		cachedStepYs = Array.from(steps).map((s) => {
 			const r = s.getBoundingClientRect();
 			return r.top - stageRect.top;
 		});
+		if (cachedStepYs.length === 0) return;
+		cachedFirstY = cachedStepYs[0];
+		const finalStepEl = steps[steps.length - 1];
+		const lastStepBottom = cachedStepYs[cachedStepYs.length - 1] + finalStepEl.offsetHeight;
+		const lastY = lastStepBottom - card!.offsetHeight;
+		cachedRange = lastY - cachedFirstY;
 	}
 
 	function update() {
@@ -128,18 +142,7 @@ function initMobile() {
 
 		const p = clamp(-rect.top / scrollHeight, 0, 1);
 
-		// Get Y positions of each step relative to the stage
-		const positions = getStepYPositions();
-		if (positions.length === 0) return;
-
-		const firstY = positions[0];
-		// Last stop: image bottom aligns with last step's bottom
-		const finalStepEl = steps[steps.length - 1];
-		const lastStepBottom = positions[positions.length - 1] + finalStepEl.offsetHeight;
-		const lastY = lastStepBottom - card!.offsetHeight;
-		const range = lastY - firstY;
-
-		const targetY = firstY + range * p;
+		const targetY = cachedFirstY + cachedRange * p;
 		card!.style.transform = `translateY(${targetY}px)`;
 
 		const stepCount = steps.length;
@@ -163,13 +166,19 @@ function initMobile() {
 		}
 	}
 
+	function onResize() {
+		cacheGeometry();
+		update();
+	}
+
+	cacheGeometry();
 	window.addEventListener('scroll', onScroll, { passive: true });
-	window.addEventListener('resize', update, { passive: true });
+	window.addEventListener('resize', onResize, { passive: true });
 	update();
 
 	return () => {
 		window.removeEventListener('scroll', onScroll);
-		window.removeEventListener('resize', update);
+		window.removeEventListener('resize', onResize);
 		cancelAnimationFrame(rafId);
 	};
 }
