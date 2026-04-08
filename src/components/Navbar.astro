@@ -56,9 +56,9 @@ const {
 				<a
 					class="prod-signal-nav__cta"
 					href={ctaHref}
-					target="_blank"
-					rel="noopener noreferrer"
-					aria-label={`${ctaLabel} (opens in new tab)`}
+					data-cal-link="rahul-juneja/15min"
+					data-cal-config='{"layout":"month_view"}'
+					aria-label={ctaLabel}
 				>
 					{ctaLabel}
 				</a>
@@ -1038,5 +1038,76 @@ const {
 			transition: none !important;
 			animation: none !important;
 		}
+	}
+
+	/* ── Light mode (toggled by hero star click) ── */
+
+	.prod-signal-nav--light {
+		color: #111;
+		transition: color 0.4s ease;
+	}
+
+	/* Brand text + logo */
+	.prod-signal-nav--light .prod-signal-nav__brand {
+		color: #111;
+	}
+
+	.prod-signal-nav--light .prod-signal-nav__brand img {
+		mix-blend-mode: normal;
+	}
+
+	/* Divider line */
+	.prod-signal-nav--light .prod-signal-nav__line {
+		background: linear-gradient(90deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.04));
+	}
+
+	/* CTA button */
+	.prod-signal-nav--light .prod-signal-nav__cta {
+		color: #111;
+		border-color: rgba(0, 0, 0, 0.18);
+		background: rgba(0, 0, 0, 0.03);
+	}
+
+	.prod-signal-nav--light .prod-signal-nav__cta:hover,
+	.prod-signal-nav--light .prod-signal-nav__cta:focus-visible {
+		border-color: rgba(0, 0, 0, 0.35);
+		background: rgba(0, 0, 0, 0.06);
+	}
+
+	/* Trigger (hamburger) button */
+	.prod-signal-nav--light .prod-signal-nav__trigger {
+		border-color: rgba(0, 0, 0, 0.14);
+		background: rgba(255, 255, 255, 0.88);
+	}
+
+	.prod-signal-nav--light .prod-signal-nav__trigger:hover,
+	.prod-signal-nav--light .prod-signal-nav__trigger:focus-visible {
+		border-color: rgba(0, 0, 0, 0.28);
+		background: rgba(255, 255, 255, 0.96);
+		box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+	}
+
+	/* Hamburger bars */
+	.prod-signal-nav--light .prod-signal-nav__trigger-core i {
+		background: rgba(0, 0, 0, 0.85);
+	}
+
+	/* Trigger pulse ring */
+	.prod-signal-nav--light .prod-signal-nav__trigger-core::before {
+		border-color: rgba(0, 0, 0, 0.18);
+	}
+
+	/* Scroll-pill (glass bar) in light mode */
+	.prod-signal-nav--light.is-scrolled .prod-signal-nav__bar {
+		border-color: rgba(0, 0, 0, 0.1);
+		background: rgba(255, 255, 255, 0.78);
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+	}
+
+	.prod-signal-nav--light.is-revealing.is-scrolled .prod-signal-nav__bar {
+		border-color: rgba(0, 0, 0, 0.14);
+		box-shadow:
+			0 16px 50px rgba(0, 0, 0, 0.08),
+			0 0 25px rgba(0, 0, 0, 0.02);
 	}
 </style>
