@@ -351,6 +351,7 @@ export const showDeckForMobileDeal = (deck: HTMLElement, cards: HTMLElement[]) =
 export const updateActiveDockThumb = (s: HeroState, index: number) => {
 	s.thumbs.forEach((t, i) => {
 		t.classList.toggle('shoots-hero__dock-thumb--active', i === index);
+		t.setAttribute('aria-pressed', String(i === index));
 	});
 };
 
