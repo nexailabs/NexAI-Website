@@ -362,6 +362,7 @@ export const updateActiveDockThumb = (s: HeroState, index: number) => {
 export const runCycle = (s: HeroState) => {
 	s.cycleEpoch += 1;
 	cancelAndClearRafs(s);
+	clearScheduledTimers(s);
 	const isLoopRestart = s.activeIndex === 0 && !s.forceImmediate;
 	s.forceImmediate = false;
 	updateActiveDockThumb(s, s.activeIndex);

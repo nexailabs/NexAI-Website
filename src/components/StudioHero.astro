@@ -173,6 +173,16 @@ const heroSrcset = (src: string) => {
 		visibility: hidden;
 	}
 
+	/* First deck visible before JS — meaningful poster frame on slow connections */
+	.shoots-hero__deck:first-child {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.shoots-hero__deck:first-child .shoots-hero__card {
+		opacity: 1;
+	}
+
 	.shoots-hero__card {
 		position: absolute;
 		top: 50%;

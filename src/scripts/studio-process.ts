@@ -183,14 +183,45 @@ function initMobile() {
 	};
 }
 
+let activeCleanup: (() => void) | null = null;
+let wasDesktop: boolean | null = null;
+let resizeTimer: ReturnType<typeof setTimeout> | null = null;
+
 function init() {
 	if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-	const cleanup = window.innerWidth <= 720 ? initMobile() : initDesktop();
+	const isDesktop = window.innerWidth > 720;
+	wasDesktop = isDesktop;
+	activeCleanup = isDesktop ? initDesktop() : initMobile();
 
-	if (cleanup) {
-		document.addEventListener('astro:before-swap', cleanup, { once: true });
+	function onResize() {
+		if (resizeTimer !== null) clearTimeout(resizeTimer);
+		resizeTimer = setTimeout(() => {
+			resizeTimer = null;
+			const nowDesktop = window.innerWidth > 720;
+			if (nowDesktop === wasDesktop) return;
+			wasDesktop = nowDesktop;
+			activeCleanup?.();
+			activeCleanup = nowDesktop ? initDesktop() : initMobile();
+		}, 150);
 	}
+
+	window.addEventListener('resize', onResize);
+
+	document.addEventListener(
+		'astro:before-swap',
+		() => {
+			activeCleanup?.();
+			activeCleanup = null;
+			window.removeEventListener('resize', onResize);
+			if (resizeTimer !== null) {
+				clearTimeout(resizeTimer);
+				resizeTimer = null;
+			}
+			wasDesktop = null;
+		},
+		{ once: true },
+	);
 }
 
 document.addEventListener('astro:page-load', init);
