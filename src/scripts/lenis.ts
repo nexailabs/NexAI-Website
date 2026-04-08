@@ -37,14 +37,18 @@ export function startLenis() {
 	lenis?.start();
 }
 
-document.addEventListener('astro:page-load', initLenis);
-document.addEventListener('astro:before-swap', () => {
-	if (lenis) {
-		lenis.destroy();
-		lenis = null;
-	}
-	if (rafId !== null) {
-		cancelAnimationFrame(rafId);
-		rafId = null;
-	}
-});
+const g = globalThis as Record<string, unknown>;
+if (!g.__lenisRegistered) {
+	g.__lenisRegistered = true;
+	document.addEventListener('astro:page-load', initLenis);
+	document.addEventListener('astro:before-swap', () => {
+		if (lenis) {
+			lenis.destroy();
+			lenis = null;
+		}
+		if (rafId !== null) {
+			cancelAnimationFrame(rafId);
+			rafId = null;
+		}
+	});
+}

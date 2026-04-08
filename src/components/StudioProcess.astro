@@ -31,6 +31,8 @@ const { steps } = Astro.props;
 										class="sp__slot-img"
 										src={step.image}
 										alt={step.title}
+										width="280"
+										height="373"
 										data-process-slot={i}
 										loading="lazy"
 										decoding="async"
@@ -51,6 +53,8 @@ const { steps } = Astro.props;
 								class="sp__card-img"
 								src={step.image}
 								alt={step.title}
+								width="280"
+								height="373"
 								data-process-img={i}
 								style={i === 0 ? 'opacity:1' : 'opacity:0'}
 								loading="lazy"
@@ -79,6 +83,8 @@ const { steps } = Astro.props;
 									class="sp__mob-card-img"
 									src={step.image}
 									alt={step.title}
+									width="140"
+									height="187"
 									data-process-mob-img={i}
 									style={i === 0 ? 'opacity:1' : 'opacity:0'}
 									loading="lazy"
@@ -125,7 +131,7 @@ const { steps } = Astro.props;
 	.sp__sticky {
 		position: sticky;
 		top: 0;
-		height: 100vh;
+		height: 100svh;
 		display: flex;
 		align-items: flex-start;
 		padding-top: clamp(2rem, 5vh, 4rem);
@@ -284,7 +290,7 @@ const { steps } = Astro.props;
 		.sp__mob-sticky {
 			position: sticky;
 			top: clamp(4rem, 10vh, 7rem);
-			height: 100vh;
+			height: 100svh;
 			display: flex;
 			align-items: flex-start;
 			padding-top: clamp(1.5rem, 3vh, 2.5rem);
@@ -373,6 +379,36 @@ const { steps } = Astro.props;
 			font-size: 0.8rem;
 			color: var(--color-text-muted);
 			line-height: var(--lh-body);
+		}
+	}
+
+	/* ── Reduced motion + mobile: collapse scroll-driven layout ── */
+	@media (prefers-reduced-motion: reduce) and (max-width: 720px) {
+		.sp__mob-scroll {
+			height: auto;
+		}
+
+		.sp__mob-sticky {
+			position: relative;
+			height: auto;
+		}
+
+		.sp__mob-card {
+			position: relative;
+			will-change: auto;
+		}
+
+		.sp__mob-card-img {
+			transition: none;
+		}
+
+		.sp__mob-steps {
+			min-height: auto;
+		}
+
+		.sp__mob-step {
+			opacity: 1;
+			transition: none;
 		}
 	}
 </style>

@@ -69,6 +69,7 @@ const heroSrcset = (src: string) => {
 					class:list={['shoots-hero__dock-thumb', i === 0 && 'shoots-hero__dock-thumb--active']}
 					data-hero-thumb={i}
 					aria-label={deck[0].alt}
+					aria-pressed={i === 0 ? 'true' : 'false'}
 				>
 					<img
 						src={deck[0].src.replace(tr.hero, tr.thumb)}
