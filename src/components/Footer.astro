@@ -22,7 +22,12 @@ const year = new Date().getFullYear();
 		</div>
 
 		<!-- Mobile CTA (hidden on desktop) -->
-		<a class="site-footer__cta" href={site.bookingUrl} target="_blank" rel="noopener noreferrer">
+		<a
+			class="site-footer__cta"
+			href={site.bookingUrl}
+			data-cal-link="rahul-juneja/15min"
+			data-cal-config='{"layout":"month_view"}'
+		>
 			Book a Free Call
 			<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
 				<path
@@ -51,7 +56,11 @@ const year = new Date().getFullYear();
 					<li><a href="/studio#showcase">Showcase</a></li>
 					<li><a href="/studio/gallery">Gallery</a></li>
 					<li class="site-footer__hide-mobile">
-						<a href={site.bookingUrl} target="_blank" rel="noopener noreferrer">Book a Call</a>
+						<a
+							href={site.bookingUrl}
+							data-cal-link="rahul-juneja/15min"
+							data-cal-config='{"layout":"month_view"}'>Book a Call</a
+						>
 					</li>
 				</ul>
 			</div>
@@ -80,7 +89,6 @@ const year = new Date().getFullYear();
 							></circle><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"
 							></circle></svg
 						>
-						<span class="site-footer__social-label">Instagram</span>
 					</a>
 					<a
 						href="https://www.linkedin.com/company/nexailabs/"
@@ -105,7 +113,6 @@ const year = new Date().getFullYear();
 								width="4"
 								height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg
 						>
-						<span class="site-footer__social-label">LinkedIn</span>
 					</a>
 					<a
 						href="https://www.youtube.com/@nexailabs"
@@ -119,7 +126,6 @@ const year = new Date().getFullYear();
 								d="M23.5 6.19a3.02 3.02 0 00-2.12-2.14C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.38.55A3.02 3.02 0 00.5 6.19 31.7 31.7 0 000 12a31.7 31.7 0 00.5 5.81 3.02 3.02 0 002.12 2.14c1.88.55 9.38.55 9.38.55s7.5 0 9.38-.55a3.02 3.02 0 002.12-2.14A31.7 31.7 0 0024 12a31.7 31.7 0 00-.5-5.81zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"
 							></path></svg
 						>
-						<span class="site-footer__social-label">YouTube</span>
 					</a>
 				</div>
 				<a href={`mailto:${site.email}`} class="site-footer__email">{site.email}</a>
@@ -226,29 +232,29 @@ const year = new Date().getFullYear();
 	.site-footer__social-icon {
 		display: inline-flex;
 		align-items: center;
-		gap: 0.5rem;
-		font-size: var(--text-sm);
+		justify-content: center;
+		width: 2.4rem;
+		height: 2.4rem;
 		color: var(--color-text-muted);
 		text-decoration: none;
-		border: 1px solid var(--color-border);
-		border-radius: 8px;
-		padding: 0.5rem 0.75rem;
-		background: rgba(255, 255, 255, 0.03);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-radius: 999px;
+		background: transparent;
 		transition:
 			color 0.2s ease,
 			border-color 0.2s ease,
-			background 0.2s ease;
+			transform 0.2s ease;
 	}
 
 	.site-footer__social-icon svg {
-		display: block; /* always shown — icon + text on desktop */
+		display: block;
 		flex-shrink: 0;
 	}
 
 	.site-footer__social-icon:hover {
-		color: var(--color-brand-cyan);
-		border-color: var(--color-brand-cyan);
-		background: rgba(78, 201, 180, 0.06);
+		color: rgba(255, 255, 255, 0.9);
+		border-color: var(--color-border-hover);
+		transform: translateY(-2px);
 	}
 
 	.site-footer__email {
@@ -379,30 +385,6 @@ const year = new Date().getFullYear();
 
 		.site-footer__hide-mobile {
 			display: none;
-		}
-
-		/* ── Social icons — horizontal row, icon-only squares ── */
-		.site-footer__socials {
-			flex-direction: row;
-			gap: 1rem;
-		}
-
-		.site-footer__social-label {
-			display: none; /* hide text label, icon only */
-		}
-
-		.site-footer__social-icon {
-			width: 40px;
-			height: 40px;
-			padding: 0;
-			border-radius: 10px;
-			justify-content: center;
-		}
-
-		.site-footer__social-icon:hover {
-			border-color: var(--color-brand-cyan);
-			color: var(--color-brand-cyan);
-			background: rgba(78, 201, 180, 0.06);
 		}
 
 		.site-footer__email {

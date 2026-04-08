@@ -1,5 +1,41 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import HomeHero from '../components/home/HomeHero.astro';
+import { site } from '../config/site';
 ---
 
-<Layout title="NexAI Labs | Future of Automation" />
+<Layout
+	title="NexAI Labs | AI Agents for Business"
+	description="NexAI Labs builds custom AI agents for outreach, marketing, finance, research, and creative — so you can automate operations and focus on growth."
+>
+	<script
+		slot="head"
+		type="application/ld+json"
+		set:html={JSON.stringify({
+			'@context': 'https://schema.org',
+			'@graph': [
+				{
+					'@type': 'WebSite',
+					'@id': `${site.url}/#website`,
+					url: site.url,
+					name: site.name,
+					publisher: { '@id': `${site.url}/#org` },
+				},
+				{
+					'@type': 'Organization',
+					'@id': `${site.url}/#org`,
+					name: site.name,
+					url: site.url,
+					email: site.email,
+					description: site.description,
+					sameAs: [
+						'https://www.linkedin.com/company/nexailabs',
+						'https://www.instagram.com/nexailabs',
+						'https://www.youtube.com/@nexailabs',
+					],
+				},
+			],
+		})}
+	/>
+	<HomeHero />
+</Layout>

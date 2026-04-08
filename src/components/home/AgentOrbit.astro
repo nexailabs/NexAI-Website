@@ -1,0 +1,1070 @@
+---
+import type { AgentNode } from '../../data/home';
+
+interface Props {
+	agents: AgentNode[];
+}
+
+const { agents } = Astro.props;
+const nodeCount = agents.length;
+---
+
+<div class="orbit" data-orbit>
+	<!-- Explosion flash overlay -->
+	<div class="orbit__flash" data-orbit-flash aria-hidden="true"></div>
+
+	<!-- Center: neutron star + single bright pulse -->
+	<div class="orbit__center">
+		<div class="orbit__pulse" aria-hidden="true"></div>
+		<button class="orbit__core" data-orbit-core aria-label="Toggle light mode"></button>
+	</div>
+
+	<!-- Rotating node track -->
+	<div class="orbit__track" data-orbit-track>
+		{
+			agents.map((agent, i) => {
+				const angle = (360 / nodeCount) * i - 90;
+				return (
+					<button
+						class="orbit__node"
+						data-orbit-node={agent.id}
+						data-index={i}
+						style={`--node-angle: ${angle}deg; --node-i: ${i};`}
+						aria-label={`${agent.title}: ${agent.role}`}
+					>
+						<div class="orbit__node-icon">
+							<svg
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.5"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							>
+								<path d={agent.icon} />
+							</svg>
+						</div>
+						<span class="orbit__node-label">{agent.title}</span>
+					</button>
+				);
+			})
+		}
+	</div>
+
+	<!-- Detail card -->
+	<div
+		class="orbit__detail"
+		data-orbit-detail
+		aria-hidden="true"
+		role="dialog"
+		aria-labelledby="orbit-detail-title"
+	>
+		<div class="orbit__detail-head">
+			<span class="orbit__detail-badge">Active</span>
+			<div class="orbit__detail-progress">
+				<div class="orbit__detail-progress-track">
+					<div class="orbit__detail-progress-bar" data-orbit-progress></div>
+				</div>
+				<span class="orbit__detail-progress-pct" data-orbit-pct></span>
+			</div>
+		</div>
+		<div class="orbit__detail-identity">
+			<h3 class="orbit__detail-title" id="orbit-detail-title" data-orbit-detail-title></h3>
+			<span class="orbit__detail-role" data-orbit-detail-role></span>
+		</div>
+		<p class="orbit__detail-desc" data-orbit-detail-desc></p>
+		<div class="orbit__detail-sep"></div>
+		<ul class="orbit__detail-caps" data-orbit-caps></ul>
+	</div>
+</div>
+
+<style>
+	.orbit {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 1;
+		max-width: 520px;
+		margin: 0 auto;
+		overflow: visible;
+	}
+
+	/* ── Center star ── */
+	.orbit__center {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 2;
+	}
+
+	.orbit__core {
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		border: none;
+		padding: 0;
+		background: rgba(255, 255, 255, 0.9);
+		cursor: pointer;
+		box-shadow:
+			0 0 8px 3px rgba(78, 201, 180, 0.6),
+			0 0 25px 8px rgba(78, 201, 180, 0.3),
+			0 0 60px 15px rgba(78, 201, 180, 0.1);
+		transition:
+			transform 0.2s ease,
+			box-shadow 0.2s ease;
+		/* Larger hit area */
+		position: relative;
+	}
+
+	.orbit__core::before {
+		content: '';
+		position: absolute;
+		inset: -15px;
+		border-radius: 50%;
+	}
+
+	.orbit__core:hover {
+		transform: scale(1.3);
+		box-shadow:
+			0 0 12px 5px rgba(78, 201, 180, 0.8),
+			0 0 35px 12px rgba(78, 201, 180, 0.4),
+			0 0 80px 20px rgba(78, 201, 180, 0.15);
+	}
+
+	.orbit__core:focus-visible {
+		outline: 2px solid rgba(78, 201, 180, 0.7);
+		outline-offset: 6px;
+	}
+
+	/* ── Explosion flash — centered on star ── */
+	.orbit__flash {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 400vmax;
+		height: 400vmax;
+		border-radius: 50%;
+		background: radial-gradient(
+			circle,
+			rgba(255, 255, 255, 1) 0%,
+			rgba(255, 255, 255, 0.8) 30%,
+			transparent 70%
+		);
+		transform: translate(-50%, -50%) scale(0);
+		pointer-events: none;
+		z-index: 9999;
+		opacity: 0;
+		will-change: transform, opacity;
+	}
+
+	.orbit__flash--exploding {
+		animation: starExplode 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+	}
+
+	.orbit__flash--reversing {
+		background: radial-gradient(
+			circle,
+			rgba(5, 6, 7, 1) 0%,
+			rgba(5, 6, 7, 0.9) 30%,
+			transparent 70%
+		);
+		animation: starCollapse 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+	}
+
+	@keyframes starCollapse {
+		0% {
+			transform: translate(-50%, -50%) scale(1);
+			opacity: 1;
+		}
+		60% {
+			opacity: 1;
+		}
+		100% {
+			transform: translate(-50%, -50%) scale(0);
+			opacity: 0;
+		}
+	}
+
+	@keyframes starExplode {
+		0% {
+			transform: translate(-50%, -50%) scale(0);
+			opacity: 1;
+		}
+		40% {
+			opacity: 1;
+		}
+		100% {
+			transform: translate(-50%, -50%) scale(1);
+			opacity: 0;
+		}
+	}
+
+	/* ── Single bright pulse — expands from star ── */
+	.orbit__pulse {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 1600px;
+		height: 1600px;
+		transform: translate(-50%, -50%) scale(0.00625);
+		border-radius: 50%;
+		border: 2px solid rgba(78, 201, 180, 0.8);
+		background: radial-gradient(circle, rgba(78, 201, 180, 0.12) 0%, transparent 50%);
+		pointer-events: none;
+		will-change: transform, opacity;
+		animation: starPulse 7s ease-out infinite;
+	}
+
+	@keyframes starPulse {
+		0% {
+			transform: translate(-50%, -50%) scale(0.00625);
+			border-color: rgba(78, 201, 180, 0.9);
+			opacity: 0.9;
+		}
+		50% {
+			opacity: 0.12;
+		}
+		100% {
+			transform: translate(-50%, -50%) scale(1);
+			border-color: rgba(78, 201, 180, 0);
+			opacity: 0;
+		}
+	}
+
+	/* ── Rotating track ── */
+	.orbit__track {
+		position: absolute;
+		inset: 0;
+		animation: orbitSpin 45s linear infinite;
+		will-change: transform;
+	}
+
+	.orbit.orbit--paused .orbit__track {
+		animation-play-state: paused;
+	}
+
+	@keyframes orbitSpin {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	/* ── Nodes ── */
+	.orbit__node {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: clamp(46px, 9vw, 58px);
+		height: clamp(46px, 9vw, 58px);
+		transform: rotate(var(--node-angle)) translateX(clamp(120px, 20vw, 165px))
+			rotate(calc(-1 * var(--node-angle)));
+		margin-top: calc(clamp(46px, 9vw, 58px) / -2);
+		margin-left: calc(clamp(46px, 9vw, 58px) / -2);
+		animation:
+			counterSpin 45s linear infinite,
+			nodeEntry 0.5s ease forwards;
+		animation-delay: 0s, calc(0.3s + var(--node-i) * 0.1s);
+		opacity: 0;
+
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.35rem;
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0;
+		color: var(--color-text-muted);
+		transition: color 0.3s ease;
+	}
+
+	.orbit.orbit--paused .orbit__node {
+		animation-play-state: paused, paused;
+	}
+
+	.orbit__node:hover {
+		color: var(--color-text-main);
+	}
+
+	.orbit__node:focus-visible .orbit__node-icon {
+		border-color: rgba(78, 201, 180, 0.6);
+		box-shadow: 0 0 0 3px rgba(78, 201, 180, 0.25);
+	}
+
+	@keyframes counterSpin {
+		from {
+			transform: rotate(var(--node-angle)) translateX(clamp(120px, 20vw, 165px))
+				rotate(calc(-1 * var(--node-angle)));
+		}
+		to {
+			transform: rotate(var(--node-angle)) translateX(clamp(120px, 20vw, 165px))
+				rotate(calc(-1 * var(--node-angle) - 360deg));
+		}
+	}
+
+	@keyframes nodeEntry {
+		from {
+			opacity: 0;
+			filter: blur(4px);
+		}
+		to {
+			opacity: 1;
+			filter: blur(0);
+		}
+	}
+
+	/* ── Node icon ── */
+	.orbit__node-icon {
+		width: clamp(38px, 7.5vw, 48px);
+		height: clamp(38px, 7.5vw, 48px);
+		aspect-ratio: 1;
+		flex-shrink: 0;
+		border-radius: 50%;
+		border: 1px solid rgba(255, 255, 255, 0.12);
+		background: rgba(10, 12, 16, 0.75);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+		transition:
+			border-color 0.3s ease,
+			box-shadow 0.3s ease,
+			transform 0.3s ease;
+	}
+
+	.orbit__node:hover .orbit__node-icon,
+	.orbit__node.orbit__node--active .orbit__node-icon {
+		border-color: rgba(78, 201, 180, 0.5);
+		transform: scale(1.1);
+		box-shadow:
+			0 0 8px 1px rgba(78, 201, 180, 0.4),
+			0 0 20px 4px rgba(78, 201, 180, 0.15),
+			0 0 40px 8px rgba(78, 201, 180, 0.06);
+	}
+
+	.orbit__node.orbit__node--active .orbit__node-icon::after {
+		content: '';
+		position: absolute;
+		inset: -6px;
+		border-radius: 50%;
+		border: 1px solid rgba(78, 201, 180, 0.4);
+		animation: activeRing 1.8s ease-out infinite;
+	}
+
+	@keyframes activeRing {
+		0% {
+			transform: scale(1);
+			opacity: 0.7;
+		}
+		100% {
+			transform: scale(1.6);
+			opacity: 0;
+		}
+	}
+
+	.orbit__node-icon svg {
+		width: 20px;
+		height: 20px;
+	}
+
+	.orbit__node-label {
+		font-family: var(--font-main);
+		font-size: 0.72rem;
+		font-weight: var(--fw-semibold);
+		white-space: nowrap;
+		letter-spacing: 0.02em;
+		text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+	}
+
+	/* ── Detail card ── */
+	.orbit__detail {
+		position: absolute;
+		width: 280px;
+		background: linear-gradient(135deg, rgba(12, 14, 18, 0.92) 0%, rgba(10, 12, 15, 0.88) 100%);
+		backdrop-filter: blur(20px) saturate(1.4);
+		-webkit-backdrop-filter: blur(20px) saturate(1.4);
+		border: 1px solid rgba(255, 255, 255, 0.06);
+		border-radius: 12px;
+		padding: 1.1rem 1.15rem 1rem;
+		z-index: 10;
+		opacity: 0;
+		pointer-events: none;
+		transform: translateY(10px) scale(0.96);
+		transition:
+			opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+			transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+			box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+		box-shadow:
+			0 12px 40px rgba(0, 0, 0, 0.6),
+			0 2px 8px rgba(0, 0, 0, 0.3),
+			0 1px 0 rgba(255, 255, 255, 0.03) inset,
+			inset 0 -1px 0 rgba(255, 255, 255, 0.02);
+		overflow: hidden;
+	}
+
+	/* Top-edge highlight shimmer */
+	.orbit__detail::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 1px;
+		background: linear-gradient(
+			90deg,
+			transparent 0%,
+			rgba(78, 201, 180, 0.25) 30%,
+			rgba(78, 201, 180, 0.4) 50%,
+			rgba(78, 201, 180, 0.25) 70%,
+			transparent 100%
+		);
+		opacity: 0;
+		transition: opacity 0.35s ease;
+	}
+
+	.orbit__detail--visible {
+		opacity: 1;
+		pointer-events: auto;
+		transform: translateY(0) scale(1);
+		box-shadow:
+			0 12px 40px rgba(0, 0, 0, 0.6),
+			0 2px 8px rgba(0, 0, 0, 0.3),
+			0 1px 0 rgba(255, 255, 255, 0.03) inset,
+			inset 0 -1px 0 rgba(255, 255, 255, 0.02),
+			0 0 30px -6px rgba(78, 201, 180, 0.12);
+	}
+
+	.orbit__detail--visible::before {
+		opacity: 1;
+	}
+
+	/* ── Head row: badge + progress ── */
+	.orbit__detail-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.6rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.orbit__detail-badge {
+		font-family: var(--font-main);
+		font-size: 0.54rem;
+		font-weight: var(--fw-bold);
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--color-brand-cyan);
+		padding: 3px 9px;
+		border: 1px solid rgba(78, 201, 180, 0.35);
+		border-radius: 9999px;
+		white-space: nowrap;
+		background: rgba(78, 201, 180, 0.07);
+		box-shadow: 0 0 8px -2px rgba(78, 201, 180, 0.15);
+	}
+
+	.orbit__detail-progress {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		flex: 1;
+		justify-content: flex-end;
+	}
+
+	.orbit__detail-progress-track {
+		flex: 0 1 72px;
+		height: 4px;
+		border-radius: 2px;
+		background: rgba(255, 255, 255, 0.06);
+		overflow: hidden;
+		position: relative;
+	}
+
+	.orbit__detail-progress-bar {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: var(--progress, 75%);
+		border-radius: 2px;
+		background: linear-gradient(90deg, var(--color-brand-teal), var(--color-brand-cyan));
+		transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+		box-shadow: 0 0 6px rgba(78, 201, 180, 0.3);
+	}
+
+	.orbit__detail-progress-pct {
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		font-weight: var(--fw-bold);
+		color: var(--color-text-main);
+		white-space: nowrap;
+		letter-spacing: -0.02em;
+		line-height: 1;
+	}
+
+	/* ── Identity: title + role ── */
+	.orbit__detail-identity {
+		display: flex;
+		flex-direction: column;
+		gap: 0.2rem;
+		margin-bottom: 0.4rem;
+	}
+
+	.orbit__detail-title {
+		font-family: var(--font-main);
+		font-size: 1rem;
+		font-weight: var(--fw-bold);
+		color: var(--color-text-main);
+		line-height: 1.2;
+		margin: 0;
+	}
+
+	.orbit__detail-role {
+		font-family: var(--font-main);
+		font-size: 0.62rem;
+		font-weight: var(--fw-semibold);
+		color: var(--color-brand-cyan);
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		line-height: 1.3;
+		opacity: 0.85;
+	}
+
+	/* ── Description ── */
+	.orbit__detail-desc {
+		font-family: var(--font-main);
+		font-size: var(--text-xs);
+		color: var(--color-text-muted);
+		line-height: 1.6;
+		margin: 0 0 0.1rem;
+	}
+
+	/* ── Separator ── */
+	.orbit__detail-sep {
+		border: none;
+		border-top: 1px dashed rgba(255, 255, 255, 0.07);
+		margin: 0.7rem 0;
+	}
+
+	/* ── Capabilities list ── */
+	.orbit__detail-caps {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	/* ── Mobile ── */
+	@media (max-width: 900px) {
+		.orbit {
+			max-width: 380px;
+		}
+	}
+
+	@media (max-width: 720px) {
+		.orbit {
+			max-width: 300px;
+		}
+
+		.orbit__node {
+			transform: rotate(var(--node-angle)) translateX(clamp(100px, 18vw, 130px))
+				rotate(calc(-1 * var(--node-angle)));
+		}
+
+		.orbit__node-label {
+			font-size: 0.6rem;
+		}
+
+		.orbit__node-icon {
+			width: clamp(32px, 9vw, 40px);
+			height: clamp(32px, 9vw, 40px);
+		}
+
+		.orbit__node-icon svg {
+			width: 16px;
+			height: 16px;
+		}
+
+		.orbit__detail {
+			width: clamp(220px, 82vw, 280px);
+			padding: 0.9rem 1rem 0.85rem;
+		}
+
+		@keyframes counterSpin {
+			from {
+				transform: rotate(var(--node-angle)) translateX(clamp(100px, 18vw, 130px))
+					rotate(calc(-1 * var(--node-angle)));
+			}
+			to {
+				transform: rotate(var(--node-angle)) translateX(clamp(100px, 18vw, 130px))
+					rotate(calc(-1 * var(--node-angle) - 360deg));
+			}
+		}
+	}
+
+	/* ── Reduced motion ── */
+	@media (prefers-reduced-motion: reduce) {
+		.orbit__track,
+		.orbit__node {
+			animation: none !important;
+		}
+		.orbit__pulse {
+			animation: none;
+			opacity: 0;
+		}
+		.orbit__flash {
+			display: none !important;
+		}
+		.orbit__node {
+			opacity: 1;
+			filter: none;
+			transform: rotate(var(--node-angle)) translateX(clamp(120px, 20vw, 165px))
+				rotate(calc(-1 * var(--node-angle)));
+		}
+		.orbit__node.orbit__node--active .orbit__node-icon::after {
+			animation: none;
+			opacity: 0.5;
+			transform: scale(1.3);
+		}
+	}
+</style>
+
+<!-- Light mode overrides for orbit (scoped won't reach parent .home-hero--light) -->
+<style is:global>
+	.home-hero--light .orbit__node {
+		color: rgba(0, 0, 0, 0.5);
+	}
+	.home-hero--light .orbit__node:hover {
+		color: #111;
+	}
+	.home-hero--light .orbit__node-label {
+		text-shadow: none;
+		color: rgba(0, 0, 0, 0.6);
+	}
+	.home-hero--light .orbit__node-icon {
+		border-color: rgba(0, 0, 0, 0.12);
+		background: rgba(0, 0, 0, 0.03);
+	}
+	.home-hero--light .orbit__node:hover .orbit__node-icon,
+	.home-hero--light .orbit__node.orbit__node--active .orbit__node-icon {
+		border-color: rgba(0, 100, 80, 0.4);
+		box-shadow:
+			0 0 8px rgba(0, 100, 80, 0.2),
+			0 0 20px rgba(0, 100, 80, 0.08);
+	}
+	.home-hero--light .orbit__node-icon svg {
+		stroke: rgba(0, 0, 0, 0.6);
+	}
+	.home-hero--light .orbit__core {
+		background: rgba(0, 0, 0, 0.8);
+		box-shadow:
+			0 0 8px rgba(0, 0, 0, 0.3),
+			0 0 25px rgba(0, 0, 0, 0.15);
+	}
+	.home-hero--light .orbit__pulse {
+		border-color: rgba(0, 0, 0, 0.08);
+		background: radial-gradient(circle, rgba(0, 0, 0, 0.03) 0%, transparent 50%);
+	}
+	.home-hero--light .orbit__detail {
+		background: rgba(255, 255, 255, 0.92);
+		border-color: rgba(0, 0, 0, 0.08);
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+	}
+	.home-hero--light .orbit__detail-title {
+		color: #111;
+	}
+	.home-hero--light .orbit__detail-desc {
+		color: #555;
+	}
+	.home-hero--light .orbit__detail-role {
+		color: #0d7a6e;
+	}
+	.home-hero--light .orbit__detail-badge {
+		color: #0d7a6e;
+		border-color: rgba(13, 122, 110, 0.3);
+		background: rgba(13, 122, 110, 0.06);
+	}
+	.home-hero--light .orbit__detail-sep {
+		border-color: rgba(0, 0, 0, 0.06);
+	}
+	.home-hero--light .orbit__cap-item {
+		color: #444;
+	}
+	.home-hero--light .orbit__cap-item--planned {
+		color: #767676;
+	}
+	.home-hero--light .orbit__detail::before {
+		background: linear-gradient(
+			90deg,
+			transparent 0%,
+			rgba(13, 122, 110, 0.2) 30%,
+			rgba(13, 122, 110, 0.35) 50%,
+			rgba(13, 122, 110, 0.2) 70%,
+			transparent 100%
+		);
+	}
+	.home-hero--light .orbit__detail--visible {
+		box-shadow:
+			0 8px 32px rgba(0, 0, 0, 0.1),
+			0 0 20px -4px rgba(13, 122, 110, 0.1);
+	}
+	/* Progress track + percentage */
+	.home-hero--light .orbit__detail-progress-track {
+		background: rgba(0, 0, 0, 0.08);
+	}
+	.home-hero--light .orbit__detail-progress-pct {
+		color: #111;
+	}
+	/* Capability list items */
+	.home-hero--light .orbit__cap-dot {
+		background: #0d7a6e;
+		box-shadow: 0 0 4px rgba(13, 122, 110, 0.25);
+	}
+	.home-hero--light .orbit__cap-item--planned .orbit__cap-dot {
+		background: none;
+		border-color: rgba(0, 0, 0, 0.2);
+	}
+	.home-hero--light .orbit__cap-icon {
+		color: #0d7a6e;
+	}
+	.home-hero--light .orbit__cap-item--planned .orbit__cap-icon {
+		color: #767676;
+	}
+	/* Node label in light mode — remove dark text-shadow */
+	.home-hero--light .orbit__node-label {
+		text-shadow: none;
+		color: rgba(0, 0, 0, 0.6);
+	}
+</style>
+
+<script define:vars={{ agents }}>
+	document.addEventListener('astro:page-load', function () {
+		const orbit = document.querySelector('[data-orbit]');
+		const detail = document.querySelector('[data-orbit-detail]');
+		const nodes = document.querySelectorAll('[data-orbit-node]');
+		if (!orbit || !detail || !nodes.length) return;
+
+		const titleEl = detail.querySelector('[data-orbit-detail-title]');
+		const roleEl = detail.querySelector('[data-orbit-detail-role]');
+		const descEl = detail.querySelector('[data-orbit-detail-desc]');
+		const capsEl = detail.querySelector('[data-orbit-caps]');
+		const progressBar = detail.querySelector('[data-orbit-progress]');
+		const pctEl = detail.querySelector('[data-orbit-pct]');
+
+		let activeId = null;
+		let lastTrigger = null;
+		const isMobile = function () {
+			return window.innerWidth <= 720;
+		};
+
+		function positionCard(nodeEl) {
+			const orbitRect = orbit.getBoundingClientRect();
+			const nodeRect = nodeEl.getBoundingClientRect();
+			const nodeCX = nodeRect.left + nodeRect.width / 2 - orbitRect.left;
+			const nodeCY = nodeRect.top + nodeRect.height / 2 - orbitRect.top;
+			const cardW = 280;
+
+			if (isMobile()) {
+				// Bottom-center on mobile
+				detail.style.left = '50%';
+				detail.style.top = 'auto';
+				detail.style.bottom = '0';
+				detail.style.transform = 'translateX(-50%) translateY(6px)';
+				return;
+			}
+
+			// Desktop: place card to the right or left of node
+			const gap = 14;
+			const nodeRight = nodeCX + nodeRect.width / 2;
+			const nodeLeft = nodeCX - nodeRect.width / 2;
+			const placeRight = nodeCX < orbitRect.width * 0.55;
+
+			let cardX, cardY;
+			if (placeRight) {
+				cardX = nodeRight + gap;
+			} else {
+				cardX = nodeLeft - gap - cardW;
+			}
+
+			// Vertically center on node, clamp to bounds
+			cardY = nodeCY - 80; // roughly half card height
+			cardY = Math.max(8, Math.min(orbitRect.height - 200, cardY));
+
+			// Clamp horizontal
+			cardX = Math.max(4, Math.min(orbitRect.width - cardW - 4, cardX));
+
+			detail.style.left = cardX + 'px';
+			detail.style.top = cardY + 'px';
+			detail.style.bottom = 'auto';
+			detail.style.transform = 'translateY(6px)';
+		}
+
+		function buildCaps(caps) {
+			while (capsEl.firstChild) capsEl.removeChild(capsEl.firstChild);
+			caps.forEach(function (cap, idx) {
+				const isPlanned = cap.status === 'planned';
+				const li = document.createElement('li');
+				li.className = 'orbit__cap-item' + (isPlanned ? ' orbit__cap-item--planned' : '');
+				li.style.setProperty('--cap-i', String(idx));
+
+				// Left: dot indicator
+				const dot = document.createElement('span');
+				dot.className = 'orbit__cap-dot';
+				li.appendChild(dot);
+
+				// Middle: text label
+				const textSpan = document.createElement('span');
+				textSpan.className = 'orbit__cap-text';
+				textSpan.appendChild(document.createTextNode(cap.text));
+				li.appendChild(textSpan);
+
+				// Right: status icon (checkmark for active, clock for planned)
+				const icon = document.createElement('span');
+				icon.className = 'orbit__cap-icon';
+				if (isPlanned) {
+					// Clock/pending SVG
+					const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+					svg.setAttribute('viewBox', '0 0 16 16');
+					svg.setAttribute('fill', 'none');
+					svg.setAttribute('stroke', 'currentColor');
+					svg.setAttribute('stroke-width', '1.5');
+					svg.setAttribute('stroke-linecap', 'round');
+					const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+					circle.setAttribute('cx', '8');
+					circle.setAttribute('cy', '8');
+					circle.setAttribute('r', '6');
+					const hand1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+					hand1.setAttribute('d', 'M8 4.5V8l2.5 1.5');
+					svg.appendChild(circle);
+					svg.appendChild(hand1);
+					icon.appendChild(svg);
+				} else {
+					// Checkmark SVG
+					const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+					svg.setAttribute('viewBox', '0 0 16 16');
+					svg.setAttribute('fill', 'none');
+					svg.setAttribute('stroke', 'currentColor');
+					svg.setAttribute('stroke-width', '2');
+					svg.setAttribute('stroke-linecap', 'round');
+					svg.setAttribute('stroke-linejoin', 'round');
+					const check = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+					check.setAttribute('d', 'M3.5 8.5l3 3 6-6.5');
+					svg.appendChild(check);
+					icon.appendChild(svg);
+				}
+				li.appendChild(icon);
+
+				capsEl.appendChild(li);
+			});
+		}
+
+		function showDetail(agentId, nodeEl) {
+			const agent = agents.find(function (a) {
+				return a.id === agentId;
+			});
+			if (!agent) return;
+
+			lastTrigger = nodeEl;
+
+			titleEl.textContent = agent.title;
+			roleEl.textContent = agent.role;
+			descEl.textContent = agent.description;
+
+			// Capabilities
+			buildCaps(agent.capabilities || []);
+
+			// Progress
+			const total = (agent.capabilities || []).length;
+			const active = (agent.capabilities || []).filter(function (c) {
+				return c.status === 'active';
+			}).length;
+			const pct = total > 0 ? Math.round((active / total) * 100) : 0;
+			progressBar.style.setProperty('--progress', pct + '%');
+			pctEl.textContent = pct + '%';
+
+			positionCard(nodeEl);
+
+			requestAnimationFrame(function () {
+				detail.classList.add('orbit__detail--visible');
+				detail.setAttribute('aria-hidden', 'false');
+			});
+
+			orbit.classList.add('orbit--paused');
+			nodes.forEach(function (n) {
+				n.classList.toggle('orbit__node--active', n.dataset.orbitNode === agentId);
+				// Disable tab on inactive nodes while dialog is open
+				if (n.dataset.orbitNode !== agentId) {
+					n.setAttribute('tabindex', '-1');
+				}
+			});
+			activeId = agentId;
+
+			// Focus the dialog title for screen readers
+			titleEl.setAttribute('tabindex', '-1');
+			titleEl.focus();
+		}
+
+		function hideDetail() {
+			detail.classList.remove('orbit__detail--visible');
+			detail.setAttribute('aria-hidden', 'true');
+			orbit.classList.remove('orbit--paused');
+			nodes.forEach(function (n) {
+				n.classList.remove('orbit__node--active');
+				n.setAttribute('tabindex', '0');
+			});
+			if (lastTrigger) {
+				lastTrigger.focus();
+				lastTrigger = null;
+			}
+			activeId = null;
+		}
+
+		nodes.forEach(function (node) {
+			node.addEventListener('click', function () {
+				const id = node.dataset.orbitNode;
+				if (id === activeId) hideDetail();
+				else showDetail(id, node);
+			});
+		});
+
+		document.addEventListener('keydown', function (e) {
+			if (e.key === 'Escape' && activeId) hideDetail();
+		});
+
+		orbit.addEventListener('click', function (e) {
+			if (
+				activeId &&
+				!e.target.closest('[data-orbit-node]') &&
+				!e.target.closest('[data-orbit-detail]') &&
+				!e.target.closest('[data-orbit-core]')
+			) {
+				hideDetail();
+			}
+		});
+
+		/* ── Star explosion → flash white then reverse back ── */
+		const coreBtn = document.querySelector('[data-orbit-core]');
+		const flash = document.querySelector('[data-orbit-flash]');
+		const hero = document.querySelector('.home-hero');
+		const nav = document.querySelector('.prod-signal-nav');
+		let exploding = false;
+
+		if (coreBtn && flash && hero) {
+			coreBtn.addEventListener('click', function (e) {
+				e.stopPropagation();
+				if (exploding) return;
+
+				const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+				if (prefersReducedMotion) {
+					// Instant toggle — no flash animation
+					hero.classList.toggle('home-hero--light');
+					if (nav) nav.classList.toggle('prod-signal-nav--light');
+					return;
+				}
+
+				exploding = true;
+
+				flash.classList.remove('orbit__flash--exploding', 'orbit__flash--reversing');
+				void flash.offsetHeight;
+				flash.classList.add('orbit__flash--exploding');
+
+				// Go white at flash peak
+				setTimeout(function () {
+					hero.classList.add('home-hero--light');
+					if (nav) nav.classList.add('prod-signal-nav--light');
+				}, 300);
+
+				// Fire dark reverse flash (starts full-screen, collapses inward)
+				setTimeout(function () {
+					flash.classList.remove('orbit__flash--exploding');
+					void flash.offsetHeight;
+					// Switch to dark immediately — the collapsing dark disc reveals it
+					hero.classList.remove('home-hero--light');
+					if (nav) nav.classList.remove('prod-signal-nav--light');
+					flash.classList.add('orbit__flash--reversing');
+				}, 1200);
+
+				// Cleanup after collapse finishes
+				setTimeout(function () {
+					flash.classList.remove('orbit__flash--reversing');
+					exploding = false;
+				}, 2100);
+			});
+		}
+	});
+</script>
+
+<!-- Capability list items created by JS — need global styles -->
+<style is:global>
+	.orbit__cap-item {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		font-family: var(--font-main);
+		font-size: 0.72rem;
+		color: var(--color-text-muted);
+		line-height: 1.3;
+		padding: 3px 0;
+		opacity: 0;
+		transform: translateX(-4px);
+		animation: capFadeIn 0.25s ease forwards;
+		animation-delay: calc(0.08s + var(--cap-i, 0) * 0.06s);
+	}
+
+	@keyframes capFadeIn {
+		to {
+			opacity: 1;
+			transform: translateX(0);
+		}
+	}
+
+	.orbit__cap-item--planned {
+		color: var(--color-text-dim);
+	}
+
+	/* Left dot: filled teal for active, hollow ring for planned */
+	.orbit__cap-dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: var(--color-brand-cyan);
+		flex-shrink: 0;
+		box-shadow: 0 0 4px rgba(78, 201, 180, 0.3);
+	}
+
+	.orbit__cap-item--planned .orbit__cap-dot {
+		background: none;
+		border: 1.5px solid rgba(255, 255, 255, 0.2);
+		box-shadow: none;
+	}
+
+	/* Text label fills remaining space */
+	.orbit__cap-text {
+		flex: 1;
+		min-width: 0;
+	}
+
+	/* Right status icon */
+	.orbit__cap-icon {
+		flex-shrink: 0;
+		width: 14px;
+		height: 14px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--color-brand-cyan);
+		opacity: 0.7;
+	}
+
+	.orbit__cap-icon svg {
+		width: 13px;
+		height: 13px;
+	}
+
+	.orbit__cap-item--planned .orbit__cap-icon {
+		color: var(--color-text-dim);
+		opacity: 0.5;
+	}
+</style>
