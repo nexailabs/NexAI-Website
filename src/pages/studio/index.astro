@@ -315,6 +315,10 @@ const heroPreloadSrcset = [
 
 <script>
 	function initFloats() {
+		// Skip on mobile (floats hidden via CSS) and reduced-motion
+		if (window.innerWidth <= 720) return;
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
 		const scope = document.querySelector<HTMLElement>('.faq-cta-zone__sticky-scope');
 		const floats = document.querySelector<HTMLElement>('.faq-cta-zone__floats');
 		if (!scope || !floats) return;
@@ -325,15 +329,12 @@ const heroPreloadSrcset = [
 			const rect = scope.getBoundingClientRect();
 
 			if (rect.top <= 0 && rect.bottom >= window.innerHeight) {
-				// Scope fills viewport — pin images fixed
 				floats.classList.add('faq-cta-zone__floats--fixed');
 				floats.classList.remove('faq-cta-zone__floats--bottom');
 			} else if (rect.top <= 0 && rect.bottom < window.innerHeight) {
-				// Scope ending — lock at bottom, scroll away naturally
 				floats.classList.remove('faq-cta-zone__floats--fixed');
 				floats.classList.add('faq-cta-zone__floats--bottom');
 			} else {
-				// Before scope — sit at top
 				floats.classList.remove('faq-cta-zone__floats--fixed');
 				floats.classList.remove('faq-cta-zone__floats--bottom');
 			}
@@ -348,12 +349,21 @@ const heroPreloadSrcset = [
 			}
 		}
 
+		function onResize() {
+			// Re-evaluate pinning state after viewport changes (iOS chrome collapse)
+			update();
+		}
+
 		window.addEventListener('scroll', onScroll, { passive: true });
+		window.addEventListener('resize', onResize, { passive: true });
 		update();
 
 		document.addEventListener(
 			'astro:before-swap',
-			() => window.removeEventListener('scroll', onScroll),
+			() => {
+				window.removeEventListener('scroll', onScroll);
+				window.removeEventListener('resize', onResize);
+			},
 			{ once: true },
 		);
 	}

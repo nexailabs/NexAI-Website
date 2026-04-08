@@ -83,7 +83,7 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 															alt={`${cat.label} raw input`}
 															width="600"
 															height="800"
-															loading={i === 0 ? 'eager' : 'lazy'}
+															loading="lazy"
 														/>
 													</div>
 													<div class="sc3__mobile-before-side">
@@ -96,7 +96,7 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 																	alt={`${cat.label} side input top`}
 																	width="600"
 																	height="800"
-																	loading={i === 0 ? 'eager' : 'lazy'}
+																	loading="lazy"
 																/>
 															</div>
 														)}
@@ -109,7 +109,7 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 																	alt={`${cat.label} side input bottom`}
 																	width="600"
 																	height="800"
-																	loading={i === 0 ? 'eager' : 'lazy'}
+																	loading="lazy"
 																/>
 															</div>
 														)}
@@ -123,7 +123,7 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 													alt={`${cat.label} raw input`}
 													width="600"
 													height="800"
-													loading={i === 0 ? 'eager' : 'lazy'}
+													loading="lazy"
 												/>
 											)
 										) : (
@@ -152,7 +152,7 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 															alt={slot.alt}
 															width="600"
 															height="800"
-															loading={i === 0 ? 'eager' : 'lazy'}
+															loading="lazy"
 														/>
 													</div>
 												) : (
@@ -188,7 +188,8 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 												alt="Raw Garment"
 												width="600"
 												height="800"
-												loading={i === 0 ? 'eager' : 'lazy'}
+												loading="lazy"
+												fetchpriority={i === 0 ? 'high' : 'auto'}
 											/>
 										) : (
 											<Fragment set:html={placeholderSvgLg} />
@@ -205,7 +206,7 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 													alt="Side input"
 													width="600"
 													height="800"
-													loading={i === 0 ? 'eager' : 'lazy'}
+													loading="lazy"
 												/>
 											) : (
 												<Fragment set:html={placeholderSvg} />
@@ -222,7 +223,7 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 													alt="Side input"
 													width="600"
 													height="800"
-													loading={i === 0 ? 'eager' : 'lazy'}
+													loading="lazy"
 												/>
 											) : (
 												<Fragment set:html={placeholderSvg} />
@@ -259,7 +260,7 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 													alt={slot.alt}
 													width={aspectDims[slot.aspect].w}
 													height={aspectDims[slot.aspect].h}
-													loading={i === 0 ? 'eager' : 'lazy'}
+													loading="lazy"
 												/>
 											) : (
 												<>
@@ -291,7 +292,7 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 														alt={slot.alt}
 														width={aspectDims[slot.aspect].w}
 														height={aspectDims[slot.aspect].h}
-														loading={i === 0 ? 'eager' : 'lazy'}
+														loading="lazy"
 													/>
 												) : (
 													<>
@@ -322,7 +323,7 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 													alt={slot.alt}
 													width={aspectDims[slot.aspect].w}
 													height={aspectDims[slot.aspect].h}
-													loading={i === 0 ? 'eager' : 'lazy'}
+													loading="lazy"
 												/>
 											) : (
 												<>
