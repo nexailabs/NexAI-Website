@@ -170,11 +170,18 @@ const { items } = Astro.props;
 	/* ── Mobile ── */
 	@media (max-width: 720px) {
 		.studio-faq {
-			padding-top: clamp(1.5rem, 3vh, 2.5rem);
+			padding-top: 0;
+		}
+
+		.studio-faq__trigger {
+			padding-left: 0.75rem;
+			padding-right: 0.75rem;
 		}
 
 		.studio-faq__a {
 			max-width: none;
+			padding-left: 0.75rem;
+			padding-right: 0.75rem;
 		}
 	}
 </style>
