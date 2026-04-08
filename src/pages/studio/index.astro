@@ -315,8 +315,6 @@ const heroPreloadSrcset = [
 
 <script>
 	function initFloats() {
-		// Skip on mobile (floats hidden via CSS) and reduced-motion
-		if (window.innerWidth <= 720) return;
 		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
 		const scope = document.querySelector<HTMLElement>('.faq-cta-zone__sticky-scope');
@@ -324,6 +322,7 @@ const heroPreloadSrcset = [
 		if (!scope || !floats) return;
 
 		let ticking = false;
+		let active = false;
 
 		function update() {
 			const rect = scope.getBoundingClientRect();
@@ -349,19 +348,39 @@ const heroPreloadSrcset = [
 			}
 		}
 
-		function onResize() {
-			// Re-evaluate pinning state after viewport changes (iOS chrome collapse)
+		function activate() {
+			if (active) return;
+			active = true;
+			window.addEventListener('scroll', onScroll, { passive: true });
 			update();
 		}
 
-		window.addEventListener('scroll', onScroll, { passive: true });
+		function deactivate() {
+			if (!active) return;
+			active = false;
+			window.removeEventListener('scroll', onScroll);
+			floats.classList.remove('faq-cta-zone__floats--fixed');
+			floats.classList.remove('faq-cta-zone__floats--bottom');
+		}
+
+		function onResize() {
+			if (window.innerWidth > 720) {
+				activate();
+				update();
+			} else {
+				deactivate();
+			}
+		}
+
+		// Initial activation based on viewport
+		if (window.innerWidth > 720) activate();
+
 		window.addEventListener('resize', onResize, { passive: true });
-		update();
 
 		document.addEventListener(
 			'astro:before-swap',
 			() => {
-				window.removeEventListener('scroll', onScroll);
+				deactivate();
 				window.removeEventListener('resize', onResize);
 			},
 			{ once: true },
