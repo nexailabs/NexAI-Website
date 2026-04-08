@@ -28,12 +28,20 @@ const { items } = Astro.props;
 						<button
 							class="studio-faq__trigger"
 							aria-expanded={i === 0 ? 'true' : 'false'}
+							id={`faq-trigger-${i}`}
+							aria-controls={`faq-panel-${i}`}
 							data-faq-trigger
 						>
 							<span class="studio-faq__q">{item.question}</span>
 							<span class="studio-faq__icon" aria-hidden="true" />
 						</button>
-						<div class="studio-faq__answer" data-faq-answer>
+						<div
+							class="studio-faq__answer"
+							id={`faq-panel-${i}`}
+							role="region"
+							aria-labelledby={`faq-trigger-${i}`}
+							data-faq-answer
+						>
 							<div class="studio-faq__answer-inner">
 								<p class="studio-faq__a">{item.answer}</p>
 							</div>
