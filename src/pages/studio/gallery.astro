@@ -1,6 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import StudioCTA from '../../components/StudioCTA.astro';
 import { galleryItems, galleryCategories } from '../../data/gallery';
+import { ctaFloats } from '../../data/studio';
 import { site } from '../../config/site';
 ---
 
@@ -8,12 +10,23 @@ import { site } from '../../config/site';
 	title="Gallery | NexAI Studio — AI Fashion Photography"
 	description="Browse AI-generated fashion photography across kurta sets, sarees, western wear, menswear, jewelry, and cosmetics. Real brands, real results."
 >
+	<script
+		slot="head"
+		type="application/ld+json"
+		set:html={JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'CollectionPage',
+			name: 'Gallery | NexAI Studio',
+			description: 'AI-generated fashion photography portfolio',
+			url: `${site.url}/studio/gallery`,
+			isPartOf: { '@id': `${site.url}/#website` },
+		})}
+	/>
 	<section class="gallery">
 		<div class="container gallery__inner">
-			<header class="section-header">
-				<p class="section-eyebrow">Portfolio</p>
+			<header class="section-header gallery__header">
 				<h1 class="section-title">Our <em>Work</em></h1>
-				<p class="section-sub">AI-generated photoshoots for real brands. Filter by category.</p>
+				<p class="section-sub">Real brands, real shoots. Browse by category.</p>
 			</header>
 
 			<!-- Filters -->
@@ -58,32 +71,25 @@ import { site } from '../../config/site';
 				}
 			</div>
 
-			<!-- CTA -->
-			<div class="gallery__cta">
-				<p class="gallery__cta-text">Want results like these for your brand?</p>
-				<a
-					class="gallery__cta-btn"
-					href={site.bookingUrl}
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Book a Free Call
-				</a>
-			</div>
+			<StudioCTA floats={ctaFloats} />
 		</div>
 	</section>
 </Layout>
 
 <style>
 	.gallery {
-		padding: calc(var(--header-height, 5rem) + 2rem) 0 clamp(4rem, 8vh, 6rem);
+		padding: calc(var(--header-height, 5rem) + 2rem) 0 0;
 		min-height: 100vh;
 	}
 
 	.gallery__inner {
 		display: flex;
 		flex-direction: column;
-		gap: clamp(2rem, 4vh, 3rem);
+		gap: clamp(1.25rem, 2.5vh, 2rem);
+	}
+
+	.gallery__header {
+		margin-bottom: 0;
 	}
 
 	/* ── Filters ── */
@@ -92,6 +98,7 @@ import { site } from '../../config/site';
 		flex-direction: column;
 		gap: 0.75rem;
 		align-items: center;
+		margin-bottom: clamp(0.5rem, 1.5vh, 1rem);
 	}
 
 	.gallery__filter-row {
@@ -169,42 +176,6 @@ import { site } from '../../config/site';
 	}
 	.gallery__item[data-aspect='9x16'] .gallery__img {
 		aspect-ratio: 9/16;
-	}
-
-	/* ── CTA ── */
-	.gallery__cta {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 1rem;
-		padding-top: clamp(2rem, 4vh, 3rem);
-	}
-
-	.gallery__cta-text {
-		font-family: var(--font-main);
-		font-size: clamp(0.95rem, 1.1vw, 1.05rem);
-		color: var(--color-text-muted);
-	}
-
-	.gallery__cta-btn {
-		display: inline-flex;
-		align-items: center;
-		padding: 0.85rem 2.2rem;
-		border-radius: 999px;
-		background: var(--color-text-main);
-		color: var(--color-bg);
-		font-family: var(--font-main);
-		font-weight: var(--fw-semibold);
-		font-size: 0.95rem;
-		text-decoration: none;
-		transition:
-			transform 0.3s var(--ease-out-expo),
-			box-shadow 0.3s var(--ease-out-expo);
-	}
-
-	.gallery__cta-btn:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 0 24px rgba(78, 201, 180, 0.2);
 	}
 
 	/* ── Tablet ── */
