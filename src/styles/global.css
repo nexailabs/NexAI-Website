@@ -129,6 +129,12 @@ html {
 	-webkit-font-smoothing: antialiased;
 	text-rendering: optimizeLegibility;
 	overflow-x: clip; /* Prevent horizontal scroll without breaking position: sticky */
+	scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none; /* IE / Edge legacy */
+}
+
+html::-webkit-scrollbar {
+	display: none; /* Chrome, Safari, Edge */
 }
 
 body {

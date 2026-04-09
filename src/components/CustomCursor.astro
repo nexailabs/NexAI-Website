@@ -1,6 +1,7 @@
 <div class="cursor" data-custom-cursor aria-hidden="true">
 	<div class="cursor__ring"></div>
 	<div class="cursor__dot"></div>
+	<span class="cursor__label"></span>
 </div>
 
 <script src="../scripts/custom-cursor.ts"></script>
@@ -63,6 +64,42 @@
 		background: #fff;
 		border-radius: 50%;
 		will-change: transform;
+		transition: opacity 0.2s ease;
+	}
+
+	.cursor--hover .cursor__dot,
+	.cursor--label .cursor__dot {
+		opacity: 0;
+	}
+
+	/* ── Label mode (data-cursor-label hover) ── */
+	.cursor__label {
+		position: absolute;
+		top: 0;
+		left: 0;
+		font-family: var(--font-main);
+		font-size: 0.6rem;
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		white-space: nowrap;
+		color: rgba(255, 255, 255, 0.7);
+		opacity: 0;
+		pointer-events: none;
+		will-change: transform;
+		transition: opacity 0.25s ease;
+	}
+
+	.cursor--label {
+		mix-blend-mode: normal;
+	}
+
+	.cursor--label .cursor__ring {
+		border-color: rgba(78, 201, 180, 0.6);
+	}
+
+	.cursor--label .cursor__label {
+		opacity: 1;
 	}
 
 	@media (pointer: coarse) {

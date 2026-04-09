@@ -21,6 +21,7 @@ interface Props {
 	ogImage?: string;
 	canonicalUrl?: string;
 	mainClass?: string;
+	noFooter?: boolean;
 }
 
 const {
@@ -29,6 +30,7 @@ const {
 	ogImage = 'https://ik.imagekit.io/nexailabs/nexai/og/default.png?tr=w-1200,h-630,fo-auto,f-auto,q-85',
 	canonicalUrl,
 	mainClass,
+	noFooter = false,
 } = Astro.props;
 
 const section = Astro.url.pathname.split('/')[1] || 'main';
@@ -95,13 +97,32 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 			<main id="main-content" class={mainClass} tabindex="-1">
 				<slot />
 			</main>
-			<Footer />
+			{!noFooter && <Footer />}
 		</div>
 
 		<!-- Global Scripts -->
 		<script src="../scripts/lenis.ts"></script>
 
-		<!-- Cal.com embed — loads once, all booking links use data-cal-link to trigger popup -->
+		<!-- Cal.com inline embed inside our own <dialog> -->
+		<dialog id="cal-dialog" class="cal-dialog">
+			<div class="cal-dialog__header">
+				<button class="cal-dialog__back" aria-label="Close booking dialog">
+					<svg
+						width="18"
+						height="18"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"><path d="M19 12H5"></path><path d="M12 19l-7-7 7-7"></path></svg
+					>
+					Back
+				</button>
+			</div>
+			<div class="cal-dialog__body" id="cal-inline"></div>
+		</dialog>
+
 		<script is:inline>
 			/* eslint-disable prefer-rest-params */
 			(function (C, A, L) {
@@ -136,12 +157,188 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 						p(cal, ar);
 					};
 			})(window, 'https://app.cal.com/embed/embed.js', 'init');
-			Cal('init', { origin: 'https://cal.com' });
-			Cal('ui', {
-				styles: { branding: { brandColor: '#4ec9b4' } },
-				hideEventTypeDetails: false,
-				layout: 'month_view',
-			});
+
+			function initCalInline() {
+				const container = document.getElementById('cal-inline');
+				if (!container || container.dataset.calReady) return;
+
+				Cal('init', '15min', { origin: 'https://app.cal.com' });
+				Cal.ns['15min']('inline', {
+					elementOrSelector: '#cal-inline',
+					config: { layout: 'month_view', useSlotsViewOnSmallScreen: 'true' },
+					calLink: 'rahul-juneja/15min',
+				});
+				Cal.ns['15min']('ui', {
+					hideEventTypeDetails: false,
+					layout: 'month_view',
+					cssVarsPerTheme: {
+						dark: {
+							'cal-bg': 'rgba(10,10,12,0.97)',
+							'cal-bg-emphasis': '#18191b',
+							'cal-text': '#ffffff',
+							'cal-text-emphasis': '#ffffff',
+							'cal-border-subtle': 'rgba(255,255,255,0.08)',
+							'cal-border': 'rgba(255,255,255,0.1)',
+							'cal-text-muted': 'rgba(255,255,255,0.6)',
+							'cal-brand': '#4ec9b4',
+							'cal-brand-emphasis': '#1e7e72',
+						},
+					},
+				});
+				container.dataset.calReady = '1';
+			}
+			initCalInline();
+			document.addEventListener('astro:page-load', initCalInline);
+
+			/* Open/close dialog on [data-open-cal] clicks */
+			function setupCalDialog() {
+				const dialog = document.getElementById('cal-dialog');
+				if (!dialog) return;
+
+				/* Open: intercept all [data-open-cal] clicks */
+				document.addEventListener('click', function (e) {
+					const trigger = e.target.closest('[data-open-cal]');
+					if (!trigger) return;
+					e.preventDefault();
+					e.stopPropagation();
+					dialog.showModal();
+					document.documentElement.classList.add('cal-modal-open');
+				});
+
+				/* Close: Back button */
+				const backBtn = dialog.querySelector('.cal-dialog__back');
+				if (backBtn) {
+					backBtn.addEventListener('click', function () {
+						dialog.close();
+					});
+				}
+
+				/* Close: click on backdrop (outside the dialog box) */
+				dialog.addEventListener('click', function (e) {
+					if (e.target === dialog) dialog.close();
+				});
+
+				/* Cleanup on close */
+				dialog.addEventListener('close', function () {
+					document.documentElement.classList.remove('cal-modal-open');
+				});
+			}
+			setupCalDialog();
+			document.addEventListener('astro:page-load', setupCalDialog);
 		</script>
+
+		<style is:global>
+			/* Scroll-lock when Cal dialog is open */
+			html.cal-modal-open,
+			html.cal-modal-open body {
+				overflow: hidden !important;
+			}
+
+			/* Dialog — vertically + horizontally centered */
+			.cal-dialog {
+				border: none;
+				background: transparent;
+				padding: 0;
+				position: fixed;
+				inset: 0;
+				margin: auto;
+				max-width: 1100px;
+				width: 94vw;
+				height: fit-content;
+				max-height: 94vh;
+				overflow: visible;
+				outline: none;
+			}
+
+			/* Dark backdrop */
+			.cal-dialog::backdrop {
+				background: rgba(5, 5, 7, 0.95);
+				backdrop-filter: blur(6px);
+				-webkit-backdrop-filter: blur(6px);
+			}
+
+			/* Header with back button — aligned with card's left edge */
+			.cal-dialog__header {
+				display: flex;
+				align-items: center;
+				padding: 0 0 1.5rem 2rem;
+			}
+
+			/* Restore native cursor on dialog (custom cursor is below top layer) */
+			.cal-dialog,
+			.cal-dialog *,
+			.cal-dialog::backdrop {
+				cursor: auto !important;
+			}
+
+			.cal-dialog__back {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.4rem;
+				border: 1px solid rgba(255, 255, 255, 0.15);
+				border-radius: 999px;
+				background: rgba(255, 255, 255, 0.05);
+				color: rgba(255, 255, 255, 0.7);
+				font-family: var(--font-main);
+				font-size: 0.8rem;
+				font-weight: var(--fw-semibold);
+				letter-spacing: 0.04em;
+				padding: 0.45rem 1rem 0.45rem 0.75rem;
+				cursor: pointer;
+				transition:
+					border-color 0.2s ease,
+					color 0.2s ease;
+			}
+
+			.cal-dialog__back:hover {
+				border-color: rgba(255, 255, 255, 0.4);
+				color: #fff;
+			}
+
+			.cal-dialog__back svg {
+				flex-shrink: 0;
+			}
+
+			/* Inline embed container — tall enough to avoid scroll */
+			.cal-dialog__body {
+				width: 100%;
+				min-height: 580px;
+				border-radius: 12px;
+				background: transparent;
+				box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+			}
+
+			/* Cal iframe fills the container */
+			.cal-dialog__body iframe {
+				border: none !important;
+				border-radius: 12px;
+				min-height: 580px;
+				color-scheme: dark;
+			}
+
+			/* Kill any white background from Cal's embed wrapper */
+			#cal-inline {
+				background: transparent !important;
+				color-scheme: dark;
+			}
+
+			#cal-inline > div {
+				background: transparent !important;
+			}
+
+			@media (max-width: 720px) {
+				.cal-dialog {
+					width: 98vw;
+				}
+
+				.cal-dialog__body {
+					min-height: 500px;
+				}
+
+				.cal-dialog__body iframe {
+					min-height: 500px;
+				}
+			}
+		</style>
 	</body>
 </html>

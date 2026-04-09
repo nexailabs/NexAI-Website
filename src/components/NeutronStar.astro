@@ -1,0 +1,288 @@
+---
+interface Props {
+	/** CSS selector for the container that receives the light-mode class */
+	lightTarget: string;
+	/** Class name to add to that container (e.g. "home-hero--light") */
+	lightClass: string;
+}
+
+const { lightTarget, lightClass } = Astro.props;
+---
+
+<div class="nstar" data-nstar data-nstar-target={lightTarget} data-nstar-class={lightClass}>
+	<!-- Flash overlay — JS teleports this to <body> so it escapes transform ancestors -->
+	<div class="nstar__flash" data-nstar-flash aria-hidden="true"></div>
+	<div class="nstar__pulse" aria-hidden="true"></div>
+	<button
+		class="nstar__core"
+		data-nstar-core
+		data-cursor-label="click to blast"
+		aria-label="Toggle light mode"></button>
+</div>
+
+<style>
+	.nstar {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	/* ── Core dot ── */
+	.nstar__core {
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		border: none;
+		padding: 0;
+		background: rgba(255, 255, 255, 0.92);
+		cursor: pointer;
+		position: relative;
+		z-index: 2;
+		box-shadow:
+			0 0 8px 3px rgba(78, 201, 180, 0.6),
+			0 0 25px 8px rgba(78, 201, 180, 0.3),
+			0 0 60px 15px rgba(78, 201, 180, 0.1);
+		animation: nstarBreathe 3s ease-in-out infinite;
+		transition:
+			transform 0.2s ease,
+			box-shadow 0.2s ease;
+	}
+
+	/* Larger hit area */
+	.nstar__core::before {
+		content: '';
+		position: absolute;
+		inset: -15px;
+		border-radius: 50%;
+	}
+
+	.nstar__core:hover {
+		transform: scale(1.3);
+		box-shadow:
+			0 0 12px 5px rgba(78, 201, 180, 0.8),
+			0 0 35px 12px rgba(78, 201, 180, 0.4),
+			0 0 80px 20px rgba(78, 201, 180, 0.15);
+	}
+
+	.nstar__core:focus-visible {
+		outline: 2px solid rgba(78, 201, 180, 0.7);
+		outline-offset: 6px;
+	}
+
+	@keyframes nstarBreathe {
+		0%,
+		100% {
+			box-shadow:
+				0 0 8px 3px rgba(78, 201, 180, 0.6),
+				0 0 25px 8px rgba(78, 201, 180, 0.3),
+				0 0 60px 15px rgba(78, 201, 180, 0.1);
+		}
+		50% {
+			box-shadow:
+				0 0 12px 5px rgba(78, 201, 180, 0.8),
+				0 0 35px 12px rgba(78, 201, 180, 0.4),
+				0 0 80px 20px rgba(78, 201, 180, 0.15);
+		}
+	}
+
+	/* ── Pulse ring ── */
+	.nstar__pulse {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 1600px;
+		height: 1600px;
+		transform: translate(-50%, -50%) scale(0.00625);
+		border-radius: 50%;
+		border: 2px solid rgba(78, 201, 180, 0.8);
+		background: radial-gradient(circle, rgba(78, 201, 180, 0.12) 0%, transparent 50%);
+		pointer-events: none;
+		will-change: transform, opacity;
+		animation: nstarPulse 7s ease-out infinite;
+	}
+
+	@keyframes nstarPulse {
+		0% {
+			transform: translate(-50%, -50%) scale(0.00625);
+			border-color: rgba(78, 201, 180, 0.9);
+			opacity: 0.9;
+		}
+		50% {
+			opacity: 0.12;
+		}
+		100% {
+			transform: translate(-50%, -50%) scale(1);
+			border-color: rgba(78, 201, 180, 0);
+			opacity: 0;
+		}
+	}
+
+	/* ── Flash overlay ── */
+	.nstar__flash {
+		position: fixed;
+		width: 400vmax;
+		height: 400vmax;
+		border-radius: 50%;
+		background: radial-gradient(
+			circle,
+			rgba(255, 255, 255, 1) 0%,
+			rgba(255, 255, 255, 1) 45%,
+			rgba(255, 255, 255, 0.4) 49%,
+			transparent 52%
+		);
+		transform: translate(-50%, -50%) scale(0);
+		pointer-events: none;
+		z-index: 9999;
+		opacity: 0;
+		will-change: transform, opacity;
+	}
+
+	.nstar__flash--exploding {
+		animation: nstarExplode 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+	}
+
+	.nstar__flash--reversing {
+		background: radial-gradient(
+			circle,
+			rgba(255, 255, 255, 1) 0%,
+			rgba(255, 255, 255, 1) 45%,
+			rgba(255, 255, 255, 0.4) 49%,
+			transparent 52%
+		);
+		animation: nstarCollapse 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+	}
+
+	@keyframes nstarExplode {
+		0% {
+			transform: translate(-50%, -50%) scale(0);
+			opacity: 1;
+		}
+		60% {
+			opacity: 1;
+		}
+		100% {
+			transform: translate(-50%, -50%) scale(1);
+			opacity: 0;
+		}
+	}
+
+	@keyframes nstarCollapse {
+		0% {
+			transform: translate(-50%, -50%) scale(1);
+			opacity: 1;
+		}
+		60% {
+			opacity: 1;
+		}
+		100% {
+			transform: translate(-50%, -50%) scale(0);
+			opacity: 0;
+		}
+	}
+
+	/* ── Light mode (toggled by JS via nstar--light) ── */
+	.nstar--light .nstar__core {
+		background: rgba(0, 0, 0, 0.85);
+		box-shadow:
+			0 0 8px 3px rgba(13, 122, 110, 0.5),
+			0 0 25px 8px rgba(13, 122, 110, 0.25),
+			0 0 60px 15px rgba(13, 122, 110, 0.08);
+	}
+
+	.nstar--light .nstar__pulse {
+		border-color: rgba(13, 122, 110, 0.4);
+		background: radial-gradient(circle, rgba(13, 122, 110, 0.08) 0%, transparent 50%);
+	}
+
+	/* ── Reduced motion ── */
+	@media (prefers-reduced-motion: reduce) {
+		.nstar__core,
+		.nstar__pulse {
+			animation: none !important;
+		}
+
+		.nstar__flash {
+			display: none !important;
+		}
+	}
+</style>
+
+<script>
+	document.addEventListener('astro:page-load', () => {
+		const star = document.querySelector<HTMLElement>('[data-nstar]');
+		if (!star) return;
+
+		const core = star.querySelector<HTMLButtonElement>('[data-nstar-core]');
+		const flash = star.querySelector<HTMLElement>('[data-nstar-flash]');
+		if (!core || !flash) return;
+
+		const targetSel = star.dataset.nstarTarget || '';
+		const lightCls = star.dataset.nstarClass || '';
+		const target = targetSel ? document.querySelector<HTMLElement>(targetSel) : null;
+		const nav = document.querySelector<HTMLElement>('.prod-signal-nav');
+		const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		// Move flash to <body> so it isn't clipped by transform ancestors
+		document.body.appendChild(flash);
+
+		let busy = false;
+
+		function positionFlash() {
+			const r = core.getBoundingClientRect();
+			flash.style.left = r.left + r.width / 2 + 'px';
+			flash.style.top = r.top + r.height / 2 + 'px';
+		}
+
+		core.addEventListener('click', (e) => {
+			e.stopPropagation();
+			if (busy) return;
+
+			if (reducedMotion) {
+				star.classList.toggle('nstar--light');
+				if (target && lightCls) target.classList.toggle(lightCls);
+				if (nav) nav.classList.toggle('prod-signal-nav--light');
+				return;
+			}
+
+			busy = true;
+			positionFlash();
+
+			flash.classList.remove('nstar__flash--exploding', 'nstar__flash--reversing');
+			void flash.offsetHeight;
+			flash.classList.add('nstar__flash--exploding');
+
+			// Go light at flash peak
+			setTimeout(() => {
+				star.classList.add('nstar--light');
+				if (target && lightCls) target.classList.add(lightCls);
+				if (nav) nav.classList.add('prod-signal-nav--light');
+			}, 500);
+
+			// Reverse: dark collapse (after explode finishes)
+			setTimeout(() => {
+				flash.classList.remove('nstar__flash--exploding');
+				void flash.offsetHeight;
+				star.classList.remove('nstar--light');
+				if (target && lightCls) target.classList.remove(lightCls);
+				if (nav) nav.classList.remove('prod-signal-nav--light');
+				flash.classList.add('nstar__flash--reversing');
+			}, 1800);
+
+			// Cleanup (1800 + 800ms collapse duration)
+			setTimeout(() => {
+				flash.classList.remove('nstar__flash--reversing');
+				busy = false;
+			}, 2700);
+		});
+
+		// Remove orphaned flash on view-transition navigation
+		document.addEventListener(
+			'astro:before-swap',
+			() => {
+				flash.remove();
+			},
+			{ once: true },
+		);
+	});
+</script>
