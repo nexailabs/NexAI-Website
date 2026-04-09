@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import NeutronStar from '../components/NeutronStar.astro';
+import { site } from '../config/site';
 ---
 
 <Layout
@@ -30,7 +31,9 @@ import NeutronStar from '../components/NeutronStar.astro';
 
 			<!-- CTAs -->
 			<div class="cs__ctas">
-				<a href="#book" class="cs__cta cs__cta--primary" data-open-cal> Get Early Access </a>
+				<a href={site.bookingUrl} class="cs__cta cs__cta--primary" data-open-cal>
+					Get Early Access
+				</a>
 				<a href="/" class="cs__cta cs__cta--ghost">Back to Home</a>
 			</div>
 		</div>

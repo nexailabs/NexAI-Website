@@ -8,6 +8,7 @@ import {
 	agents,
 } from '../../data/home';
 import AgentOrbit from './AgentOrbit.astro';
+import { site } from '../../config/site';
 ---
 
 <section id="hero" class="home-hero" aria-label="Hero">
@@ -28,7 +29,7 @@ import AgentOrbit from './AgentOrbit.astro';
 			</h1>
 			<p class="home-hero__sub">{heroSubtext}</p>
 			<div class="home-hero__ctas">
-				<a href="#book" class="home-hero__cta home-hero__cta--primary" data-open-cal>
+				<a href={site.bookingUrl} class="home-hero__cta home-hero__cta--primary" data-open-cal>
 					Book a Call
 				</a>
 				<a href="/studio" class="home-hero__cta home-hero__cta--ghost"> See Our Work </a>
