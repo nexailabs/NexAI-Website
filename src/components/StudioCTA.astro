@@ -1,5 +1,6 @@
 ---
 import type { HeroImage } from '../types/studio';
+import { site } from '../config/site';
 interface Props {
 	floats: HeroImage[];
 }
@@ -15,7 +16,7 @@ const { floats } = Astro.props;
 		<p class="section-sub">
 			We'll show you samples from brands in your category — before you commit to anything.
 		</p>
-		<a class="studio-cta__btn" href="#book" data-open-cal> Book a Free Call </a>
+		<a class="studio-cta__btn" href={site.bookingUrl} data-open-cal> Book a Free Call </a>
 		<div class="studio-cta__proof">
 			<div class="studio-cta__avatars">
 				<img
