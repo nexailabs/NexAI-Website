@@ -1,6 +1,7 @@
 ---
-import { site } from '../config/site';
+import { site, socials } from '../config/site';
 import { ik } from '../config/imagekit';
+import SocialIcon from './SocialIcon.astro';
 
 const year = new Date().getFullYear();
 ---
@@ -59,65 +60,19 @@ const year = new Date().getFullYear();
 				<h3 class="site-footer__heading">Connect</h3>
 				<!-- Social icons (shown on mobile, text links on desktop) -->
 				<div class="site-footer__socials">
-					<a
-						href="https://www.instagram.com/nexailabs/"
-						target="_blank"
-						rel="noopener noreferrer"
-						aria-label="Instagram"
-						class="site-footer__social-icon"
-					>
-						<svg
-							width="18"
-							height="18"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="1.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							aria-hidden="true"
-							><rect x="2" y="2" width="20" height="20" rx="5"></rect><circle cx="12" cy="12" r="5"
-							></circle><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"
-							></circle></svg
-						>
-					</a>
-					<a
-						href="https://www.linkedin.com/company/nexailabs/"
-						target="_blank"
-						rel="noopener noreferrer"
-						aria-label="LinkedIn"
-						class="site-footer__social-icon"
-					>
-						<svg
-							width="18"
-							height="18"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="1.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							aria-hidden="true"
-							><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6z"></path><rect
-								x="2"
-								y="9"
-								width="4"
-								height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg
-						>
-					</a>
-					<a
-						href="https://www.youtube.com/@nexailabs"
-						target="_blank"
-						rel="noopener noreferrer"
-						aria-label="YouTube"
-						class="site-footer__social-icon"
-					>
-						<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
-							><path
-								d="M23.5 6.19a3.02 3.02 0 00-2.12-2.14C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.38.55A3.02 3.02 0 00.5 6.19 31.7 31.7 0 000 12a31.7 31.7 0 00.5 5.81 3.02 3.02 0 002.12 2.14c1.88.55 9.38.55 9.38.55s7.5 0 9.38-.55a3.02 3.02 0 002.12-2.14A31.7 31.7 0 0024 12a31.7 31.7 0 00-.5-5.81zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"
-							></path></svg
-						>
-					</a>
+					{
+						socials.map((s) => (
+							<a
+								href={s.href}
+								target="_blank"
+								rel="noopener noreferrer"
+								aria-label={s.label}
+								class="site-footer__social-icon"
+							>
+								<SocialIcon platform={s.platform} />
+							</a>
+						))
+					}
 				</div>
 				<a href={`mailto:${site.email}`} class="site-footer__email">{site.email}</a>
 			</div>

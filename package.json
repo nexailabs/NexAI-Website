@@ -2,7 +2,7 @@
 	"name": "@nexailabs/website",
 	"type": "module",
 	"version": "1.0.0",
-	"description": "NexAI Labs website — Astro 5, GSAP, Lenis. Hosted on Cloudflare Pages.",
+	"description": "NexAI Labs website — Astro 5, Lenis. Hosted on Cloudflare Pages.",
 	"author": "NexAI Labs",
 	"license": "MIT",
 	"repository": {
