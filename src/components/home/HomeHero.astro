@@ -323,84 +323,104 @@ import AgentOrbit from './AgentOrbit.astro';
 </style>
 
 <script>
-	document.addEventListener('astro:page-load', () => {
-		const rotateEl = document.querySelector<HTMLElement>('[data-rotate]');
-		const announceEl = document.querySelector<HTMLElement>('[data-rotate-announce]');
-		if (!rotateEl) return;
-		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+	{
+		let timers: number[] = [];
 
-		const CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@#$%&*';
-		const words: string[] = JSON.parse(rotateEl.dataset.rotate || '[]');
-		if (words.length === 0) return;
-
-		const HOLD_MS = 2500;
-		const SCRAMBLE_MS = 600;
-		const CYCLE_MS = 30;
-		const INITIAL_DELAY = 1200;
-
-		let currentIndex = 0;
-		let charSpans: HTMLSpanElement[] = [];
-
-		function renderWord(word: string) {
-			while (rotateEl.firstChild) rotateEl.removeChild(rotateEl.firstChild);
-			charSpans = [];
-			for (let i = 0; i < word.length; i++) {
-				const span = document.createElement('span');
-				span.className = 'home-hero__rotate-char home-hero__rotate-char--settled';
-				span.textContent = word[i];
-				rotateEl.appendChild(span);
-				charSpans.push(span);
-			}
+		function clearAllTimers() {
+			timers.forEach((id) => clearInterval(id));
+			timers = [];
 		}
 
-		function scrambleTo(word: string, onDone: () => void) {
-			/* Build new spans for the target word */
-			while (rotateEl.firstChild) rotateEl.removeChild(rotateEl.firstChild);
-			charSpans = [];
-			for (let i = 0; i < word.length; i++) {
-				const span = document.createElement('span');
-				span.className = 'home-hero__rotate-char home-hero__rotate-char--cycling';
-				span.textContent = CHARSET[Math.floor(Math.random() * CHARSET.length)];
-				rotateEl.appendChild(span);
-				charSpans.push(span);
+		document.addEventListener('astro:before-swap', clearAllTimers);
+
+		document.addEventListener('astro:page-load', () => {
+			clearAllTimers();
+
+			const rotateEl = document.querySelector<HTMLElement>('[data-rotate]');
+			const announceEl = document.querySelector<HTMLElement>('[data-rotate-announce]');
+			if (!rotateEl) return;
+			if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+			const CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@#$%&*';
+			const words: string[] = JSON.parse(rotateEl.dataset.rotate || '[]');
+			if (words.length === 0) return;
+
+			const HOLD_MS = 2500;
+			const SCRAMBLE_MS = 600;
+			const CYCLE_MS = 30;
+			const INITIAL_DELAY = 1200;
+
+			let currentIndex = 0;
+			let charSpans: HTMLSpanElement[] = [];
+
+			function track(id: number) {
+				timers.push(id);
+				return id;
 			}
 
-			const stagger = (SCRAMBLE_MS - 5 * CYCLE_MS) / word.length;
-			const start = performance.now();
+			function renderWord(word: string) {
+				while (rotateEl.firstChild) rotateEl.removeChild(rotateEl.firstChild);
+				charSpans = [];
+				for (let i = 0; i < word.length; i++) {
+					const span = document.createElement('span');
+					span.className = 'home-hero__rotate-char home-hero__rotate-char--settled';
+					span.textContent = word[i];
+					rotateEl.appendChild(span);
+					charSpans.push(span);
+				}
+			}
 
-			charSpans.forEach((span, i) => {
-				const resolveAt = stagger * i;
-				let cycles = 0;
-				const iv = setInterval(() => {
-					const elapsed = performance.now() - start;
-					if (elapsed - resolveAt > 0) cycles++;
-					if (cycles >= 5) {
-						clearInterval(iv);
-						span.textContent = word[i];
-						span.className = 'home-hero__rotate-char home-hero__rotate-char--resolved';
-						setTimeout(() => {
-							span.className = 'home-hero__rotate-char home-hero__rotate-char--settled';
-						}, 300);
-						if (i === word.length - 1) {
-							if (announceEl) announceEl.textContent = word;
-							setTimeout(onDone, 50);
-						}
-						return;
-					}
+			function scrambleTo(word: string, onDone: () => void) {
+				while (rotateEl.firstChild) rotateEl.removeChild(rotateEl.firstChild);
+				charSpans = [];
+				for (let i = 0; i < word.length; i++) {
+					const span = document.createElement('span');
+					span.className = 'home-hero__rotate-char home-hero__rotate-char--cycling';
 					span.textContent = CHARSET[Math.floor(Math.random() * CHARSET.length)];
-				}, CYCLE_MS);
-			});
-		}
+					rotateEl.appendChild(span);
+					charSpans.push(span);
+				}
 
-		function nextWord() {
-			currentIndex = (currentIndex + 1) % words.length;
-			scrambleTo(words[currentIndex], () => {
-				setTimeout(nextWord, HOLD_MS);
-			});
-		}
+				const stagger = (SCRAMBLE_MS - 5 * CYCLE_MS) / word.length;
+				const start = performance.now();
 
-		/* Start: render first word, then begin cycling */
-		renderWord(words[0]);
-		setTimeout(nextWord, INITIAL_DELAY + HOLD_MS);
-	});
+				charSpans.forEach((span, i) => {
+					const resolveAt = stagger * i;
+					let cycles = 0;
+					const iv = track(
+						window.setInterval(() => {
+							const elapsed = performance.now() - start;
+							if (elapsed - resolveAt > 0) cycles++;
+							if (cycles >= 5) {
+								clearInterval(iv);
+								span.textContent = word[i];
+								span.className = 'home-hero__rotate-char home-hero__rotate-char--resolved';
+								track(
+									window.setTimeout(() => {
+										span.className = 'home-hero__rotate-char home-hero__rotate-char--settled';
+									}, 300),
+								);
+								if (i === word.length - 1) {
+									if (announceEl) announceEl.textContent = word;
+									track(window.setTimeout(onDone, 50));
+								}
+								return;
+							}
+							span.textContent = CHARSET[Math.floor(Math.random() * CHARSET.length)];
+						}, CYCLE_MS),
+					);
+				});
+			}
+
+			function nextWord() {
+				currentIndex = (currentIndex + 1) % words.length;
+				scrambleTo(words[currentIndex], () => {
+					track(window.setTimeout(nextWord, HOLD_MS));
+				});
+			}
+
+			renderWord(words[0]);
+			track(window.setTimeout(nextWord, INITIAL_DELAY + HOLD_MS));
+		});
+	}
 </script>
