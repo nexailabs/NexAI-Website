@@ -40,6 +40,7 @@ import { site } from '../../config/site';
 									{ 'gallery__filter-btn--active': cat.id === 'all' },
 								]}
 								data-filter-value={cat.id}
+								aria-pressed={cat.id === 'all' ? 'true' : 'false'}
 							>
 								{cat.label}
 							</button>
@@ -51,23 +52,30 @@ import { site } from '../../config/site';
 			<!-- Masonry grid -->
 			<div class="gallery__grid" data-gallery-grid>
 				{
-					galleryItems.map((item) => (
-						<div
-							class="gallery__item"
-							data-gallery-item
-							data-category={item.category}
-							data-type={item.type}
-							data-aspect={item.aspect}
-						>
-							<img
-								class="gallery__img"
-								src={item.src}
-								alt={item.alt}
-								loading="lazy"
-								decoding="async"
-							/>
-						</div>
-					))
+					galleryItems.map((item) => {
+						const [aw, ah] = item.aspect.split('x').map(Number);
+						const w = 600;
+						const h = Math.round((w * ah) / aw);
+						return (
+							<div
+								class="gallery__item"
+								data-gallery-item
+								data-category={item.category}
+								data-type={item.type}
+								data-aspect={item.aspect}
+							>
+								<img
+									class="gallery__img"
+									src={item.src}
+									alt={item.alt}
+									width={w}
+									height={h}
+									loading="lazy"
+									decoding="async"
+								/>
+							</div>
+						);
+					})
 				}
 			</div>
 
@@ -233,8 +241,12 @@ import { site } from '../../config/site';
 			btn.addEventListener('click', () => {
 				activeCategory = btn.dataset.filterValue || 'all';
 
-				categoryBtns.forEach((b) => b.classList.remove('gallery__filter-btn--active'));
+				categoryBtns.forEach((b) => {
+					b.classList.remove('gallery__filter-btn--active');
+					b.setAttribute('aria-pressed', 'false');
+				});
 				btn.classList.add('gallery__filter-btn--active');
+				btn.setAttribute('aria-pressed', 'true');
 
 				applyFilters();
 			});

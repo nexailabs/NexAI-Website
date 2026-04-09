@@ -104,7 +104,7 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 		<script src="../scripts/lenis.ts"></script>
 
 		<!-- Cal.com inline embed inside our own <dialog> -->
-		<dialog id="cal-dialog" class="cal-dialog">
+		<dialog id="cal-dialog" class="cal-dialog" aria-modal="true" aria-label="Book a call">
 			<div class="cal-dialog__header">
 				<button class="cal-dialog__back" aria-label="Close booking dialog">
 					<svg
@@ -190,8 +190,8 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 			initCalInline();
 			document.addEventListener('astro:page-load', initCalInline);
 
-			/* Open/close dialog on [data-open-cal] clicks */
-			function setupCalDialog() {
+			/* Open/close dialog on [data-open-cal] clicks — registered once */
+			(function setupCalDialog() {
 				const dialog = document.getElementById('cal-dialog');
 				if (!dialog) return;
 
@@ -222,9 +222,7 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 				dialog.addEventListener('close', function () {
 					document.documentElement.classList.remove('cal-modal-open');
 				});
-			}
-			setupCalDialog();
-			document.addEventListener('astro:page-load', setupCalDialog);
+			})();
 		</script>
 
 		<style is:global>
