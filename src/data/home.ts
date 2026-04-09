@@ -41,7 +41,7 @@ export const agents: AgentNode[] = [
 		capabilities: [
 			{ text: 'Cold outreach sequences', status: 'active' },
 			{ text: 'CRM updates via chat', status: 'active' },
-			{ text: 'Follow-up reminders', status: 'active' },
+			{ text: 'Follow-up reminders', status: 'planned' },
 			{ text: 'Partnership discovery', status: 'planned' },
 		],
 	},
@@ -70,7 +70,7 @@ export const agents: AgentNode[] = [
 			{ text: 'Daily cross-team briefings', status: 'active' },
 			{ text: 'Goal vs. reality tracking', status: 'active' },
 			{ text: 'Task delegation by department', status: 'active' },
-			{ text: 'Scenario planning assistant', status: 'planned' },
+			{ text: 'Scenario planning assistant', status: 'active' },
 		],
 	},
 	{
@@ -83,7 +83,7 @@ export const agents: AgentNode[] = [
 		capabilities: [
 			{ text: 'Monthly P&L summaries', status: 'active' },
 			{ text: 'Invoice generation', status: 'active' },
-			{ text: 'Expense categorization', status: 'active' },
+			{ text: 'Expense categorization', status: 'planned' },
 			{ text: 'Revenue forecast modeling', status: 'planned' },
 		],
 	},
@@ -96,8 +96,8 @@ export const agents: AgentNode[] = [
 		icon: 'M11 17.25a6.25 6.25 0 110-12.5 6.25 6.25 0 010 12.5zM16 16l4.5 4.5',
 		capabilities: [
 			{ text: 'Competitor monitoring', status: 'active' },
-			{ text: 'Weekly trend digests', status: 'active' },
-			{ text: 'On-demand research briefs', status: 'active' },
+			{ text: 'Weekly trend digests', status: 'planned' },
+			{ text: 'On-demand research briefs', status: 'planned' },
 			{ text: 'Patent & whitespace analysis', status: 'planned' },
 		],
 	},

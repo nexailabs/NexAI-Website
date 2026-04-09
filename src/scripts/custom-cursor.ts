@@ -17,7 +17,8 @@ function init() {
 
 	const ring = cursor.querySelector<HTMLElement>('.cursor__ring');
 	const dot = cursor.querySelector<HTMLElement>('.cursor__dot');
-	if (!ring || !dot) return;
+	const label = cursor.querySelector<HTMLElement>('.cursor__label');
+	if (!ring || !dot || !label) return;
 
 	let mouseX = -100;
 	let mouseY = -100;
@@ -57,6 +58,9 @@ function init() {
 		ringY += (mouseY - ringY) * RING_LERP;
 		ring.style.transform = `translate3d(${ringX}px,${ringY}px,0)`;
 
+		// Label follows ring, centered below
+		label.style.transform = `translate3d(${ringX}px,${ringY + 30}px,0) translateX(-50%)`;
+
 		rafId = requestAnimationFrame(tick);
 	};
 
@@ -75,14 +79,24 @@ function init() {
 	// Event delegation for hover — handles dynamic elements without re-querying
 	const onMouseOver = (e: MouseEvent) => {
 		const target = e.target as HTMLElement;
-		if (target.closest('a, button, [role="tab"], [role="button"], input, textarea, select')) {
+		const labelEl = target.closest<HTMLElement>('[data-cursor-label]');
+		if (labelEl) {
+			label.textContent = labelEl.dataset.cursorLabel || '';
+			cursor.classList.add('cursor--label');
+		} else if (
+			target.closest('a, button, [role="tab"], [role="button"], input, textarea, select')
+		) {
 			cursor.classList.add('cursor--hover');
 		}
 	};
 
 	const onMouseOut = (e: MouseEvent) => {
 		const target = e.target as HTMLElement;
-		if (target.closest('a, button, [role="tab"], [role="button"], input, textarea, select')) {
+		if (target.closest('[data-cursor-label]')) {
+			cursor.classList.remove('cursor--label');
+		} else if (
+			target.closest('a, button, [role="tab"], [role="button"], input, textarea, select')
+		) {
 			cursor.classList.remove('cursor--hover');
 		}
 	};
@@ -118,7 +132,7 @@ function init() {
 		document.removeEventListener('mousedown', onMouseDown);
 		document.removeEventListener('mouseup', onMouseUp);
 		document.documentElement.classList.remove('custom-cursor-active');
-		cursor.classList.remove('cursor--visible', 'cursor--hover', 'cursor--click');
+		cursor.classList.remove('cursor--visible', 'cursor--hover', 'cursor--click', 'cursor--label');
 		revealed = false;
 	};
 }
