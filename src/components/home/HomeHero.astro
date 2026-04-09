@@ -5,7 +5,6 @@ import {
 	heroHeadlineAfter,
 	heroRotationWords,
 	heroSubtext,
-	bookingUrl,
 	agents,
 } from '../../data/home';
 import AgentOrbit from './AgentOrbit.astro';
@@ -29,12 +28,7 @@ import AgentOrbit from './AgentOrbit.astro';
 			</h1>
 			<p class="home-hero__sub">{heroSubtext}</p>
 			<div class="home-hero__ctas">
-				<a
-					href={bookingUrl}
-					class="home-hero__cta home-hero__cta--primary"
-					data-cal-link="rahul-juneja/15min"
-					data-cal-config='{"layout":"month_view"}'
-				>
+				<a href="#book" class="home-hero__cta home-hero__cta--primary" data-open-cal>
 					Book a Call
 				</a>
 				<a href="/studio" class="home-hero__cta home-hero__cta--ghost"> See Our Work </a>

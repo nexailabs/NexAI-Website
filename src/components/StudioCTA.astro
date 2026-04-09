@@ -1,13 +1,10 @@
 ---
 import type { HeroImage } from '../types/studio';
-import { site } from '../config/site';
-
 interface Props {
 	floats: HeroImage[];
 }
 
 const { floats } = Astro.props;
-const bookingUrl = site.bookingUrl;
 ---
 
 <section class="studio-cta">
@@ -18,14 +15,7 @@ const bookingUrl = site.bookingUrl;
 		<p class="section-sub">
 			We'll show you samples from brands in your category — before you commit to anything.
 		</p>
-		<a
-			class="studio-cta__btn"
-			href={bookingUrl}
-			data-cal-link="rahul-juneja/15min"
-			data-cal-config='{"layout":"month_view"}'
-		>
-			Book a Free Call
-		</a>
+		<a class="studio-cta__btn" href="#book" data-open-cal> Book a Free Call </a>
 		<div class="studio-cta__proof">
 			<div class="studio-cta__avatars">
 				<img

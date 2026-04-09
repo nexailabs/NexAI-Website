@@ -1,5 +1,6 @@
 ---
 import type { AgentNode } from '../../data/home';
+import NeutronStar from '../NeutronStar.astro';
 
 interface Props {
 	agents: AgentNode[];
@@ -10,13 +11,9 @@ const nodeCount = agents.length;
 ---
 
 <div class="orbit" data-orbit>
-	<!-- Explosion flash overlay -->
-	<div class="orbit__flash" data-orbit-flash aria-hidden="true"></div>
-
-	<!-- Center: neutron star + single bright pulse -->
+	<!-- Center: neutron star + supernova -->
 	<div class="orbit__center">
-		<div class="orbit__pulse" aria-hidden="true"></div>
-		<button class="orbit__core" data-orbit-core aria-label="Toggle light mode"></button>
+		<NeutronStar lightTarget=".home-hero" lightClass="home-hero--light" />
 	</div>
 
 	<!-- Rotating node track -->
@@ -60,7 +57,7 @@ const nodeCount = agents.length;
 		aria-labelledby="orbit-detail-title"
 	>
 		<div class="orbit__detail-head">
-			<span class="orbit__detail-badge">Active</span>
+			<span class="orbit__detail-badge" data-orbit-badge>Active</span>
 			<div class="orbit__detail-progress">
 				<div class="orbit__detail-progress-track">
 					<div class="orbit__detail-progress-bar" data-orbit-progress></div>
@@ -95,140 +92,6 @@ const nodeCount = agents.length;
 		left: 50%;
 		transform: translate(-50%, -50%);
 		z-index: 2;
-	}
-
-	.orbit__core {
-		width: 10px;
-		height: 10px;
-		border-radius: 50%;
-		border: none;
-		padding: 0;
-		background: rgba(255, 255, 255, 0.9);
-		cursor: pointer;
-		box-shadow:
-			0 0 8px 3px rgba(78, 201, 180, 0.6),
-			0 0 25px 8px rgba(78, 201, 180, 0.3),
-			0 0 60px 15px rgba(78, 201, 180, 0.1);
-		transition:
-			transform 0.2s ease,
-			box-shadow 0.2s ease;
-		/* Larger hit area */
-		position: relative;
-	}
-
-	.orbit__core::before {
-		content: '';
-		position: absolute;
-		inset: -15px;
-		border-radius: 50%;
-	}
-
-	.orbit__core:hover {
-		transform: scale(1.3);
-		box-shadow:
-			0 0 12px 5px rgba(78, 201, 180, 0.8),
-			0 0 35px 12px rgba(78, 201, 180, 0.4),
-			0 0 80px 20px rgba(78, 201, 180, 0.15);
-	}
-
-	.orbit__core:focus-visible {
-		outline: 2px solid rgba(78, 201, 180, 0.7);
-		outline-offset: 6px;
-	}
-
-	/* ── Explosion flash — centered on star ── */
-	.orbit__flash {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		width: 400vmax;
-		height: 400vmax;
-		border-radius: 50%;
-		background: radial-gradient(
-			circle,
-			rgba(255, 255, 255, 1) 0%,
-			rgba(255, 255, 255, 0.8) 30%,
-			transparent 70%
-		);
-		transform: translate(-50%, -50%) scale(0);
-		pointer-events: none;
-		z-index: 9999;
-		opacity: 0;
-		will-change: transform, opacity;
-	}
-
-	.orbit__flash--exploding {
-		animation: starExplode 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-	}
-
-	.orbit__flash--reversing {
-		background: radial-gradient(
-			circle,
-			rgba(5, 6, 7, 1) 0%,
-			rgba(5, 6, 7, 0.9) 30%,
-			transparent 70%
-		);
-		animation: starCollapse 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-	}
-
-	@keyframes starCollapse {
-		0% {
-			transform: translate(-50%, -50%) scale(1);
-			opacity: 1;
-		}
-		60% {
-			opacity: 1;
-		}
-		100% {
-			transform: translate(-50%, -50%) scale(0);
-			opacity: 0;
-		}
-	}
-
-	@keyframes starExplode {
-		0% {
-			transform: translate(-50%, -50%) scale(0);
-			opacity: 1;
-		}
-		40% {
-			opacity: 1;
-		}
-		100% {
-			transform: translate(-50%, -50%) scale(1);
-			opacity: 0;
-		}
-	}
-
-	/* ── Single bright pulse — expands from star ── */
-	.orbit__pulse {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		width: 1600px;
-		height: 1600px;
-		transform: translate(-50%, -50%) scale(0.00625);
-		border-radius: 50%;
-		border: 2px solid rgba(78, 201, 180, 0.8);
-		background: radial-gradient(circle, rgba(78, 201, 180, 0.12) 0%, transparent 50%);
-		pointer-events: none;
-		will-change: transform, opacity;
-		animation: starPulse 7s ease-out infinite;
-	}
-
-	@keyframes starPulse {
-		0% {
-			transform: translate(-50%, -50%) scale(0.00625);
-			border-color: rgba(78, 201, 180, 0.9);
-			opacity: 0.9;
-		}
-		50% {
-			opacity: 0.12;
-		}
-		100% {
-			transform: translate(-50%, -50%) scale(1);
-			border-color: rgba(78, 201, 180, 0);
-			opacity: 0;
-		}
 	}
 
 	/* ── Rotating track ── */
@@ -399,7 +262,6 @@ const nodeCount = agents.length;
 			0 2px 8px rgba(0, 0, 0, 0.3),
 			0 1px 0 rgba(255, 255, 255, 0.03) inset,
 			inset 0 -1px 0 rgba(255, 255, 255, 0.02);
-		overflow: hidden;
 	}
 
 	/* Top-edge highlight shimmer */
@@ -609,13 +471,6 @@ const nodeCount = agents.length;
 		.orbit__node {
 			animation: none !important;
 		}
-		.orbit__pulse {
-			animation: none;
-			opacity: 0;
-		}
-		.orbit__flash {
-			display: none !important;
-		}
 		.orbit__node {
 			opacity: 1;
 			filter: none;
@@ -655,16 +510,6 @@ const nodeCount = agents.length;
 	}
 	.home-hero--light .orbit__node-icon svg {
 		stroke: rgba(0, 0, 0, 0.6);
-	}
-	.home-hero--light .orbit__core {
-		background: rgba(0, 0, 0, 0.8);
-		box-shadow:
-			0 0 8px rgba(0, 0, 0, 0.3),
-			0 0 25px rgba(0, 0, 0, 0.15);
-	}
-	.home-hero--light .orbit__pulse {
-		border-color: rgba(0, 0, 0, 0.08);
-		background: radial-gradient(circle, rgba(0, 0, 0, 0.03) 0%, transparent 50%);
 	}
 	.home-hero--light .orbit__detail {
 		background: rgba(255, 255, 255, 0.92);
@@ -751,6 +596,7 @@ const nodeCount = agents.length;
 		const capsEl = detail.querySelector('[data-orbit-caps]');
 		const progressBar = detail.querySelector('[data-orbit-progress]');
 		const pctEl = detail.querySelector('[data-orbit-pct]');
+		const badgeEl = detail.querySelector('[data-orbit-badge]');
 
 		let activeId = null;
 		let lastTrigger = null;
@@ -761,12 +607,13 @@ const nodeCount = agents.length;
 		function positionCard(nodeEl) {
 			const orbitRect = orbit.getBoundingClientRect();
 			const nodeRect = nodeEl.getBoundingClientRect();
-			const nodeCX = nodeRect.left + nodeRect.width / 2 - orbitRect.left;
-			const nodeCY = nodeRect.top + nodeRect.height / 2 - orbitRect.top;
-			const cardW = 280;
+			const cardW = isMobile() ? Math.min(280, window.innerWidth * 0.82) : 280;
+			const cardH = detail.scrollHeight || 260;
+			const pad = 12; // viewport edge padding
+			const gap = 18; // gap between node icon edge and card
 
 			if (isMobile()) {
-				// Bottom-center on mobile
+				// Center below the node, clamped within viewport
 				detail.style.left = '50%';
 				detail.style.top = 'auto';
 				detail.style.bottom = '0';
@@ -774,30 +621,40 @@ const nodeCount = agents.length;
 				return;
 			}
 
-			// Desktop: place card to the right or left of node
-			const gap = 14;
-			const nodeRight = nodeCX + nodeRect.width / 2;
-			const nodeLeft = nodeCX - nodeRect.width / 2;
-			const placeRight = nodeCX < orbitRect.width * 0.55;
+			// Node center in viewport coords
+			const nodeVpCX = nodeRect.left + nodeRect.width / 2;
+			const nodeVpCY = nodeRect.top + nodeRect.height / 2;
 
-			let cardX, cardY;
-			if (placeRight) {
-				cardX = nodeRight + gap;
+			// Space available on each side of the node (viewport-relative)
+			const spaceRight = window.innerWidth - nodeRect.right;
+			const spaceLeft = nodeRect.left;
+			const neededW = cardW + gap + pad;
+
+			let cardVpX;
+			if (spaceRight >= neededW) {
+				// Place to the right of the node
+				cardVpX = nodeRect.right + gap;
+			} else if (spaceLeft >= neededW) {
+				// Place to the left of the node
+				cardVpX = nodeRect.left - gap - cardW;
 			} else {
-				cardX = nodeLeft - gap - cardW;
+				// Neither side has room — center on node, clamp to viewport
+				cardVpX = nodeVpCX - cardW / 2;
+				cardVpX = Math.max(pad, Math.min(window.innerWidth - cardW - pad, cardVpX));
 			}
 
-			// Vertically center on node, clamp to bounds
-			cardY = nodeCY - 80; // roughly half card height
-			cardY = Math.max(8, Math.min(orbitRect.height - 200, cardY));
+			// Vertically: center on node Y, clamped to viewport
+			let cardVpY = nodeVpCY - cardH / 2;
+			cardVpY = Math.max(pad, Math.min(window.innerHeight - cardH - pad, cardVpY));
 
-			// Clamp horizontal
-			cardX = Math.max(4, Math.min(orbitRect.width - cardW - 4, cardX));
+			// Convert viewport coords to orbit-relative coords
+			const cardX = cardVpX - orbitRect.left;
+			const cardY = cardVpY - orbitRect.top;
 
 			detail.style.left = cardX + 'px';
 			detail.style.top = cardY + 'px';
 			detail.style.bottom = 'auto';
-			detail.style.transform = 'translateY(6px)';
+			detail.style.transform = 'translateY(0)';
 		}
 
 		function buildCaps(caps) {
@@ -883,6 +740,13 @@ const nodeCount = agents.length;
 			progressBar.style.setProperty('--progress', pct + '%');
 			pctEl.textContent = pct + '%';
 
+			// Dynamic badge text based on progress
+			let badgeText = 'PLANNED';
+			if (pct === 100) badgeText = 'COMPLETE';
+			else if (pct >= 50) badgeText = 'ACTIVE';
+			else if (pct >= 1) badgeText = 'BUILDING';
+			badgeEl.textContent = badgeText;
+
 			positionCard(nodeEl);
 
 			requestAnimationFrame(function () {
@@ -937,62 +801,11 @@ const nodeCount = agents.length;
 				activeId &&
 				!e.target.closest('[data-orbit-node]') &&
 				!e.target.closest('[data-orbit-detail]') &&
-				!e.target.closest('[data-orbit-core]')
+				!e.target.closest('[data-nstar-core]')
 			) {
 				hideDetail();
 			}
 		});
-
-		/* ── Star explosion → flash white then reverse back ── */
-		const coreBtn = document.querySelector('[data-orbit-core]');
-		const flash = document.querySelector('[data-orbit-flash]');
-		const hero = document.querySelector('.home-hero');
-		const nav = document.querySelector('.prod-signal-nav');
-		let exploding = false;
-
-		if (coreBtn && flash && hero) {
-			coreBtn.addEventListener('click', function (e) {
-				e.stopPropagation();
-				if (exploding) return;
-
-				const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-				if (prefersReducedMotion) {
-					// Instant toggle — no flash animation
-					hero.classList.toggle('home-hero--light');
-					if (nav) nav.classList.toggle('prod-signal-nav--light');
-					return;
-				}
-
-				exploding = true;
-
-				flash.classList.remove('orbit__flash--exploding', 'orbit__flash--reversing');
-				void flash.offsetHeight;
-				flash.classList.add('orbit__flash--exploding');
-
-				// Go white at flash peak
-				setTimeout(function () {
-					hero.classList.add('home-hero--light');
-					if (nav) nav.classList.add('prod-signal-nav--light');
-				}, 300);
-
-				// Fire dark reverse flash (starts full-screen, collapses inward)
-				setTimeout(function () {
-					flash.classList.remove('orbit__flash--exploding');
-					void flash.offsetHeight;
-					// Switch to dark immediately — the collapsing dark disc reveals it
-					hero.classList.remove('home-hero--light');
-					if (nav) nav.classList.remove('prod-signal-nav--light');
-					flash.classList.add('orbit__flash--reversing');
-				}, 1200);
-
-				// Cleanup after collapse finishes
-				setTimeout(function () {
-					flash.classList.remove('orbit__flash--reversing');
-					exploding = false;
-				}, 2100);
-			});
-		}
 	});
 </script>
 

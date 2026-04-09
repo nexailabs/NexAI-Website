@@ -1,220 +1,98 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { bookingUrl } from '../data/home';
+import NeutronStar from '../components/NeutronStar.astro';
 ---
 
 <Layout
 	title="Coming Soon | NexAI Labs"
 	description="Agent Lab, Prompt Hub, and App Vault — launching soon from NexAI Labs."
 	mainClass="cs"
+	noFooter={true}
 >
-	<!-- Radial gradient background washes -->
-	<div class="cs__bg" aria-hidden="true">
-		<div class="cs__bg-glow cs__bg-glow--top"></div>
-		<div class="cs__bg-glow cs__bg-glow--bottom"></div>
-		<div class="cs__dot-grid"></div>
-	</div>
+	<section class="cs__inner">
+		<!-- Left: Text content -->
+		<div class="cs__text">
+			<p class="cs__eyebrow">IN THE PIPELINE</p>
+			<h1 class="cs__heading">
+				Something's <em>Brewing</em>
+			</h1>
+			<p class="cs__sub">
+				We're building the next layer of the NexAI stack.<br />
+				Early access opens soon — get in before the queue.
+			</p>
 
-	<div class="cs__inner">
-		<!-- Pulsing star -->
-		<div class="cs__star" aria-hidden="true">
-			<div class="cs__star-ring cs__star-ring--3"></div>
-			<div class="cs__star-ring cs__star-ring--2"></div>
-			<div class="cs__star-ring cs__star-ring--1"></div>
-			<div class="cs__star-core"></div>
+			<!-- Product chips -->
+			<div class="cs__products" aria-label="Upcoming products">
+				<span class="cs__chip">Agent Lab</span>
+				<span class="cs__chip">Prompt Hub</span>
+				<span class="cs__chip">App Vault</span>
+			</div>
+
+			<!-- CTAs -->
+			<div class="cs__ctas">
+				<a href="#book" class="cs__cta cs__cta--primary" data-open-cal> Get Early Access </a>
+				<a href="/" class="cs__cta cs__cta--ghost">Back to Home</a>
+			</div>
 		</div>
 
-		<!-- Eyebrow pill -->
-		<span class="tag-pill">IN THE PIPELINE</span>
-
-		<!-- Headline -->
-		<h1 class="cs__heading">
-			Something's<br /><em>Brewing</em>
-		</h1>
-
-		<!-- Subtext -->
-		<p class="cs__sub">
-			We're building the next layer of the NexAI stack.<br />
-			Early access opens soon — get in before the queue.
-		</p>
-
-		<!-- Product chips -->
-		<div class="cs__products" aria-label="Upcoming products">
-			<span class="cs__chip">Agent Lab</span>
-			<span class="cs__chip">Prompt Hub</span>
-			<span class="cs__chip">App Vault</span>
+		<!-- Right: Star -->
+		<div class="cs__star-area">
+			<div class="cs__dot-grid" aria-hidden="true"></div>
+			<NeutronStar lightTarget=".cs" lightClass="cs--light" />
 		</div>
-
-		<!-- CTAs -->
-		<div class="cs__ctas">
-			<a
-				href={bookingUrl}
-				class="cs__cta cs__cta--primary"
-				data-cal-link="rahul-juneja/15min"
-				data-cal-config='{"layout":"month_view"}'
-			>
-				Get Early Access
-			</a>
-			<a href="/" class="cs__cta cs__cta--ghost"> Back to Home </a>
-		</div>
-	</div>
+	</section>
 </Layout>
 
 <style>
-	/* ── Page wrapper ── */
-	.cs {
+	/* ── Page wrapper (main element lives in Layout.astro, needs :global) ── */
+	:global(.cs) {
 		min-height: 100svh;
 		display: flex;
 		align-items: center;
-		justify-content: center;
-		padding: var(--header-height, 5.9rem) var(--space-sm) var(--space-lg);
+		padding-top: var(--header-height, 5.9rem);
 		position: relative;
 		overflow: hidden;
-		background: var(--color-bg);
+		background:
+			radial-gradient(ellipse at 70% 40%, rgba(30, 126, 114, 0.12) 0%, transparent 55%),
+			radial-gradient(ellipse at 20% 80%, rgba(78, 201, 180, 0.06) 0%, transparent 50%);
 	}
 
-	/* ── Background layer ── */
-	.cs__bg {
-		position: absolute;
-		inset: 0;
-		pointer-events: none;
-		z-index: 0;
-	}
-
-	.cs__bg-glow {
-		position: absolute;
-		border-radius: 50%;
-	}
-
-	.cs__bg-glow--top {
-		top: -10%;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 80vw;
-		height: 60vh;
-		background: radial-gradient(ellipse at 50% 0%, rgba(30, 126, 114, 0.14) 0%, transparent 60%);
-	}
-
-	.cs__bg-glow--bottom {
-		bottom: -15%;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 60vw;
-		height: 50vh;
-		background: radial-gradient(ellipse at 50% 100%, rgba(78, 201, 180, 0.07) 0%, transparent 60%);
-	}
-
-	.cs__dot-grid {
-		position: absolute;
-		inset: 0;
-		background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-		background-size: 28px 28px;
-		mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 20%, transparent 80%);
-		-webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 20%, transparent 80%);
-	}
-
-	/* ── Center content ── */
+	/* ── Grid layout ── */
 	.cs__inner {
+		width: 100%;
+		max-width: 1400px;
+		margin: 0 auto;
+		padding: clamp(2rem, 5vh, 4rem) var(--space-sm);
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		align-items: center;
+		gap: clamp(2rem, 4vw, 4rem);
 		position: relative;
 		z-index: 1;
+	}
+
+	/* ── Left: Text ── */
+	.cs__text {
 		display: flex;
 		flex-direction: column;
-		align-items: center;
-		text-align: center;
-		gap: 1.75rem;
-		max-width: 580px;
-		width: 100%;
+		gap: 1.5rem;
 	}
 
-	/* ── Pulsing star ── */
-	.cs__star {
-		position: relative;
-		width: 80px;
-		height: 80px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+	.cs__eyebrow {
+		font-family: var(--font-main);
+		font-size: var(--text-xs);
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+		color: var(--color-brand-cyan);
 	}
 
-	.cs__star-core {
-		width: 10px;
-		height: 10px;
-		border-radius: 50%;
-		background: rgba(255, 255, 255, 0.92);
-		box-shadow:
-			0 0 8px 3px rgba(78, 201, 180, 0.6),
-			0 0 25px 8px rgba(78, 201, 180, 0.3),
-			0 0 60px 15px rgba(78, 201, 180, 0.1);
-		animation: star-breathe 3s ease-in-out infinite;
-		position: relative;
-		z-index: 2;
-	}
-
-	.cs__star-ring {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%) scale(1);
-		border-radius: 50%;
-		border: 1px solid rgba(78, 201, 180, 0.35);
-		animation: star-pulse 3s ease-out infinite;
-	}
-
-	.cs__star-ring--1 {
-		width: 28px;
-		height: 28px;
-		animation-delay: 0s;
-	}
-
-	.cs__star-ring--2 {
-		width: 50px;
-		height: 50px;
-		animation-delay: 0.6s;
-		border-color: rgba(78, 201, 180, 0.2);
-	}
-
-	.cs__star-ring--3 {
-		width: 78px;
-		height: 78px;
-		animation-delay: 1.2s;
-		border-color: rgba(78, 201, 180, 0.1);
-	}
-
-	@keyframes star-breathe {
-		0%,
-		100% {
-			box-shadow:
-				0 0 8px 3px rgba(78, 201, 180, 0.6),
-				0 0 25px 8px rgba(78, 201, 180, 0.3),
-				0 0 60px 15px rgba(78, 201, 180, 0.1);
-		}
-		50% {
-			box-shadow:
-				0 0 12px 5px rgba(78, 201, 180, 0.8),
-				0 0 35px 12px rgba(78, 201, 180, 0.4),
-				0 0 80px 20px rgba(78, 201, 180, 0.15);
-		}
-	}
-
-	@keyframes star-pulse {
-		0% {
-			transform: translate(-50%, -50%) scale(1);
-			opacity: 0.8;
-		}
-		100% {
-			transform: translate(-50%, -50%) scale(1.6);
-			opacity: 0;
-		}
-	}
-
-	/* ── Heading ── */
 	.cs__heading {
 		font-family: var(--font-accent);
-		font-size: clamp(3.5rem, 10vw, 6.5rem);
+		font-size: clamp(2rem, 3.8vw, 3.2rem);
 		font-weight: var(--fw-semibold);
-		line-height: 1.05;
+		line-height: var(--lh-heading);
 		color: var(--color-text-main);
-		letter-spacing: -0.02em;
 	}
 
 	.cs__heading em {
@@ -225,21 +103,18 @@ import { bookingUrl } from '../data/home';
 		background-clip: text;
 	}
 
-	/* ── Subtext ── */
 	.cs__sub {
 		font-family: var(--font-main);
-		font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+		font-size: clamp(0.95rem, 1.2vw, 1.1rem);
 		line-height: var(--lh-body);
 		color: var(--color-text-muted);
-		max-width: 440px;
+		max-width: 480px;
 	}
 
 	/* ── Product chips ── */
 	.cs__products {
 		display: flex;
 		flex-wrap: wrap;
-		align-items: center;
-		justify-content: center;
 		gap: 0.5rem;
 	}
 
@@ -261,10 +136,8 @@ import { bookingUrl } from '../data/home';
 	.cs__ctas {
 		display: flex;
 		flex-wrap: wrap;
-		align-items: center;
-		justify-content: center;
 		gap: 0.75rem;
-		padding-top: 0.25rem;
+		padding-top: 0.5rem;
 	}
 
 	.cs__cta {
@@ -314,37 +187,120 @@ import { bookingUrl } from '../data/home';
 		transform: translateY(-1px);
 	}
 
+	/* ── Right: Star area ── */
+	.cs__star-area {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+		min-height: 400px;
+	}
+
+	.cs__dot-grid {
+		position: absolute;
+		inset: -15%;
+		background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+		background-size: 28px 28px;
+		mask-image: radial-gradient(ellipse 55% 55% at 50% 50%, black 15%, transparent 75%);
+		-webkit-mask-image: radial-gradient(ellipse 55% 55% at 50% 50%, black 15%, transparent 75%);
+		pointer-events: none;
+		z-index: 0;
+	}
+
+	/* ── Light mode overrides (page-specific) ── */
+	:global(.cs--light) {
+		background: #f5f5f5 !important;
+		transition: background 0.6s ease;
+	}
+
+	:global(.cs--light) .cs__eyebrow {
+		color: #0d7a6e;
+	}
+
+	:global(.cs--light) .cs__heading {
+		color: #111;
+	}
+
+	:global(.cs--light) .cs__heading em {
+		-webkit-text-fill-color: #111;
+		color: #111;
+		background: none;
+	}
+
+	:global(.cs--light) .cs__sub {
+		color: #555;
+	}
+
+	:global(.cs--light) .cs__chip {
+		color: #555;
+		border-color: rgba(0, 0, 0, 0.15);
+		background: rgba(0, 0, 0, 0.03);
+	}
+
+	:global(.cs--light) .cs__cta--primary {
+		background: #111;
+		color: #fff;
+		border-color: #111;
+	}
+
+	:global(.cs--light) .cs__cta--ghost {
+		color: #111;
+		border-color: rgba(0, 0, 0, 0.25);
+	}
+
+	:global(.cs--light) .cs__cta--ghost:hover {
+		border-color: #111;
+		background: rgba(0, 0, 0, 0.04);
+	}
+
+	:global(.cs--light) .cs__dot-grid {
+		background-image: radial-gradient(circle, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
+	}
+
 	/* ── Mobile ── */
+	@media (max-width: 900px) {
+		.cs__inner {
+			grid-template-columns: 1fr;
+			text-align: center;
+		}
+
+		.cs__text {
+			align-items: center;
+		}
+
+		.cs__products {
+			justify-content: center;
+		}
+
+		.cs__ctas {
+			justify-content: center;
+		}
+
+		.cs__star-area {
+			order: -1;
+			min-height: 280px;
+		}
+	}
+
 	@media (max-width: 720px) {
 		.cs__dot-grid {
 			display: none;
 		}
-	}
 
-	@media (max-width: 480px) {
-		.cs {
-			padding-top: calc(var(--header-height, 5.9rem) + 0.5rem);
+		.cs__heading {
+			font-size: clamp(2rem, 8vw, 2.8rem);
 		}
 
 		.cs__ctas {
 			flex-direction: column;
 			align-items: stretch;
 			width: 100%;
-			max-width: 300px;
-		}
-
-		.cs__heading {
-			font-size: clamp(3rem, 14vw, 4rem);
+			max-width: 320px;
 		}
 	}
 
 	/* ── Reduced motion ── */
 	@media (prefers-reduced-motion: reduce) {
-		.cs__star-core,
-		.cs__star-ring {
-			animation: none !important;
-		}
-
 		.cs__cta {
 			transition: none !important;
 		}
