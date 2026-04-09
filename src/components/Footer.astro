@@ -23,7 +23,7 @@ const year = new Date().getFullYear();
 		</div>
 
 		<!-- Mobile CTA (hidden on desktop) -->
-		<a class="site-footer__cta" href="#book" data-open-cal>
+		<a class="site-footer__cta" href={site.bookingUrl} data-open-cal>
 			Book a Free Call
 			<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
 				<path
@@ -52,7 +52,7 @@ const year = new Date().getFullYear();
 					<li><a href="/studio#showcase">Showcase</a></li>
 					<li><a href="/studio/gallery">Gallery</a></li>
 					<li class="site-footer__hide-mobile">
-						<a href="#book" data-open-cal>Book a Call</a>
+						<a href={site.bookingUrl} data-open-cal>Book a Call</a>
 					</li>
 				</ul>
 			</div>
