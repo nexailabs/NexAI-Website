@@ -13,7 +13,7 @@ export const processSteps: ProcessStep[] = [
 		title: 'We Handle the Prep',
 		description:
 			'Our team cleans backgrounds, stitches the garment, and builds the model map. You do nothing.',
-		image: `${ik}/studio/process/process-step-02.png${tr.processCard}`,
+		image: `${ik}/studio/process/process-step-02.png?tr=w-500,h-660,fo-center,f-auto,q-80`,
 	},
 	{
 		title: 'AI Generates Your Shoot',
