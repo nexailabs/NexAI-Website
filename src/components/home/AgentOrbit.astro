@@ -625,23 +625,20 @@ const nodeCount = agents.length;
 			const nodeVpCX = nodeRect.left + nodeRect.width / 2;
 			const nodeVpCY = nodeRect.top + nodeRect.height / 2;
 
-			// Space available on each side of the node (viewport-relative)
-			const spaceRight = window.innerWidth - nodeRect.right;
-			const spaceLeft = nodeRect.left;
-			const neededW = cardW + gap + pad;
+			// Orbit center in viewport coords
+			const orbitCX = orbitRect.left + orbitRect.width / 2;
 
+			// Node is on the right half → card goes right; left half → card goes left
 			let cardVpX;
-			if (spaceRight >= neededW) {
-				// Place to the right of the node
+			if (nodeVpCX >= orbitCX) {
+				// Right side node → card to the right
 				cardVpX = nodeRect.right + gap;
-			} else if (spaceLeft >= neededW) {
-				// Place to the left of the node
-				cardVpX = nodeRect.left - gap - cardW;
 			} else {
-				// Neither side has room — center on node, clamp to viewport
-				cardVpX = nodeVpCX - cardW / 2;
-				cardVpX = Math.max(pad, Math.min(window.innerWidth - cardW - pad, cardVpX));
+				// Left side node → card to the left
+				cardVpX = nodeRect.left - gap - cardW;
 			}
+			// Clamp to viewport
+			cardVpX = Math.max(pad, Math.min(window.innerWidth - cardW - pad, cardVpX));
 
 			// Vertically: center on node Y, clamped to viewport
 			let cardVpY = nodeVpCY - cardH / 2;

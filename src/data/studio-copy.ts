@@ -7,25 +7,25 @@ export const processSteps: ProcessStep[] = [
 		title: 'Product Images',
 		description:
 			'Share your product photos. Mannequin, flat-lay, or ghost. Whatever you already have.',
-		image: `${ik}/studio/showcase/yufta/yufta-input-01.jpg${tr.processCard}`,
+		image: `${ik}/studio/process/process-step-01_4RnkoqGsG.jpg${tr.processCard}`,
 	},
 	{
 		title: 'We Handle the Prep',
 		description:
 			'Our team cleans backgrounds, stitches the garment, and builds the model map. You do nothing.',
-		image: `${ik}/studio/showcase/yufta/yufta-input-02.jpg${tr.processCard}`,
+		image: `${ik}/studio/process/process-step-02_iY6opvF1XF.png${tr.processCard}`,
 	},
 	{
 		title: 'AI Generates Your Shoot',
 		description:
 			'Models, poses, scenes - everything matched to your brand. Whatever skin tones, body types, and vibes you need.',
-		image: `${ik}/studio/showcase/yufta/yufta-output-03.jpg${tr.processCard}`,
+		image: `${ik}/studio/process/process-step-03_ymkrNwZ6q.png${tr.processCard}`,
 	},
 	{
 		title: "QA'd and Delivered",
 		description:
 			'Our team reviews every shot, touches it up if needed, then ships it ready for Myntra, Amazon, or your Shopify.',
-		image: `${ik}/studio/showcase/yufta/yufta-output-01.jpg${tr.processCard}`,
+		image: `${ik}/studio/process/process-step-04_vaZPFI6ugn.png${tr.processCard}`,
 	},
 ];
 
