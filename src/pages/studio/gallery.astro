@@ -52,30 +52,22 @@ import { site } from '../../config/site';
 			<!-- Masonry grid -->
 			<div class="gallery__grid" data-gallery-grid>
 				{
-					galleryItems.map((item) => {
-						const [aw, ah] = item.aspect.split('x').map(Number);
-						const w = 600;
-						const h = Math.round((w * ah) / aw);
-						return (
-							<div
-								class="gallery__item"
-								data-gallery-item
-								data-category={item.category}
-								data-type={item.type}
-								data-aspect={item.aspect}
-							>
-								<img
-									class="gallery__img"
-									src={item.src}
-									alt={item.alt}
-									width={w}
-									height={h}
-									loading="lazy"
-									decoding="async"
-								/>
-							</div>
-						);
-					})
+					galleryItems.map((item) => (
+						<div
+							class="gallery__item"
+							data-gallery-item
+							data-category={item.category}
+							data-type={item.type}
+						>
+							<img
+								class="gallery__img"
+								src={item.src}
+								alt={item.alt}
+								loading="lazy"
+								decoding="async"
+							/>
+						</div>
+					))
 				}
 			</div>
 
@@ -143,65 +135,39 @@ import { site } from '../../config/site';
 		background: rgba(78, 201, 180, 0.1);
 	}
 
-	/* ── Masonry grid ── */
+	/* ── Masonry grid — always 4 columns ── */
 	.gallery__grid {
-		columns: 4;
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		grid-auto-rows: 1px;
 		column-gap: 1rem;
 	}
 
 	.gallery__item {
-		break-inside: avoid;
-		margin-bottom: 1rem;
-		border-radius: 10px;
 		overflow: hidden;
-		opacity: 1;
-		transition: opacity 0.3s ease;
-	}
-
-	.gallery__item[data-hidden] {
-		display: none;
 	}
 
 	.gallery__img {
 		width: 100%;
 		display: block;
-		object-fit: cover;
-		object-position: top;
-	}
-
-	/* Aspect-aware heights for masonry */
-	.gallery__item[data-aspect='3x4'] .gallery__img {
-		aspect-ratio: 3/4;
-	}
-	.gallery__item[data-aspect='2x3'] .gallery__img {
-		aspect-ratio: 2/3;
-	}
-	.gallery__item[data-aspect='1x1'] .gallery__img {
-		aspect-ratio: 1/1;
-	}
-	.gallery__item[data-aspect='16x9'] .gallery__img {
-		aspect-ratio: 16/9;
-	}
-	.gallery__item[data-aspect='9x16'] .gallery__img {
-		aspect-ratio: 9/16;
+		border-radius: 10px;
 	}
 
 	/* ── Tablet ── */
 	@media (max-width: 1100px) {
 		.gallery__grid {
-			columns: 3;
+			grid-template-columns: repeat(3, 1fr);
 		}
 	}
 
 	/* ── Mobile ── */
 	@media (max-width: 720px) {
 		.gallery__grid {
-			columns: 2;
+			grid-template-columns: repeat(2, 1fr);
 			column-gap: 0.75rem;
 		}
 
-		.gallery__item {
-			margin-bottom: 0.75rem;
+		.gallery__img {
 			border-radius: 8px;
 		}
 
@@ -214,8 +180,9 @@ import { site } from '../../config/site';
 
 <script>
 	function initGallery() {
-		const grid = document.querySelector('[data-gallery-grid]');
-		const items = document.querySelectorAll<HTMLElement>('[data-gallery-item]');
+		const ROW_GAP = 16; // px gap between masonry items
+		const grid = document.querySelector<HTMLElement>('[data-gallery-grid]');
+		const items = Array.from(document.querySelectorAll<HTMLElement>('[data-gallery-item]'));
 		const categoryBtns = document.querySelectorAll<HTMLButtonElement>(
 			'[data-gallery-filter="category"] [data-filter-value]',
 		);
@@ -224,17 +191,56 @@ import { site } from '../../config/site';
 
 		let activeCategory = 'all';
 
-		function applyFilters() {
-			items.forEach((item) => {
-				const cat = item.dataset.category || '';
-				const show = activeCategory === 'all' || cat === activeCategory;
-
-				if (show) {
-					item.removeAttribute('data-hidden');
-				} else {
-					item.setAttribute('data-hidden', '');
+		/* Measure each image and set grid-row-end span for masonry packing */
+		function layoutMasonry() {
+			const rowH = 1; // grid-auto-rows: 1px
+			grid.querySelectorAll<HTMLElement>('[data-gallery-item]').forEach((item) => {
+				// Reset span so we can measure natural height
+				item.style.gridRowEnd = '';
+				const img = item.querySelector<HTMLImageElement>('.gallery__img');
+				if (!img) return;
+				const h = img.getBoundingClientRect().height;
+				if (h > 0) {
+					item.style.gridRowEnd = `span ${Math.ceil((h + ROW_GAP) / (rowH + 0))}`;
 				}
 			});
+		}
+
+		/* Wait for all visible images to load, then run layout */
+		function layoutAfterImages() {
+			const visibleImgs = Array.from(grid.querySelectorAll<HTMLImageElement>('.gallery__img'));
+			let pending = 0;
+
+			visibleImgs.forEach((img) => {
+				if (img.complete) return;
+				pending++;
+				img.addEventListener(
+					'load',
+					() => {
+						pending--;
+						if (pending === 0) layoutMasonry();
+					},
+					{ once: true },
+				);
+			});
+
+			// Run immediately for already-loaded images
+			layoutMasonry();
+		}
+
+		/* Filter: remove hidden items from DOM, re-append visible ones */
+		function applyFilters() {
+			const frag = document.createDocumentFragment();
+			items.forEach((item) => {
+				const cat = item.dataset.category || '';
+				if (activeCategory === 'all' || cat === activeCategory) {
+					frag.appendChild(item);
+				} else {
+					item.remove();
+				}
+			});
+			grid.appendChild(frag);
+			layoutAfterImages();
 		}
 
 		categoryBtns.forEach((btn) => {
@@ -250,6 +256,16 @@ import { site } from '../../config/site';
 
 				applyFilters();
 			});
+		});
+
+		// Initial layout
+		layoutAfterImages();
+
+		// Re-layout on resize
+		let resizeTimer: number;
+		window.addEventListener('resize', () => {
+			clearTimeout(resizeTimer);
+			resizeTimer = window.setTimeout(layoutMasonry, 150);
 		});
 	}
 
