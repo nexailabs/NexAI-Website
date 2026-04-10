@@ -190,10 +190,12 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 			initCalInline();
 			document.addEventListener('astro:page-load', initCalInline);
 
-			/* Open/close dialog on [data-open-cal] clicks — registered once */
+			/* Open/close dialog on [data-open-cal] clicks — registered once per tab.
+			 * All handlers re-query #cal-dialog at event time so they never hold
+			 * a stale reference after an Astro View Transition swap. */
 			(function setupCalDialog() {
-				const dialog = document.getElementById('cal-dialog');
-				if (!dialog) return;
+				if (document.__calDialogReady) return;
+				document.__calDialogReady = true;
 
 				/* Open: intercept all [data-open-cal] clicks */
 				document.addEventListener('click', function (e) {
@@ -201,28 +203,35 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 					if (!trigger) return;
 					e.preventDefault();
 					e.stopPropagation();
+					const dialog = document.getElementById('cal-dialog');
+					if (!dialog) return;
 					dialog.showModal();
 					document.documentElement.classList.add('cal-modal-open');
 				});
 
-				/* Close: Back button */
-				const backBtn = dialog.querySelector('.cal-dialog__back');
-				if (backBtn) {
-					backBtn.addEventListener('click', function () {
-						dialog.close();
-					});
-				}
-
-				/* Close: click on backdrop (outside the dialog box) */
-				dialog.addEventListener('click', function (e) {
-					if (e.target === dialog) dialog.close();
+				/* Close: Back button — delegated so it survives dialog replacement */
+				document.addEventListener('click', function (e) {
+					if (!e.target.closest('.cal-dialog__back')) return;
+					const dialog = document.getElementById('cal-dialog');
+					if (dialog) dialog.close();
 				});
 
-				/* Cleanup on close */
+				/* Close: click on backdrop (outside the dialog box) */
+				document.addEventListener('click', function (e) {
+					const dialog = document.getElementById('cal-dialog');
+					if (dialog && e.target === dialog) dialog.close();
+				});
+			})();
+
+			/* Cleanup cal-modal-open on dialog close.
+			 * <dialog> is replaced on each View Transition, so re-attach per page-load. */
+			document.addEventListener('astro:page-load', function () {
+				const dialog = document.getElementById('cal-dialog');
+				if (!dialog) return;
 				dialog.addEventListener('close', function () {
 					document.documentElement.classList.remove('cal-modal-open');
 				});
-			})();
+			});
 		</script>
 
 		<style is:global>
@@ -262,11 +271,28 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 				padding: 0 0 1.5rem 2rem;
 			}
 
-			/* Restore native cursor on dialog (custom cursor is below top layer) */
+			/* Hide custom cursor + restore native cursor when dialog is open */
+			html.cal-modal-open [data-custom-cursor] {
+				display: none !important;
+			}
+
+			html.cal-modal-open,
+			html.cal-modal-open *,
 			.cal-dialog,
 			.cal-dialog *,
 			.cal-dialog::backdrop {
-				cursor: auto !important;
+				cursor: default !important;
+			}
+
+			.cal-dialog__back {
+				cursor: pointer !important;
+			}
+
+			.cal-dialog a,
+			.cal-dialog button,
+			.cal-dialog [role='button'],
+			.cal-dialog iframe {
+				cursor: pointer !important;
 			}
 
 			.cal-dialog__back {
