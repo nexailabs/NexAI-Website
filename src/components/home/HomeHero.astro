@@ -22,9 +22,10 @@ import { site } from '../../config/site';
 					><span
 						class="home-hero__rotate"
 						aria-hidden="true"
-						data-rotate={JSON.stringify(heroRotationWords)}>{heroRotationWords[0]}</span
+						data-rotate={JSON.stringify(heroRotationWords)}
+						data-rotate-after={heroHeadlineAfter}>{heroRotationWords[0]}</span
 					></em
-				>{heroHeadlineAfter}
+				>
 				<span class="sr-only" aria-live="polite" data-rotate-announce>{heroRotationWords[0]}</span>
 			</h1>
 			<p class="home-hero__sub">{heroSubtext}</p>
@@ -53,7 +54,7 @@ import { site } from '../../config/site';
 		background:
 			radial-gradient(ellipse at 70% 40%, rgba(30, 126, 114, 0.12) 0%, transparent 55%),
 			radial-gradient(ellipse at 20% 80%, rgba(78, 201, 180, 0.06) 0%, transparent 50%);
-		overflow: visible;
+		overflow: clip;
 		position: relative;
 	}
 
@@ -199,9 +200,20 @@ import { site } from '../../config/site';
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		justify-self: center;
 		position: relative;
-		margin-left: -11rem;
-		margin-top: -3rem;
+		width: 100%;
+		max-width: 100%;
+	}
+
+	/* Wide desktop only — bleed orbit into the text column per design intent.
+	 * Below 1100px the grid is cramped; the negative margin yanks the orbit
+	 * visibly left of viewport center, so it only kicks in at ≥1100px. */
+	@media (min-width: 1100px) {
+		.home-hero__orbit {
+			margin-left: -11rem;
+			margin-top: -3rem;
+		}
 	}
 
 	.home-hero__dot-grid {
@@ -237,6 +249,12 @@ import { site } from '../../config/site';
 		.home-hero__orbit {
 			order: -1;
 			padding-bottom: 1rem;
+		}
+	}
+
+	@media (max-width: 900px) {
+		.home-hero__eyebrow {
+			display: none;
 		}
 	}
 
@@ -345,7 +363,16 @@ import { site } from '../../config/site';
 
 			const CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@#$%&*';
 			const words: string[] = JSON.parse(rotateEl.dataset.rotate || '[]');
+			const trailing = rotateEl.dataset.rotateAfter || '';
 			if (words.length === 0) return;
+
+			function appendTrailing() {
+				if (!trailing) return;
+				const tail = document.createElement('span');
+				tail.className = 'home-hero__rotate-tail';
+				tail.textContent = trailing;
+				rotateEl.appendChild(tail);
+			}
 
 			const HOLD_MS = 2500;
 			const SCRAMBLE_MS = 600;
@@ -370,6 +397,7 @@ import { site } from '../../config/site';
 					rotateEl.appendChild(span);
 					charSpans.push(span);
 				}
+				appendTrailing();
 			}
 
 			function scrambleTo(word: string, onDone: () => void) {
@@ -382,6 +410,7 @@ import { site } from '../../config/site';
 					rotateEl.appendChild(span);
 					charSpans.push(span);
 				}
+				appendTrailing();
 
 				const stagger = (SCRAMBLE_MS - 5 * CYCLE_MS) / word.length;
 				const start = performance.now();
@@ -422,6 +451,24 @@ import { site } from '../../config/site';
 			}
 
 			renderWord(words[0]);
+
+			// Reserve width for the widest possible scramble state so the
+			// line break can't shift mid-animation (e.g. random wide chars
+			// like M/W/@ pushing the word + period to the next line).
+			// Worst case = N copies of the widest char in CHARSET.
+			const longest = words.reduce((m, w) => Math.max(m, w.length), 0);
+			const probe = rotateEl.cloneNode(false) as HTMLElement;
+			probe.style.cssText =
+				'position:absolute;visibility:hidden;white-space:nowrap;pointer-events:none;min-width:0;width:auto';
+			probe.textContent = 'M'.repeat(longest) + trailing;
+			rotateEl.parentNode?.appendChild(probe);
+			const reserveW = probe.offsetWidth;
+			probe.remove();
+			if (reserveW > 0) {
+				rotateEl.style.minWidth = Math.ceil(reserveW) + 'px';
+				rotateEl.style.display = 'inline-block';
+			}
+
 			track(window.setTimeout(nextWord, INITIAL_DELAY + HOLD_MS));
 		});
 	}

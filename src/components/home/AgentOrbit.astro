@@ -56,6 +56,18 @@ const nodeCount = agents.length;
 		role="dialog"
 		aria-labelledby="orbit-detail-title"
 	>
+		<button type="button" class="orbit__detail-close" data-orbit-close aria-label="Close details">
+			<svg
+				viewBox="0 0 16 16"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1.75"
+				stroke-linecap="round"
+				aria-hidden="true"
+			>
+				<path d="M4 4l8 8M12 4l-8 8"></path>
+			</svg>
+		</button>
 		<div class="orbit__detail-head">
 			<span class="orbit__detail-badge" data-orbit-badge>Active</span>
 			<div class="orbit__detail-progress">
@@ -80,7 +92,7 @@ const nodeCount = agents.length;
 		position: relative;
 		width: 100%;
 		aspect-ratio: 1;
-		max-width: 520px;
+		max-width: min(520px, 100%);
 		margin: 0 auto;
 		overflow: visible;
 	}
@@ -300,6 +312,49 @@ const nodeCount = agents.length;
 		opacity: 1;
 	}
 
+	/* ── Close button ── */
+	.orbit__detail-close {
+		position: absolute;
+		top: -14px;
+		right: -14px;
+		width: 28px;
+		height: 28px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border: 1px solid rgba(255, 255, 255, 0.15);
+		border-radius: 50%;
+		background: rgba(18, 20, 24, 0.98);
+		color: var(--color-text-main);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+		cursor: pointer;
+		padding: 0;
+		z-index: 2;
+		transition:
+			color 0.2s ease,
+			border-color 0.2s ease,
+			background 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	.orbit__detail-close:hover,
+	.orbit__detail-close:focus-visible {
+		color: var(--color-text-main);
+		border-color: rgba(78, 201, 180, 0.4);
+		background: rgba(78, 201, 180, 0.08);
+		transform: scale(1.05);
+	}
+
+	.orbit__detail-close:focus-visible {
+		outline: 2px solid rgba(78, 201, 180, 0.5);
+		outline-offset: 2px;
+	}
+
+	.orbit__detail-close svg {
+		width: 14px;
+		height: 14px;
+	}
+
 	/* ── Head row: badge + progress ── */
 	.orbit__detail-head {
 		display: flex;
@@ -420,13 +475,13 @@ const nodeCount = agents.length;
 	/* ── Mobile ── */
 	@media (max-width: 900px) {
 		.orbit {
-			max-width: 380px;
+			max-width: min(380px, 100%);
 		}
 	}
 
 	@media (max-width: 720px) {
 		.orbit {
-			max-width: 300px;
+			max-width: min(300px, 100%);
 		}
 
 		.orbit__node {
@@ -439,8 +494,8 @@ const nodeCount = agents.length;
 		}
 
 		.orbit__node-icon {
-			width: clamp(32px, 9vw, 40px);
-			height: clamp(32px, 9vw, 40px);
+			width: clamp(44px, 9vw, 58px);
+			height: clamp(44px, 9vw, 58px);
 		}
 
 		.orbit__node-icon svg {
@@ -462,6 +517,20 @@ const nodeCount = agents.length;
 				transform: rotate(var(--node-angle)) translateX(clamp(100px, 18vw, 130px))
 					rotate(calc(-1 * var(--node-angle) - 360deg));
 			}
+		}
+	}
+
+	/* ── Mobile card: vertically centered with the orbit ── */
+	@media (max-width: 900px) {
+		.orbit__detail--visible.orbit__detail--mobile {
+			position: absolute !important;
+			top: 50% !important;
+			bottom: auto !important;
+			left: 50% !important;
+			transform: translate(-50%, -50%) !important;
+			width: clamp(220px, 82vw, 280px) !important;
+			z-index: 20;
+			transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1) !important;
 		}
 	}
 
@@ -601,7 +670,7 @@ const nodeCount = agents.length;
 		let activeId = null;
 		let lastTrigger = null;
 		const isMobile = function () {
-			return window.innerWidth <= 720;
+			return window.innerWidth <= 900;
 		};
 
 		function positionCard(nodeEl) {
@@ -612,12 +681,15 @@ const nodeCount = agents.length;
 			const pad = 12; // viewport edge padding
 			const gap = 18; // gap between node icon edge and card
 
+			detail.classList.remove('orbit__detail--mobile');
+
 			if (isMobile()) {
-				// Center below the node, clamped within viewport
-				detail.style.left = '50%';
-				detail.style.top = 'auto';
-				detail.style.bottom = '0';
-				detail.style.transform = 'translateX(-50%) translateY(6px)';
+				detail.classList.add('orbit__detail--mobile');
+				detail.style.left = '';
+				detail.style.top = '';
+				detail.style.bottom = '';
+				detail.style.transform = '';
+				detail.style.width = '';
 				return;
 			}
 
@@ -640,9 +712,14 @@ const nodeCount = agents.length;
 			// Clamp to viewport
 			cardVpX = Math.max(pad, Math.min(window.innerWidth - cardW - pad, cardVpX));
 
-			// Vertically: center on node Y, clamped to viewport
+			// Vertically: center on node Y, but clamp so the card never
+			// slides under the navbar (top floor) or hangs off the bottom.
+			const navEl = document.querySelector('.prod-signal-nav');
+			const navBottom = navEl ? navEl.getBoundingClientRect().bottom : 0;
+			const topFloor = Math.max(pad, navBottom + pad);
+			const bottomFloor = window.innerHeight - cardH - pad;
 			let cardVpY = nodeVpCY - cardH / 2;
-			cardVpY = Math.max(pad, Math.min(window.innerHeight - cardH - pad, cardVpY));
+			cardVpY = Math.max(topFloor, Math.min(bottomFloor, cardVpY));
 
 			// Convert viewport coords to orbit-relative coords
 			const cardX = cardVpX - orbitRect.left;
@@ -768,6 +845,7 @@ const nodeCount = agents.length;
 
 		function hideDetail() {
 			detail.classList.remove('orbit__detail--visible');
+			detail.classList.remove('orbit__detail--mobile');
 			detail.setAttribute('aria-hidden', 'true');
 			orbit.classList.remove('orbit--paused');
 			nodes.forEach(function (n) {
@@ -789,16 +867,33 @@ const nodeCount = agents.length;
 			});
 		});
 
+		const closeBtn = detail.querySelector('[data-orbit-close]');
+		if (closeBtn) {
+			closeBtn.addEventListener('click', function (e) {
+				e.stopPropagation();
+				if (activeId) hideDetail();
+			});
+		}
+
 		document.addEventListener('keydown', function (e) {
 			if (e.key === 'Escape' && activeId) hideDetail();
 		});
 
-		orbit.addEventListener('click', function (e) {
+		let resizeTimer;
+		window.addEventListener('resize', function () {
+			clearTimeout(resizeTimer);
+			resizeTimer = setTimeout(function () {
+				if (activeId && lastTrigger) positionCard(lastTrigger);
+			}, 100);
+		});
+
+		document.addEventListener('click', function (e) {
+			if (!activeId) return;
+			const t = e.target;
 			if (
-				activeId &&
-				!e.target.closest('[data-orbit-node]') &&
-				!e.target.closest('[data-orbit-detail]') &&
-				!e.target.closest('[data-nstar-core]')
+				!t.closest('[data-orbit-node]') &&
+				!t.closest('[data-orbit-detail]') &&
+				!t.closest('[data-nstar-core]')
 			) {
 				hideDetail();
 			}
