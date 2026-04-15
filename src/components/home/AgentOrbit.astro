@@ -181,11 +181,9 @@ const nodeCount = agents.length;
 	@keyframes nodeEntry {
 		from {
 			opacity: 0;
-			filter: blur(4px);
 		}
 		to {
 			opacity: 1;
-			filter: blur(0);
 		}
 	}
 
@@ -543,7 +541,6 @@ const nodeCount = agents.length;
 		}
 		.orbit__node {
 			opacity: 1;
-			filter: none;
 			transform: rotate(var(--node-angle)) translateX(clamp(120px, 20vw, 165px))
 				rotate(calc(-1 * var(--node-angle)));
 		}

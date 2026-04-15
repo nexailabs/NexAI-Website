@@ -39,3 +39,6 @@ slides/
 
 # internal docs (not for public repo)
 docs/NexAI Labs - Company Overview.docx
+
+# Ad-hoc screenshots taken during PSI/perf testing
+/nav-and-orbit-*.png
