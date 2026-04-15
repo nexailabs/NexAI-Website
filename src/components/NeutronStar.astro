@@ -28,7 +28,10 @@ const { lightTarget, lightClass } = Astro.props;
 		justify-content: center;
 	}
 
-	/* ── Core dot ── */
+	/* ── Core dot ──
+	 * Static baseline box-shadow on the core itself + an ::after
+	 * pseudo-element carrying the "bright" shadow whose opacity
+	 * oscillates (composited, no paint on each frame). */
 	.nstar__core {
 		width: 10px;
 		height: 10px;
@@ -43,7 +46,6 @@ const { lightTarget, lightClass } = Astro.props;
 			0 0 8px 3px rgba(78, 201, 180, 0.6),
 			0 0 25px 8px rgba(78, 201, 180, 0.3),
 			0 0 60px 15px rgba(78, 201, 180, 0.1);
-		animation: nstarBreathe 3s ease-in-out infinite;
 		transition:
 			transform 0.2s ease,
 			box-shadow 0.2s ease;
@@ -55,6 +57,22 @@ const { lightTarget, lightClass } = Astro.props;
 		position: absolute;
 		inset: -15px;
 		border-radius: 50%;
+	}
+
+	/* Breathing glow overlay — opacity-only animation (composited) */
+	.nstar__core::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: 50%;
+		box-shadow:
+			0 0 12px 5px rgba(78, 201, 180, 0.8),
+			0 0 35px 12px rgba(78, 201, 180, 0.4),
+			0 0 80px 20px rgba(78, 201, 180, 0.15);
+		opacity: 0;
+		will-change: opacity;
+		animation: nstarBreathe 3s ease-in-out infinite;
+		pointer-events: none;
 	}
 
 	.nstar__core:hover {
@@ -73,16 +91,10 @@ const { lightTarget, lightClass } = Astro.props;
 	@keyframes nstarBreathe {
 		0%,
 		100% {
-			box-shadow:
-				0 0 8px 3px rgba(78, 201, 180, 0.6),
-				0 0 25px 8px rgba(78, 201, 180, 0.3),
-				0 0 60px 15px rgba(78, 201, 180, 0.1);
+			opacity: 0;
 		}
 		50% {
-			box-shadow:
-				0 0 12px 5px rgba(78, 201, 180, 0.8),
-				0 0 35px 12px rgba(78, 201, 180, 0.4),
-				0 0 80px 20px rgba(78, 201, 180, 0.15);
+			opacity: 1;
 		}
 	}
 
@@ -109,7 +121,6 @@ const { lightTarget, lightClass } = Astro.props;
 	@keyframes nstarPulse {
 		0% {
 			transform: translate(-50%, -50%) scale(0.00625);
-			border-color: rgba(78, 201, 180, 0.9);
 			opacity: 0.9;
 		}
 		50% {
@@ -117,7 +128,6 @@ const { lightTarget, lightClass } = Astro.props;
 		}
 		100% {
 			transform: translate(-50%, -50%) scale(1);
-			border-color: rgba(78, 201, 180, 0);
 			opacity: 0;
 		}
 	}
@@ -194,6 +204,13 @@ const { lightTarget, lightClass } = Astro.props;
 			0 0 60px 15px rgba(13, 122, 110, 0.08);
 	}
 
+	.nstar--light .nstar__core::after {
+		box-shadow:
+			0 0 12px 5px rgba(13, 122, 110, 0.65),
+			0 0 35px 12px rgba(13, 122, 110, 0.35),
+			0 0 80px 20px rgba(13, 122, 110, 0.12);
+	}
+
 	.nstar--light .nstar__pulse {
 		border-color: rgba(13, 122, 110, 0.4);
 		background: radial-gradient(circle, rgba(13, 122, 110, 0.08) 0%, transparent 50%);
@@ -201,7 +218,7 @@ const { lightTarget, lightClass } = Astro.props;
 
 	/* ── Reduced motion ── */
 	@media (prefers-reduced-motion: reduce) {
-		.nstar__core,
+		.nstar__core::after,
 		.nstar__pulse {
 			animation: none !important;
 		}

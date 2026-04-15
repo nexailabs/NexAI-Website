@@ -7,5 +7,8 @@ export default defineConfig({
 	site: 'https://www.nexailabs.com',
 	output: 'static',
 	integrations: [sitemap()],
-	prefetch: true,
+	prefetch: {
+		defaultStrategy: 'tap',
+		prefetchAll: false,
+	},
 });
