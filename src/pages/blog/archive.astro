@@ -1,0 +1,113 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { site } from '../../config/site';
+
+type ArchiveRow = { title: string; slug: string; date: string; category: string };
+
+const posts = (
+	await getCollection('blog', (p) => (import.meta.env.PROD ? !p.data.draft : true))
+).sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+
+const grouped = new Map<number, ArchiveRow[]>();
+for (const post of posts) {
+	const year = post.data.publishedAt.getFullYear();
+	const rows = grouped.get(year) ?? [];
+	rows.push({
+		title: post.data.title,
+		slug: post.data.slug ?? post.id.replace(/^\d{4}-\d{2}-\d{2}-/, ''),
+		date: post.data.publishedAt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+		category: post.data.category,
+	});
+	grouped.set(year, rows);
+}
+
+const years = Array.from(grouped.entries());
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'Blog',
+	'@id': `${site.url}/blog#archive`,
+	name: 'NexAI Labs — Writing Archive',
+	url: `${site.url}/blog/archive`,
+};
+---
+
+<Layout
+	title="Writing Archive — NexAI Labs"
+	description="Browse all writing from NexAI Labs by year."
+	canonicalUrl={new URL('/blog/archive/', Astro.site).href}
+>
+	<script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+	<section class="section">
+		<div class="container section-header blog-archive-header">
+			<p class="section-eyebrow">NexAI Labs</p>
+			<h1 class="section-title">Writing <em>archive</em></h1>
+		</div>
+		<div class="container blog-archive">
+			{
+				years.map(([year, rows]) => (
+					<section>
+						<h2>{year}</h2>
+						<ul>
+							{rows.map((row: ArchiveRow) => (
+								<li>
+									<a href={`/blog/${row.slug}/`}>{row.title}</a>
+									<span>
+										{row.date} - {row.category}
+									</span>
+								</li>
+							))}
+						</ul>
+					</section>
+				))
+			}
+		</div>
+	</section>
+</Layout>
+
+<style>
+	.blog-archive-header {
+		text-align: left;
+		margin-top: clamp(6rem, 12vh, 8rem);
+	}
+	.blog-archive {
+		display: grid;
+		gap: 2.5rem;
+		padding-top: 2rem;
+	}
+	.blog-archive h2 {
+		font-family: var(--font-accent);
+		font-size: clamp(1.6rem, 3vw, 2.2rem);
+		margin-bottom: 0.8rem;
+	}
+	.blog-archive ul {
+		list-style: none;
+		display: grid;
+		gap: 0.85rem;
+	}
+	.blog-archive li {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		border-bottom: 1px solid var(--color-border);
+		padding-bottom: 0.65rem;
+	}
+	.blog-archive a {
+		text-decoration: none;
+		color: var(--color-text-main);
+	}
+	.blog-archive a:hover {
+		color: var(--color-brand-cyan);
+	}
+	.blog-archive span {
+		color: var(--color-text-muted);
+		font-size: var(--text-sm);
+		white-space: nowrap;
+	}
+	@media (max-width: 640px) {
+		.blog-archive li {
+			flex-direction: column;
+		}
+	}
+</style>

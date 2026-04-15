@@ -1,1 +1,2 @@
+npm run lint:blog-frontmatter
 npx lint-staged

@@ -1,0 +1,26 @@
+<div class="reading-progress" aria-hidden="true"></div>
+
+<script>
+	const root = document.documentElement;
+	const updateProgress = () => {
+		const scrollTop = window.scrollY;
+		const max = document.documentElement.scrollHeight - window.innerHeight;
+		const progress = max > 0 ? Math.min(1, scrollTop / max) : 0;
+		root.style.setProperty('--progress', String(progress));
+	};
+	updateProgress();
+	window.addEventListener('scroll', updateProgress, { passive: true });
+	window.addEventListener('resize', updateProgress);
+</script>
+
+<style>
+	.reading-progress {
+		position: fixed;
+		inset: 0 0 auto;
+		height: 1px;
+		transform-origin: left;
+		transform: scaleX(var(--progress, 0));
+		background: var(--color-brand-cyan);
+		z-index: var(--z-nav);
+	}
+</style>

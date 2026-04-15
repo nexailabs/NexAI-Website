@@ -83,6 +83,17 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 		<!-- View Transitions -->
 		<ClientRouter />
 
+		{
+			Astro.url.pathname.startsWith('/blog') && (
+				<link
+					rel="alternate"
+					type="application/rss+xml"
+					title="NexAI Labs — Writing"
+					href="/blog/rss.xml"
+				/>
+			)
+		}
+
 		<slot name="head" />
 	</head>
 	<body>

@@ -1,0 +1,62 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+	prev?: CollectionEntry<'blog'>;
+	next?: CollectionEntry<'blog'>;
+}
+
+const { prev, next } = Astro.props;
+---
+
+<nav class="post-prev-next" aria-label="Previous and next posts">
+	{
+		prev ? (
+			<a href={`/blog/${prev.data.slug ?? prev.id.replace(/^\d{4}-\d{2}-\d{2}-/, '')}/`}>
+				← {prev.data.title}
+			</a>
+		) : (
+			<span />
+		)
+	}
+	{
+		next ? (
+			<a href={`/blog/${next.data.slug ?? next.id.replace(/^\d{4}-\d{2}-\d{2}-/, '')}/`}>
+				{next.data.title} →
+			</a>
+		) : (
+			<span />
+		)
+	}
+</nav>
+
+<style>
+	.post-prev-next {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1rem;
+		margin-top: 2.4rem;
+	}
+	.post-prev-next a {
+		color: var(--color-text-main);
+		text-decoration: none;
+		padding: 1rem;
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
+		background: rgba(255, 255, 255, 0.02);
+	}
+	.post-prev-next a:last-child {
+		text-align: right;
+	}
+	.post-prev-next a:hover {
+		border-color: var(--color-border-hover);
+	}
+	@media (max-width: 640px) {
+		.post-prev-next {
+			grid-template-columns: 1fr;
+		}
+		.post-prev-next a:last-child {
+			text-align: left;
+		}
+	}
+</style>

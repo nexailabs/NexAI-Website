@@ -1,0 +1,51 @@
+---
+import { getCollection } from 'astro:content';
+import BlogCard from '../blog/BlogCard.astro';
+
+const posts = (await getCollection('blog', (p) => (import.meta.env.PROD ? !p.data.draft : true)))
+	.sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
+	.slice(0, 3);
+---
+
+<section class="section home-latest-writing">
+	<div class="container">
+		<header class="section-header home-latest-writing__header">
+			<p class="section-eyebrow">NexAI Labs</p>
+			<h2 class="section-title">Latest <em>writing</em></h2>
+		</header>
+		<div class="home-latest-writing__grid">
+			{posts.map((post) => <BlogCard post={post} variant="compact" />)}
+		</div>
+		<div class="home-latest-writing__cta">
+			<a href="/blog" class="btn-ghost">Read more</a>
+		</div>
+	</div>
+</section>
+
+<style>
+	.home-latest-writing {
+		padding-top: 0;
+		padding-bottom: clamp(4rem, 10vh, 7rem);
+	}
+	.home-latest-writing__header {
+		text-align: left;
+	}
+	.home-latest-writing__grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1.4rem;
+	}
+	.home-latest-writing__cta {
+		margin-top: 1.4rem;
+	}
+	@media (max-width: 900px) {
+		.home-latest-writing__grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+	@media (max-width: 640px) {
+		.home-latest-writing__grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

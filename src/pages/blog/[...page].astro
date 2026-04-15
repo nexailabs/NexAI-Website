@@ -1,0 +1,56 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import type { Page } from 'astro';
+import Layout from '../../layouts/Layout.astro';
+import BlogHero from '../../components/blog/BlogHero.astro';
+import BlogGrid from '../../components/blog/BlogGrid.astro';
+import BlogPagination from '../../components/blog/BlogPagination.astro';
+import { site } from '../../config/site';
+
+export async function getStaticPaths({
+	paginate,
+}: {
+	paginate: (data: unknown[], opts: { pageSize: number }) => unknown[];
+}) {
+	const posts = (
+		await getCollection('blog', (p) => (import.meta.env.PROD ? !p.data.draft : true))
+	).sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+	return paginate(posts, { pageSize: 12 });
+}
+
+const { page } = Astro.props as { page: Page<CollectionEntry<'blog'>> };
+const currentPath = page.url.current;
+const canonical = new URL(currentPath, Astro.site).href;
+const blogJsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Blog',
+			'@id': `${site.url}/blog#blog`,
+			name: 'NexAI Labs — Writing',
+			description: "Dispatches on what we're building and learning.",
+			url: `${site.url}/blog`,
+		},
+		{
+			'@type': 'BreadcrumbList',
+			itemListElement: [
+				{ '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+				{ '@type': 'ListItem', position: 2, name: 'Writing', item: canonical },
+			],
+		},
+	],
+};
+---
+
+<Layout
+	title="NexAI Labs — Writing"
+	description="Dispatches on what NexAI Labs is building and learning."
+	canonicalUrl={canonical}
+>
+	{page.url.prev && <link slot="head" rel="prev" href={new URL(page.url.prev, Astro.site).href} />}
+	{page.url.next && <link slot="head" rel="next" href={new URL(page.url.next, Astro.site).href} />}
+	<script slot="head" type="application/ld+json" set:html={JSON.stringify(blogJsonLd)} />
+	<BlogHero />
+	<BlogGrid posts={page.data} />
+	<BlogPagination page={page} />
+</Layout>

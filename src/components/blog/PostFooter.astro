@@ -1,0 +1,50 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import PostPrevNext from './PostPrevNext.astro';
+import RelatedPosts from './RelatedPosts.astro';
+
+interface Props {
+	post: CollectionEntry<'blog'>;
+	related: CollectionEntry<'blog'>[];
+	prev?: CollectionEntry<'blog'>;
+	next?: CollectionEntry<'blog'>;
+}
+
+const { related, prev, next } = Astro.props;
+---
+
+<footer class="container post-footer">
+	<PostPrevNext prev={prev} next={next} />
+	<RelatedPosts posts={related} />
+	<div class="post-footer__cta">
+		<p>Want help building agent workflows for your team?</p>
+		<a class="btn-ghost" href="https://cal.com/rahul-juneja/15min" data-open-cal>Book a call</a>
+	</div>
+</footer>
+
+<style>
+	.post-footer {
+		max-width: 72rem;
+		padding-top: 2rem;
+		padding-bottom: 4rem;
+	}
+	.post-footer__cta {
+		margin-top: 2.5rem;
+		padding: 1.25rem;
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 1rem;
+	}
+	.post-footer__cta p {
+		color: var(--color-text-muted);
+	}
+	@media (max-width: 640px) {
+		.post-footer__cta {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+	}
+</style>

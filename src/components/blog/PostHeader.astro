@@ -1,0 +1,89 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { tr } from '../../config/imagekit';
+
+interface Props {
+	post: CollectionEntry<'blog'>;
+	minutes: number;
+}
+
+const { post, minutes } = Astro.props;
+const published = post.data.publishedAt.toLocaleDateString('en-US', {
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+});
+---
+
+<header class="post-header">
+	<div class="container post-header__inner">
+		<nav aria-label="Breadcrumb" class="post-header__breadcrumb">
+			<a href="/">Home</a>
+			<span>/</span>
+			<a href="/blog">Writing</a>
+			<span>/</span>
+			<span aria-current="page">{post.data.title}</span>
+		</nav>
+		<h1>{post.data.title}</h1>
+		<p class="post-header__description">{post.data.description}</p>
+		<p class="post-header__meta">
+			{published} · {post.data.author.name} · {minutes} min read · {post.data.category}
+		</p>
+	</div>
+	<div class="post-header__cover-wrap">
+		<img
+			src={`${post.data.cover.src}${tr.full}`}
+			alt={post.data.cover.alt}
+			class="post-header__cover"
+		/>
+	</div>
+</header>
+
+<style>
+	.post-header {
+		padding-top: clamp(6.5rem, 12vh, 8.5rem);
+	}
+	.post-header__inner {
+		max-width: 65ch;
+	}
+	.post-header__breadcrumb {
+		display: flex;
+		gap: 0.5rem;
+		font-size: var(--text-sm);
+		margin-bottom: 1rem;
+		color: var(--color-text-muted);
+		white-space: nowrap;
+		overflow: hidden;
+	}
+	.post-header__breadcrumb a {
+		color: inherit;
+		text-decoration: none;
+	}
+	.post-header h1 {
+		font-family: var(--font-accent);
+		font-size: clamp(2.2rem, 5vw, 3.8rem);
+		line-height: var(--lh-heading);
+	}
+	.post-header__description {
+		margin-top: 1rem;
+		color: var(--color-text-muted);
+		line-height: var(--lh-body);
+	}
+	.post-header__meta {
+		margin-top: 1rem;
+		font-size: var(--text-sm);
+		color: var(--color-text-muted);
+	}
+	.post-header__cover-wrap {
+		margin-top: 2rem;
+	}
+	.post-header__cover {
+		width: min(100%, 100rem);
+		display: block;
+		margin: 0 auto;
+		border-radius: var(--radius-lg);
+		border: 1px solid var(--color-border);
+		aspect-ratio: 16 / 10;
+		object-fit: cover;
+	}
+</style>

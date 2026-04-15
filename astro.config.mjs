@@ -7,6 +7,12 @@ export default defineConfig({
 	site: 'https://www.nexailabs.com',
 	output: 'static',
 	integrations: [sitemap()],
+	markdown: {
+		shikiConfig: {
+			theme: 'css-variables',
+			wrap: true,
+		},
+	},
 	prefetch: {
 		defaultStrategy: 'tap',
 		prefetchAll: false,
