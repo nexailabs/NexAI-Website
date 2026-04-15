@@ -22,6 +22,7 @@ interface Props {
 	canonicalUrl?: string;
 	mainClass?: string;
 	noFooter?: boolean;
+	noIndex?: boolean;
 }
 
 const {
@@ -31,6 +32,7 @@ const {
 	canonicalUrl,
 	mainClass,
 	noFooter = false,
+	noIndex = false,
 } = Astro.props;
 
 const section = Astro.url.pathname.split('/')[1] || 'main';
@@ -45,6 +47,7 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content={description} />
+		{noIndex && <meta name="robots" content="noindex, nofollow" />}
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="color-scheme" content="dark" />
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />

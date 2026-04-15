@@ -1,6 +1,10 @@
 # Old pages → current site
+/home / 301
+/home/ / 301
 /ai-photoshoot /studio 301
 /home-joi / 301
 /blog/how-ai-is-replacing* /studio 301
 /blog/how-ai-sales-agents* / 301
-/blog/cracking-the-code-j* /blog 301
+/blog/cracking-the-code-j* / 301
+/blog / 301
+/blog/* / 301
