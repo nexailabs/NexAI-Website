@@ -116,33 +116,3 @@ export const agents: AgentNode[] = [
 		],
 	},
 ];
-
-// ── Services section (derived from agents — single source of truth) ──
-export const servicesLabel = 'What We Build';
-export const servicesHeading = 'Six agents. One operating layer.';
-export const servicesDescription =
-	'Each agent is custom-built to the way your business already runs. Pick one to start, add more as they earn their keep.';
-
-export interface ServiceCard {
-	id: string;
-	title: string;
-	role: string;
-	description: string;
-	href?: string;
-}
-
-// Mirrors `agents` 1:1 so taxonomy never drifts.
-// Outreach is featured (first card) because it's the most common entry point.
-export const serviceCards: ServiceCard[] = agents.map((agent) => ({
-	id: agent.id,
-	title: `${agent.title} Agent`,
-	role: agent.role,
-	description: agent.description,
-}));
-
-export const whyItems: string[] = [
-	'Built to your workflow — not a SaaS you contort around',
-	'You own the agent outright — your data stays in your stack',
-	'Ship in weeks, not months',
-	'Fixed scope, fixed price, no per-seat creep',
-];
