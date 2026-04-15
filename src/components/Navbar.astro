@@ -200,6 +200,8 @@ const {
 		position: fixed;
 		inset: 0 0 auto;
 		z-index: 100;
+		max-width: 100vw;
+		overflow-x: clip;
 		padding-top: 1rem;
 		pointer-events: none;
 		transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
@@ -217,7 +219,7 @@ const {
 		transition-delay: 0.35s;
 	}
 
-	.prod-signal-nav.is-revealing.is-scrolled .prod-signal-nav__bar {
+	.prod-signal-nav.is-revealing.is-scrolled .prod-signal-nav__bar::before {
 		border-color: rgba(255, 255, 255, 0.22);
 		box-shadow:
 			0 16px 50px rgba(0, 0, 0, 0.25),
@@ -244,12 +246,35 @@ const {
 		grid-template-columns: auto 1fr auto;
 		align-items: center;
 		gap: 1rem;
+		width: 100%;
+		overflow: visible;
 		padding: 0.4rem 0 0.1rem;
 		border: 1px solid transparent;
 		border-radius: 1.65rem;
 		transition:
+			padding 0.5s ease,
+			opacity 0.3s ease;
+	}
+
+	.prod-signal-nav.is-scrolled .prod-signal-nav__bar {
+		padding: 0.72rem 1.15rem 0.42rem;
+		/* No margin-inline — layout box stays stable. Pill visual lives on ::before */
+	}
+
+	.prod-signal-nav.is-scrolled .prod-signal-nav__bar::before {
+		content: '';
+		position: absolute;
+		inset: 0 -1.15rem;
+		border-radius: 1.65rem;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		background: rgba(7, 8, 9, 0.7);
+		-webkit-backdrop-filter: blur(18px);
+		backdrop-filter: blur(18px);
+		box-shadow: 0 16px 50px rgba(0, 0, 0, 0.2);
+		z-index: -1;
+		pointer-events: none;
+		transition:
 			border-color 0.5s ease,
-			border-radius 0.5s ease,
 			background 0.5s ease,
 			-webkit-backdrop-filter 0.5s ease,
 			backdrop-filter 0.5s ease,
@@ -257,26 +282,18 @@ const {
 			opacity 0.3s ease;
 	}
 
-	.prod-signal-nav.is-scrolled .prod-signal-nav__bar {
-		padding: 0.72rem 1.15rem 0.42rem;
-		margin-inline: -1.15rem;
-		border-radius: 1.65rem;
-		border: 1px solid rgba(255, 255, 255, 0.08);
-		background: rgba(7, 8, 9, 0.7);
-		-webkit-backdrop-filter: blur(18px);
-		backdrop-filter: blur(18px);
-		box-shadow: 0 16px 50px rgba(0, 0, 0, 0.2);
-	}
-
 	.prod-signal-nav[data-open='true'] .prod-signal-nav__bar {
 		padding: 0.4rem 0 0.1rem;
-		margin-inline: 0;
+	}
+
+	.prod-signal-nav[data-open='true'] .prod-signal-nav__bar::before {
 		border: 0;
 		border-radius: 0;
 		background: transparent;
 		-webkit-backdrop-filter: none;
 		backdrop-filter: none;
 		box-shadow: none;
+		inset: 0;
 	}
 
 	/* ── Links reset ── */
@@ -628,7 +645,8 @@ const {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		padding: 0.5rem;
+		padding: 0.75rem;
+		min-height: 44px;
 		color: rgba(255, 255, 255, 0.4);
 		transition:
 			color 0.3s ease,
@@ -961,6 +979,11 @@ const {
 
 		.prod-signal-nav__takeover-foot {
 			gap: 0.75rem;
+		}
+
+		/* On mobile, pill stays within container bounds */
+		.prod-signal-nav.is-scrolled .prod-signal-nav__bar::before {
+			inset: 0;
 		}
 
 		/* Hide desktop flyout */
