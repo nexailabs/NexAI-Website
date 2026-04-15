@@ -9,6 +9,9 @@ export const tr = {
 	processCard: '?tr=w-500,h-660,fo-auto,f-auto,q-80',
 	og: '?tr=w-1200,h-630,fo-auto,f-auto,q-85',
 	full: '?tr=f-auto,q-85',
+	appLogo: '?tr=w-96,h-96,fo-auto,f-auto,q-80',
+	appLogo2x: '?tr=w-192,h-192,fo-auto,f-auto,q-80',
+	appShot: '?tr=w-1200,h-675,f-auto,q-80',
 } as const;
 
 /** Strip any ?tr= query string from an ImageKit URL */

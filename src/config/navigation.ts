@@ -23,7 +23,7 @@ const main: NavConfig = {
 		{
 			id: 'app-vault',
 			label: 'App Vault',
-			href: '/coming-soon',
+			href: '/app-vault',
 			caption: 'The best AI tools we use and recommend.',
 		},
 		{

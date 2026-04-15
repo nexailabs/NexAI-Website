@@ -1,0 +1,35 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import AppVaultHero from '../../components/app-vault/AppVaultHero.astro';
+import AppVaultGrid from '../../components/app-vault/AppVaultGrid.astro';
+import { apps } from '../../data/app-vault';
+import '../../data/app-vault.validate';
+
+const featured = apps.filter((a) => a.featured).slice(0, 4);
+const hasAffiliateLinks = apps.some((app) => Boolean(app.affiliateUrl));
+
+const itemList = {
+	'@context': 'https://schema.org',
+	'@type': 'ItemList',
+	name: 'NexAI Labs App Vault',
+	itemListElement: apps.map((app, index) => ({
+		'@type': 'ListItem',
+		position: index + 1,
+		name: app.name,
+		url: app.websiteUrl,
+	})),
+};
+---
+
+<Layout
+	title="App Vault — software we actually use | NexAI Labs"
+	description="Curated AI tools, dev utilities, and creative software NexAI Labs actually uses every day."
+	canonicalUrl="https://www.nexailabs.com/app-vault"
+	mainClass="app-vault"
+>
+	<Fragment slot="head">
+		<script type="application/ld+json" set:html={JSON.stringify(itemList)} />
+	</Fragment>
+	<AppVaultHero featured={featured} hasAffiliateLinks={hasAffiliateLinks} />
+	<AppVaultGrid apps={apps} />
+</Layout>

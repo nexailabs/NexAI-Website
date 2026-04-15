@@ -1,0 +1,212 @@
+---
+import { tr } from '../../config/imagekit';
+import type { AppEntry } from '../../data/app-vault';
+import { platformIcons, pricingIcons, pricingLabel } from './icons';
+
+interface Props {
+	app: AppEntry;
+	isAboveFold?: boolean;
+}
+
+const { app, isAboveFold = false } = Astro.props;
+const outboundUrl = app.affiliateUrl ?? app.websiteUrl;
+const rel = app.affiliateUrl ? 'noopener sponsored nofollow' : 'noopener nofollow';
+const cappedTags = app.tags.slice(0, 3);
+const extraTagCount = app.tags.length - cappedTags.length;
+const altText = app.alternativeTo?.join(' ') ?? '';
+const searchText = [app.name, app.tagline, app.description, altText].join(' ').toLowerCase();
+---
+
+<article
+	class="app-card"
+	data-app-card
+	data-category={app.category}
+	data-pricing={app.pricing}
+	data-platforms={app.platforms.join(' ')}
+	data-tags={app.tags.join(' ')}
+	data-name={app.name.toLowerCase()}
+	data-alt-to={altText.toLowerCase()}
+	data-search={searchText}
+	data-added-at={app.addedAt}
+	data-rank={app.rahulRank ?? ''}
+>
+	<a href={outboundUrl} target="_blank" rel={rel} aria-label={`Visit ${app.name}`}>
+		<div class="app-card__head">
+			<img
+				src={app.logo + tr.appLogo}
+				srcset={`${app.logo + tr.appLogo} 1x, ${app.logo + tr.appLogo2x} 2x`}
+				alt={`${app.name} logo`}
+				width="48"
+				height="48"
+				loading={isAboveFold ? 'eager' : 'lazy'}
+				decoding="async"
+			/>
+			<span class="app-card__price">
+				<span class="app-card__price-icon" set:html={pricingIcons[app.pricing]} />
+				{pricingLabel[app.pricing]}
+			</span>
+		</div>
+		<div class="app-card__body">
+			<h3>{app.name}</h3>
+			<p>{app.tagline}</p>
+			<ul class="app-card__tags" aria-label="Tags">
+				{cappedTags.map((tag) => <li class="tag-pill">{tag}</li>)}
+				{extraTagCount > 0 && <li class="tag-pill tag-pill--overflow">+{extraTagCount}</li>}
+			</ul>
+		</div>
+		<div class="app-card__foot" aria-hidden="true">
+			<ul class="app-card__platforms">
+				{
+					app.platforms.map((platform) => (
+						<li title={platform} set:html={platformIcons[platform]} />
+					))
+				}
+			</ul>
+			<span class="app-card__arrow">↗</span>
+		</div>
+	</a>
+</article>
+
+<style>
+	.app-card {
+		background: var(--color-surface-elevated);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		min-height: 100%;
+	}
+
+	.app-card > a {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
+		padding: 1.1rem;
+		height: 100%;
+		text-decoration: none;
+		color: inherit;
+		transition: transform 300ms var(--ease-out-expo);
+	}
+
+	.app-card:hover > a,
+	.app-card:focus-within > a {
+		transform: translateY(-2px);
+	}
+
+	.app-card:hover,
+	.app-card:focus-within {
+		border-color: rgba(78, 201, 180, 0.4);
+	}
+
+	.app-card a:focus-visible {
+		outline: 2px solid var(--color-brand-cyan);
+		outline-offset: 3px;
+		border-radius: var(--radius-md);
+	}
+
+	.app-card__head {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		gap: var(--space-xs);
+	}
+
+	.app-card__head img {
+		display: block;
+		border-radius: 10px;
+	}
+
+	.app-card__price {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		font-size: 0.74rem;
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--color-text-muted);
+		padding: 0.35rem 0.55rem;
+		border-radius: var(--radius-full);
+		background: rgba(255, 255, 255, 0.04);
+	}
+
+	.app-card__price-icon :global(svg) {
+		width: 0.85rem;
+		height: 0.85rem;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.7;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	.app-card__body {
+		display: grid;
+		gap: 0.6rem;
+	}
+
+	.app-card h3 {
+		font-family: var(--font-main);
+		font-size: 1rem;
+		font-weight: var(--fw-semibold);
+		line-height: 1.2;
+	}
+
+	.app-card p {
+		font-size: 0.9rem;
+		color: var(--color-text-muted);
+		line-height: 1.45;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		min-height: 2.6em;
+	}
+
+	.app-card__tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem;
+		list-style: none;
+	}
+
+	.app-card__tags .tag-pill {
+		padding: 0.23rem 0.62rem;
+		letter-spacing: 0.12em;
+		font-size: 0.65rem;
+	}
+
+	.app-card__tags .tag-pill--overflow {
+		color: var(--color-text-muted);
+		border-color: var(--color-border);
+		background: rgba(255, 255, 255, 0.02);
+	}
+
+	.app-card__foot {
+		margin-top: auto;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: var(--space-xs);
+	}
+
+	.app-card__platforms {
+		display: flex;
+		align-items: center;
+		gap: 0.45rem;
+		list-style: none;
+	}
+
+	.app-card__platforms li :global(svg) {
+		width: 0.95rem;
+		height: 0.95rem;
+		fill: none;
+		stroke: var(--color-text-subtle);
+		stroke-width: 1.6;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	.app-card__arrow {
+		font-size: 1rem;
+		color: var(--color-brand-cyan);
+	}
+</style>
