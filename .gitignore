@@ -42,3 +42,9 @@ docs/NexAI Labs - Company Overview.docx
 
 # Ad-hoc screenshots taken during PSI/perf testing
 /nav-and-orbit-*.png
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
