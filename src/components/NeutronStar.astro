@@ -86,7 +86,11 @@ const { lightTarget, lightClass } = Astro.props;
 		}
 	}
 
-	/* ── Pulse ring ── */
+	/* ── Pulse ring ──
+	 * Intrinsic 1600px scaled DOWN via transform keeps the border stroke
+	 * hairline-thin at start (transform scales stroke width too). The
+	 * `.home-hero` ancestor uses `overflow: clip` so the oversized layout
+	 * box can't contribute to document scrollWidth. */
 	.nstar__pulse {
 		position: absolute;
 		top: 50%;
