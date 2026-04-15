@@ -1,6 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import NeutronStar from '../components/NeutronStar.astro';
 import { site } from '../config/site';
 ---
 
@@ -38,10 +37,10 @@ import { site } from '../config/site';
 			</div>
 		</div>
 
-		<!-- Right: Star -->
+		<!-- Right: Glow -->
 		<div class="cs__star-area">
 			<div class="cs__dot-grid" aria-hidden="true"></div>
-			<NeutronStar lightTarget=".cs" lightClass="cs--light" />
+			<div class="cs__glow" aria-hidden="true"></div>
 		</div>
 	</section>
 </Layout>
@@ -210,6 +209,40 @@ import { site } from '../config/site';
 		-webkit-mask-image: radial-gradient(ellipse 55% 55% at 50% 50%, black 15%, transparent 75%);
 		pointer-events: none;
 		z-index: 0;
+	}
+
+	.cs__glow {
+		position: relative;
+		width: 120px;
+		height: 120px;
+		border-radius: 50%;
+		background: radial-gradient(
+			circle,
+			rgba(255, 255, 255, 0.9) 0%,
+			rgba(78, 201, 180, 0.4) 25%,
+			rgba(78, 201, 180, 0.1) 55%,
+			transparent 75%
+		);
+		will-change: opacity, transform;
+		animation: csGlow 3s ease-in-out infinite;
+	}
+
+	@keyframes csGlow {
+		0%,
+		100% {
+			opacity: 0.8;
+			transform: scale(1);
+		}
+		50% {
+			opacity: 1;
+			transform: scale(1.08);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.cs__glow {
+			animation: none;
+		}
 	}
 
 	/* ── Light mode overrides (page-specific) ── */

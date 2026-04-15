@@ -126,7 +126,9 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 					Back
 				</button>
 			</div>
-			<div class="cal-dialog__body" id="cal-inline"></div>
+			<div class="cal-dialog__body" id="cal-inline">
+				<div class="cal-dialog__loader" aria-hidden="true">Loading calendar…</div>
+			</div>
 		</dialog>
 
 		<script is:inline>
@@ -193,8 +195,7 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 				});
 				container.dataset.calReady = '1';
 			}
-			initCalInline();
-			document.addEventListener('astro:page-load', initCalInline);
+			// Deferred — initCalInline() is only called on first [data-open-cal] click.
 
 			/* Open/close dialog on [data-open-cal] clicks — registered once per tab.
 			 * All handlers re-query #cal-dialog at event time so they never hold
@@ -203,12 +204,13 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 				if (document.__calDialogReady) return;
 				document.__calDialogReady = true;
 
-				/* Open: intercept all [data-open-cal] clicks */
+				/* Open: intercept all [data-open-cal] clicks (lazy-init Cal on first click) */
 				document.addEventListener('click', function (e) {
 					const trigger = e.target.closest('[data-open-cal]');
 					if (!trigger) return;
 					e.preventDefault();
 					e.stopPropagation();
+					initCalInline();
 					const dialog = document.getElementById('cal-dialog');
 					if (!dialog) return;
 					dialog.showModal();
@@ -336,6 +338,25 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 				border-radius: 12px;
 				background: transparent;
 				box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+				position: relative;
+			}
+
+			/* Loading placeholder — visible on first click until Cal injects the iframe */
+			.cal-dialog__loader {
+				position: absolute;
+				inset: 0;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-family: var(--font-main);
+				font-size: 0.9rem;
+				color: rgba(255, 255, 255, 0.55);
+				letter-spacing: 0.04em;
+				pointer-events: none;
+			}
+
+			#cal-inline:has(iframe) .cal-dialog__loader {
+				display: none;
 			}
 
 			/* Cal iframe fills the container */
