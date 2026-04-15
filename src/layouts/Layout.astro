@@ -1,18 +1,11 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import { Font } from 'astro:assets';
 import Navbar from '../components/Navbar.astro';
 import CustomCursor from '../components/CustomCursor.astro';
 import Footer from '../components/Footer.astro';
 import { navConfigs } from '../config/navigation';
 import '../styles/global.css';
-
-// Self-hosted fonts (replaces Google Fonts CDN)
-import '@fontsource/cormorant-garamond/latin-600.css';
-import '@fontsource/cormorant-garamond/latin-600-italic.css';
-import '@fontsource/inter/latin-400.css';
-import '@fontsource/inter/latin-600.css';
-import '@fontsource/montserrat/latin-600.css';
-import '@fontsource/montserrat/latin-700.css';
 
 interface Props {
 	title: string;
@@ -53,6 +46,12 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 		<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
 		<link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
 		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+		<!-- Fonts — Astro 5 Fonts API. Only Cormorant preloads (LCP h1 font). -->
+		<Font cssVariable="--font-inter" />
+		<Font cssVariable="--font-cormorant" preload />
+		<Font cssVariable="--font-montserrat" />
+
 		<link rel="preconnect" href="https://ik.imagekit.io" crossorigin />
 		<link rel="dns-prefetch" href="https://ik.imagekit.io" />
 		<meta name="generator" content={Astro.generator} />
@@ -84,7 +83,6 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 		<!-- View Transitions -->
 		<ClientRouter />
 
-		<!-- Fonts loaded via @fontsource (self-hosted, no external requests) -->
 		<slot name="head" />
 	</head>
 	<body>
