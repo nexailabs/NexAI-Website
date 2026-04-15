@@ -97,9 +97,15 @@ import { site } from '../../config/site';
 		font-style: italic;
 	}
 
-	/* ── Rotating word scramble ── */
+	/* ── Rotating word scramble ──
+	 * min-width reserves space for the widest possible scramble state at
+	 * CSS-time (not post-JS) so no layout shift ever occurs. 7em fits
+	 * every real word + trailing period at desktop font size inside the
+	 * ~685px text column, and at mobile font size forces the rotating
+	 * word onto line 2 from first paint (stable, no reflow). */
 	.home-hero__rotate {
 		display: inline-block;
+		min-width: 7em;
 	}
 
 	.home-hero__rotate-char {
@@ -361,7 +367,7 @@ import { site } from '../../config/site';
 			if (!rotateEl) return;
 			if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-			const CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@#$%&*';
+			const CHARSET = 'abcdefghijklmnopqrstuvwxyz';
 			const words: string[] = JSON.parse(rotateEl.dataset.rotate || '[]');
 			const trailing = rotateEl.dataset.rotateAfter || '';
 			if (words.length === 0) return;
@@ -451,23 +457,6 @@ import { site } from '../../config/site';
 			}
 
 			renderWord(words[0]);
-
-			// Reserve width for the widest possible scramble state so the
-			// line break can't shift mid-animation (e.g. random wide chars
-			// like M/W/@ pushing the word + period to the next line).
-			// Worst case = N copies of the widest char in CHARSET.
-			const longest = words.reduce((m, w) => Math.max(m, w.length), 0);
-			const probe = rotateEl.cloneNode(false) as HTMLElement;
-			probe.style.cssText =
-				'position:absolute;visibility:hidden;white-space:nowrap;pointer-events:none;min-width:0;width:auto';
-			probe.textContent = 'M'.repeat(longest) + trailing;
-			rotateEl.parentNode?.appendChild(probe);
-			const reserveW = probe.offsetWidth;
-			probe.remove();
-			if (reserveW > 0) {
-				rotateEl.style.minWidth = Math.ceil(reserveW) + 'px';
-				rotateEl.style.display = 'inline-block';
-			}
 
 			track(window.setTimeout(nextWord, INITIAL_DELAY + HOLD_MS));
 		});
