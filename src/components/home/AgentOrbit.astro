@@ -53,6 +53,7 @@ const nodeCount = agents.length;
 		class="orbit__detail"
 		data-orbit-detail
 		aria-hidden="true"
+		inert
 		role="dialog"
 		aria-labelledby="orbit-detail-title"
 	>
@@ -826,6 +827,7 @@ const nodeCount = agents.length;
 			requestAnimationFrame(function () {
 				detail.classList.add('orbit__detail--visible');
 				detail.setAttribute('aria-hidden', 'false');
+				detail.removeAttribute('inert');
 			});
 
 			orbit.classList.add('orbit--paused');
@@ -847,6 +849,7 @@ const nodeCount = agents.length;
 			detail.classList.remove('orbit__detail--visible');
 			detail.classList.remove('orbit__detail--mobile');
 			detail.setAttribute('aria-hidden', 'true');
+			detail.setAttribute('inert', '');
 			orbit.classList.remove('orbit--paused');
 			nodes.forEach(function (n) {
 				n.classList.remove('orbit__node--active');
