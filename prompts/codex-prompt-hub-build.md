@@ -40,7 +40,14 @@ All decisions are locked. Start on a new branch off `main` and proceed straight 
 2. **Tags (frozen, append-only enum, 20 values):** `rag, extraction, classification, writing, refactor, debug, cold-email, outbound, research, summarization, agents, mcp, eval, sop, customer-support, code-review, data-cleanup, spec-writing, planning, onboarding`.
 3. **Type enum:** `['prompt', 'skill', 'system-prompt', 'mcp-config']`.
 4. **Model enum:** `['chatgpt', 'claude', 'gemini', 'cursor', 'codex', 'any']`.
-5. **Variable syntax:** `{var_name}` — single brace, snake*case. Validator regex is `/\{([a-z]a-z0-9*]\*)\}/g`. Bake this into `src/data/prompt-hub.validate.ts`and the PR 3`PromptVariablesForm`.
+5. **Variable syntax:** `{var_name}` — single brace, lowercase with underscores (snake case). Validator regex (use this exact pattern, do not paraphrase):
+
+   ```js
+   const VAR_RE = /\{([a-z][a-z0-9_]*)\}/g;
+   ```
+
+   Bake this into `src/data/prompt-hub.validate.ts` and the PR 3 `PromptVariablesForm`.
+
 6. **Shiki theme:** `css-variables`. Define token colors on `.prompt-body pre` in `src/styles/global.css` — match the dark surface palette. If the blog PR has already pinned a `shiki` version, match it; otherwise pin to the latest stable.
 7. **Skill frontmatter enforcement:** strict. The validator throws on any `type: 'skill'` entry whose `body` doesn't start with a YAML frontmatter block containing `name` (kebab-case, ≤64 chars, no reserved words) and `description` (≤1024 chars). This makes every skill in the hub directly installable into Claude Code without post-processing.
 8. **Copy-count tracking:** enabled. Wire a Cloudflare Analytics custom event `prompt_hub.copy` on every successful copy (card, detail body, install block), keyed by `slug`, `type`, and surface. Zero PII — no body content in the payload. In PR 1 ship the event-firing code; "Most Copied" sort wiring is PR 3.
