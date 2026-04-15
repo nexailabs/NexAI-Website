@@ -1,0 +1,19 @@
+---
+import PromptHubGrid from '../../components/prompt-hub/PromptHubGrid.astro';
+import PromptHubHero from '../../components/prompt-hub/PromptHubHero.astro';
+import { prompts } from '../../data/prompt-hub';
+import '../../data/prompt-hub.validate';
+import Layout from '../../layouts/Layout.astro';
+
+const featured = prompts.filter((prompt) => prompt.featured).slice(0, 4);
+---
+
+<Layout
+	title="Prompt Hub — prompts and skills for Claude, ChatGPT, Codex | NexAI Labs"
+	description="The prompts, Claude skills, and agent instructions we actually ship with. Copy-paste ready. Curated, not crowdsourced."
+	canonicalUrl="https://www.nexailabs.com/prompt-hub"
+	mainClass="prompt-hub"
+>
+	<PromptHubHero featured={featured} />
+	<PromptHubGrid prompts={prompts} />
+</Layout>

@@ -1,0 +1,204 @@
+---
+import type { PromptEntry } from '../../data/prompt-hub';
+import PromptCopyButton from './PromptCopyButton.astro';
+import { modelMonograms } from './icons';
+
+interface Props {
+	entry: PromptEntry;
+}
+
+const { entry } = Astro.props;
+
+const typeLabelMap = {
+	prompt: 'PROMPT',
+	skill: 'SKILL',
+	'system-prompt': 'SYSTEM',
+	'mcp-config': 'MCP',
+} as const;
+
+const visibleTags = entry.tags.slice(0, 3);
+const overflowTags = entry.tags.length - visibleTags.length;
+const searchCorpus = [
+	entry.title,
+	entry.summary,
+	entry.body,
+	entry.tags.join(' '),
+	entry.category,
+	entry.models.join(' '),
+]
+	.join(' ')
+	.toLowerCase();
+---
+
+<article
+	class="prompt-card"
+	data-prompt-card
+	data-type={entry.type}
+	data-models={entry.models.join(' ')}
+	data-category={entry.category}
+	data-tags={entry.tags.join(' ')}
+	data-title={entry.title.toLowerCase()}
+	data-added-at={entry.addedAt}
+	data-search={searchCorpus}
+>
+	<div class="prompt-card__top-row">
+		<span class="prompt-card__type-badge">{typeLabelMap[entry.type]}</span>
+		<div class="prompt-card__copy-wrap">
+			<PromptCopyButton target={entry.body} slug={entry.slug} type={entry.type} surface="card" />
+		</div>
+	</div>
+
+	<a href={`/prompt-hub/${entry.slug}`} class="prompt-card__main-link">
+		<h3>{entry.title}</h3>
+		<p>{entry.summary}</p>
+	</a>
+
+	<div class="prompt-card__models" aria-label="Supported models">
+		{
+			entry.models.map((model) => (
+				<span class="prompt-card__model-pill" title={model}>
+					{modelMonograms[model]}
+				</span>
+			))
+		}
+	</div>
+
+	<div class="prompt-card__tags" aria-label="Tags">
+		{visibleTags.map((tag) => <span class="tag-pill">{tag}</span>)}
+		{overflowTags > 0 && <span class="tag-pill">+{overflowTags}</span>}
+	</div>
+</article>
+
+<style>
+	.prompt-card {
+		position: relative;
+		display: grid;
+		gap: 0.9rem;
+		padding: 1rem;
+		min-height: 13.5rem;
+		border-radius: var(--radius-lg);
+		border: 1px solid var(--color-border);
+		background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+		transition:
+			transform 0.3s var(--ease-out-expo),
+			opacity 0.3s var(--ease-out-expo);
+	}
+
+	.prompt-card:hover {
+		transform: translateY(-2px);
+		border-color: rgba(78, 201, 180, 0.4);
+	}
+
+	.prompt-card__top-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+	}
+
+	.prompt-card__type-badge {
+		display: inline-flex;
+		align-items: center;
+		height: 1.65rem;
+		padding: 0 0.65rem;
+		border-radius: 999px;
+		font-size: 0.68rem;
+		letter-spacing: 0.14em;
+		font-weight: var(--fw-semibold);
+		color: var(--color-brand-cyan);
+		border: 1px solid rgba(78, 201, 180, 0.38);
+		background: rgba(78, 201, 180, 0.08);
+	}
+
+	.prompt-card__copy-wrap {
+		opacity: 0;
+		transition:
+			opacity 0.3s var(--ease-out-expo),
+			transform 0.3s var(--ease-out-expo);
+	}
+
+	.prompt-card:hover .prompt-card__copy-wrap,
+	.prompt-card:focus-within .prompt-card__copy-wrap {
+		opacity: 1;
+	}
+
+	@media (max-width: 767px) {
+		.prompt-card__copy-wrap {
+			opacity: 1;
+		}
+	}
+
+	.prompt-card__main-link {
+		position: relative;
+		display: grid;
+		gap: 0.55rem;
+		text-decoration: none;
+		color: inherit;
+		min-height: 5.8rem;
+	}
+
+	.prompt-card__main-link::after {
+		content: '';
+		position: absolute;
+		inset: -0.4rem;
+		border-radius: var(--radius-md);
+		border: 1px solid transparent;
+		pointer-events: none;
+	}
+
+	.prompt-card__main-link:focus-visible {
+		outline: none;
+	}
+
+	.prompt-card__main-link:focus-visible::after {
+		border-color: var(--color-brand-cyan);
+	}
+
+	h3 {
+		font-size: 1.05rem;
+		font-weight: var(--fw-semibold);
+		line-height: 1.35;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+
+	p {
+		font-size: 0.9rem;
+		color: var(--color-text-muted);
+		line-height: 1.45;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+
+	.prompt-card__models,
+	.prompt-card__tags {
+		display: flex;
+		gap: 0.4rem;
+		flex-wrap: wrap;
+	}
+
+	.prompt-card__model-pill {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		height: 1.4rem;
+		min-width: 1.85rem;
+		border-radius: 999px;
+		padding: 0 0.5rem;
+		font-size: 0.63rem;
+		letter-spacing: 0.09em;
+		font-weight: var(--fw-semibold);
+		border: 1px solid var(--color-border);
+		color: var(--color-text-subtle);
+	}
+
+	.prompt-card__tags :global(.tag-pill) {
+		padding: 0.3rem 0.62rem;
+		font-size: 0.62rem;
+		letter-spacing: 0.14em;
+	}
+</style>

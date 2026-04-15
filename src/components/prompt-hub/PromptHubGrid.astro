@@ -1,0 +1,40 @@
+---
+import type { PromptEntry } from '../../data/prompt-hub';
+import PromptCard from './PromptCard.astro';
+
+interface Props {
+	prompts: readonly PromptEntry[];
+}
+
+const { prompts } = Astro.props;
+---
+
+<section class="prompt-hub-grid container" aria-label="Prompt Hub entries">
+	<div class="prompt-hub-grid__inner">
+		{prompts.map((entry) => <PromptCard entry={entry} />)}
+	</div>
+</section>
+
+<style>
+	.prompt-hub-grid {
+		padding-bottom: var(--space-lg);
+	}
+
+	.prompt-hub-grid__inner {
+		display: grid;
+		gap: var(--space-md);
+		grid-template-columns: repeat(1, minmax(0, 1fr));
+	}
+
+	@media (min-width: 768px) {
+		.prompt-hub-grid__inner {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (min-width: 1100px) {
+		.prompt-hub-grid__inner {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+	}
+</style>

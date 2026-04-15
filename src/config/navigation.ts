@@ -17,7 +17,7 @@ const main: NavConfig = {
 		{
 			id: 'prompt-hub',
 			label: 'Prompt Hub',
-			href: '/coming-soon',
+			href: '/prompt-hub',
 			caption: 'Curated prompts, skills, and SOPs we swear by.',
 		},
 		{

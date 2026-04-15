@@ -102,6 +102,8 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 			</main>
 			{!noFooter && <Footer />}
 		</div>
+		<div id="copy-toast" class="copy-toast" role="status" aria-live="polite" aria-atomic="true">
+		</div>
 
 		<!-- Global Scripts -->
 		<script src="../scripts/lenis.ts"></script>
@@ -129,6 +131,92 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 		</dialog>
 
 		<script is:inline>
+			(function setupGlobalCopyHandler() {
+				if (document.__globalCopyHandlerReady) return;
+				document.__globalCopyHandlerReady = true;
+
+				let toastTimeout;
+				let copyResetTimeout;
+
+				const showToast = (message) => {
+					const toast = document.getElementById('copy-toast');
+					if (!toast) return;
+
+					toast.textContent = message;
+					toast.classList.add('is-visible');
+					window.clearTimeout(toastTimeout);
+					toastTimeout = window.setTimeout(() => {
+						toast.classList.remove('is-visible');
+					}, 2000);
+				};
+
+				const fallbackCopy = (text) => {
+					const textArea = document.createElement('textarea');
+					textArea.value = text;
+					textArea.setAttribute('readonly', 'true');
+					textArea.style.position = 'fixed';
+					textArea.style.opacity = '0';
+					document.body.appendChild(textArea);
+					textArea.select();
+					document.execCommand('copy');
+					document.body.removeChild(textArea);
+				};
+
+				const fireCopyAnalytics = (button) => {
+					const slug = button.dataset.copySlug;
+					const type = button.dataset.copyType;
+					const surface = button.dataset.copySurface || 'card';
+					if (!slug || !type) return;
+
+					const payload = { slug, type, surface };
+					if (typeof window?.sa_event === 'function') {
+						window.sa_event('prompt_hub.copy', payload);
+						return;
+					}
+					if (typeof window?.va === 'function') {
+						window.va('event', {
+							name: 'prompt_hub.copy',
+							...payload,
+						});
+					}
+				};
+
+				document.addEventListener('click', async (event) => {
+					const button = event.target.closest('[data-copy-target],[data-copy-source]');
+					if (!button) return;
+
+					let text = button.dataset.copyTarget;
+					if (!text && button.dataset.copySource) {
+						const source = document.querySelector(button.dataset.copySource);
+						text = source?.textContent?.trim() ?? '';
+					}
+
+					if (!text) return;
+
+					try {
+						if (navigator.clipboard?.writeText) {
+							await navigator.clipboard.writeText(text);
+						} else {
+							fallbackCopy(text);
+						}
+					} catch {
+						fallbackCopy(text);
+					}
+
+					const originalLabel = button.getAttribute('aria-label') ?? 'Copy';
+					button.classList.add('is-copied');
+					button.setAttribute('aria-label', 'Copied');
+					showToast('Copied to clipboard');
+					fireCopyAnalytics(button);
+
+					window.clearTimeout(copyResetTimeout);
+					copyResetTimeout = window.setTimeout(() => {
+						button.classList.remove('is-copied');
+						button.setAttribute('aria-label', originalLabel);
+					}, 1500);
+				});
+			})();
+
 			/* eslint-disable prefer-rest-params */
 			(function (C, A, L) {
 				const p = function (a, ar) {
@@ -192,6 +280,7 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 				});
 				container.dataset.calReady = '1';
 			}
+
 			// Deferred — initCalInline() is only called on first [data-open-cal] click.
 
 			/* Open/close dialog on [data-open-cal] clicks — registered once per tab.
@@ -372,6 +461,31 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 
 			#cal-inline > div {
 				background: transparent !important;
+			}
+
+			.copy-toast {
+				position: fixed;
+				bottom: 2rem;
+				left: 50%;
+				transform: translate(-50%, 20px);
+				padding: 0.75rem 1.5rem;
+				background: var(--color-surface-elevated);
+				color: var(--color-text-main);
+				border: 1px solid var(--color-brand-cyan);
+				border-radius: 999px;
+				font-family: var(--font-main);
+				font-size: 0.9rem;
+				opacity: 0;
+				pointer-events: none;
+				transition:
+					opacity 0.2s ease,
+					transform 0.2s ease;
+				z-index: var(--z-overlay);
+			}
+
+			.copy-toast.is-visible {
+				opacity: 1;
+				transform: translate(-50%, 0);
 			}
 
 			@media (max-width: 720px) {

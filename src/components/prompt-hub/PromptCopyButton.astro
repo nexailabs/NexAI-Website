@@ -1,0 +1,70 @@
+---
+import { checkIcon, copyIcon } from './icons';
+
+interface Props {
+	target: string;
+	label?: string;
+	slug?: string;
+	type?: string;
+	surface?: 'card' | 'detail' | 'install';
+}
+
+const { target, label = 'Copy prompt to clipboard', slug, type, surface = 'card' } = Astro.props;
+---
+
+<button
+	type="button"
+	class="prompt-copy-button"
+	data-copy-target={target}
+	data-copy-slug={slug}
+	data-copy-type={type}
+	data-copy-surface={surface}
+	aria-label={label}
+>
+	<span class="icon-copy" set:html={copyIcon} />
+	<span class="icon-check" set:html={checkIcon} />
+</button>
+
+<style>
+	.prompt-copy-button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2rem;
+		height: 2rem;
+		border: 1px solid var(--color-border);
+		border-radius: 999px;
+		background: rgba(10, 10, 10, 0.86);
+		color: var(--color-text-main);
+		cursor: pointer;
+		transition:
+			transform 0.3s var(--ease-out-expo),
+			opacity 0.3s var(--ease-out-expo);
+	}
+
+	.prompt-copy-button :global(svg) {
+		width: 0.92rem;
+		height: 0.92rem;
+	}
+
+	.icon-check {
+		display: none;
+	}
+
+	.prompt-copy-button.is-copied {
+		color: var(--color-brand-cyan);
+	}
+
+	.prompt-copy-button.is-copied .icon-copy {
+		display: none;
+	}
+
+	.prompt-copy-button.is-copied .icon-check {
+		display: inline-flex;
+	}
+
+	.prompt-copy-button:focus-visible {
+		outline: 2px solid var(--color-brand-cyan);
+		outline-offset: 2px;
+	}
+</style>

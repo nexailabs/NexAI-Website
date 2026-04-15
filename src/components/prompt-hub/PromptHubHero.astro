@@ -1,0 +1,90 @@
+---
+import type { PromptEntry } from '../../data/prompt-hub';
+import PromptCard from './PromptCard.astro';
+
+interface Props {
+	featured: readonly PromptEntry[];
+}
+
+const { featured } = Astro.props;
+---
+
+<section class="prompt-hub-hero">
+	<div class="container">
+		<div class="prompt-hub-hero__header">
+			<span class="prompt-hub-hero__eyebrow">THE PROMPT HUB</span>
+			<h1>Prompts and skills we actually ship with.</h1>
+			<p>Copy-paste ready. Curated, not crowdsourced. Battle-tested on real work.</p>
+		</div>
+
+		{
+			featured.length > 0 && (
+				<div class="prompt-hub-hero__featured" aria-label="Featured prompts and skills">
+					{featured.map((entry) => (
+						<PromptCard entry={entry} />
+					))}
+				</div>
+			)
+		}
+	</div>
+</section>
+
+<style>
+	.prompt-hub-hero {
+		padding: clamp(7.2rem, 14vh, 9.2rem) 0 var(--space-lg);
+		background: var(--gradient-hero);
+	}
+
+	.prompt-hub-hero__header {
+		max-width: 44rem;
+		display: grid;
+		gap: 0.8rem;
+		margin-bottom: var(--space-md);
+	}
+
+	.prompt-hub-hero__eyebrow {
+		display: inline-flex;
+		width: fit-content;
+		padding: 0.35rem 0.8rem;
+		border-radius: 999px;
+		border: 1px solid rgba(78, 201, 180, 0.3);
+		background: rgba(78, 201, 180, 0.09);
+		font-size: 0.68rem;
+		letter-spacing: 0.18em;
+		font-weight: var(--fw-semibold);
+		color: var(--color-brand-cyan);
+	}
+
+	h1 {
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-weight: var(--fw-semibold);
+		font-size: clamp(2rem, 5.8vw, 3.6rem);
+		line-height: 1.08;
+		letter-spacing: -0.01em;
+	}
+
+	p {
+		font-size: 1.05rem;
+		line-height: 1.6;
+		color: var(--color-text-muted);
+	}
+
+	.prompt-hub-hero__featured {
+		display: grid;
+		gap: var(--space-md);
+		grid-template-columns: repeat(1, minmax(0, 1fr));
+	}
+
+	@media (min-width: 768px) {
+		.prompt-hub-hero__featured {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (min-width: 1100px) {
+		.prompt-hub-hero__featured {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
+	}
+</style>
