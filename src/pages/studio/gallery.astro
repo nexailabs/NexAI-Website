@@ -194,6 +194,7 @@ import { site } from '../../config/site';
 
 		/* Measure each image and set grid-row-end span for masonry packing */
 		function layoutMasonry() {
+			if (!grid) return;
 			const rowH = 1; // grid-auto-rows: 1px
 			grid.querySelectorAll<HTMLElement>('[data-gallery-item]').forEach((item) => {
 				// Reset span so we can measure natural height
@@ -209,6 +210,7 @@ import { site } from '../../config/site';
 
 		/* Wait for all visible images to load, then run layout */
 		function layoutAfterImages() {
+			if (!grid) return;
 			const visibleImgs = Array.from(grid.querySelectorAll<HTMLImageElement>('.gallery__img'));
 			let pending = 0;
 
@@ -231,6 +233,7 @@ import { site } from '../../config/site';
 
 		/* Filter: remove hidden items from DOM, re-append visible ones */
 		function applyFilters() {
+			if (!grid) return;
 			const frag = document.createDocumentFragment();
 			items.forEach((item) => {
 				const cat = item.dataset.category || '';

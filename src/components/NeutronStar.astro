@@ -250,6 +250,7 @@ const { lightTarget, lightClass } = Astro.props;
 		let busy = false;
 
 		function positionFlash() {
+			if (!core || !flash) return;
 			const r = core.getBoundingClientRect();
 			flash.style.left = r.left + r.width / 2 + 'px';
 			flash.style.top = r.top + r.height / 2 + 'px';
