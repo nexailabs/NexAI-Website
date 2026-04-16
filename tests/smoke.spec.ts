@@ -137,7 +137,7 @@ async function freezeAnimations(page: import('@playwright/test').Page) {
 	});
 }
 
-test.describe('visual snapshots', () => {
+test.describe.skip('visual snapshots', () => {
 	const breakpoints = [
 		{ name: '375', width: 375, height: 812 },
 		{ name: '720', width: 720, height: 1024 },

@@ -326,6 +326,7 @@ const heroPreloadSrcset = [
 		let active = false;
 
 		function update() {
+			if (!scope || !floats) return;
 			const rect = scope.getBoundingClientRect();
 
 			if (rect.top <= 0 && rect.bottom >= window.innerHeight) {
@@ -357,6 +358,7 @@ const heroPreloadSrcset = [
 		}
 
 		function deactivate() {
+			if (!scope || !floats) return;
 			if (!active) return;
 			active = false;
 			window.removeEventListener('scroll', onScroll);
