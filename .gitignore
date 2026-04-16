@@ -45,3 +45,9 @@ docs/NexAI Labs - Company Overview.docx
 
 # Playwright visual regression snapshots
 **/*-snapshots/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
