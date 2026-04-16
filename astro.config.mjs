@@ -2,16 +2,20 @@
 import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
+import cloudflare from "@astrojs/cloudflare";
+
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://www.nexailabs.com',
-	output: 'static',
-	integrations: [sitemap()],
-	prefetch: {
+    site: 'https://www.nexailabs.com',
+    output: 'static',
+    integrations: [sitemap()],
+
+    prefetch: {
 		defaultStrategy: 'tap',
 		prefetchAll: false,
 	},
-	experimental: {
+
+    experimental: {
 		fonts: [
 			{
 				provider: fontProviders.fontsource(),
@@ -39,4 +43,6 @@ export default defineConfig({
 			},
 		],
 	},
+
+    adapter: cloudflare()
 });
