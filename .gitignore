@@ -42,3 +42,6 @@ docs/NexAI Labs - Company Overview.docx
 
 # Ad-hoc screenshots taken during PSI/perf testing
 /nav-and-orbit-*.png
+
+# Playwright visual regression snapshots
+**/*-snapshots/
