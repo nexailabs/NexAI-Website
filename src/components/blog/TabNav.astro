@@ -1,0 +1,159 @@
+---
+interface Props {
+	categories: string[];
+	active?: string;
+	basePath?: string;
+}
+
+const { categories, active = 'All', basePath = '/blog' } = Astro.props;
+
+const hrefFor = (cat: string) =>
+	cat === 'All' ? basePath : `${basePath}?cat=${encodeURIComponent(cat)}`;
+---
+
+<div class="blog-tabnav" role="tablist" aria-label="Filter by category">
+	{
+		categories.map((cat) => {
+			const isActive = cat === active;
+			return (
+				<a
+					href={hrefFor(cat)}
+					role="tab"
+					aria-selected={isActive}
+					class:list={['blog-tabnav__tab', { 'is-active': isActive }]}
+					data-category={cat}
+				>
+					{isActive && <span class="blog-tabnav__dot" aria-hidden="true" />}
+					{cat}
+				</a>
+			);
+		})
+	}
+</div>
+
+<style>
+	.blog-tabnav {
+		display: flex;
+		align-items: center;
+		gap: 28px;
+		padding-bottom: 18px;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+		margin-bottom: 56px;
+		flex-wrap: wrap;
+	}
+
+	.blog-tabnav__tab {
+		position: relative;
+		padding: 4px 0;
+		background: transparent;
+		border: none;
+		font-family: var(--font-main);
+		font-size: 0.92rem;
+		font-weight: 400;
+		color: rgba(255, 255, 255, 0.45);
+		cursor: pointer;
+		display: inline-flex;
+		align-items: center;
+		gap: 7px;
+		text-decoration: none;
+		transition: color 0.2s;
+	}
+
+	.blog-tabnav__tab:hover {
+		color: var(--color-text-main);
+	}
+
+	.blog-tabnav__tab.is-active {
+		color: var(--color-text-main);
+	}
+
+	.blog-tabnav__dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: var(--color-text-main);
+		display: inline-block;
+	}
+
+	@media (max-width: 720px) {
+		.blog-tabnav {
+			gap: 18px;
+		}
+	}
+</style>
+
+<script>
+	// Client-side filtering driven by ?cat=... query param.
+	// Anchor links already handle navigation; this script just filters
+	// cards in place without a page reload and keeps the active tab in sync.
+	(function () {
+		function applyFilter() {
+			const params = new URLSearchParams(window.location.search);
+			const cat = params.get('cat') || 'All';
+
+			// Tabs
+			document.querySelectorAll<HTMLElement>('.blog-tabnav__tab').forEach((el) => {
+				const isActive = el.dataset.category === cat;
+				el.classList.toggle('is-active', isActive);
+				el.setAttribute('aria-selected', isActive ? 'true' : 'false');
+				// Add / remove the dot
+				const existingDot = el.querySelector('.blog-tabnav__dot');
+				if (isActive && !existingDot) {
+					const dot = document.createElement('span');
+					dot.className = 'blog-tabnav__dot';
+					dot.setAttribute('aria-hidden', 'true');
+					el.prepend(dot);
+				} else if (!isActive && existingDot) {
+					existingDot.remove();
+				}
+			});
+
+			// Cards: any element with [data-post-category]
+			let visible = 0;
+			document.querySelectorAll<HTMLElement>('[data-post-category]').forEach((el) => {
+				const match = cat === 'All' || el.dataset.postCategory === cat;
+				el.style.display = match ? '' : 'none';
+				if (match) visible++;
+			});
+
+			// Featured only shows on "All"
+			document.querySelectorAll<HTMLElement>('[data-featured-region]').forEach((el) => {
+				el.style.display = cat === 'All' ? '' : 'none';
+			});
+
+			// Archive label + count
+			const archiveLabel = document.querySelector<HTMLElement>('[data-archive-label]');
+			if (archiveLabel) {
+				if (cat === 'All') {
+					archiveLabel.textContent = `Archive · ${visible - 1 >= 0 ? visible - 1 : visible} posts`;
+				} else {
+					archiveLabel.textContent = `${cat} · ${visible} post${visible === 1 ? '' : 's'}`;
+				}
+			}
+
+			// Empty state
+			const empty = document.querySelector<HTMLElement>('[data-empty-state]');
+			if (empty) {
+				const shownInGrid = cat === 'All' ? Math.max(visible - 1, 0) : visible;
+				empty.style.display = shownInGrid === 0 ? '' : 'none';
+			}
+		}
+
+		// Intercept tab clicks so we filter in place (pushState) instead of navigating.
+		document.addEventListener('click', (e) => {
+			const tab = (e.target as HTMLElement).closest<HTMLAnchorElement>('.blog-tabnav__tab');
+			if (!tab) return;
+			e.preventDefault();
+			const cat = tab.dataset.category || 'All';
+			const url = new URL(window.location.href);
+			if (cat === 'All') url.searchParams.delete('cat');
+			else url.searchParams.set('cat', cat);
+			window.history.pushState({}, '', url.toString());
+			applyFilter();
+		});
+
+		window.addEventListener('popstate', applyFilter);
+		document.addEventListener('astro:page-load', applyFilter);
+		applyFilter();
+	})();
+</script>

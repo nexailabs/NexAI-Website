@@ -1,0 +1,199 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import MonoLabel from '../../components/blog/MonoLabel.astro';
+import AccentRule from '../../components/blog/AccentRule.astro';
+import TabNav from '../../components/blog/TabNav.astro';
+import PostCard from '../../components/blog/PostCard.astro';
+import FeaturedPost from '../../components/blog/FeaturedPost.astro';
+
+const allPosts = await getCollection('blog');
+
+const posts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const fmtDate = (d: Date) =>
+	d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
+
+const featured = posts.find((p) => p.data.featured) ?? posts[0];
+const rest = featured ? posts.filter((p) => p.id !== featured.id) : posts;
+
+const categories = ['All', 'Playbook', 'Outreach', 'Research', 'Finance', 'Creatives'];
+
+// Masonry-ish spans + sizes cycled over the archive
+const layoutCycle = [
+	{ span: 2, size: 'md' as const },
+	{ span: 4, size: 'lg' as const },
+	{ span: 2, size: 'md' as const },
+	{ span: 2, size: 'md' as const },
+];
+---
+
+<Layout
+	title="Field Notes | NexAI Labs"
+	description="Essays, playbooks, and build logs from a company run on agents. Written by the founders."
+>
+	<main class="blog-index">
+		<header class="blog-index__header">
+			<MonoLabel class="blog-index__eyebrow" tint="accent">Field Notes</MonoLabel>
+			<h1 class="blog-index__title">
+				Essays, playbooks, and <em>build logs</em> from a company run on agents.
+			</h1>
+			<p class="blog-index__sub">
+				Written by the founders. No ghostwriters, no SEO fluff, no hot takes.
+			</p>
+			<div class="blog-index__signature">
+				<AccentRule width={28} />
+				<span>from the lab in Bengaluru.</span>
+			</div>
+		</header>
+
+		<TabNav categories={categories} active="All" />
+
+		{
+			featured && (
+				<section class="blog-index__featured" data-featured-region>
+					<FeaturedPost
+						href={`/blog/${featured.id}`}
+						title={featured.data.title}
+						emphasis={featured.data.emphasis}
+						excerpt={featured.data.excerpt}
+						category={featured.data.category}
+						date={fmtDate(featured.data.date)}
+						read={featured.data.read}
+						seed={featured.data.seed}
+					/>
+				</section>
+			)
+		}
+
+		<div class="blog-index__archive-label">
+			<MonoLabel tint="default">
+				<span data-archive-label>Archive · {rest.length} posts</span>
+			</MonoLabel>
+		</div>
+
+		<div class="blog-index__grid">
+			{
+				rest.map((post, i) => {
+					const layout = layoutCycle[i % layoutCycle.length];
+					return (
+						<div
+							data-post-category={post.data.category}
+							style={`grid-column: span ${layout.span};`}
+						>
+							<PostCard
+								href={`/blog/${post.id}`}
+								title={post.data.title}
+								emphasis={post.data.emphasis}
+								excerpt={post.data.excerpt}
+								category={post.data.category}
+								date={fmtDate(post.data.date)}
+								seed={post.data.seed}
+								size={layout.size}
+								showExcerpt={layout.size === 'lg'}
+							/>
+						</div>
+					);
+				})
+			}
+		</div>
+
+		<div class="blog-index__empty" data-empty-state style="display: none;">Nothing here yet.</div>
+	</main>
+</Layout>
+
+<style>
+	.blog-index {
+		max-width: var(--container-max, 1400px);
+		margin: 0 auto;
+		padding: calc(var(--header-height, 5.9rem) + 40px) var(--space-sm) 120px;
+	}
+
+	.blog-index__header {
+		margin-bottom: 72px;
+	}
+
+	.blog-index__eyebrow {
+		margin-bottom: 24px;
+		display: block;
+	}
+
+	.blog-index__title {
+		font-family: var(--font-accent);
+		font-weight: var(--fw-semibold);
+		font-size: clamp(2.4rem, 4.8vw, 3.8rem);
+		line-height: var(--lh-heading);
+		letter-spacing: -0.01em;
+		color: var(--color-text-main);
+		margin: 0;
+		text-wrap: balance;
+	}
+
+	.blog-index__title em {
+		font-style: italic;
+		font-weight: var(--fw-regular);
+	}
+
+	.blog-index__sub {
+		margin-top: 18px;
+		max-width: 560px;
+		font-family: var(--font-main);
+		font-size: 1rem;
+		line-height: 1.55;
+		color: rgba(255, 255, 255, 0.5);
+	}
+
+	.blog-index__signature {
+		margin-top: 28px;
+		display: inline-flex;
+		align-items: baseline;
+		gap: 14px;
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-weight: 400;
+		font-size: 1.05rem;
+		color: rgba(255, 255, 255, 0.55);
+		letter-spacing: -0.005em;
+	}
+
+	.blog-index__featured {
+		margin-bottom: 80px;
+	}
+
+	.blog-index__archive-label {
+		margin-bottom: 32px;
+	}
+
+	.blog-index__grid {
+		display: grid;
+		grid-template-columns: repeat(6, 1fr);
+		column-gap: 40px;
+		row-gap: 72px;
+	}
+
+	.blog-index__empty {
+		padding: 4rem 0;
+		color: rgba(255, 255, 255, 0.35);
+		font-family: var(--font-main);
+		font-size: 0.95rem;
+	}
+
+	@media (max-width: 900px) {
+		.blog-index {
+			padding: calc(var(--header-height, 5.9rem) + 24px) var(--space-sm) 80px;
+		}
+		.blog-index__grid {
+			grid-template-columns: 1fr;
+			row-gap: 56px;
+		}
+		.blog-index__grid > * {
+			grid-column: span 1 !important;
+		}
+	}
+
+	@media (max-width: 380px) {
+		.blog-index__title {
+			font-size: 2.15rem;
+		}
+	}
+</style>

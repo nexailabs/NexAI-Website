@@ -1,0 +1,580 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Cover from '../../components/blog/Cover.astro';
+import Meta from '../../components/blog/Meta.astro';
+import MonoLabel from '../../components/blog/MonoLabel.astro';
+import AccentRule from '../../components/blog/AccentRule.astro';
+import Avatar from '../../components/blog/Avatar.astro';
+import EmphasisText from '../../components/blog/EmphasisText.astro';
+import TOC from '../../components/blog/TOC.astro';
+import PostCard from '../../components/blog/PostCard.astro';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog');
+	return posts.map((post) => ({
+		params: { slug: post.id },
+		props: { post },
+	}));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+
+const tocItems = headings
+	.filter((h) => h.depth === 2)
+	.map((h) => ({ id: h.slug, label: h.text.replace(/\.$/, '') }));
+
+const fmtDate = (d: Date) =>
+	d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
+
+// Related posts: same collection, different slug, max 3
+const all = await getCollection('blog');
+const related = all
+	.filter((p) => p.id !== post.id)
+	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+	.slice(0, 3);
+
+const bookingUrl = 'https://cal.com/rahul-juneja/15min';
+---
+
+<Layout
+	title={`${post.data.title} | Field Notes · NexAI Labs`}
+	description={post.data.description ?? post.data.excerpt}
+>
+	<article data-article>
+		<div class="blog-post__back-row">
+			<a href="/blog" class="blog-post__back">
+				<span aria-hidden="true">←</span> Field Notes
+			</a>
+		</div>
+
+		<header class="blog-post__hero">
+			<Meta
+				category={post.data.category}
+				date={fmtDate(post.data.date)}
+				read={post.data.read}
+				class="blog-post__meta-top"
+			/>
+			<h1 class="blog-post__title">
+				<EmphasisText text={post.data.title} emphasis={post.data.emphasis} />
+			</h1>
+			<p class="blog-post__lede">{post.data.excerpt}</p>
+			<div class="blog-post__byline">
+				<Avatar size={32} name={post.data.author} />
+				<span class="blog-post__author">{post.data.author}</span>
+				<span class="blog-post__byline-dot">·</span>
+				<span class="blog-post__role">{post.data.authorRole}</span>
+			</div>
+		</header>
+
+		<div class="blog-post__cover">
+			<Cover seed={post.data.seed} height="480px" />
+		</div>
+
+		<div class="blog-post__grid">
+			<div class="blog-post__body">
+				<Content />
+
+				<div class="blog-post__author-card">
+					<Avatar size={44} name={post.data.author} />
+					<div>
+						<div class="blog-post__author-name">{post.data.author}</div>
+						<div class="blog-post__author-bio">
+							{post.data.authorRole}, NexAI Labs. Writes about running a company on agents.
+						</div>
+					</div>
+					<div class="blog-post__author-socials">
+						<a href="https://www.linkedin.com/company/nexailabs/" target="_blank" rel="noopener">
+							LinkedIn <span aria-hidden="true">→</span>
+						</a>
+					</div>
+				</div>
+			</div>
+
+			{
+				tocItems.length > 0 && (
+					<aside class="blog-post__toc">
+						<TOC items={tocItems} />
+					</aside>
+				)
+			}
+		</div>
+
+		{
+			related.length > 0 && (
+				<section class="blog-post__related">
+					<div class="blog-post__related-label">
+						<AccentRule width={24} />
+						<MonoLabel>Keep reading</MonoLabel>
+					</div>
+					<div class="blog-post__related-grid">
+						{related.map((p) => (
+							<PostCard
+								href={`/blog/${p.id}`}
+								title={p.data.title}
+								emphasis={p.data.emphasis}
+								category={p.data.category}
+								date={fmtDate(p.data.date)}
+								seed={p.data.seed}
+								size="md"
+							/>
+						))}
+					</div>
+				</section>
+			)
+		}
+
+		<section class="blog-post__cta">
+			<div class="blog-post__cta-text">
+				<MonoLabel class="blog-post__cta-eyebrow" tint="accent">Catch us</MonoLabel>
+				<h2 class="blog-post__cta-title">
+					Want agents like these running <em>your</em> company?
+				</h2>
+				<p class="blog-post__cta-sub">15-min call. No slides, no hard sell.</p>
+			</div>
+			<a href={bookingUrl} class="blog-post__cta-btn" data-open-cal>
+				Book a call <span aria-hidden="true">→</span>
+			</a>
+		</section>
+	</article>
+</Layout>
+
+<style>
+	article[data-article] {
+		padding-top: var(--header-height, 5.9rem);
+	}
+
+	.blog-post__back-row {
+		max-width: var(--container-max, 1400px);
+		margin: 0 auto;
+		padding: 40px var(--space-sm) 0;
+	}
+
+	.blog-post__back {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		font-family: var(--font-main);
+		font-size: var(--text-xs);
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+		color: var(--color-text-muted);
+		text-decoration: none;
+		transition: color 0.2s;
+	}
+	.blog-post__back:hover {
+		color: var(--color-text-main);
+	}
+
+	.blog-post__hero {
+		max-width: 900px;
+		margin: 0 auto;
+		padding: 56px var(--space-sm) 48px;
+	}
+
+	.blog-post__meta-top {
+		margin-bottom: 28px;
+	}
+
+	.blog-post__title {
+		font-family: var(--font-accent);
+		font-weight: var(--fw-semibold);
+		font-size: clamp(2.4rem, 4.6vw, 3.6rem);
+		line-height: var(--lh-heading);
+		letter-spacing: -0.01em;
+		color: var(--color-text-main);
+		margin: 0;
+		text-wrap: balance;
+	}
+
+	.blog-post__title em {
+		font-style: italic;
+		font-weight: var(--fw-regular);
+	}
+
+	.blog-post__lede {
+		margin-top: 22px;
+		margin-bottom: 0;
+		font-family: var(--font-main);
+		font-size: 1.15rem;
+		line-height: 1.55;
+		color: rgba(255, 255, 255, 0.6);
+		max-width: 640px;
+		text-wrap: pretty;
+	}
+
+	.blog-post__byline {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		margin-top: 36px;
+	}
+	.blog-post__author {
+		font-family: var(--font-main);
+		font-size: 0.88rem;
+		color: rgba(255, 255, 255, 0.75);
+	}
+	.blog-post__byline-dot {
+		color: rgba(255, 255, 255, 0.25);
+	}
+	.blog-post__role {
+		font-family: var(--font-main);
+		font-size: 0.88rem;
+		color: rgba(255, 255, 255, 0.45);
+	}
+
+	.blog-post__cover {
+		max-width: var(--container-max, 1400px);
+		margin: 0 auto 72px;
+		padding: 0 var(--space-sm);
+	}
+
+	.blog-post__grid {
+		max-width: var(--container-max, 1400px);
+		margin: 0 auto;
+		display: grid;
+		grid-template-columns: 1fr 220px;
+		gap: 80px;
+		padding: 0 var(--space-sm);
+	}
+
+	.blog-post__body {
+		max-width: 680px;
+		width: 100%;
+		justify-self: center;
+	}
+
+	/* Article body typography ---------------------------------------------- */
+	.blog-post__body :global(p) {
+		font-family: var(--font-main);
+		font-size: 1.08rem;
+		line-height: 1.7;
+		color: rgba(255, 255, 255, 0.78);
+		text-wrap: pretty;
+		margin: 0 0 22px;
+		letter-spacing: -0.005em;
+	}
+
+	.blog-post__body :global(p:first-of-type) {
+		font-size: 1.2rem;
+		color: rgba(255, 255, 255, 0.92);
+		margin-bottom: 28px;
+	}
+
+	.blog-post__body :global(h2) {
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-weight: 400;
+		font-size: 2.1rem;
+		line-height: 1.15;
+		color: var(--color-text-main);
+		margin: 3.5rem 0 1rem;
+		letter-spacing: -0.015em;
+		scroll-margin-top: calc(var(--header-height, 5.9rem) + 2rem);
+	}
+
+	.blog-post__body :global(h3) {
+		font-family: var(--font-main);
+		font-weight: 600;
+		font-size: 1.35rem;
+		line-height: 1.25;
+		color: var(--color-text-main);
+		margin: 2.5rem 0 0.75rem;
+		letter-spacing: -0.01em;
+		scroll-margin-top: calc(var(--header-height, 5.9rem) + 2rem);
+	}
+
+	.blog-post__body :global(blockquote) {
+		border-left: 2px solid transparent;
+		border-image: linear-gradient(
+				180deg,
+				var(--color-brand-teal, #1e7e72),
+				var(--color-brand-cyan, #4ec9b4)
+			)
+			1;
+		padding: 0.25rem 0 0.25rem 1.5rem;
+		margin: 2.5rem 0;
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-weight: 400;
+		font-size: 1.45rem;
+		line-height: 1.4;
+		color: rgba(255, 255, 255, 0.92);
+		letter-spacing: -0.01em;
+	}
+
+	.blog-post__body :global(blockquote p) {
+		font-family: inherit;
+		font-size: inherit;
+		line-height: inherit;
+		color: inherit;
+		margin: 0;
+	}
+
+	.blog-post__body :global(code) {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.88em;
+		background: var(--color-surface-elevated);
+		color: rgba(255, 255, 255, 0.85);
+		padding: 0.15em 0.45em;
+		border-radius: var(--radius-xs);
+		border: 1px solid var(--color-border);
+	}
+
+	.blog-post__body :global(pre) {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.88rem;
+		line-height: var(--lh-body);
+		background: var(--color-surface-elevated);
+		color: rgba(255, 255, 255, 0.88);
+		padding: 1.25rem 1.5rem;
+		border-radius: var(--radius-sm);
+		border: 1px solid var(--color-border);
+		overflow-x: auto;
+		margin: 2rem 0;
+	}
+	.blog-post__body :global(pre code) {
+		background: transparent;
+		border: none;
+		padding: 0;
+	}
+
+	.blog-post__body :global(a) {
+		color: var(--color-text-main);
+		text-decoration: none;
+		background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.25));
+		background-repeat: no-repeat;
+		background-size: 100% 1px;
+		background-position: 0 100%;
+		transition: background-image 0.3s;
+	}
+	.blog-post__body :global(a:hover) {
+		background-image: linear-gradient(
+			90deg,
+			var(--color-brand-teal, #1e7e72),
+			var(--color-brand-cyan, #4ec9b4)
+		);
+	}
+
+	.blog-post__body :global(ul),
+	.blog-post__body :global(ol) {
+		font-family: var(--font-main);
+		font-size: 1.08rem;
+		line-height: 1.7;
+		color: rgba(255, 255, 255, 0.78);
+		padding-left: 1.5rem;
+		margin: 0 0 1.5rem;
+	}
+	.blog-post__body :global(li) {
+		margin-bottom: 0.35rem;
+	}
+	.blog-post__body :global(hr) {
+		border: none;
+		border-top: 1px solid rgba(255, 255, 255, 0.08);
+		margin: 3rem 0;
+	}
+
+	/* Author card ---------------------------------------------------------- */
+	.blog-post__author-card {
+		margin-top: 56px;
+		padding-top: 32px;
+		border-top: 1px solid rgba(255, 255, 255, 0.08);
+		display: flex;
+		align-items: center;
+		gap: 16px;
+	}
+	.blog-post__author-name {
+		font-family: var(--font-main);
+		font-size: 0.95rem;
+		font-weight: 500;
+		color: var(--color-text-main);
+	}
+	.blog-post__author-bio {
+		font-family: var(--font-main);
+		font-size: 0.85rem;
+		color: rgba(255, 255, 255, 0.5);
+		margin-top: 2px;
+	}
+	.blog-post__author-socials {
+		margin-left: auto;
+		display: flex;
+		gap: 18px;
+	}
+	.blog-post__author-socials a {
+		font-family: var(--font-main);
+		font-size: var(--text-xs);
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+		color: var(--color-text-muted);
+		text-decoration: none;
+		transition: color 0.2s;
+	}
+	.blog-post__author-socials a:hover {
+		color: var(--color-text-main);
+	}
+
+	/* Related -------------------------------------------------------------- */
+	.blog-post__related {
+		max-width: var(--container-max, 1400px);
+		margin: 120px auto 0;
+		padding: 0 var(--space-sm);
+	}
+	.blog-post__related-label {
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+		margin-bottom: 32px;
+	}
+	.blog-post__related-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 40px;
+	}
+
+	/* CTA ------------------------------------------------------------------ */
+	.blog-post__cta {
+		max-width: var(--container-max, 1400px);
+		margin: 120px auto 80px;
+		padding: 80px var(--space-sm);
+		border-top: 1px solid var(--color-border);
+		border-bottom: 1px solid var(--color-border);
+		display: grid;
+		grid-template-columns: 1fr auto;
+		align-items: center;
+		gap: 48px;
+	}
+	.blog-post__cta-eyebrow {
+		margin-bottom: 16px;
+		display: block;
+	}
+	.blog-post__cta-title {
+		font-family: var(--font-accent);
+		font-weight: var(--fw-semibold);
+		font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+		line-height: var(--lh-heading);
+		color: var(--color-text-main);
+		margin: 0;
+		letter-spacing: -0.01em;
+		max-width: 680px;
+	}
+	.blog-post__cta-title em {
+		font-style: italic;
+		font-weight: var(--fw-regular);
+	}
+	.blog-post__cta-sub {
+		margin-top: 14px;
+		margin-bottom: 0;
+		color: var(--color-text-muted);
+		font-size: var(--text-base);
+		line-height: var(--lh-body);
+	}
+	.blog-post__cta-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 10px;
+		padding: 0.85rem 1.75rem;
+		font-family: var(--font-main);
+		font-size: var(--text-btn);
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--color-bg);
+		background: var(--color-text-main);
+		text-decoration: none;
+		border: 1px solid var(--color-text-main);
+		border-radius: var(--radius-full);
+		transition:
+			background 0.3s var(--ease-out-expo),
+			border-color 0.3s var(--ease-out-expo),
+			transform 0.3s var(--ease-out-expo);
+	}
+	.blog-post__cta-btn:hover {
+		background: rgba(255, 255, 255, 0.88);
+		border-color: rgba(255, 255, 255, 0.88);
+		transform: translateY(-1px);
+	}
+	.blog-post__cta-btn:active {
+		transform: scale(0.97);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.blog-post__cta-btn:hover,
+		.blog-post__cta-btn:active {
+			transform: none;
+		}
+	}
+
+	/* Responsive ----------------------------------------------------------- */
+	@media (max-width: 1100px) {
+		.blog-post__grid {
+			grid-template-columns: 1fr;
+			gap: 0;
+		}
+		.blog-post__toc {
+			display: none;
+		}
+	}
+
+	@media (max-width: 900px) {
+		.blog-post__back-row,
+		.blog-post__hero,
+		.blog-post__cover,
+		.blog-post__grid,
+		.blog-post__related,
+		.blog-post__cta {
+			padding-left: var(--space-sm);
+			padding-right: var(--space-sm);
+		}
+		.blog-post__related-grid {
+			grid-template-columns: 1fr;
+			gap: 56px;
+		}
+		.blog-post__cta {
+			grid-template-columns: 1fr;
+			padding: 56px var(--space-sm);
+		}
+		.blog-post__body :global(h2) {
+			font-size: 1.75rem;
+		}
+	}
+
+	@media (max-width: 600px) {
+		.blog-post__back-row {
+			padding-top: 24px;
+		}
+
+		.blog-post__hero {
+			padding-top: 40px;
+			padding-bottom: 32px;
+		}
+
+		.blog-post__body :global(h2) {
+			font-size: 1.5rem;
+		}
+
+		.blog-post__author-card {
+			flex-wrap: wrap;
+			align-items: flex-start;
+		}
+
+		.blog-post__author-socials {
+			margin-left: 0;
+			flex-basis: 100%;
+		}
+
+		.blog-post__cta {
+			padding-top: 40px;
+			padding-bottom: 40px;
+			gap: 32px;
+		}
+	}
+
+	@media (max-width: 380px) {
+		.blog-post__title {
+			font-size: 2.15rem;
+		}
+	}
+</style>

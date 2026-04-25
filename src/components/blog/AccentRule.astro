@@ -1,0 +1,22 @@
+---
+interface Props {
+	width?: number;
+}
+
+const { width = 24 } = Astro.props;
+---
+
+<span class="blog-accent-rule" style={`width: ${width}px;`} aria-hidden="true"></span>
+
+<style>
+	.blog-accent-rule {
+		height: 1px;
+		display: inline-block;
+		background: linear-gradient(
+			90deg,
+			var(--color-brand-teal, #1e7e72),
+			var(--color-brand-cyan, #4ec9b4)
+		);
+		align-self: center;
+	}
+</style>
