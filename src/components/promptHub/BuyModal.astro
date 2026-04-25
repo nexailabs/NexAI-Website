@@ -1,0 +1,360 @@
+---
+interface Props {
+	id: string;
+	title: string;
+	price: number;
+}
+
+const { id, title, price } = Astro.props;
+---
+
+<dialog class="buy-modal" id={id} aria-modal="true" data-buy-modal data-price={price}>
+	<form method="dialog" class="buy-modal__inner" data-buy-form>
+		<button type="button" class="buy-modal__close" data-buy-close aria-label="Close payment dialog">
+			✕
+		</button>
+
+		<div class="buy-modal__stage buy-modal__stage--form" data-buy-stage="form">
+			<span class="buy-modal__rzp">
+				<span class="buy-modal__rzp-dot"></span>
+				Powered by Razorpay
+			</span>
+			<h3 class="buy-modal__h3">
+				Unlock <em>{title.replace(/\.$/, '')}</em>
+			</h3>
+			<p class="buy-modal__sub">One-time purchase. Lifetime access. Updates included.</p>
+			<label class="buy-modal__label">
+				<span>Email — for receipt &amp; updates</span>
+				<input
+					type="email"
+					required
+					placeholder="you@studio.com"
+					class="buy-modal__input"
+					data-buy-email
+				/>
+			</label>
+			<div class="buy-modal__total">
+				<span>Total</span>
+				<span class="buy-modal__amount">₹{price.toLocaleString('en-IN')}</span>
+			</div>
+			<button type="button" class="buy-modal__pay" data-buy-pay>
+				Pay with Razorpay
+				<svg
+					width="13"
+					height="13"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2.4"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<line x1="5" y1="12" x2="19" y2="12"></line>
+					<polyline points="13 6 19 12 13 18"></polyline>
+				</svg>
+			</button>
+			<p class="buy-modal__legal">UPI · Cards · Netbanking · Wallets. Receipts sent to email.</p>
+		</div>
+
+		<div class="buy-modal__stage buy-modal__stage--processing" data-buy-stage="processing">
+			<div class="buy-modal__spinner" aria-hidden="true"></div>
+			<p class="buy-modal__processing">Talking to Razorpay…</p>
+		</div>
+
+		<div class="buy-modal__stage buy-modal__stage--success" data-buy-stage="success">
+			<div class="buy-modal__check" aria-hidden="true">
+				<svg
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="#050607"
+					stroke-width="3.5"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<polyline points="20 6 9 17 4 12"></polyline>
+				</svg>
+			</div>
+			<h3 class="buy-modal__h3 buy-modal__h3--italic">Unlocked.</h3>
+			<p class="buy-modal__sub">
+				Receipt is on its way to <span data-buy-email-out>you</span>. The full artifact is ready
+				below.
+			</p>
+			<button type="button" class="buy-modal__see" data-buy-see>See it →</button>
+		</div>
+	</form>
+</dialog>
+
+<script>
+	function setup(modal: HTMLDialogElement) {
+		if (modal.dataset.buyReady) return;
+		modal.dataset.buyReady = '1';
+
+		const setStage = (stage: 'form' | 'processing' | 'success') => {
+			modal.querySelectorAll<HTMLElement>('[data-buy-stage]').forEach((el) => {
+				el.style.display = el.getAttribute('data-buy-stage') === stage ? 'block' : 'none';
+			});
+		};
+
+		const close = () => modal.close();
+
+		modal
+			.querySelectorAll<HTMLButtonElement>('[data-buy-close]')
+			.forEach((btn) => btn.addEventListener('click', close));
+
+		modal.addEventListener('click', (e) => {
+			if (e.target === modal) close();
+		});
+
+		const payBtn = modal.querySelector<HTMLButtonElement>('[data-buy-pay]');
+		const emailInput = modal.querySelector<HTMLInputElement>('[data-buy-email]');
+		const emailOut = modal.querySelector<HTMLElement>('[data-buy-email-out]');
+
+		payBtn?.addEventListener('click', () => {
+			if (!emailInput?.checkValidity()) {
+				emailInput?.reportValidity();
+				return;
+			}
+			if (emailOut && emailInput) emailOut.textContent = emailInput.value;
+			setStage('processing');
+			setTimeout(() => setStage('success'), 1400);
+		});
+
+		modal.querySelectorAll<HTMLButtonElement>('[data-buy-see]').forEach((btn) =>
+			btn.addEventListener('click', () => {
+				close();
+				const id = modal.id;
+				const slug = id.replace(/^buy-/, '');
+				try {
+					sessionStorage.setItem('ph-unlocked:' + slug, '1');
+				} catch {
+					/* noop */
+				}
+				try {
+					const payload = JSON.stringify({ slug, kind: 'unlock' });
+					if (navigator.sendBeacon) {
+						navigator.sendBeacon('/api/runs', new Blob([payload], { type: 'application/json' }));
+					} else {
+						fetch('/api/runs', {
+							method: 'POST',
+							headers: { 'content-type': 'application/json' },
+							body: payload,
+							keepalive: true,
+						}).catch(() => {});
+					}
+				} catch {
+					/* counter is best-effort */
+				}
+				const evt = new CustomEvent('ph-unlock', { detail: { slug } });
+				document.dispatchEvent(evt);
+			}),
+		);
+
+		modal.addEventListener('close', () => setStage('form'));
+	}
+
+	function init() {
+		document.querySelectorAll<HTMLDialogElement>('[data-buy-modal]').forEach(setup);
+	}
+	init();
+	document.addEventListener('astro:page-load', init);
+</script>
+
+<style>
+	.buy-modal {
+		border: none;
+		background: transparent;
+		padding: 0;
+		max-width: min(440px, 100%);
+		width: 100%;
+		color: var(--color-text-main);
+	}
+	.buy-modal::backdrop {
+		background: rgba(5, 6, 7, 0.78);
+		backdrop-filter: blur(8px);
+	}
+	.buy-modal__inner {
+		background: #0e0f10;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		border-radius: 12px;
+		padding: 32px;
+		position: relative;
+		margin: 0;
+	}
+	.buy-modal__close {
+		position: absolute;
+		top: 14px;
+		right: 14px;
+		background: transparent;
+		border: none;
+		cursor: pointer;
+		color: var(--color-text-dim);
+		font-size: 18px;
+		padding: 4px;
+		line-height: 1;
+	}
+	.buy-modal__rzp {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 4px 10px;
+		border: 1px solid rgba(78, 128, 255, 0.3);
+		background: rgba(78, 128, 255, 0.08);
+		border-radius: 4px;
+		font-family: var(--font-main);
+		font-size: 0.7rem;
+		color: #7a98ff;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		margin-bottom: 20px;
+	}
+	.buy-modal__rzp-dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: #7a98ff;
+		display: inline-block;
+	}
+	.buy-modal__h3 {
+		margin: 0 0 6px;
+		font-family: var(--font-accent);
+		font-weight: var(--fw-regular);
+		font-size: 1.85rem;
+		letter-spacing: -0.015em;
+		color: var(--color-text-main);
+	}
+	.buy-modal__h3 em {
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-weight: var(--fw-regular);
+	}
+	.buy-modal__h3--italic {
+		font-style: italic;
+	}
+	.buy-modal__sub {
+		margin: 0 0 22px;
+		font-family: var(--font-main);
+		font-size: 0.86rem;
+		color: var(--color-text-muted);
+	}
+	.buy-modal__label {
+		display: block;
+		margin-bottom: 14px;
+	}
+	.buy-modal__label span {
+		display: block;
+		margin-bottom: 6px;
+		font-family: var(--font-main);
+		font-size: 0.74rem;
+		color: var(--color-text-muted);
+		letter-spacing: 0.02em;
+	}
+	.buy-modal__input {
+		width: 100%;
+		padding: 11px 13px;
+		background: #0a0b0c;
+		border: 1px solid rgba(255, 255, 255, 0.12);
+		border-radius: 6px;
+		color: var(--color-text-main);
+		font-family: var(--font-main);
+		font-size: 0.92rem;
+		outline: none;
+	}
+	.buy-modal__total {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		padding: 12px 14px;
+		background: rgba(255, 255, 255, 0.025);
+		border: 1px solid rgba(255, 255, 255, 0.06);
+		border-radius: 6px;
+		margin-bottom: 18px;
+		font-family: var(--font-main);
+		font-size: 0.84rem;
+		color: var(--color-text-subtle);
+	}
+	.buy-modal__amount {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 1.4rem;
+		font-weight: 600;
+		color: var(--color-brand-cyan);
+	}
+	.buy-modal__pay {
+		width: 100%;
+		padding: 13px;
+		background: var(--color-brand-cyan);
+		color: #050607;
+		border: none;
+		border-radius: 6px;
+		font-family: var(--font-main);
+		font-size: 0.92rem;
+		font-weight: 600;
+		cursor: pointer;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+	}
+	.buy-modal__legal {
+		margin: 14px 0 0;
+		font-family: var(--font-main);
+		font-size: 0.72rem;
+		color: var(--color-text-dim);
+		text-align: center;
+		line-height: 1.55;
+	}
+	.buy-modal__stage {
+		display: none;
+	}
+	.buy-modal__stage--form {
+		display: block;
+	}
+	.buy-modal__stage--processing,
+	.buy-modal__stage--success {
+		text-align: center;
+		padding: 24px 0;
+	}
+	.buy-modal__spinner {
+		width: 32px;
+		height: 32px;
+		border: 2px solid rgba(78, 201, 180, 0.2);
+		border-top-color: var(--color-brand-cyan);
+		border-radius: 50%;
+		margin: 0 auto 18px;
+		animation: buy-modal-spin 0.7s linear infinite;
+	}
+	@keyframes buy-modal-spin {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+	.buy-modal__processing {
+		margin: 0;
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-size: 1.3rem;
+		color: var(--color-text-subtle);
+	}
+	.buy-modal__check {
+		width: 48px;
+		height: 48px;
+		border-radius: 50%;
+		background: var(--color-brand-cyan);
+		margin: 0 auto 18px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.buy-modal__see {
+		padding: 11px 22px;
+		background: #fff;
+		color: #0a0b0c;
+		border: none;
+		border-radius: 6px;
+		font-family: var(--font-main);
+		font-size: 0.86rem;
+		font-weight: 500;
+		cursor: pointer;
+	}
+</style>

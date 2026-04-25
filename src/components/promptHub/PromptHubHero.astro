@@ -1,0 +1,591 @@
+---
+import Eyebrow from '../vault/Eyebrow.astro';
+import Italic from './Italic.astro';
+import type { PromptArtifact } from '../../data/promptHub';
+
+interface Props {
+	counts: { all: number; prompt: number; sop: number; skill: number };
+	totalRuns: number;
+	sample: PromptArtifact;
+}
+
+const { counts, totalRuns, sample } = Astro.props;
+---
+
+<header class="ph-hero">
+	<div class="ph-hero__left">
+		<Eyebrow tint="accent">Prompt Hub</Eyebrow>
+		<h1 class="ph-hero__title">
+			<em
+				><span
+					class="ph-hero__rotate"
+					aria-hidden="true"
+					data-rotate={JSON.stringify(['Prompts', 'SOPs', 'skills.md'])}>Prompts</span
+				></em
+			><span class="sr-only" aria-live="polite" data-rotate-announce>Prompts</span><br />
+			that <Italic>survived</Italic> a month of real work.
+		</h1>
+		<p class="ph-hero__sub">
+			Single-shot prompts, human runbooks, and packaged skills your agent installs. Some free, some
+			paid via Razorpay.
+		</p>
+
+		<div class="ph-hero__stats">
+			<div class="ph-hero__stat">
+				<p class="ph-hero__stat-n">{counts.prompt}</p>
+				<p class="ph-hero__stat-l">Prompts</p>
+			</div>
+			<div class="ph-hero__stat">
+				<p class="ph-hero__stat-n">{counts.sop}</p>
+				<p class="ph-hero__stat-l">SOPs</p>
+			</div>
+			<div class="ph-hero__stat">
+				<p class="ph-hero__stat-n">{counts.skill}</p>
+				<p class="ph-hero__stat-l">Skills</p>
+			</div>
+			<span class="ph-hero__divider" aria-hidden="true"></span>
+			<div class="ph-hero__runs">
+				<p class="ph-hero__runs-n">
+					<span class="ph-hero__runs-dot" aria-hidden="true"></span>
+					<span data-runs-total data-runs-fallback={totalRuns}>
+						{totalRuns.toLocaleString('en-IN')}
+					</span>
+				</p>
+				<p class="ph-hero__runs-l">Total runs</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="ph-hero__visual" aria-hidden="true">
+		<div class="ph-hero__glow"></div>
+
+		<article class="ph-hero__card ph-hero__card--skill">
+			<div class="ph-hero__card-head">
+				<span class="ph-hero__card-eyebrow">SKILL · 218 ★</span>
+			</div>
+			<h3 class="ph-hero__card-title">ship-pr</h3>
+			<p class="ph-hero__card-sub">Stages diff, writes the PR body, blocks if tests fail.</p>
+			<div class="ph-hero__card-body">
+				<pre class="ph-hero__tree">├ SKILL.md
+├ agents/reviewer.md
+└ scripts/preflight.sh</pre>
+			</div>
+		</article>
+
+		<article class="ph-hero__card ph-hero__card--sop">
+			<div class="ph-hero__card-head">
+				<span class="ph-hero__card-eyebrow">SOP · 7 STEPS · ~90 min</span>
+			</div>
+			<h3 class="ph-hero__card-title">Discovery to one-page brief</h3>
+			<p class="ph-hero__card-sub">Take a cold call to a signed-off scope in a day.</p>
+			<div class="ph-hero__card-body">
+				<div class="ph-hero__sop-list">
+					<span>01&nbsp;&nbsp;Strip the call to 5 verbatim quotes</span>
+					<span>02&nbsp;&nbsp;Name the failure they're paying to kill</span>
+					<span>03&nbsp;&nbsp;Draft scope, price, and what's out</span>
+					<span class="ph-hero__sop-more">+ 4 more</span>
+				</div>
+			</div>
+		</article>
+
+		<article class="ph-hero__card ph-hero__card--prompt">
+			<div class="ph-hero__card-head">
+				<span class="ph-hero__card-eyebrow ph-hero__card-eyebrow--primary">
+					PROMPT · {sample.model}
+				</span>
+			</div>
+			<h3 class="ph-hero__card-title">{sample.title}</h3>
+			<p class="ph-hero__card-sub">{sample.description}</p>
+			<div class="ph-hero__card-body ph-hero__card-body--primary">
+				<pre
+					class="ph-hero__prompt">Write the <span class="ph-hero__tok">&#123;&#123;ROLE&#125;&#125;</span>'s opening line to a cold prospect.
+Anchor on one concrete detail from <span class="ph-hero__tok">&#123;&#123;SIGNAL&#125;&#125;</span> — no flattery.
+Cap it at 22 words. Ban "hope you're well."</pre>
+			</div>
+		</article>
+
+		<div class="ph-hero__badge">
+			<p class="ph-hero__badge-eyebrow">★ Top this week</p>
+			<p class="ph-hero__badge-quote">"It pulled 8 replies on Tuesday."</p>
+		</div>
+	</div>
+</header>
+
+<script>
+	{
+		let timers: number[] = [];
+
+		function clearAllTimers() {
+			timers.forEach((id) => clearInterval(id));
+			timers = [];
+		}
+
+		function startScramble() {
+			clearAllTimers();
+
+			const rotateEl = document.querySelector<HTMLElement>('.ph-hero__rotate[data-rotate]');
+			const announceEl = document.querySelector<HTMLElement>('.ph-hero [data-rotate-announce]');
+			if (!rotateEl) return;
+
+			const words: string[] = JSON.parse(rotateEl.dataset.rotate || '[]');
+			if (words.length === 0) return;
+
+			const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			const CHARSET = 'abcdefghijklmnopqrstuvwxyz';
+			const HOLD_MS = 2500;
+			const SCRAMBLE_MS = 600;
+			const CYCLE_MS = 30;
+			const INITIAL_DELAY = 1200;
+
+			let currentIndex = 0;
+			let charSpans: HTMLSpanElement[] = [];
+
+			function track(id: number) {
+				timers.push(id);
+				return id;
+			}
+
+			function renderWord(word: string) {
+				if (!rotateEl) return;
+				while (rotateEl.firstChild) rotateEl.removeChild(rotateEl.firstChild);
+				charSpans = [];
+				for (let i = 0; i < word.length; i++) {
+					const span = document.createElement('span');
+					span.className = 'ph-hero__rotate-char ph-hero__rotate-char--settled';
+					span.textContent = word[i];
+					rotateEl.appendChild(span);
+					charSpans.push(span);
+				}
+			}
+
+			function scrambleTo(word: string, onDone: () => void) {
+				if (!rotateEl) return;
+				while (rotateEl.firstChild) rotateEl.removeChild(rotateEl.firstChild);
+				charSpans = [];
+				for (let i = 0; i < word.length; i++) {
+					const span = document.createElement('span');
+					span.className = 'ph-hero__rotate-char ph-hero__rotate-char--cycling';
+					span.textContent = CHARSET[Math.floor(Math.random() * CHARSET.length)];
+					rotateEl.appendChild(span);
+					charSpans.push(span);
+				}
+
+				const stagger = (SCRAMBLE_MS - 5 * CYCLE_MS) / word.length;
+				const start = performance.now();
+
+				charSpans.forEach((span, i) => {
+					const resolveAt = stagger * i;
+					let cycles = 0;
+					const iv = track(
+						window.setInterval(() => {
+							const elapsed = performance.now() - start;
+							if (elapsed - resolveAt > 0) cycles++;
+							if (cycles >= 5) {
+								clearInterval(iv);
+								span.textContent = word[i];
+								span.className = 'ph-hero__rotate-char ph-hero__rotate-char--resolved';
+								track(
+									window.setTimeout(() => {
+										span.className = 'ph-hero__rotate-char ph-hero__rotate-char--settled';
+									}, 300),
+								);
+								if (i === word.length - 1) {
+									if (announceEl) announceEl.textContent = word;
+									track(window.setTimeout(onDone, 50));
+								}
+								return;
+							}
+							span.textContent = CHARSET[Math.floor(Math.random() * CHARSET.length)];
+						}, CYCLE_MS),
+					);
+				});
+			}
+
+			function nextWord() {
+				currentIndex = (currentIndex + 1) % words.length;
+				scrambleTo(words[currentIndex], () => {
+					track(window.setTimeout(nextWord, HOLD_MS));
+				});
+			}
+
+			renderWord(words[0]);
+			if (reduce) return;
+			track(window.setTimeout(nextWord, INITIAL_DELAY + HOLD_MS));
+		}
+
+		document.addEventListener('astro:before-swap', clearAllTimers);
+		document.addEventListener('astro:page-load', startScramble);
+		startScramble();
+	}
+
+	{
+		const fmt = (n: number) => n.toLocaleString('en-IN');
+
+		async function refreshTotal() {
+			const el = document.querySelector<HTMLElement>('[data-runs-total]');
+			if (!el) return;
+			const fallback = parseInt(el.dataset.runsFallback || '0', 10) || 0;
+			try {
+				const res = await fetch('/api/runs', { method: 'GET' });
+				if (!res.ok) return;
+				const body = (await res.json()) as { total?: number };
+				const live = typeof body.total === 'number' ? body.total : 0;
+				if (live > 0 && live !== fallback) {
+					el.textContent = fmt(Math.max(live, fallback));
+				}
+			} catch {
+				/* offline / dev / endpoint missing — keep the build-time number */
+			}
+		}
+
+		refreshTotal();
+		document.addEventListener('astro:page-load', refreshTotal);
+	}
+</script>
+
+<style>
+	.ph-hero {
+		display: grid;
+		grid-template-columns: 1.05fr 1fr;
+		gap: 72px;
+		align-items: center;
+		margin-bottom: 56px;
+		padding-bottom: 56px;
+	}
+
+	.ph-hero__left {
+		min-width: 0;
+	}
+	.ph-hero__title {
+		margin: 36px 0 0;
+		font-family: var(--font-accent);
+		font-weight: var(--fw-regular);
+		font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+		line-height: 1.1;
+		letter-spacing: -0.018em;
+		color: var(--color-text-main);
+		text-wrap: balance;
+	}
+	.ph-hero__title :global(.ph-italic) {
+		font-style: italic;
+	}
+
+	.ph-hero__title em {
+		font-style: italic;
+	}
+	.ph-hero__rotate {
+		display: inline-block;
+		min-width: 4em;
+		font-size: 2em;
+		line-height: 1.05;
+	}
+	.ph-hero__rotate-char {
+		display: inline-block;
+		min-width: 0.5ch;
+		transition:
+			color 0.1s ease,
+			text-shadow 0.2s ease;
+	}
+	.ph-hero__rotate-char--cycling {
+		color: rgba(78, 201, 180, 0.45);
+	}
+	.ph-hero__rotate-char--resolved {
+		color: var(--color-text-main);
+		text-shadow: 0 0 10px rgba(78, 201, 180, 0.3);
+	}
+	.ph-hero__rotate-char--settled {
+		text-shadow: none;
+		transition:
+			color 0.1s ease,
+			text-shadow 0.5s ease 0.2s;
+	}
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
+
+	.ph-hero__sub {
+		margin: 20px 0 28px;
+		max-width: 540px;
+		font-family: var(--font-main);
+		font-size: 0.98rem;
+		line-height: 1.55;
+		color: var(--color-text-muted);
+		text-wrap: pretty;
+	}
+
+	.ph-hero__stats {
+		display: flex;
+		gap: 36px;
+		align-items: baseline;
+		flex-wrap: wrap;
+	}
+	.ph-hero__stat-n {
+		margin: 0;
+		font-family: var(--font-accent);
+		font-weight: 500;
+		font-size: 2rem;
+		letter-spacing: -0.015em;
+		color: var(--color-text-main);
+		line-height: 1;
+	}
+	.ph-hero__stat-l {
+		margin: 4px 0 0;
+		font-family: var(--font-main);
+		font-size: 0.7rem;
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--color-text-dim);
+	}
+	.ph-hero__divider {
+		display: inline-block;
+		width: 1px;
+		height: 32px;
+		background: rgba(255, 255, 255, 0.08);
+		align-self: center;
+	}
+	.ph-hero__runs-n {
+		margin: 0;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 1.18rem;
+		font-weight: 500;
+		color: var(--color-brand-cyan);
+		letter-spacing: -0.01em;
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+	}
+	.ph-hero__runs-dot {
+		display: inline-block;
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: var(--color-brand-cyan);
+		animation: ph-pulse-dot 1.6s ease-in-out infinite;
+	}
+	.ph-hero__runs-l {
+		margin: 2px 0 0;
+		font-family: var(--font-main);
+		font-size: 0.7rem;
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--color-text-dim);
+	}
+
+	.ph-hero__visual {
+		position: relative;
+		height: 420px;
+		perspective: 1400px;
+	}
+	.ph-hero__glow {
+		position: absolute;
+		inset: 0;
+		background: radial-gradient(
+			ellipse 380px 280px at 60% 50%,
+			rgba(78, 201, 180, 0.14),
+			transparent 60%
+		);
+		pointer-events: none;
+	}
+
+	.ph-hero__card {
+		position: absolute;
+		padding: 18px 20px;
+		border-radius: 10px;
+		backdrop-filter: blur(6px);
+		-webkit-backdrop-filter: blur(6px);
+		transform-style: preserve-3d;
+	}
+	.ph-hero__card-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 10px;
+	}
+	.ph-hero__card-eyebrow {
+		font-family: var(--font-main);
+		font-size: 0.62rem;
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--color-text-dim);
+	}
+	.ph-hero__card-eyebrow--primary {
+		color: var(--color-brand-cyan);
+	}
+	.ph-hero__card-title {
+		margin: 0 0 4px;
+		font-family: var(--font-accent);
+		font-weight: 500;
+		font-size: 1.18rem;
+		letter-spacing: -0.005em;
+		color: var(--color-text-main);
+		line-height: 1.2;
+	}
+	.ph-hero__card-sub {
+		margin: 0 0 12px;
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		color: var(--color-text-subtle);
+		line-height: 1.4;
+	}
+	.ph-hero__card-body {
+		padding: 10px 12px;
+		background: rgba(255, 255, 255, 0.02);
+		border-left: 2px solid rgba(255, 255, 255, 0.1);
+		border-radius: 4px;
+	}
+	.ph-hero__card-body--primary {
+		background: rgba(78, 201, 180, 0.04);
+		border-left-color: var(--color-brand-cyan);
+	}
+
+	.ph-hero__card--skill {
+		right: 0;
+		top: 0;
+		width: 280px;
+		background: rgba(10, 11, 12, 0.86);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+		transform: rotate(2.2deg) translateZ(-40px);
+		opacity: 0.85;
+	}
+	.ph-hero__card--sop {
+		right: 32px;
+		top: 50px;
+		width: 290px;
+		background: rgba(10, 11, 12, 0.86);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+		transform: rotate(-1.4deg);
+		opacity: 0.94;
+	}
+	.ph-hero__card--prompt {
+		left: 0;
+		bottom: 0;
+		width: 320px;
+		background: rgba(14, 15, 17, 0.96);
+		border: 1px solid rgba(78, 201, 180, 0.35);
+		box-shadow:
+			0 24px 64px rgba(0, 0, 0, 0.55),
+			0 0 0 1px rgba(78, 201, 180, 0.08);
+		transform: rotate(-2.6deg) translateZ(40px);
+	}
+
+	.ph-hero__tree,
+	.ph-hero__prompt {
+		margin: 0;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.7rem;
+		line-height: 1.55;
+		color: var(--color-text-subtle);
+		white-space: pre-wrap;
+	}
+	.ph-hero__prompt {
+		font-size: 0.72rem;
+		color: var(--color-text-main);
+	}
+	.ph-hero__tok {
+		color: var(--color-brand-cyan);
+		font-weight: 500;
+	}
+
+	.ph-hero__sop-list {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.7rem;
+		color: var(--color-text-subtle);
+	}
+	.ph-hero__sop-more {
+		color: var(--color-text-dim);
+	}
+
+	.ph-hero__badge {
+		position: absolute;
+		right: 12px;
+		bottom: 24px;
+		padding: 10px 14px;
+		background: rgba(10, 11, 12, 0.92);
+		border: 1px solid rgba(78, 201, 180, 0.35);
+		border-radius: 8px;
+		backdrop-filter: blur(8px);
+		-webkit-backdrop-filter: blur(8px);
+		box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+		transform: rotate(3deg);
+	}
+	.ph-hero__badge-eyebrow {
+		margin: 0;
+		font-family: var(--font-main);
+		font-size: 0.66rem;
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--color-brand-cyan);
+	}
+	.ph-hero__badge-quote {
+		margin: 4px 0 0;
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-size: 1rem;
+		color: var(--color-text-main);
+	}
+
+	@keyframes ph-pulse-dot {
+		0%,
+		100% {
+			opacity: 1;
+			box-shadow: 0 0 8px rgba(78, 201, 180, 0.55);
+		}
+		50% {
+			opacity: 0.45;
+			box-shadow: 0 0 4px rgba(78, 201, 180, 0.2);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.ph-hero__runs-dot {
+			animation: none;
+		}
+		.ph-hero__rotate-char {
+			color: var(--color-text-main) !important;
+			text-shadow: none !important;
+			transition: none !important;
+		}
+	}
+
+	@media (max-width: 1100px) {
+		.ph-hero {
+			grid-template-columns: 1fr;
+			gap: 32px;
+		}
+		.ph-hero__visual {
+			display: none;
+		}
+	}
+	@media (max-width: 600px) {
+		.ph-hero__title {
+			font-size: 2.2rem;
+		}
+		.ph-hero__sub {
+			font-size: 0.95rem;
+		}
+		.ph-hero__stats {
+			gap: 24px;
+		}
+		.ph-hero__divider,
+		.ph-hero__runs {
+			display: none;
+		}
+	}
+</style>

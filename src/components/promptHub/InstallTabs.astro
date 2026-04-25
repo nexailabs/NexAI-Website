@@ -1,0 +1,178 @@
+---
+import type { SkillInstallMethod } from '../../data/promptHub';
+
+interface Props {
+	methods: SkillInstallMethod[];
+}
+
+const { methods } = Astro.props;
+---
+
+<div class="install-tabs" data-install-tabs>
+	<div class="install-tabs__bar" role="tablist">
+		{
+			methods.map((m, i) => (
+				<button
+					type="button"
+					class:list={['install-tabs__tab', i === 0 && 'install-tabs__tab--active']}
+					data-install-tab={i}
+					role="tab"
+					aria-selected={i === 0}
+				>
+					{m.tab}
+				</button>
+			))
+		}
+	</div>
+	{
+		methods.map((m, i) => (
+			<div
+				class:list={['install-tabs__panel', i === 0 && 'install-tabs__panel--active']}
+				data-install-panel={i}
+				role="tabpanel"
+			>
+				<span class="install-tabs__prompt">$</span>
+				<code class="install-tabs__cmd">{m.cmd}</code>
+				<button type="button" class="install-tabs__copy" data-install-copy>
+					Copy
+				</button>
+			</div>
+		))
+	}
+</div>
+
+<script>
+	function setupInstallTabs(root: HTMLElement) {
+		const tabs = root.querySelectorAll<HTMLButtonElement>('[data-install-tab]');
+		const panels = root.querySelectorAll<HTMLElement>('[data-install-panel]');
+
+		tabs.forEach((tab) => {
+			tab.addEventListener('click', () => {
+				const idx = tab.getAttribute('data-install-tab');
+				tabs.forEach((t) => {
+					const active = t.getAttribute('data-install-tab') === idx;
+					t.classList.toggle('install-tabs__tab--active', active);
+					t.setAttribute('aria-selected', active ? 'true' : 'false');
+				});
+				panels.forEach((p) => {
+					p.classList.toggle(
+						'install-tabs__panel--active',
+						p.getAttribute('data-install-panel') === idx,
+					);
+				});
+			});
+		});
+
+		const copyBtns = root.querySelectorAll<HTMLButtonElement>('[data-install-copy]');
+		copyBtns.forEach((btn) => {
+			btn.addEventListener('click', () => {
+				const panel = btn.closest('[data-install-panel]');
+				const cmd = panel?.querySelector('.install-tabs__cmd')?.textContent || '';
+				navigator.clipboard?.writeText(cmd);
+				const original = btn.textContent;
+				btn.textContent = '✓ Copied';
+				btn.classList.add('install-tabs__copy--copied');
+				setTimeout(() => {
+					btn.textContent = original;
+					btn.classList.remove('install-tabs__copy--copied');
+				}, 1400);
+				try {
+					const slug = location.pathname.replace(/^\/prompts\//, '').replace(/\/$/, '');
+					const payload = JSON.stringify({ slug, kind: 'install' });
+					if (navigator.sendBeacon) {
+						navigator.sendBeacon('/api/runs', new Blob([payload], { type: 'application/json' }));
+					} else {
+						fetch('/api/runs', {
+							method: 'POST',
+							headers: { 'content-type': 'application/json' },
+							body: payload,
+							keepalive: true,
+						}).catch(() => {});
+					}
+				} catch {
+					/* noop */
+				}
+			});
+		});
+	}
+
+	function init() {
+		document.querySelectorAll<HTMLElement>('[data-install-tabs]').forEach(setupInstallTabs);
+	}
+	init();
+	document.addEventListener('astro:page-load', init);
+</script>
+
+<style>
+	.install-tabs {
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-radius: 8px;
+		overflow: hidden;
+		background: rgba(255, 255, 255, 0.012);
+	}
+	.install-tabs__bar {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		padding: 10px 14px 0;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+		flex-wrap: wrap;
+	}
+	.install-tabs__tab {
+		padding: 8px 14px;
+		background: transparent;
+		border: none;
+		border-bottom: 2px solid transparent;
+		color: var(--color-text-muted);
+		font-family: var(--font-main);
+		font-size: 0.82rem;
+		font-weight: var(--fw-regular);
+		cursor: pointer;
+		margin-bottom: -1px;
+		transition: color 0.15s ease;
+	}
+	.install-tabs__tab--active {
+		color: var(--color-brand-cyan);
+		border-bottom-color: var(--color-brand-cyan);
+		font-weight: 500;
+	}
+	.install-tabs__panel {
+		padding: 18px;
+		display: none;
+		align-items: center;
+		gap: 12px;
+	}
+	.install-tabs__panel--active {
+		display: flex;
+	}
+	.install-tabs__prompt {
+		color: var(--color-brand-cyan);
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.86rem;
+	}
+	.install-tabs__cmd {
+		flex: 1;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.86rem;
+		color: var(--color-text-main);
+		white-space: nowrap;
+		overflow-x: auto;
+	}
+	.install-tabs__copy {
+		padding: 6px 12px;
+		background: rgba(255, 255, 255, 0.04);
+		border: 1px solid rgba(255, 255, 255, 0.12);
+		border-radius: 5px;
+		color: var(--color-text-subtle);
+		font-family: var(--font-main);
+		font-size: 0.76rem;
+		font-weight: 500;
+		cursor: pointer;
+		flex-shrink: 0;
+	}
+	.install-tabs__copy--copied {
+		background: var(--color-brand-cyan);
+		border-color: var(--color-brand-cyan);
+		color: #050607;
+	}
+</style>

@@ -1,0 +1,67 @@
+---
+import type { ArtifactType } from '../../data/promptHub';
+import { TYPE_LABELS } from '../../data/promptHub';
+
+interface Props {
+	type: ArtifactType;
+	category: string;
+}
+
+const { type, category } = Astro.props;
+const plural = TYPE_LABELS[type].plural;
+---
+
+<nav class="ph-breadcrumb" aria-label="Breadcrumb">
+	<a href="/prompts" class="ph-breadcrumb__link">
+		<svg
+			width="12"
+			height="12"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		>
+			<polyline points="15 18 9 12 15 6"></polyline>
+		</svg>
+		Prompt Hub
+	</a>
+	<span class="ph-breadcrumb__sep">/</span>
+	<span class="ph-breadcrumb__crumb">{plural}</span>
+	<span class="ph-breadcrumb__sep">/</span>
+	<span class="ph-breadcrumb__crumb ph-breadcrumb__crumb--strong">{category}</span>
+</nav>
+
+<style>
+	.ph-breadcrumb {
+		margin-bottom: 32px;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		flex-wrap: wrap;
+	}
+	.ph-breadcrumb__link {
+		font-family: var(--font-main);
+		font-size: 0.82rem;
+		color: var(--color-text-muted);
+		text-decoration: none;
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+	}
+	.ph-breadcrumb__link:hover {
+		color: var(--color-text-main);
+	}
+	.ph-breadcrumb__sep {
+		color: rgba(255, 255, 255, 0.2);
+	}
+	.ph-breadcrumb__crumb {
+		font-family: var(--font-main);
+		font-size: 0.82rem;
+		color: var(--color-text-muted);
+	}
+	.ph-breadcrumb__crumb--strong {
+		color: var(--color-text-subtle);
+	}
+</style>

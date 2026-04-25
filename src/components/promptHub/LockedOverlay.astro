@@ -1,0 +1,98 @@
+---
+interface Props {
+	price: number;
+	buyModalId: string;
+	label?: string;
+}
+
+const { price, buyModalId, label = 'The full text is for buyers.' } = Astro.props;
+---
+
+<div class="locked-overlay" data-locked-overlay>
+	<div class="locked-overlay__lock" aria-hidden="true">
+		<svg
+			width="16"
+			height="16"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		>
+			<rect x="3" y="11" width="18" height="11" rx="2"></rect>
+			<path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+		</svg>
+	</div>
+	<p class="locked-overlay__line">{label}</p>
+	<button type="button" class="locked-overlay__btn" data-open-buy-modal={buyModalId}>
+		Unlock for ₹{price.toLocaleString('en-IN')}
+		<svg
+			width="13"
+			height="13"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2.4"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		>
+			<line x1="5" y1="12" x2="19" y2="12"></line>
+			<polyline points="13 6 19 12 13 18"></polyline>
+		</svg>
+	</button>
+</div>
+
+<style>
+	.locked-overlay {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		background: linear-gradient(
+			to bottom,
+			transparent 0%,
+			rgba(10, 11, 12, 0.6) 30%,
+			rgba(10, 11, 12, 0.96) 70%
+		);
+		backdrop-filter: blur(3px);
+		border-radius: 6px;
+		padding: 40px 24px;
+		text-align: center;
+	}
+	.locked-overlay__lock {
+		width: 36px;
+		height: 36px;
+		border-radius: 50%;
+		border: 1px solid rgba(78, 201, 180, 0.4);
+		background: rgba(78, 201, 180, 0.08);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 14px;
+		color: var(--color-brand-cyan);
+	}
+	.locked-overlay__line {
+		margin: 0 0 14px;
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-size: 1.4rem;
+		color: var(--color-text-main);
+	}
+	.locked-overlay__btn {
+		padding: 11px 22px;
+		background: var(--color-brand-cyan);
+		color: #050607;
+		border: none;
+		border-radius: 6px;
+		font-family: var(--font-main);
+		font-size: 0.86rem;
+		font-weight: 600;
+		cursor: pointer;
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+	}
+</style>

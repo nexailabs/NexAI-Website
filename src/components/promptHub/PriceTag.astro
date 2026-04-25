@@ -1,0 +1,42 @@
+---
+interface Props {
+	price: number;
+	big?: boolean;
+}
+
+const { price, big = false } = Astro.props;
+---
+
+{
+	price === 0 ? (
+		<span class:list={['price-tag', 'price-tag--free', big && 'price-tag--big']}>Free</span>
+	) : (
+		<span class:list={['price-tag', 'price-tag--paid', big && 'price-tag--big']}>
+			₹{price.toLocaleString('en-IN')}
+		</span>
+	)
+}
+
+<style>
+	.price-tag--free {
+		font-family: var(--font-main);
+		font-size: 0.7rem;
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--color-text-muted);
+	}
+	.price-tag--free.price-tag--big {
+		font-size: 0.82rem;
+	}
+	.price-tag--paid {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.84rem;
+		font-weight: 600;
+		color: var(--color-brand-cyan);
+		letter-spacing: -0.005em;
+	}
+	.price-tag--paid.price-tag--big {
+		font-size: 1.1rem;
+	}
+</style>

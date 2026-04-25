@@ -1,0 +1,149 @@
+---
+import type { SkillFile } from '../../data/promptHub';
+
+interface Props {
+	files: SkillFile[];
+}
+
+const { files } = Astro.props;
+const fileCount = files.filter((f) => f.kind !== 'folder').length;
+
+function indentDepth(path: string, kind: SkillFile['kind']) {
+	const slashes = path.split('/').length - 1;
+	return Math.max(0, slashes - (kind === 'folder' ? 1 : 0));
+}
+
+function nameOf(path: string) {
+	return path.replace(/\/$/, '').split('/').pop() || path;
+}
+---
+
+<div class="file-tree">
+	<div class="file-tree__head">
+		<span class="file-tree__chrome">
+			<span class="file-tree__dot file-tree__dot--red"></span>
+			<span class="file-tree__dot file-tree__dot--yellow"></span>
+			<span class="file-tree__dot file-tree__dot--green"></span>
+			<span class="file-tree__chrome-label">File Explorer</span>
+		</span>
+		<span class="file-tree__count">{fileCount} files</span>
+	</div>
+	{
+		files.map((f) => {
+			const indent = indentDepth(f.path, f.kind);
+			const name = nameOf(f.path);
+			const isFolder = f.kind === 'folder';
+			return (
+				<div
+					class:list={[
+						'file-tree__row',
+						isFolder && 'file-tree__row--folder',
+						name === 'SKILL.md' && 'file-tree__row--skillmd',
+					]}
+					style={`padding-left: ${indent * 18}px`}
+				>
+					<span class="file-tree__icon" aria-hidden="true">
+						{isFolder ? (
+							<svg
+								width="13"
+								height="13"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.6"
+							>
+								<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+							</svg>
+						) : (
+							<svg
+								width="13"
+								height="13"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.6"
+							>
+								<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+								<polyline points="14 2 14 8 20 8" />
+							</svg>
+						)}
+					</span>
+					<span class="file-tree__name">
+						{name}
+						{isFolder ? '/' : ''}
+					</span>
+					{f.size && <span class="file-tree__size">{f.size}</span>}
+				</div>
+			);
+		})
+	}
+</div>
+
+<style>
+	.file-tree {
+		padding: 14px 18px;
+		background: #0a0b0c;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-radius: 6px;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.82rem;
+		line-height: 1.7;
+	}
+	.file-tree__head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding-bottom: 10px;
+		margin-bottom: 10px;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+		font-size: 0.74rem;
+		color: var(--color-text-muted);
+	}
+	.file-tree__chrome {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+	}
+	.file-tree__chrome-label {
+		margin-left: 8px;
+	}
+	.file-tree__dot {
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		display: inline-block;
+	}
+	.file-tree__dot--red {
+		background: #ff5f57;
+	}
+	.file-tree__dot--yellow {
+		background: #ffbd2e;
+	}
+	.file-tree__dot--green {
+		background: #28c941;
+	}
+	.file-tree__row {
+		display: flex;
+		align-items: center;
+		color: var(--color-text-subtle);
+	}
+	.file-tree__row--folder {
+		color: var(--color-text-main);
+	}
+	.file-tree__row--skillmd .file-tree__name {
+		color: var(--color-brand-cyan);
+	}
+	.file-tree__icon {
+		width: 14px;
+		color: var(--color-text-dim);
+		margin-right: 8px;
+		display: inline-flex;
+	}
+	.file-tree__name {
+		flex: 1;
+	}
+	.file-tree__size {
+		color: var(--color-text-dim);
+		font-size: 0.74rem;
+	}
+</style>

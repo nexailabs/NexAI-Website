@@ -1,0 +1,129 @@
+---
+import Eyebrow from '../vault/Eyebrow.astro';
+import PriceTag from './PriceTag.astro';
+
+interface Props {
+	price: number;
+	slug: string;
+	buyModalId: string;
+}
+
+const { price, slug, buyModalId } = Astro.props;
+---
+
+<div class:list={['price-card', price > 0 && 'price-card--paid']} data-price-card data-slug={slug}>
+	<div class="price-card__head">
+		<Eyebrow tint="default">{price > 0 ? 'Price' : 'License'}</Eyebrow>
+		<PriceTag price={price} big />
+	</div>
+
+	{
+		price === 0 ? (
+			<p class="price-card__free">Free for any use. A credit is appreciated, never required.</p>
+		) : (
+			<>
+				<div class="price-card__locked" data-price-locked>
+					<button type="button" class="price-card__buy" data-open-buy-modal={buyModalId}>
+						Buy with Razorpay
+						<svg
+							width="13"
+							height="13"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2.4"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<line x1="5" y1="12" x2="19" y2="12" />
+							<polyline points="13 6 19 12 13 18" />
+						</svg>
+					</button>
+					<p class="price-card__legal">One-time. Lifetime access. UPI / Cards / Netbanking.</p>
+				</div>
+				<div class="price-card__unlocked" data-price-unlocked hidden>
+					<svg
+						width="14"
+						height="14"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2.4"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<polyline points="20 6 9 17 4 12" />
+					</svg>
+					Unlocked
+				</div>
+			</>
+		)
+	}
+</div>
+
+<style>
+	.price-card {
+		padding: 20px;
+		border: 1px solid var(--color-border);
+		border-radius: 8px;
+		background: rgba(255, 255, 255, 0.015);
+		margin-bottom: 18px;
+	}
+	.price-card--paid {
+		border-color: rgba(78, 201, 180, 0.25);
+		background: rgba(78, 201, 180, 0.04);
+	}
+	.price-card__head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		margin-bottom: 16px;
+	}
+	.price-card__free {
+		margin: 0;
+		font-family: var(--font-main);
+		font-size: 0.82rem;
+		color: var(--color-text-subtle);
+		line-height: 1.55;
+	}
+	.price-card__buy {
+		width: 100%;
+		padding: 12px;
+		background: var(--color-brand-cyan);
+		color: #050607;
+		border: none;
+		border-radius: 6px;
+		font-family: var(--font-main);
+		font-size: 0.86rem;
+		font-weight: 600;
+		cursor: pointer;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+	}
+	.price-card__legal {
+		margin: 12px 0 0;
+		font-family: var(--font-main);
+		font-size: 0.74rem;
+		color: var(--color-text-dim);
+		line-height: 1.5;
+		text-align: center;
+	}
+	.price-card__unlocked {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 10px 12px;
+		background: rgba(78, 201, 180, 0.08);
+		border: 1px solid rgba(78, 201, 180, 0.25);
+		border-radius: 6px;
+		font-family: var(--font-main);
+		font-size: 0.82rem;
+		color: var(--color-brand-cyan);
+		font-weight: 500;
+	}
+	[data-price-unlocked][hidden] {
+		display: none !important;
+	}
+</style>

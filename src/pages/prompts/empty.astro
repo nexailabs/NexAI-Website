@@ -1,0 +1,168 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Eyebrow from '../../components/vault/Eyebrow.astro';
+import AccentRule from '../../components/vault/AccentRule.astro';
+import Italic from '../../components/promptHub/Italic.astro';
+---
+
+<Layout
+	title="Nothing here yet | Prompt Hub · NexAI Labs"
+	description="An empty drawer in the Prompt Hub. Submit a prompt, runbook, or skill we should add."
+	noIndex
+>
+	<main class="ph-empty">
+		<div class="ph-empty__back-row">
+			<a href="/prompts" class="ph-empty__back">
+				<span aria-hidden="true">←</span> Prompt Hub
+			</a>
+		</div>
+
+		<div class="ph-empty__inner">
+			<div class="ph-empty__eyebrow-row">
+				<AccentRule width={24} />
+				<Eyebrow tint="accent">Hub · 000</Eyebrow>
+			</div>
+
+			<h1 class="ph-empty__title">
+				Nothing in this drawer <Italic>yet</Italic>.
+			</h1>
+
+			<p class="ph-empty__sub">A note from the lab.</p>
+
+			<p class="ph-empty__body">
+				We only publish prompts, runbooks, and skills after they've shipped real work for a month.
+				No demos, no theoretical examples. If you wrote one that earned its keep, we'd love to read
+				it.
+			</p>
+
+			<a href="mailto:hello@nexailabs.com?subject=Prompt%20Hub%20submission" class="ph-empty__cta">
+				Submit a prompt →
+			</a>
+
+			<div class="ph-empty__footnote">— Curating in progress</div>
+		</div>
+	</main>
+</Layout>
+
+<style>
+	.ph-empty {
+		max-width: var(--container-max, 1400px);
+		margin: 0 auto;
+		padding: calc(var(--header-height, 5.9rem) + 32px) var(--space-sm) 120px;
+		min-height: 80vh;
+	}
+	.ph-empty__back-row {
+		margin-bottom: 64px;
+	}
+	.ph-empty__back {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		font-family: var(--font-main);
+		font-size: var(--text-xs);
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+		color: var(--color-text-muted);
+		text-decoration: none;
+	}
+	.ph-empty__back:hover {
+		color: var(--color-text-main);
+	}
+	.ph-empty__inner {
+		max-width: 600px;
+	}
+	.ph-empty__eyebrow-row {
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+		margin-bottom: 28px;
+	}
+	.ph-empty__title {
+		font-family: var(--font-accent);
+		font-weight: var(--fw-semibold);
+		font-size: clamp(2rem, 4vw, 3rem);
+		line-height: var(--lh-heading);
+		color: var(--color-text-main);
+		margin: 0;
+		letter-spacing: -0.01em;
+		text-wrap: balance;
+	}
+	.ph-empty__sub {
+		margin-top: 20px;
+		margin-bottom: 10px;
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-weight: var(--fw-regular);
+		font-size: 1.15rem;
+		line-height: 1.5;
+		color: var(--color-text-muted);
+		letter-spacing: -0.005em;
+		max-width: 460px;
+	}
+	.ph-empty__body {
+		margin-top: 0;
+		margin-bottom: 36px;
+		font-family: var(--font-main);
+		font-size: 1rem;
+		line-height: 1.6;
+		color: var(--color-text-subtle);
+		max-width: 460px;
+	}
+	.ph-empty__cta {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		padding: 0.85rem 1.75rem;
+		border-radius: var(--radius-full);
+		background: var(--color-text-main);
+		color: var(--color-bg);
+		font-family: var(--font-main);
+		font-size: var(--text-btn);
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		text-decoration: none;
+		transition:
+			background 0.3s var(--ease-out-expo),
+			transform 0.3s var(--ease-out-expo);
+	}
+	.ph-empty__cta:hover {
+		background: rgba(255, 255, 255, 0.88);
+		transform: translateY(-1px);
+	}
+	.ph-empty__footnote {
+		margin-top: 72px;
+		font-family: var(--font-main);
+		font-size: 0.7rem;
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+		color: var(--color-text-dim);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.ph-empty__cta:hover {
+			transform: none;
+		}
+	}
+	@media (max-width: 600px) {
+		.ph-empty__inner {
+			margin: 0 auto;
+			text-align: center;
+		}
+		.ph-empty__eyebrow-row {
+			justify-content: center;
+			width: 100%;
+		}
+		.ph-empty__sub,
+		.ph-empty__body {
+			margin-left: auto;
+			margin-right: auto;
+		}
+		.ph-empty__cta {
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+</style>

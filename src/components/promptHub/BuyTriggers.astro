@@ -1,0 +1,78 @@
+---
+interface Props {
+	slug: string;
+}
+
+const { slug } = Astro.props;
+---
+
+<script define:vars={{ slug }}>
+	function applyUnlocked(targetSlug) {
+		const cards = document.querySelectorAll(`[data-price-card][data-slug="${targetSlug}"]`);
+		cards.forEach((card) => {
+			const locked = card.querySelector('[data-price-locked]');
+			const unlocked = card.querySelector('[data-price-unlocked]');
+			if (locked) locked.style.display = 'none';
+			if (unlocked) unlocked.removeAttribute('hidden');
+		});
+		const locks = document.querySelectorAll(`[data-locked-overlay][data-slug="${targetSlug}"]`);
+		locks.forEach((el) => el.remove());
+		const blurs = document.querySelectorAll(`[data-locked-blur][data-slug="${targetSlug}"]`);
+		blurs.forEach((el) => {
+			el.removeAttribute('data-locked-blur');
+			el.style.filter = '';
+			el.style.opacity = '';
+			el.style.maxHeight = 'none';
+		});
+		const copyGuards = document.querySelectorAll(`[data-locked-copy][data-slug="${targetSlug}"]`);
+		copyGuards.forEach((btn) => {
+			btn.removeAttribute('data-locked-copy');
+			btn.textContent = btn.dataset.unlockedLabel || 'Copy';
+		});
+	}
+
+	function init() {
+		try {
+			if (sessionStorage.getItem('ph-unlocked:' + slug) === '1') {
+				applyUnlocked(slug);
+			}
+		} catch {
+			/* noop */
+		}
+
+		document.querySelectorAll('[data-open-buy-modal]').forEach((btn) => {
+			if (btn.dataset.buyTriggerReady) return;
+			btn.dataset.buyTriggerReady = '1';
+			btn.addEventListener('click', (e) => {
+				e.preventDefault();
+				const id = btn.getAttribute('data-open-buy-modal');
+				if (!id) return;
+				const modal = document.getElementById(id);
+				if (modal && typeof modal.showModal === 'function') {
+					modal.showModal();
+				}
+			});
+		});
+
+		document.querySelectorAll('[data-locked-copy]').forEach((btn) => {
+			if (btn.dataset.copyGuardReady) return;
+			btn.dataset.copyGuardReady = '1';
+			btn.addEventListener('click', (e) => {
+				const buyModalId = btn.getAttribute('data-buy-modal-id');
+				if (buyModalId) {
+					e.preventDefault();
+					const modal = document.getElementById(buyModalId);
+					if (modal && typeof modal.showModal === 'function') modal.showModal();
+				}
+			});
+		});
+	}
+
+	init();
+	document.addEventListener('astro:page-load', init);
+
+	document.addEventListener('ph-unlock', (e) => {
+		const detail = (e && e.detail) || {};
+		if (detail.slug) applyUnlocked(detail.slug);
+	});
+</script>

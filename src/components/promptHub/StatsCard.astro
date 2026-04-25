@@ -1,0 +1,34 @@
+---
+import Eyebrow from '../vault/Eyebrow.astro';
+import StatRow from '../vault/StatRow.astro';
+
+interface Props {
+	rows: { label: string; value: string }[];
+	title?: string;
+}
+
+const { rows, title = 'The numbers' } = Astro.props;
+---
+
+<div class="stats-card">
+	<Eyebrow tint="dim">{title}</Eyebrow>
+	<div class="stats-card__list">
+		{rows.map((r) => <StatRow label={r.label} value={r.value} />)}
+	</div>
+</div>
+
+<style>
+	.stats-card {
+		padding: 20px;
+		border: 1px solid var(--color-border);
+		border-radius: 8px;
+		background: rgba(255, 255, 255, 0.015);
+		margin-bottom: 18px;
+	}
+	.stats-card__list {
+		margin-top: 14px;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+</style>

@@ -1,0 +1,239 @@
+---
+import type { Artifact } from '../../data/promptHub';
+import { formatUses } from '../../data/promptHub';
+import TypeBadge from './TypeBadge.astro';
+import PriceTag from './PriceTag.astro';
+import Eyebrow from '../vault/Eyebrow.astro';
+import TitleWithAccent from './TitleWithAccent.astro';
+import PromptCodeBlock from './PromptCodeBlock.astro';
+import AuthorChip from './AuthorChip.astro';
+
+interface Props {
+	a: Artifact;
+}
+
+const { a } = Astro.props;
+
+const metaLine =
+	a.type === 'prompt'
+		? a.model
+		: a.type === 'sop'
+			? `${a.steps.length} steps · ${a.duration}`
+			: `${a.stars}★ · ${a.runtime.split(' · ')[0]}…`;
+
+const isSkill = a.type === 'skill';
+---
+
+<a
+	href={`/prompts/${a.slug}`}
+	class:list={['artifact-card', isSkill && 'artifact-card--skill']}
+	data-type={a.type}
+>
+	{a.pinned && <span class="artifact-card__top">★ TOP</span>}
+
+	<div class="artifact-card__eyebrow">
+		<TypeBadge type={a.type} />
+		<Eyebrow tint="accent">{a.category}</Eyebrow>
+		<span class="artifact-card__sep"></span>
+		<span class="artifact-card__meta">{metaLine}</span>
+	</div>
+
+	<h3 class:list={['artifact-card__title', isSkill && 'artifact-card__title--mono']}>
+		<TitleWithAccent title={a.title} accent={a.accent} mono={isSkill} />
+	</h3>
+
+	<p class="artifact-card__desc">{a.description}</p>
+
+	{
+		a.type === 'prompt' && (
+			<div class="artifact-card__preview">
+				<PromptCodeBlock prompt={a.prompt} preview maxLines={5} />
+			</div>
+		)
+	}
+
+	{
+		a.type === 'sop' && (
+			<ol class="artifact-card__steps">
+				{a.steps.slice(0, 3).map((s) => (
+					<li class="artifact-card__step">
+						<span class="artifact-card__step-n">{String(s.n).padStart(2, '0')}</span>
+						<span>{s.title}</span>
+					</li>
+				))}
+				{a.steps.length > 3 && (
+					<li class="artifact-card__step-more">+ {a.steps.length - 3} more steps</li>
+				)}
+			</ol>
+		)
+	}
+
+	{a.type === 'skill' && <div class="artifact-card__comment">{a.comment}</div>}
+
+	<div class="artifact-card__footer">
+		<AuthorChip author={a.author} />
+		<span class="artifact-card__sep"></span>
+		<span class="artifact-card__runs">
+			<span class="artifact-card__runs-n">{formatUses(a.uses)}</span> runs
+		</span>
+		<span class="artifact-card__spacer"></span>
+		<PriceTag price={a.price} />
+	</div>
+</a>
+
+<style>
+	.artifact-card {
+		position: relative;
+		display: block;
+		padding: 24px 26px 22px;
+		background: rgba(255, 255, 255, 0.015);
+		border: 1px solid rgba(255, 255, 255, 0.06);
+		border-radius: 10px;
+		text-decoration: none;
+		color: inherit;
+		transition:
+			border-color 0.2s ease,
+			background 0.2s ease,
+			transform 0.2s ease;
+	}
+	.artifact-card:hover {
+		border-color: rgba(255, 255, 255, 0.18);
+		background: rgba(255, 255, 255, 0.03);
+		transform: translateY(-2px);
+	}
+	.artifact-card__top {
+		position: absolute;
+		top: 14px;
+		right: 18px;
+		font-family: var(--font-main);
+		font-size: 0.65rem;
+		font-weight: 600;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--color-brand-cyan);
+	}
+	.artifact-card__eyebrow {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		margin-bottom: 12px;
+		flex-wrap: wrap;
+	}
+	.artifact-card__sep {
+		width: 3px;
+		height: 3px;
+		border-radius: 50%;
+		background: rgba(255, 255, 255, 0.2);
+	}
+	.artifact-card__meta {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.72rem;
+		color: var(--color-text-dim);
+	}
+	.artifact-card__title {
+		margin: 0 0 10px;
+		font-family: var(--font-accent);
+		font-weight: 500;
+		font-size: 1.85rem;
+		line-height: 1.1;
+		letter-spacing: -0.015em;
+		color: var(--color-text-main);
+	}
+	.artifact-card__title--mono {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-weight: 500;
+		font-size: 1.4rem;
+		letter-spacing: -0.02em;
+	}
+	.artifact-card__desc {
+		margin: 0 0 16px;
+		max-width: 680px;
+		font-family: var(--font-main);
+		font-size: 0.9rem;
+		line-height: 1.55;
+		color: var(--color-text-muted);
+		text-wrap: pretty;
+	}
+	.artifact-card__preview {
+		margin-bottom: 16px;
+	}
+	.artifact-card__steps {
+		margin: 0 0 16px;
+		padding: 0;
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+	.artifact-card__step {
+		display: flex;
+		align-items: baseline;
+		gap: 12px;
+		font-family: var(--font-main);
+		font-size: 0.86rem;
+		color: var(--color-text-subtle);
+		line-height: 1.45;
+	}
+	.artifact-card__step-n {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.7rem;
+		color: #f3c47a;
+		font-weight: 600;
+		flex-shrink: 0;
+		width: 22px;
+	}
+	.artifact-card__step-more {
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		color: var(--color-text-dim);
+		padding-left: 34px;
+		font-style: italic;
+	}
+	.artifact-card__comment {
+		padding: 10px 14px;
+		background: #0a0b0c;
+		border: 1px solid rgba(255, 255, 255, 0.06);
+		border-radius: 6px;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.76rem;
+		line-height: 1.55;
+		color: rgba(160, 180, 255, 0.78);
+		margin-bottom: 16px;
+	}
+	.artifact-card__footer {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		padding-top: 12px;
+		border-top: 1px solid rgba(255, 255, 255, 0.05);
+		flex-wrap: wrap;
+	}
+	.artifact-card__runs {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.72rem;
+		color: var(--color-text-dim);
+	}
+	.artifact-card__runs-n {
+		color: var(--color-text-subtle);
+	}
+	.artifact-card__spacer {
+		flex: 1;
+	}
+
+	@media (max-width: 600px) {
+		.artifact-card {
+			padding: 20px 18px 18px;
+		}
+		.artifact-card__title {
+			font-size: 1.55rem;
+		}
+		.artifact-card__title--mono {
+			font-size: 1.2rem;
+		}
+		.artifact-card__top {
+			top: 10px;
+			right: 12px;
+			font-size: 0.6rem;
+		}
+	}
+</style>
