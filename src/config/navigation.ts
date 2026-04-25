@@ -17,19 +17,19 @@ const main: NavConfig = {
 		{
 			id: 'prompt-hub',
 			label: 'Prompt Hub',
-			href: '/coming-soon',
+			href: '/prompts',
 			caption: 'Curated prompts, skills, and SOPs we swear by.',
 		},
 		{
 			id: 'app-vault',
 			label: 'App Vault',
-			href: '/coming-soon',
+			href: '/apps',
 			caption: 'The best AI tools we use and recommend.',
 		},
 		{
 			id: 'ai-drops',
 			label: 'AI Drops',
-			href: '/coming-soon',
+			href: '/blog',
 			caption: "Dispatches on what we're building and learning.",
 		},
 		{

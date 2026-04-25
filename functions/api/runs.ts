@@ -79,8 +79,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ env, request }) => {
 	}
 
 	const slug = typeof body.slug === 'string' && SLUG_RE.test(body.slug) ? body.slug : null;
-	const kind =
-		typeof body.kind === 'string' && KIND_ALLOWLIST.has(body.kind) ? body.kind : null;
+	const kind = typeof body.kind === 'string' && KIND_ALLOWLIST.has(body.kind) ? body.kind : null;
 
 	const total = await increment(env, 'runs:total');
 	if (slug) {
@@ -96,13 +95,15 @@ export const onRequestPost: PagesFunction<Env> = async ({ env, request }) => {
 
 // Pages Function type shim — keeps the file standalone without pulling
 // @cloudflare/workers-types into the project's npm tree.
-type PagesFunction<E = unknown, P extends string = string, D = Record<string, unknown>> = (
-	context: {
-		request: Request;
-		env: E;
-		params: Record<P, string | string[]>;
-		data: D;
-		waitUntil: (promise: Promise<unknown>) => void;
-		next: () => Promise<Response>;
-	},
-) => Response | Promise<Response>;
+type PagesFunction<
+	E = unknown,
+	P extends string = string,
+	D = Record<string, unknown>,
+> = (context: {
+	request: Request;
+	env: E;
+	params: Record<P, string | string[]>;
+	data: D;
+	waitUntil: (promise: Promise<unknown>) => void;
+	next: () => Promise<Response>;
+}) => Response | Promise<Response>;
