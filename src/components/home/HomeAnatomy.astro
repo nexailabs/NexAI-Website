@@ -1,0 +1,574 @@
+---
+const stages = [
+	{
+		key: 'input',
+		label: 'Input',
+		desc: 'A signal lands — Slack message, CRM update, scheduled trigger.',
+	},
+	{
+		key: 'reason',
+		label: 'Reasoning',
+		desc: 'The agent reads the signal against memory + the runbook, and picks one of N actions.',
+	},
+	{
+		key: 'output',
+		label: 'Output',
+		desc: 'A draft, a memo, a row in Notion. Always reviewable. Never auto-published on day one.',
+	},
+	{
+		key: 'review',
+		label: 'Review',
+		desc: "A human reviewer signs off. Their corrections feed the next run's prompt.",
+	},
+];
+
+const reasoningLines = [
+	'identifying specific noun → "Maya Krishnan"',
+	'cross-checking memory: prior message? → none',
+	'matching tone: peer-noticing, not vendor',
+	'drafting under 22-word constraint',
+];
+---
+
+<section class="anatomy" data-anatomy data-stage="0" aria-labelledby="anatomy-h2">
+	<div class="anatomy__inner">
+		<div class="anatomy__grid">
+			<div class="anatomy__left">
+				<p class="anatomy__eyebrow">Anatomy of an agent</p>
+				<h2 class="anatomy__h2" id="anatomy-h2">
+					One job, four <span class="anatomy__h2-em">moving parts</span>.
+				</h2>
+				<p class="anatomy__lede">
+					Every agent we ship has the same shape — input, reasoning, output, review. The day a
+					reviewer disagrees is the day the agent gets smarter.
+				</p>
+
+				<div class="anatomy__steps">
+					{
+						stages.map((s, i) => (
+							<button
+								type="button"
+								class:list={['anatomy__step', i === 0 && 'anatomy__step--active']}
+								data-step={i}
+								aria-current={i === 0 ? 'true' : 'false'}
+							>
+								<span class="anatomy__step-n">0{i + 1}</span>
+								<span class="anatomy__step-text">
+									<span class="anatomy__step-label">{s.label}</span>
+									<span class="anatomy__step-desc">{s.desc}</span>
+								</span>
+							</button>
+						))
+					}
+				</div>
+			</div>
+
+			<div class="anatomy__viz" aria-hidden="true">
+				<div class="anatomy__chrome">
+					<span class="anatomy__dot anatomy__dot--r"></span>
+					<span class="anatomy__dot anatomy__dot--y"></span>
+					<span class="anatomy__dot anatomy__dot--g"></span>
+					<span class="anatomy__chrome-label">signal-cold-one-liner · run #08231</span>
+					<span class="anatomy__chrome-live">
+						<span class="anatomy__chrome-live-dot"></span>
+						live
+					</span>
+				</div>
+
+				<div class="anatomy__stack">
+					<div class="anatomy__block anatomy__block--input anatomy__block--active" data-block="0">
+						<p class="anatomy__block-label">01 · INPUT</p>
+						<code class="anatomy__code">
+							<span class="anatomy__code-key">signal:</span>
+							Maya Krishnan joined Forge as Head of Eng (LinkedIn, 2h ago)
+						</code>
+					</div>
+
+					<div class="anatomy__arrow" data-arrow="1">
+						<svg width="12" height="14" viewBox="0 0 12 14" fill="none">
+							<line
+								x1="6"
+								y1="0"
+								x2="6"
+								y2="10"
+								stroke="currentColor"
+								stroke-width="1"
+								stroke-dasharray="2 2"></line>
+							<polyline points="2,8 6,12 10,8" stroke="currentColor" stroke-width="1" fill="none"
+							></polyline>
+						</svg>
+					</div>
+
+					<div class="anatomy__block anatomy__block--reason" data-block="1">
+						<p class="anatomy__block-label">02 · REASONING</p>
+						<div class="anatomy__lines">
+							{
+								reasoningLines.map((line, i) => (
+									<div class="anatomy__line" style={`transition-delay: ${i * 0.1}s`}>
+										<span class="anatomy__line-tick">›</span>
+										{line}
+									</div>
+								))
+							}
+						</div>
+					</div>
+
+					<div class="anatomy__arrow" data-arrow="2">
+						<svg width="12" height="14" viewBox="0 0 12 14" fill="none">
+							<line
+								x1="6"
+								y1="0"
+								x2="6"
+								y2="10"
+								stroke="currentColor"
+								stroke-width="1"
+								stroke-dasharray="2 2"></line>
+							<polyline points="2,8 6,12 10,8" stroke="currentColor" stroke-width="1" fill="none"
+							></polyline>
+						</svg>
+					</div>
+
+					<div class="anatomy__block anatomy__block--output" data-block="2">
+						<p class="anatomy__block-label">03 · OUTPUT</p>
+						<p class="anatomy__quote">
+							"Saw Maya's joining Forge — curious how you're thinking about platform team scope
+							before headcount."
+						</p>
+					</div>
+
+					<div class="anatomy__arrow" data-arrow="3">
+						<svg width="12" height="14" viewBox="0 0 12 14" fill="none">
+							<line
+								x1="6"
+								y1="0"
+								x2="6"
+								y2="10"
+								stroke="currentColor"
+								stroke-width="1"
+								stroke-dasharray="2 2"></line>
+							<polyline points="2,8 6,12 10,8" stroke="currentColor" stroke-width="1" fill="none"
+							></polyline>
+						</svg>
+					</div>
+
+					<div class="anatomy__block anatomy__block--review" data-block="3">
+						<p class="anatomy__block-label">04 · REVIEW</p>
+						<div class="anatomy__review">
+							<span class="anatomy__avatar">RJ</span>
+							<span class="anatomy__review-text">Approved — sent at 9:14am</span>
+							<span class="anatomy__memory">
+								<svg
+									width="12"
+									height="12"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2.6"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<polyline points="20 6 9 17 4 12"></polyline>
+								</svg>
+								+1 to memory
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	const TICK_MS = 2800;
+
+	function setupAnatomy(root: HTMLElement) {
+		if (root.dataset.anatomyReady) return;
+		root.dataset.anatomyReady = '1';
+
+		const blocks = root.querySelectorAll<HTMLElement>('[data-block]');
+		const arrows = root.querySelectorAll<HTMLElement>('[data-arrow]');
+		const steps = root.querySelectorAll<HTMLButtonElement>('[data-step]');
+
+		let stage = 0;
+		let timer: number | undefined;
+
+		const apply = (s: number) => {
+			stage = s;
+			root.dataset.stage = String(s);
+			blocks.forEach((b) => {
+				const i = Number(b.getAttribute('data-block'));
+				b.classList.toggle('anatomy__block--active', i <= s);
+			});
+			arrows.forEach((a) => {
+				const i = Number(a.getAttribute('data-arrow'));
+				a.classList.toggle('anatomy__arrow--active', i <= s);
+			});
+			steps.forEach((btn) => {
+				const i = Number(btn.getAttribute('data-step'));
+				const active = i === s;
+				btn.classList.toggle('anatomy__step--active', active);
+				btn.setAttribute('aria-current', active ? 'true' : 'false');
+			});
+		};
+
+		const start = () => {
+			if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+			timer = window.setInterval(() => apply((stage + 1) % 4), TICK_MS);
+		};
+		const stop = () => {
+			if (timer !== undefined) {
+				clearInterval(timer);
+				timer = undefined;
+			}
+		};
+
+		steps.forEach((btn) => {
+			btn.addEventListener('click', () => {
+				stop();
+				apply(Number(btn.getAttribute('data-step') || 0));
+				start();
+			});
+		});
+
+		start();
+		document.addEventListener('astro:before-swap', stop);
+	}
+
+	function init() {
+		document.querySelectorAll<HTMLElement>('[data-anatomy]').forEach(setupAnatomy);
+	}
+	init();
+	document.addEventListener('astro:page-load', init);
+</script>
+
+<style>
+	.anatomy {
+		position: relative;
+		padding: 120px 40px;
+		border-top: 1px solid rgba(255, 255, 255, 0.05);
+		background: rgba(255, 255, 255, 0.008);
+	}
+	.anatomy__inner {
+		max-width: 1280px;
+		margin: 0 auto;
+	}
+	.anatomy__grid {
+		display: grid;
+		grid-template-columns: 1fr 1.4fr;
+		gap: 80px;
+		align-items: center;
+	}
+
+	.anatomy__eyebrow {
+		margin: 0 0 22px;
+		font-family: var(--font-main);
+		font-size: 0.7rem;
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		color: var(--color-brand-cyan);
+	}
+	.anatomy__h2 {
+		margin: 0 0 22px;
+		font-family: var(--font-accent);
+		font-weight: var(--fw-regular);
+		font-size: clamp(2.2rem, 4vw, 3.4rem);
+		line-height: 1.08;
+		letter-spacing: -0.02em;
+		color: #fff;
+	}
+	.anatomy__h2-em {
+		font-style: italic;
+		color: var(--color-brand-cyan);
+	}
+	.anatomy__lede {
+		margin: 0 0 28px;
+		max-width: 420px;
+		font-family: var(--font-main);
+		font-size: 0.98rem;
+		line-height: 1.6;
+		color: rgba(255, 255, 255, 0.6);
+	}
+
+	.anatomy__steps {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+	.anatomy__step {
+		display: flex;
+		align-items: baseline;
+		gap: 14px;
+		padding: 12px 14px;
+		text-align: left;
+		background: transparent;
+		border: none;
+		border-left: 2px solid rgba(255, 255, 255, 0.08);
+		cursor: pointer;
+		transition: all 0.25s ease;
+		color: inherit;
+	}
+	.anatomy__step--active {
+		background: rgba(78, 201, 180, 0.06);
+		border-left-color: var(--color-brand-cyan);
+	}
+	.anatomy__step-n {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.72rem;
+		font-weight: var(--fw-semibold);
+		color: rgba(255, 255, 255, 0.35);
+		width: 28px;
+		flex-shrink: 0;
+	}
+	.anatomy__step--active .anatomy__step-n {
+		color: var(--color-brand-cyan);
+	}
+	.anatomy__step-text {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+	.anatomy__step-label {
+		font-family: var(--font-main);
+		font-size: 0.92rem;
+		font-weight: var(--fw-regular);
+		color: rgba(255, 255, 255, 0.7);
+	}
+	.anatomy__step--active .anatomy__step-label {
+		color: #fff;
+		font-weight: 500;
+	}
+	.anatomy__step-desc {
+		font-family: var(--font-main);
+		font-size: 0.82rem;
+		color: rgba(255, 255, 255, 0.5);
+		line-height: 1.45;
+	}
+
+	.anatomy__viz {
+		position: relative;
+		min-height: 460px;
+		padding: 32px;
+		background: #0a0b0c;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-radius: 14px;
+		overflow: hidden;
+	}
+	.anatomy__chrome {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding-bottom: 16px;
+		margin-bottom: 20px;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+	}
+	.anatomy__dot {
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+	}
+	.anatomy__dot--r {
+		background: #ff5f57;
+	}
+	.anatomy__dot--y {
+		background: #ffbd2e;
+	}
+	.anatomy__dot--g {
+		background: #28c941;
+	}
+	.anatomy__chrome-label {
+		margin-left: 10px;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.72rem;
+		color: rgba(255, 255, 255, 0.4);
+	}
+	.anatomy__chrome-live {
+		margin-left: auto;
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		font-family: var(--font-main);
+		font-size: 0.7rem;
+		color: var(--color-brand-cyan);
+	}
+	.anatomy__chrome-live-dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: var(--color-brand-cyan);
+		animation: nx-pulse-dot 1.6s ease-in-out infinite;
+	}
+
+	.anatomy__stack {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+	.anatomy__block {
+		padding: 12px 14px;
+		background: rgba(255, 255, 255, 0.015);
+		border: 1px solid rgba(255, 255, 255, 0.06);
+		border-radius: 6px;
+		opacity: 0.5;
+		transition: all 0.3s ease;
+	}
+	.anatomy__block--active {
+		opacity: 1;
+		border-color: rgba(78, 201, 180, 0.18);
+	}
+	.anatomy__block-label {
+		margin: 0 0 8px;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.66rem;
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.14em;
+		color: rgba(255, 255, 255, 0.35);
+	}
+	.anatomy__block--active .anatomy__block-label {
+		color: var(--color-brand-cyan);
+	}
+
+	.anatomy__code {
+		display: block;
+		padding: 10px 14px;
+		background: rgba(255, 255, 255, 0.025);
+		border-radius: 5px;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.78rem;
+		color: rgba(255, 255, 255, 0.85);
+		line-height: 1.5;
+	}
+	.anatomy__code-key {
+		color: rgba(255, 255, 255, 0.4);
+	}
+
+	.anatomy__lines {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+	.anatomy__line {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.74rem;
+		color: rgba(255, 255, 255, 0.65);
+		opacity: 0.3;
+		transition: opacity 0.3s ease;
+	}
+	.anatomy__block--active .anatomy__line {
+		opacity: 1;
+	}
+	.anatomy__line-tick {
+		color: var(--color-brand-cyan);
+	}
+
+	.anatomy__quote {
+		margin: 0;
+		padding: 10px 14px;
+		background: rgba(255, 255, 255, 0.02);
+		border-left: 2px solid rgba(255, 255, 255, 0.1);
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-size: 1.05rem;
+		line-height: 1.5;
+		color: rgba(255, 255, 255, 0.92);
+		transition: all 0.4s ease;
+	}
+	.anatomy__block--output.anatomy__block--active .anatomy__quote {
+		background: rgba(78, 201, 180, 0.05);
+		border-left-color: var(--color-brand-cyan);
+	}
+
+	.anatomy__review {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 10px 14px;
+		background: rgba(255, 255, 255, 0.02);
+		border: 1px solid rgba(255, 255, 255, 0.06);
+		border-radius: 5px;
+		font-family: var(--font-main);
+		font-size: 0.84rem;
+		color: rgba(255, 255, 255, 0.85);
+		transition: all 0.3s ease;
+	}
+	.anatomy__block--review.anatomy__block--active .anatomy__review {
+		background: rgba(78, 201, 180, 0.05);
+		border-color: rgba(78, 201, 180, 0.2);
+	}
+	.anatomy__avatar {
+		width: 22px;
+		height: 22px;
+		border-radius: 50%;
+		background: rgba(78, 201, 180, 0.12);
+		color: var(--color-brand-cyan);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 0.62rem;
+		font-weight: var(--fw-semibold);
+		border: 1px solid rgba(78, 201, 180, 0.25);
+		flex-shrink: 0;
+	}
+	.anatomy__review-text {
+		flex: 1;
+	}
+	.anatomy__memory {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.72rem;
+		color: var(--color-brand-cyan);
+	}
+
+	.anatomy__arrow {
+		display: flex;
+		justify-content: center;
+		height: 14px;
+		opacity: 0.25;
+		transition: opacity 0.3s ease;
+		color: rgba(255, 255, 255, 0.3);
+	}
+	.anatomy__arrow--active {
+		opacity: 1;
+		color: var(--color-brand-cyan);
+	}
+
+	@keyframes nx-pulse-dot {
+		0%,
+		100% {
+			opacity: 0.5;
+			transform: scale(1);
+		}
+		50% {
+			opacity: 1;
+			transform: scale(1.4);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.anatomy__chrome-live-dot {
+			animation: none;
+		}
+	}
+
+	@media (max-width: 1100px) {
+		.anatomy__grid {
+			grid-template-columns: 1fr;
+			gap: 48px;
+		}
+	}
+	@media (max-width: 720px) {
+		.anatomy {
+			padding: 80px 24px;
+		}
+		.anatomy__viz {
+			padding: 22px;
+			min-height: 0;
+		}
+	}
+</style>
