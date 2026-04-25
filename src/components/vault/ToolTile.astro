@@ -1,0 +1,241 @@
+---
+import Logomark from './Logomark.astro';
+import VerifiedTick from './VerifiedTick.astro';
+import StatRow from './StatRow.astro';
+import FreqDot from './FreqDot.astro';
+import type { VaultTool } from '../../data/vault';
+
+interface Props {
+	tool: VaultTool;
+	compact?: boolean;
+}
+
+const { tool, compact = false } = Astro.props;
+const href = `/apps/${tool.slug}`;
+---
+
+<a
+	href={href}
+	class:list={['tool-tile', { 'tool-tile--compact': compact }]}
+	data-vault-tile
+	data-category={tool.category}
+	data-type={tool.type}
+	data-pricing={tool.pricing}
+	data-frequency={tool.frequency}
+	data-tags={tool.tags.join(',')}
+	data-search={`${tool.name} ${tool.one} ${tool.replaced ?? ''} ${tool.tags.join(' ')}`.toLowerCase()}
+>
+	<div class="tool-tile__head">
+		<div class="tool-tile__title-row">
+			<Logomark tool={tool.name} size={36} />
+			<div class="tool-tile__title-meta">
+				<div class="tool-tile__name-line">
+					<h3 class="tool-tile__name">{tool.name}</h3>
+					{tool.verified && <VerifiedTick size={13} />}
+				</div>
+				<div class="tool-tile__vendor">{tool.vendor}</div>
+			</div>
+		</div>
+		<span class="tool-tile__category">{tool.category}</span>
+	</div>
+
+	<p class="tool-tile__one">{tool.one}</p>
+
+	{
+		tool.altsTo.length > 0 && (
+			<div class="tool-tile__alts">
+				<span class="tool-tile__alts-label">Replaces</span>
+				<span class="tool-tile__alts-logos">
+					{tool.altsTo.map((a) => (
+						<Logomark tool={a} size={20} radius={4} />
+					))}
+				</span>
+				<span class="tool-tile__alts-text">{tool.altsTo.join(', ')}</span>
+			</div>
+		)
+	}
+
+	<div class="tool-tile__stats">
+		<StatRow icon="clock" label="In use since" value={tool.inUseSinceShort} />
+		<StatRow
+			icon="coin"
+			label={tool.pricing === 'Free' ? 'Pricing' : tool.pricing}
+			value={tool.cost}
+		/>
+		<StatRow icon="tag" label="Type" value={tool.type} />
+	</div>
+
+	<div class="tool-tile__foot">
+		<FreqDot level={tool.frequency} />
+		<span class="tool-tile__cta">Read take →</span>
+	</div>
+</a>
+
+<style>
+	.tool-tile {
+		display: flex;
+		flex-direction: column;
+		text-decoration: none;
+		color: inherit;
+		padding: 22px;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-radius: var(--radius-md);
+		background: #0a0b0c;
+		transition:
+			border-color 0.2s,
+			transform 0.3s var(--ease-out-expo);
+		height: 100%;
+		position: relative;
+	}
+	.tool-tile--compact {
+		padding: 18px;
+	}
+	.tool-tile:hover {
+		border-color: var(--color-border-hover);
+		transform: translateY(-3px);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.tool-tile:hover {
+			transform: none;
+		}
+	}
+
+	.tool-tile__head {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 12px;
+		margin-bottom: 14px;
+	}
+	.tool-tile__title-row {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		min-width: 0;
+	}
+	.tool-tile__title-meta {
+		min-width: 0;
+	}
+	.tool-tile__name-line {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+	}
+	.tool-tile__name {
+		font-family: var(--font-accent);
+		font-weight: var(--fw-semibold);
+		font-size: 1.3rem;
+		line-height: 1.1;
+		color: var(--color-text-main);
+		margin: 0;
+		letter-spacing: -0.005em;
+	}
+	.tool-tile__vendor {
+		font-family: var(--font-main);
+		font-size: 0.72rem;
+		color: var(--color-text-dim);
+		margin-top: 2px;
+	}
+	.tool-tile__category {
+		font-family: var(--font-main);
+		font-size: 0.7rem;
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+		color: var(--color-brand-cyan);
+		flex-shrink: 0;
+	}
+
+	.tool-tile__one {
+		font-family: var(--font-main);
+		font-size: 0.86rem;
+		line-height: 1.5;
+		color: rgba(255, 255, 255, 0.7);
+		margin: 0 0 14px;
+	}
+
+	.tool-tile__alts {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin-bottom: 16px;
+		flex-wrap: wrap;
+	}
+	.tool-tile__alts-label {
+		font-family: var(--font-main);
+		font-size: 0.66rem;
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--color-text-dim);
+	}
+	.tool-tile__alts-logos {
+		display: inline-flex;
+		gap: 6px;
+	}
+	.tool-tile__alts-text {
+		font-family: var(--font-main);
+		font-size: 0.74rem;
+		color: var(--color-text-subtle);
+	}
+
+	.tool-tile__stats {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		padding: 14px 0 4px;
+		border-top: 1px solid rgba(255, 255, 255, 0.06);
+		margin-top: auto;
+	}
+
+	.tool-tile__foot {
+		margin-top: 14px;
+		padding-top: 12px;
+		border-top: 1px dashed rgba(255, 255, 255, 0.06);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+	}
+	.tool-tile__cta {
+		font-family: var(--font-main);
+		font-size: 0.74rem;
+		color: var(--color-brand-cyan);
+		opacity: 0.7;
+		transition: opacity 0.2s;
+	}
+	.tool-tile:hover .tool-tile__cta {
+		opacity: 1;
+	}
+
+	@media (max-width: 900px) {
+		.tool-tile__head {
+			flex-wrap: wrap;
+			gap: var(--space-xs);
+		}
+		.tool-tile__title-row {
+			flex: 1 1 auto;
+			min-width: 0;
+		}
+		.tool-tile__category {
+			width: 100%;
+		}
+		.tool-tile__alts {
+			align-items: flex-start;
+			gap: var(--space-xs);
+		}
+		.tool-tile__alts-logos {
+			flex-wrap: wrap;
+		}
+		.tool-tile__alts-text {
+			flex: 1 1 100%;
+			min-width: 0;
+		}
+	}
+
+	@media (max-width: 600px) {
+		.tool-tile__foot {
+			flex-wrap: wrap;
+		}
+	}
+</style>

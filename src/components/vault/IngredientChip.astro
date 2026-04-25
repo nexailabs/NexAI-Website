@@ -1,0 +1,29 @@
+---
+import Logomark from './Logomark.astro';
+
+interface Props {
+	tool: string;
+}
+
+const { tool } = Astro.props;
+---
+
+<span class="ingredient">
+	<Logomark tool={tool} size={20} radius={4} />
+	{tool}
+</span>
+
+<style>
+	.ingredient {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 5px 10px 5px 5px;
+		border-radius: var(--radius-sm);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		background: rgba(255, 255, 255, 0.02);
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		color: rgba(255, 255, 255, 0.78);
+	}
+</style>

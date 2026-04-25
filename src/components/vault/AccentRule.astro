@@ -1,0 +1,26 @@
+---
+interface Props {
+	width?: number;
+	from?: string;
+	to?: string;
+}
+
+const {
+	width = 24,
+	from = 'var(--color-brand-teal)',
+	to = 'var(--color-brand-cyan)',
+} = Astro.props;
+---
+
+<span
+	class="vault-accent-rule"
+	style={`width: ${width}px; background: linear-gradient(90deg, ${from}, ${to});`}
+	aria-hidden="true"></span>
+
+<style>
+	.vault-accent-rule {
+		height: 1px;
+		display: inline-block;
+		align-self: center;
+	}
+</style>

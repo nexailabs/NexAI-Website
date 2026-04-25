@@ -1,0 +1,812 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Eyebrow from '../../components/vault/Eyebrow.astro';
+import AccentRule from '../../components/vault/AccentRule.astro';
+import Logomark from '../../components/vault/Logomark.astro';
+import VerifiedTick from '../../components/vault/VerifiedTick.astro';
+import StatRow from '../../components/vault/StatRow.astro';
+import TagPill from '../../components/vault/TagPill.astro';
+import IngredientChip from '../../components/vault/IngredientChip.astro';
+import ToolTile from '../../components/vault/ToolTile.astro';
+import FactBlock from '../../components/vault/FactBlock.astro';
+import ActionPill from '../../components/vault/ActionPill.astro';
+import CTABar from '../../components/vault/CTABar.astro';
+import { VAULT_TOOLS } from '../../data/vault';
+
+export function getStaticPaths() {
+	return VAULT_TOOLS.map((t) => ({ params: { slug: t.slug }, props: { tool: t } }));
+}
+
+const { tool } = Astro.props;
+const others = VAULT_TOOLS.filter(
+	(t) => t.category === tool.category && t.slug !== tool.slug,
+).slice(0, 3);
+const featured = VAULT_TOOLS.filter((t) => t.slug !== tool.slug).slice(0, 12);
+---
+
+<Layout title={`${tool.name} | App Vault · NexAI Labs`} description={tool.tagline}>
+	<article class="vault-detail">
+		<div class="vault-detail__back-row">
+			<a href="/apps" class="vault-detail__back">
+				<span aria-hidden="true">←</span> App Vault
+			</a>
+		</div>
+
+		<div class="vault-detail__grid">
+			<div class="vault-detail__main">
+				<header>
+					<div class="vault-detail__hero-row">
+						<div class="vault-detail__hero-left">
+							<Logomark tool={tool.name} size={52} radius={10} />
+							<div>
+								<div class="vault-detail__name-line">
+									<h1 class="vault-detail__name">{tool.name}</h1>
+									{tool.verified && <VerifiedTick size={16} />}
+								</div>
+								<div class="vault-detail__vendor">{tool.vendor}</div>
+							</div>
+						</div>
+						<div class="vault-detail__actions">
+							<ActionPill icon="bookmark" label="Save" />
+							<ActionPill icon="flag" label="Flag" />
+							<ActionPill icon="code" label="Embed" />
+						</div>
+					</div>
+
+					<p class="vault-detail__tagline">{tool.tagline}</p>
+
+					{
+						tool.altsTo.length > 0 && (
+							<div class="vault-detail__alts">
+								<div class="vault-detail__alts-label">Alternative to:</div>
+								<div class="vault-detail__alts-list">
+									{tool.altsTo.map((a) => (
+										<span class="vault-detail__alt">
+											<Logomark tool={a} size={22} radius={6} />
+											<span class="vault-detail__alt-name">{a}</span>
+										</span>
+									))}
+								</div>
+							</div>
+						)
+					}
+
+					<div class="vault-detail__ctas">
+						<a
+							href={`https://${tool.link}`}
+							target="_blank"
+							rel="noreferrer"
+							class="vault-detail__cta-primary"
+						>
+							Visit {tool.name} ↗
+						</a>
+						<a href="/blog" class="vault-detail__cta-ghost">How we wired it</a>
+					</div>
+				</header>
+
+				<div class="vault-detail__marquee">
+					<div class="vault-detail__marquee-bar">
+						<span class="vault-detail__dot"></span>
+						<span class="vault-detail__dot"></span>
+						<span class="vault-detail__dot"></span>
+						<span class="vault-detail__url">{tool.link}</span>
+					</div>
+					<div class="vault-detail__marquee-body">
+						<Logomark tool={tool.name} size={64} radius={14} />
+						<div class="vault-detail__marquee-meta">
+							<div class="vault-detail__marquee-name">{tool.name}</div>
+							<div class="vault-detail__marquee-cat">Screenshot · {tool.category}</div>
+						</div>
+					</div>
+				</div>
+
+				<p class="vault-detail__lede">{tool.one}</p>
+				<p class="vault-detail__body">
+					We picked {tool.name} after running a couple of alternatives in parallel for a month. The decision
+					wasn't a feature checklist — it was about which one disappeared into the workflow fastest. {
+						tool.name
+					} did.
+				</p>
+
+				<blockquote class="vault-detail__quote">{tool.why}</blockquote>
+
+				<h2 class="vault-detail__h2">What it replaced.</h2>
+				<p class="vault-detail__body">
+					We were on <strong>{tool.replaced}</strong> before
+					{tool.replacedNote && <span class="vault-detail__note"> — {tool.replacedNote}</span>}. It
+					wasn't bad, it was just heavier than the job we were asking it to do. Switching cost us a
+					weekend; we got it back inside a month.
+				</p>
+
+				<h2 class="vault-detail__h2">How it sits in the stack.</h2>
+				<p class="vault-detail__body">
+					{tool.name} is one of the {VAULT_TOOLS.length} tools in the vault. It talks to the others through
+					the usual seams — webhooks, APIs, copy-paste when nothing else works. The shape of the stack
+					matters more than any one tool in it.
+				</p>
+
+				<div class="vault-detail__chips-section">
+					<div class="vault-detail__chips-label">Tags</div>
+					<div class="vault-detail__chips">
+						{tool.tags.map((t) => <TagPill tag={t} />)}
+					</div>
+				</div>
+
+				{
+					tool.builtWith.length > 0 && (
+						<div class="vault-detail__chips-section">
+							<div class="vault-detail__chips-label">Wired with</div>
+							<div class="vault-detail__chips">
+								{tool.builtWith.map((b) => (
+									<IngredientChip tool={b} />
+								))}
+							</div>
+						</div>
+					)
+				}
+
+				<div class="vault-detail__share">
+					<span>Copy link <kbd>C</kbd></span>
+					<span class="vault-detail__share-dot">·</span>
+					<span>Share:</span>
+					<span class="vault-detail__share-icons">
+						{
+							['X', 'M', 'B', 'Li', 'R'].map((l) => (
+								<a href="#" aria-label={`Share on ${l}`}>
+									{l}
+								</a>
+							))
+						}
+					</span>
+				</div>
+			</div>
+
+			<aside class="vault-detail__rail">
+				<div class="vault-detail__card">
+					<div class="vault-detail__stats">
+						<StatRow icon="clock" label="In use since" value={tool.inUseSince} />
+						<StatRow icon="coin" label="Cost" value={tool.cost} />
+						<StatRow icon="tag" label="Type" value={tool.type} />
+						<StatRow icon="zap" label="Use" value={tool.frequency} />
+						<StatRow icon="user" label="Internal lead" value={tool.lead} />
+						<StatRow icon="flag" label="Replaced" value={tool.replaced} />
+					</div>
+					<a
+						href={`https://${tool.link}`}
+						target="_blank"
+						rel="noreferrer"
+						class="vault-detail__rail-cta"
+					>
+						Visit site ↗
+					</a>
+					<div class="vault-detail__verified-line">Last verified by us · 2 days ago</div>
+				</div>
+
+				<div class="vault-detail__card">
+					<FactBlock label="Used for" items={tool.usedFor} />
+					<FactBlock label="Used against" body={tool.usedAgainst} />
+					<FactBlock label="Best feature" body={tool.bestFeature} />
+					<FactBlock label="Watch out for" body={tool.watchOut} last />
+				</div>
+
+				<div class="vault-detail__card">
+					<div class="vault-detail__rail-label">Other tools in the vault:</div>
+					<div class="vault-detail__rail-grid">
+						{
+							featured.map((t) => (
+								<a href={`/apps/${t.slug}`} title={t.name} class="vault-detail__rail-logo">
+									<Logomark tool={t.name} size={36} radius={8} />
+								</a>
+							))
+						}
+					</div>
+					<a href="/apps" class="vault-detail__rail-browse">
+						<span>Browse the full vault</span>
+						<span aria-hidden="true">↗</span>
+					</a>
+				</div>
+
+				<div class="vault-detail__credit">
+					<span class="vault-detail__credit-tick" aria-hidden="true">
+						<svg
+							width="10"
+							height="10"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="3"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<polyline points="20 6 9 17 4 12"></polyline>
+						</svg>
+					</span>
+					<span class="vault-detail__credit-text">
+						Tested in production by <em>{tool.lead}</em>.
+					</span>
+				</div>
+			</aside>
+		</div>
+
+		{
+			others.length > 0 && (
+				<section class="vault-detail__more">
+					<div class="vault-detail__more-head">
+						<div class="vault-detail__more-eyebrow">
+							<AccentRule width={24} />
+							<Eyebrow tint="accent">More in {tool.category}</Eyebrow>
+						</div>
+						<a href={`/apps?category=${tool.category}`} class="vault-detail__more-link">
+							Check {tool.category} alternatives →
+						</a>
+					</div>
+					<div class="vault-detail__more-grid" data-cols={others.length}>
+						{others.map((t) => (
+							<ToolTile tool={t} compact />
+						))}
+					</div>
+				</section>
+			)
+		}
+
+		<CTABar title="Want to see how we wire these together?" accent="wire" />
+	</article>
+</Layout>
+
+<style>
+	.vault-detail {
+		padding-top: var(--header-height, 5.9rem);
+	}
+
+	.vault-detail__back-row {
+		max-width: var(--container-max, 1400px);
+		margin: 0 auto;
+		padding: 32px var(--space-sm) 0;
+	}
+	.vault-detail__back {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		font-family: var(--font-main);
+		font-size: var(--text-xs);
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+		color: var(--color-text-muted);
+		text-decoration: none;
+		transition: color 0.2s;
+	}
+	.vault-detail__back:hover {
+		color: var(--color-text-main);
+	}
+
+	.vault-detail__grid {
+		max-width: var(--container-max, 1400px);
+		margin: 0 auto;
+		padding: 24px var(--space-sm) 0;
+		display: grid;
+		grid-template-columns: 1fr 340px;
+		gap: 56px;
+		align-items: start;
+	}
+
+	.vault-detail__hero-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px;
+		margin-bottom: 18px;
+		flex-wrap: wrap;
+	}
+	.vault-detail__hero-left {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+	}
+	.vault-detail__name-line {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+	.vault-detail__name {
+		font-family: var(--font-accent);
+		font-weight: var(--fw-semibold);
+		font-size: 2.4rem;
+		line-height: 1;
+		color: var(--color-text-main);
+		margin: 0;
+		letter-spacing: -0.01em;
+	}
+	.vault-detail__vendor {
+		font-family: var(--font-main);
+		font-size: 0.8rem;
+		color: var(--color-text-dim);
+		margin-top: 4px;
+	}
+	.vault-detail__actions {
+		display: flex;
+		gap: 6px;
+	}
+
+	.vault-detail__tagline {
+		font-family: var(--font-main);
+		font-size: 1.05rem;
+		line-height: 1.6;
+		color: rgba(255, 255, 255, 0.78);
+		max-width: 640px;
+		margin: 0 0 22px;
+	}
+
+	.vault-detail__alts {
+		margin-bottom: 22px;
+	}
+	.vault-detail__alts-label {
+		font-family: var(--font-main);
+		font-size: 0.74rem;
+		color: var(--color-text-subtle);
+		margin-bottom: 10px;
+	}
+	.vault-detail__alts-list {
+		display: inline-flex;
+		gap: 8px;
+		flex-wrap: wrap;
+	}
+	.vault-detail__alt {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 5px 12px 5px 5px;
+		border-radius: var(--radius-full);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		background: rgba(255, 255, 255, 0.02);
+	}
+	.vault-detail__alt-name {
+		font-family: var(--font-main);
+		font-size: 0.8rem;
+		color: rgba(255, 255, 255, 0.78);
+	}
+
+	.vault-detail__ctas {
+		display: flex;
+		gap: 10px;
+		margin-bottom: 36px;
+		flex-wrap: wrap;
+	}
+	.vault-detail__cta-primary {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 0.7rem 1.2rem;
+		border-radius: var(--radius-full);
+		background: var(--color-text-main);
+		color: var(--color-bg);
+		font-family: var(--font-main);
+		font-size: 0.84rem;
+		font-weight: var(--fw-semibold);
+		text-decoration: none;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+	.vault-detail__cta-primary:hover {
+		background: rgba(255, 255, 255, 0.88);
+	}
+	.vault-detail__cta-ghost {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 0.7rem 1.2rem;
+		border-radius: var(--radius-full);
+		background: transparent;
+		color: var(--color-text-main);
+		border: 1px solid var(--color-border);
+		font-family: var(--font-main);
+		font-size: 0.84rem;
+		font-weight: var(--fw-semibold);
+		text-decoration: none;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+	.vault-detail__cta-ghost:hover {
+		border-color: var(--color-border-hover);
+		background: rgba(255, 255, 255, 0.04);
+	}
+
+	.vault-detail__marquee {
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-radius: var(--radius-md);
+		overflow: hidden;
+		background: #0a0b0c;
+		margin-bottom: 36px;
+	}
+	.vault-detail__marquee-bar {
+		padding: 8px 12px;
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+		background: rgba(255, 255, 255, 0.02);
+	}
+	.vault-detail__dot {
+		width: 9px;
+		height: 9px;
+		border-radius: 50%;
+		background: rgba(255, 255, 255, 0.12);
+	}
+	.vault-detail__url {
+		margin-left: 14px;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.7rem;
+		color: var(--color-text-dim);
+	}
+	.vault-detail__marquee-body {
+		aspect-ratio: 16 / 9;
+		background:
+			radial-gradient(circle at 30% 20%, rgba(78, 201, 180, 0.12) 0%, transparent 55%),
+			linear-gradient(135deg, #0e0f10, #050607);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		gap: 18px;
+	}
+	.vault-detail__marquee-meta {
+		text-align: center;
+	}
+	.vault-detail__marquee-name {
+		font-family: var(--font-accent);
+		font-weight: var(--fw-semibold);
+		font-size: 1.6rem;
+		color: var(--color-text-main);
+		letter-spacing: -0.01em;
+	}
+	.vault-detail__marquee-cat {
+		font-family: var(--font-main);
+		font-size: 0.82rem;
+		color: var(--color-text-dim);
+		margin-top: 4px;
+	}
+
+	.vault-detail__lede {
+		font-family: var(--font-main);
+		font-size: 1.15rem;
+		line-height: 1.7;
+		color: rgba(255, 255, 255, 0.92);
+		margin: 0 0 24px;
+		letter-spacing: -0.005em;
+	}
+	.vault-detail__body {
+		font-family: var(--font-main);
+		font-size: 1.02rem;
+		line-height: 1.7;
+		color: rgba(255, 255, 255, 0.78);
+		margin: 0 0 22px;
+		letter-spacing: -0.005em;
+	}
+	.vault-detail__body strong {
+		color: var(--color-text-main);
+		font-weight: var(--fw-semibold);
+	}
+	.vault-detail__note {
+		color: var(--color-text-subtle);
+	}
+
+	.vault-detail__quote {
+		border-left: 2px solid transparent;
+		border-image: linear-gradient(180deg, var(--color-brand-teal), var(--color-brand-cyan)) 1;
+		padding: 0.25rem 0 0.25rem 1.5rem;
+		margin: 2.2rem 0;
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-weight: var(--fw-regular);
+		font-size: 1.45rem;
+		line-height: 1.4;
+		color: rgba(255, 255, 255, 0.92);
+		letter-spacing: -0.01em;
+	}
+
+	.vault-detail__h2 {
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-weight: var(--fw-regular);
+		font-size: 1.85rem;
+		line-height: 1.2;
+		color: var(--color-text-main);
+		margin: 2.6rem 0 1rem;
+		letter-spacing: -0.01em;
+	}
+
+	.vault-detail__chips-section {
+		margin-top: 32px;
+	}
+	.vault-detail__chips-label {
+		font-family: var(--font-main);
+		font-size: 0.72rem;
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--color-text-muted);
+		margin-bottom: 12px;
+	}
+	.vault-detail__chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+	}
+
+	.vault-detail__share {
+		margin-top: 36px;
+		padding-top: 24px;
+		border-top: 1px solid var(--color-border);
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		flex-wrap: wrap;
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		color: var(--color-text-subtle);
+	}
+	.vault-detail__share kbd {
+		margin-left: 6px;
+		padding: 2px 7px;
+		border-radius: var(--radius-xs);
+		background: rgba(255, 255, 255, 0.06);
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.7rem;
+		color: rgba(255, 255, 255, 0.7);
+	}
+	.vault-detail__share-dot {
+		color: var(--color-text-dim);
+	}
+	.vault-detail__share-icons {
+		display: inline-flex;
+		gap: 8px;
+	}
+	.vault-detail__share-icons a {
+		width: 24px;
+		height: 24px;
+		border-radius: var(--radius-xs);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		font-size: 0.7rem;
+		color: var(--color-text-subtle);
+		text-decoration: none;
+		font-weight: var(--fw-semibold);
+	}
+	.vault-detail__share-icons a:hover {
+		color: var(--color-text-main);
+		border-color: var(--color-border-hover);
+	}
+
+	.vault-detail__rail {
+		position: sticky;
+		top: calc(var(--header-height, 5.9rem) + 1.5rem);
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+	}
+	.vault-detail__card {
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-radius: var(--radius-md);
+		background: #0a0b0c;
+		padding: 20px;
+	}
+	.vault-detail__stats {
+		display: flex;
+		flex-direction: column;
+		gap: 9px;
+	}
+	.vault-detail__rail-cta {
+		margin-top: 18px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+		padding: 0.65rem;
+		border-radius: var(--radius-sm);
+		background: rgba(255, 255, 255, 0.04);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		font-weight: var(--fw-semibold);
+		color: var(--color-text-main);
+		text-decoration: none;
+	}
+	.vault-detail__rail-cta:hover {
+		border-color: var(--color-border-hover);
+	}
+	.vault-detail__verified-line {
+		margin-top: 10px;
+		text-align: center;
+		font-family: var(--font-main);
+		font-size: 0.7rem;
+		color: var(--color-text-dim);
+	}
+
+	.vault-detail__rail-label {
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		font-weight: var(--fw-semibold);
+		color: var(--color-text-main);
+		margin-bottom: 14px;
+		letter-spacing: -0.005em;
+	}
+	.vault-detail__rail-grid {
+		display: grid;
+		grid-template-columns: repeat(6, 1fr);
+		gap: 6px;
+	}
+	.vault-detail__rail-logo {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		text-decoration: none;
+	}
+	.vault-detail__rail-browse {
+		margin-top: 16px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0.55rem 0.9rem;
+		border-radius: var(--radius-sm);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		color: var(--color-text-main);
+		text-decoration: none;
+	}
+	.vault-detail__rail-browse:hover {
+		border-color: var(--color-border-hover);
+	}
+
+	.vault-detail__credit {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 14px 16px;
+		border: 1px solid rgba(255, 255, 255, 0.06);
+		border-radius: var(--radius-md);
+		background: rgba(255, 255, 255, 0.01);
+	}
+	.vault-detail__credit-tick {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 18px;
+		height: 18px;
+		border-radius: 50%;
+		background: rgba(78, 201, 180, 0.13);
+		color: var(--color-brand-cyan);
+		flex-shrink: 0;
+	}
+	.vault-detail__credit-text {
+		font-family: var(--font-main);
+		font-size: 0.72rem;
+		color: var(--color-text-subtle);
+		line-height: 1.4;
+	}
+	.vault-detail__credit-text em {
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-weight: var(--fw-regular);
+		color: var(--color-text-main);
+	}
+
+	.vault-detail__more {
+		max-width: var(--container-max, 1400px);
+		margin: 96px auto 0;
+		padding: 0 var(--space-sm);
+	}
+	.vault-detail__more-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		margin-bottom: 24px;
+		gap: 12px;
+		flex-wrap: wrap;
+	}
+	.vault-detail__more-eyebrow {
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+	}
+	.vault-detail__more-link {
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		font-weight: var(--fw-semibold);
+		color: var(--color-brand-cyan);
+		text-decoration: none;
+	}
+	.vault-detail__more-grid {
+		display: grid;
+		gap: 16px;
+	}
+	.vault-detail__more-grid[data-cols='1'] {
+		grid-template-columns: 1fr;
+	}
+	.vault-detail__more-grid[data-cols='2'] {
+		grid-template-columns: repeat(2, 1fr);
+	}
+	.vault-detail__more-grid[data-cols='3'] {
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	@media (max-width: 1100px) {
+		.vault-detail__grid {
+			grid-template-columns: 1fr;
+			gap: 32px;
+		}
+		.vault-detail__rail {
+			position: static;
+		}
+		.vault-detail__more-grid[data-cols='3'] {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+	@media (max-width: 900px) {
+		.vault-detail__rail-grid {
+			grid-template-columns: repeat(5, 1fr);
+		}
+	}
+	@media (max-width: 720px) {
+		.vault-detail__name {
+			font-size: 1.9rem;
+		}
+		.vault-detail__more-grid[data-cols='2'],
+		.vault-detail__more-grid[data-cols='3'] {
+			grid-template-columns: 1fr;
+		}
+	}
+	@media (max-width: 600px) {
+		.vault-detail__hero-row {
+			align-items: flex-start;
+			gap: var(--space-sm);
+		}
+		.vault-detail__hero-left {
+			flex-wrap: wrap;
+			align-items: flex-start;
+			min-width: 0;
+		}
+		.vault-detail__name-line {
+			flex-wrap: wrap;
+		}
+		.vault-detail__actions {
+			width: 100%;
+			flex-wrap: wrap;
+		}
+		.vault-detail__ctas {
+			gap: var(--space-xs);
+		}
+		.vault-detail__ctas > a {
+			width: 100%;
+			justify-content: center;
+		}
+		.vault-detail__marquee-bar {
+			overflow: hidden;
+		}
+		.vault-detail__url {
+			min-width: 0;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+		.vault-detail__share {
+			gap: var(--space-xs);
+		}
+		.vault-detail__share-dot {
+			display: none;
+		}
+		.vault-detail__share-icons {
+			flex-wrap: wrap;
+		}
+		.vault-detail__rail-grid {
+			grid-template-columns: repeat(4, 1fr);
+		}
+	}
+	@media (max-width: 380px) {
+		.vault-detail__name {
+			font-size: 1.6rem;
+		}
+	}
+</style>

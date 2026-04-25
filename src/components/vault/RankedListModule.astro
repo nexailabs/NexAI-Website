@@ -1,0 +1,233 @@
+---
+import Logomark from './Logomark.astro';
+import VerifiedTick from './VerifiedTick.astro';
+import { getTool, type VaultRanking } from '../../data/vault';
+
+interface Props {
+	ranking: VaultRanking;
+}
+
+const { ranking } = Astro.props;
+---
+
+<section class="ranked">
+	<header class="ranked__header">
+		<div class="ranked__title-wrap">
+			<span class="ranked__icon" aria-hidden="true">
+				<svg
+					width="13"
+					height="13"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.6"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+				</svg>
+			</span>
+			<h3 class="ranked__title">{ranking.title}</h3>
+		</div>
+		<span class="ranked__subtitle">{ranking.subtitle}</span>
+	</header>
+
+	<ol class="ranked__list">
+		{
+			ranking.items.map((it, i) => {
+				const t = getTool(it.slug);
+				if (!t) return null;
+				const isLast = i === ranking.items.length - 1;
+				return (
+					<li class:list={['ranked__row', { 'ranked__row--last': isLast }]}>
+						<a href={`/apps/${t.slug}`} class="ranked__link">
+							<span class="ranked__rank">{it.rank}</span>
+							<Logomark tool={t.name} size={36} radius={8} />
+							<div class="ranked__meta">
+								<div class="ranked__name-line">
+									<span class="ranked__name">{t.name}</span>
+									{t.verified && <VerifiedTick size={12} />}
+									{it.badge && (
+										<span
+											class:list={['ranked__badge', `ranked__badge--${it.badge.toLowerCase()}`]}
+										>
+											{it.badge}
+										</span>
+									)}
+								</div>
+								<div class="ranked__note">{it.note}</div>
+							</div>
+							<span class="ranked__cta">Read →</span>
+						</a>
+					</li>
+				);
+			})
+		}
+	</ol>
+
+	<footer class="ranked__footer">
+		<a href="#" class="ranked__watch" aria-disabled="true">▶ Watch the full breakdown</a>
+	</footer>
+</section>
+
+<style>
+	.ranked {
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-radius: var(--radius-md);
+		background: #0a0b0c;
+		overflow: hidden;
+	}
+	.ranked__header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 18px 22px;
+		background: rgba(255, 255, 255, 0.02);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+		gap: 16px;
+	}
+	.ranked__title-wrap {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+	.ranked__icon {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 24px;
+		height: 24px;
+		border-radius: var(--radius-xs);
+		background: rgba(78, 201, 180, 0.13);
+		color: var(--color-brand-cyan);
+	}
+	.ranked__title {
+		font-family: var(--font-main);
+		font-size: 0.95rem;
+		font-weight: var(--fw-semibold);
+		color: var(--color-text-main);
+		margin: 0;
+		letter-spacing: -0.005em;
+	}
+	.ranked__subtitle {
+		font-family: var(--font-main);
+		font-size: 0.72rem;
+		color: var(--color-text-dim);
+	}
+
+	.ranked__list {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.ranked__row {
+		border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+	}
+	.ranked__row--last {
+		border-bottom: none;
+	}
+	.ranked__link {
+		display: grid;
+		grid-template-columns: 44px 44px 1fr auto;
+		align-items: center;
+		gap: 16px;
+		padding: 14px 22px;
+		text-decoration: none;
+		color: inherit;
+		transition: background 0.2s;
+	}
+	.ranked__link:hover {
+		background: rgba(255, 255, 255, 0.02);
+	}
+	.ranked__rank {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 28px;
+		height: 28px;
+		border-radius: 50%;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		font-weight: var(--fw-semibold);
+		color: var(--color-text-subtle);
+		font-variant-numeric: tabular-nums;
+	}
+	.ranked__meta {
+		min-width: 0;
+	}
+	.ranked__name-line {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		flex-wrap: wrap;
+	}
+	.ranked__name {
+		font-family: var(--font-main);
+		font-weight: var(--fw-semibold);
+		font-size: 0.95rem;
+		color: var(--color-text-main);
+		letter-spacing: -0.005em;
+	}
+	.ranked__badge {
+		padding: 2px 8px;
+		border-radius: var(--radius-full);
+		font-family: var(--font-main);
+		font-size: 0.65rem;
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		background: rgba(255, 255, 255, 0.06);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		color: var(--color-text-muted);
+	}
+	.ranked__badge--pick {
+		background: rgba(78, 201, 180, 0.13);
+		border-color: rgba(78, 201, 180, 0.4);
+		color: var(--color-brand-cyan);
+	}
+	.ranked__note {
+		font-family: var(--font-main);
+		font-size: 0.82rem;
+		color: var(--color-text-subtle);
+		margin-top: 3px;
+	}
+	.ranked__cta {
+		font-family: var(--font-main);
+		font-size: 0.72rem;
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+		color: var(--color-text-dim);
+	}
+	.ranked__footer {
+		padding: 14px 22px;
+		border-top: 1px solid rgba(255, 255, 255, 0.06);
+		background: rgba(255, 255, 255, 0.01);
+		display: flex;
+		justify-content: center;
+	}
+	.ranked__watch {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 7px 16px;
+		border-radius: var(--radius-full);
+		background: rgba(255, 255, 255, 0.05);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		font-weight: var(--fw-semibold);
+		color: var(--color-text-main);
+		text-decoration: none;
+	}
+
+	@media (max-width: 600px) {
+		.ranked__link {
+			grid-template-columns: 44px 44px minmax(0, 1fr);
+		}
+		.ranked__cta {
+			display: none;
+		}
+	}
+</style>

@@ -1,0 +1,885 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Eyebrow from '../../../components/vault/Eyebrow.astro';
+import AccentRule from '../../../components/vault/AccentRule.astro';
+import Logomark from '../../../components/vault/Logomark.astro';
+import VerifiedTick from '../../../components/vault/VerifiedTick.astro';
+import FreqDot from '../../../components/vault/FreqDot.astro';
+import TitleWithAccent from '../../../components/vault/TitleWithAccent.astro';
+import StackCard from '../../../components/vault/StackCard.astro';
+import CTABar from '../../../components/vault/CTABar.astro';
+import { VAULT_STACKS, VAULT_FEATURES, getTool } from '../../../data/vault';
+
+export function getStaticPaths() {
+	return VAULT_STACKS.map((s) => ({ params: { slug: s.slug }, props: { stack: s } }));
+}
+
+const { stack } = Astro.props;
+const tools = stack.items.map((i) => ({ ...i, tool: getTool(i.slug)! })).filter((x) => x.tool);
+const otherStacks = VAULT_STACKS.filter((s) => s.slug !== stack.slug);
+const showDeals = VAULT_FEATURES.showDeals && stack.deals > 0;
+const sinceTool = tools[0]?.tool;
+---
+
+<Layout title={`${stack.name} | App Vault · NexAI Labs`} description={stack.overview}>
+	<article class="stack-page" style={`--stack-accent: ${stack.accent};`}>
+		<div class="stack-page__back-row">
+			<a href="/apps" class="stack-page__back">
+				<span aria-hidden="true">←</span> App Vault
+			</a>
+		</div>
+
+		<section class="stack-page__hero-wrap">
+			<div class="stack-page__hero">
+				<div class="stack-page__hero-text">
+					<div class="stack-page__hero-eyebrow">
+						<AccentRule width={24} from="var(--stack-accent)" to="var(--color-brand-cyan)" />
+						<Eyebrow tint="accent">Stack · {stack.eyebrow}</Eyebrow>
+					</div>
+					<h1 class="stack-page__title">
+						<TitleWithAccent text={stack.titlePhrase} accent={stack.titleAccent} />
+					</h1>
+					<p class="stack-page__overview">{stack.overview}</p>
+					<div class="stack-page__meta">
+						<span><strong>{stack.items.length} apps</strong> in this stack</span>
+						{
+							showDeals && (
+								<>
+									<span class="stack-page__meta-dot">·</span>
+									<span>
+										<strong>{stack.deals} deals</strong>
+										{stack.savings && (
+											<span class="stack-page__meta-savings"> · {stack.savings} saved</span>
+										)}
+									</span>
+								</>
+							)
+						}
+						<span class="stack-page__meta-dot">·</span>
+						<span>Last reviewed <strong>last week</strong></span>
+					</div>
+				</div>
+
+				<div class="stack-page__diamond" aria-hidden="true">
+					<svg viewBox="0 0 320 200" preserveAspectRatio="none" class="stack-page__diamond-svg">
+						<defs>
+							<linearGradient id={`stack-line-${stack.slug}`} x1="0%" y1="0%" x2="100%" y2="100%">
+								<stop offset="0%" stop-color="var(--stack-accent)" stop-opacity="0.5"></stop>
+								<stop offset="100%" stop-color="var(--color-brand-cyan)" stop-opacity="0.2"></stop>
+							</linearGradient>
+						</defs>
+						<path
+							d="M 60 100 Q 160 40 260 100"
+							stroke={`url(#stack-line-${stack.slug})`}
+							stroke-width="1"
+							fill="none"
+							stroke-dasharray="3 4"></path>
+						<path
+							d="M 60 100 Q 160 160 260 100"
+							stroke={`url(#stack-line-${stack.slug})`}
+							stroke-width="1"
+							fill="none"
+							stroke-dasharray="3 4"></path>
+						<path
+							d="M 60 100 L 260 100"
+							stroke={`url(#stack-line-${stack.slug})`}
+							stroke-width="1"
+							fill="none"
+							stroke-dasharray="3 4"></path>
+					</svg>
+					{
+						tools[0]?.tool && (
+							<div class="stack-page__diamond-pos stack-page__diamond-pos--left">
+								<Logomark tool={tools[0].tool.name} size={56} radius={12} />
+							</div>
+						)
+					}
+					{
+						tools[1]?.tool && (
+							<div class="stack-page__diamond-pos stack-page__diamond-pos--top">
+								<Logomark tool={tools[1].tool.name} size={48} radius={10} />
+							</div>
+						)
+					}
+					{
+						tools[2]?.tool && (
+							<div class="stack-page__diamond-pos stack-page__diamond-pos--bottom">
+								<Logomark tool={tools[2].tool.name} size={48} radius={10} />
+							</div>
+						)
+					}
+					{
+						tools[3]?.tool && (
+							<div class="stack-page__diamond-pos stack-page__diamond-pos--right">
+								<Logomark tool={tools[3].tool.name} size={56} radius={12} />
+							</div>
+						)
+					}
+				</div>
+			</div>
+		</section>
+
+		<section class="stack-page__list-wrap">
+			<div class="stack-page__list">
+				<header class="stack-page__list-head">
+					<div class="stack-page__list-title-wrap">
+						<span class="stack-page__list-icon" aria-hidden="true">
+							<svg
+								width="13"
+								height="13"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.6"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							>
+								<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+							</svg>
+						</span>
+						<h2 class="stack-page__list-title">{stack.name} at a glance</h2>
+					</div>
+					<span class="stack-page__list-sub">
+						{stack.items.length} apps
+						{showDeals && ` · ${stack.deals} deals`}
+					</span>
+				</header>
+
+				<ol class="stack-page__rows">
+					{
+						tools.map((entry, i) => {
+							const t = entry.tool;
+							const isLast = i === tools.length - 1;
+							return (
+								<li class:list={['stack-page__row', { 'stack-page__row--last': isLast }]}>
+									<a href={`/apps/${t.slug}`} class="stack-page__row-link">
+										<span class="stack-page__rank">{entry.rank}</span>
+										<Logomark tool={t.name} size={42} radius={9} />
+										<div class="stack-page__row-meta">
+											<div class="stack-page__row-name-line">
+												<span class="stack-page__row-name">{t.name}</span>
+												{t.verified && <VerifiedTick size={13} />}
+												<span
+													class:list={[
+														'stack-page__badge',
+														`stack-page__badge--${entry.badge.toLowerCase()}`,
+													]}
+												>
+													{entry.badge}
+												</span>
+											</div>
+											<div class="stack-page__row-note">{entry.note}</div>
+										</div>
+										<div class="stack-page__row-role">{entry.role}</div>
+										<div class="stack-page__row-freq">
+											<FreqDot level={t.frequency} />
+											<span class="stack-page__row-cost">{t.cost}</span>
+										</div>
+										<span class="stack-page__row-cta">Read →</span>
+									</a>
+								</li>
+							);
+						})
+					}
+				</ol>
+
+				<footer class="stack-page__list-foot">
+					<span class="stack-page__list-credit">
+						<em>Tested in production</em> at NexAI Labs since {sinceTool?.inUseSinceShort ?? '—'}.
+					</span>
+					<a href="/blog" class="stack-page__list-cta">▶ Watch the full breakdown</a>
+				</footer>
+			</div>
+		</section>
+
+		<section class="stack-page__flow">
+			<div class="stack-page__flow-eyebrow">
+				<AccentRule width={24} />
+				<Eyebrow tint="accent">How they wire together</Eyebrow>
+			</div>
+			<h2 class="stack-page__flow-title">
+				The shape of the stack matters more than any one <em>tool</em> in it.
+			</h2>
+
+			<div class="stack-page__flow-grid" data-flow-cols={tools.length}>
+				{
+					tools.map((entry, i) => {
+						const t = entry.tool;
+						const isLast = i === tools.length - 1;
+						return (
+							<div class="stack-page__flow-block">
+								<a href={`/apps/${t.slug}`} class="stack-page__flow-link">
+									<div class="stack-page__flow-step">STEP 0{entry.rank}</div>
+									<Logomark tool={t.name} size={36} radius={8} />
+									<div>
+										<div class="stack-page__flow-role">{entry.role}</div>
+										<div class="stack-page__flow-name">{t.name}</div>
+									</div>
+									<p class="stack-page__flow-note">{entry.note}</p>
+								</a>
+								{!isLast && (
+									<span class="stack-page__flow-arrow" aria-hidden="true">
+										→
+									</span>
+								)}
+							</div>
+						);
+					})
+				}
+			</div>
+		</section>
+
+		{
+			showDeals && (
+				<section class="stack-page__deals">
+					<div class="stack-page__deals-text">
+						<Eyebrow tint="accent" class="stack-page__deals-eyebrow">
+							Stack deals
+						</Eyebrow>
+						<div class="stack-page__deals-headline">
+							{stack.savings} when you adopt <em>{stack.name.toLowerCase()}</em> together.
+						</div>
+						<p class="stack-page__deals-sub">
+							{stack.deals} of the apps in this stack offer NexAI readers a discount. Eligibility
+							verified by us, not the vendor.
+						</p>
+					</div>
+					<a href="#" class="stack-page__deals-cta">
+						Claim {stack.deals} deals →
+					</a>
+				</section>
+			)
+		}
+
+		<section class="stack-page__more">
+			<div class="stack-page__more-head">
+				<div class="stack-page__more-eyebrow">
+					<AccentRule width={24} />
+					<Eyebrow tint="accent">More stacks</Eyebrow>
+				</div>
+				<a href="/apps" class="stack-page__more-link">All stacks →</a>
+			</div>
+			<div class="stack-page__more-grid" data-cols={otherStacks.length}>
+				{otherStacks.map((s) => <StackCard stack={s} />)}
+			</div>
+		</section>
+
+		<CTABar
+			title="Want this stack installed for you?"
+			accent="installed"
+			sub="We've wired this exact stack for portfolio teams. 15-min call, no hard sell."
+		/>
+	</article>
+</Layout>
+
+<style>
+	.stack-page {
+		--stack-accent: var(--color-brand-teal);
+		padding-top: var(--header-height, 5.9rem);
+	}
+
+	.stack-page__back-row {
+		max-width: var(--container-max, 1400px);
+		margin: 0 auto;
+		padding: 32px var(--space-sm) 0;
+	}
+	.stack-page__back {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		font-family: var(--font-main);
+		font-size: var(--text-xs);
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+		color: var(--color-text-muted);
+		text-decoration: none;
+	}
+	.stack-page__back:hover {
+		color: var(--color-text-main);
+	}
+
+	.stack-page__hero-wrap {
+		max-width: var(--container-max, 1400px);
+		margin: 0 auto;
+		padding: 24px var(--space-sm) 0;
+	}
+	.stack-page__hero {
+		position: relative;
+		border-radius: var(--radius-lg);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		background:
+			radial-gradient(
+				circle at 100% 0%,
+				color-mix(in srgb, var(--stack-accent) 22%, transparent) 0%,
+				transparent 55%
+			),
+			radial-gradient(
+				circle at 0% 100%,
+				color-mix(in srgb, var(--stack-accent) 8%, transparent) 0%,
+				transparent 50%
+			),
+			#0a0b0c;
+		overflow: hidden;
+		padding: 44px 48px;
+		min-height: 280px;
+		display: grid;
+		grid-template-columns: 1.4fr 1fr;
+		gap: 32px;
+		align-items: center;
+	}
+	.stack-page__hero-eyebrow {
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+		margin-bottom: 16px;
+	}
+	.stack-page__title {
+		font-family: var(--font-accent);
+		font-weight: var(--fw-semibold);
+		font-size: clamp(2rem, 4vw, 3rem);
+		line-height: 1.05;
+		letter-spacing: -0.01em;
+		color: var(--color-text-main);
+		margin: 0;
+		text-wrap: balance;
+		max-width: 540px;
+	}
+	.stack-page__overview {
+		margin: 16px 0 24px;
+		max-width: 480px;
+		font-family: var(--font-main);
+		font-size: 1rem;
+		line-height: 1.55;
+		color: var(--color-text-muted);
+	}
+	.stack-page__meta {
+		display: flex;
+		align-items: center;
+		gap: 24px;
+		flex-wrap: wrap;
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		color: var(--color-text-subtle);
+	}
+	.stack-page__meta strong {
+		color: var(--color-text-main);
+		font-weight: var(--fw-semibold);
+	}
+	.stack-page__meta-dot {
+		color: var(--color-text-dim);
+	}
+	.stack-page__meta-savings {
+		color: var(--color-brand-cyan);
+	}
+
+	.stack-page__diamond {
+		position: relative;
+		height: 200px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.stack-page__diamond-svg {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+	}
+	.stack-page__diamond-pos {
+		position: absolute;
+	}
+	.stack-page__diamond-pos--left {
+		left: 8%;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+	.stack-page__diamond-pos--top {
+		left: 40%;
+		top: 15%;
+		transform: translateX(-50%);
+	}
+	.stack-page__diamond-pos--bottom {
+		left: 40%;
+		bottom: 15%;
+		transform: translateX(-50%);
+	}
+	.stack-page__diamond-pos--right {
+		right: 8%;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
+	.stack-page__list-wrap {
+		max-width: var(--container-max, 1400px);
+		margin: 64px auto 0;
+		padding: 0 var(--space-sm);
+	}
+	.stack-page__list {
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-radius: var(--radius-lg);
+		background: #0a0b0c;
+		overflow: hidden;
+	}
+	.stack-page__list-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 20px 26px;
+		background: rgba(255, 255, 255, 0.02);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+		gap: 16px;
+		flex-wrap: wrap;
+	}
+	.stack-page__list-title-wrap {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+	}
+	.stack-page__list-icon {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 28px;
+		height: 28px;
+		border-radius: var(--radius-sm);
+		background: color-mix(in srgb, var(--stack-accent) 20%, transparent);
+		color: var(--color-brand-cyan);
+	}
+	.stack-page__list-title {
+		font-family: var(--font-main);
+		font-size: 1rem;
+		font-weight: var(--fw-semibold);
+		color: var(--color-text-main);
+		margin: 0;
+		letter-spacing: -0.005em;
+	}
+	.stack-page__list-sub {
+		font-family: var(--font-main);
+		font-size: 0.74rem;
+		color: var(--color-text-dim);
+	}
+
+	.stack-page__rows {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.stack-page__row {
+		border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+	}
+	.stack-page__row--last {
+		border-bottom: none;
+	}
+	.stack-page__row-link {
+		display: grid;
+		grid-template-columns: 52px 52px 1fr 130px 110px 90px;
+		align-items: center;
+		gap: 18px;
+		padding: 18px 26px;
+		text-decoration: none;
+		color: inherit;
+		transition: background 0.2s;
+	}
+	.stack-page__row-link:hover {
+		background: rgba(255, 255, 255, 0.02);
+	}
+	.stack-page__rank {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 32px;
+		height: 32px;
+		border-radius: 50%;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		font-family: var(--font-main);
+		font-size: 0.8rem;
+		font-weight: var(--fw-semibold);
+		color: var(--color-text-subtle);
+		font-variant-numeric: tabular-nums;
+	}
+	.stack-page__row-meta {
+		min-width: 0;
+	}
+	.stack-page__row-name-line {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		flex-wrap: wrap;
+	}
+	.stack-page__row-name {
+		font-family: var(--font-main);
+		font-weight: var(--fw-semibold);
+		font-size: 1rem;
+		color: var(--color-text-main);
+		letter-spacing: -0.005em;
+	}
+	.stack-page__badge {
+		padding: 2px 8px;
+		border-radius: var(--radius-full);
+		font-family: var(--font-main);
+		font-size: 0.64rem;
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		background: rgba(255, 255, 255, 0.06);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		color: var(--color-text-muted);
+	}
+	.stack-page__badge--core {
+		background: rgba(78, 201, 180, 0.13);
+		border-color: rgba(78, 201, 180, 0.4);
+		color: var(--color-brand-cyan);
+	}
+	.stack-page__row-note {
+		font-family: var(--font-main);
+		font-size: 0.84rem;
+		color: var(--color-text-muted);
+		margin-top: 4px;
+		line-height: 1.45;
+	}
+	.stack-page__row-role {
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-weight: var(--fw-regular);
+		font-size: 1.05rem;
+		color: rgba(255, 255, 255, 0.78);
+		letter-spacing: -0.005em;
+	}
+	.stack-page__row-freq {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+	.stack-page__row-cost {
+		font-family: var(--font-main);
+		font-size: 0.72rem;
+		color: var(--color-text-dim);
+	}
+	.stack-page__row-cta {
+		justify-self: end;
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		font-family: var(--font-main);
+		font-size: 0.72rem;
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--color-text-dim);
+	}
+
+	.stack-page__list-foot {
+		padding: 16px 26px;
+		border-top: 1px solid rgba(255, 255, 255, 0.06);
+		background: rgba(255, 255, 255, 0.01);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 16px;
+		flex-wrap: wrap;
+	}
+	.stack-page__list-credit {
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		color: var(--color-text-subtle);
+	}
+	.stack-page__list-credit em {
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-weight: var(--fw-regular);
+		color: rgba(255, 255, 255, 0.85);
+	}
+	.stack-page__list-cta {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 8px 16px;
+		border-radius: var(--radius-full);
+		background: rgba(255, 255, 255, 0.05);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		font-weight: var(--fw-semibold);
+		color: var(--color-text-main);
+		text-decoration: none;
+	}
+
+	.stack-page__flow {
+		max-width: var(--container-max, 1400px);
+		margin: 96px auto 0;
+		padding: 0 var(--space-sm);
+	}
+	.stack-page__flow-eyebrow {
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+		margin-bottom: 20px;
+	}
+	.stack-page__flow-title {
+		font-family: var(--font-accent);
+		font-weight: var(--fw-semibold);
+		font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+		color: var(--color-text-main);
+		margin: 0 0 28px;
+		letter-spacing: -0.01em;
+		line-height: var(--lh-heading);
+		max-width: 700px;
+		text-wrap: balance;
+	}
+	.stack-page__flow-title em {
+		font-style: italic;
+		font-weight: var(--fw-regular);
+	}
+
+	.stack-page__flow-grid {
+		display: grid;
+		gap: 14px;
+		align-items: stretch;
+	}
+	.stack-page__flow-grid[data-flow-cols='4'] {
+		grid-template-columns: repeat(4, 1fr);
+	}
+	.stack-page__flow-grid[data-flow-cols='3'] {
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	.stack-page__flow-block {
+		position: relative;
+	}
+	.stack-page__flow-link {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		padding: 20px;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-radius: var(--radius-md);
+		background: #0a0b0c;
+		text-decoration: none;
+		color: inherit;
+		height: 100%;
+		transition: border-color 0.2s;
+	}
+	.stack-page__flow-link:hover {
+		border-color: var(--color-border-hover);
+	}
+	.stack-page__flow-step {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.7rem;
+		color: var(--color-text-dim);
+		letter-spacing: 0.1em;
+	}
+	.stack-page__flow-role {
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-weight: var(--fw-regular);
+		font-size: 0.95rem;
+		color: var(--color-brand-cyan);
+		letter-spacing: -0.005em;
+		margin-bottom: 4px;
+	}
+	.stack-page__flow-name {
+		font-family: var(--font-main);
+		font-size: 1rem;
+		font-weight: var(--fw-semibold);
+		color: var(--color-text-main);
+		letter-spacing: -0.005em;
+	}
+	.stack-page__flow-note {
+		margin: 0;
+		font-family: var(--font-main);
+		font-size: 0.84rem;
+		color: var(--color-text-muted);
+		line-height: 1.5;
+	}
+	.stack-page__flow-arrow {
+		position: absolute;
+		right: -14px;
+		top: 50%;
+		transform: translateY(-50%);
+		color: var(--color-text-dim);
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 1rem;
+		pointer-events: none;
+		z-index: 1;
+	}
+
+	.stack-page__deals {
+		max-width: var(--container-max, 1400px);
+		margin: 64px auto 0;
+		padding: 28px 32px;
+		border: 1px solid rgba(78, 201, 180, 0.2);
+		border-radius: var(--radius-md);
+		background: linear-gradient(135deg, rgba(78, 201, 180, 0.04), transparent);
+		display: grid;
+		grid-template-columns: 1fr auto;
+		align-items: center;
+		gap: 24px;
+	}
+	.stack-page__deals-eyebrow {
+		display: block;
+		margin-bottom: 8px;
+	}
+	.stack-page__deals-headline {
+		font-family: var(--font-accent);
+		font-weight: var(--fw-semibold);
+		font-size: 1.4rem;
+		color: var(--color-text-main);
+		letter-spacing: -0.005em;
+		margin-bottom: 4px;
+	}
+	.stack-page__deals-headline em {
+		font-style: italic;
+		font-weight: var(--fw-regular);
+	}
+	.stack-page__deals-sub {
+		margin: 0;
+		font-family: var(--font-main);
+		font-size: 0.86rem;
+		color: var(--color-text-subtle);
+		line-height: 1.5;
+	}
+	.stack-page__deals-cta {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 0.8rem 1.4rem;
+		border-radius: var(--radius-full);
+		background: var(--color-text-main);
+		color: var(--color-bg);
+		font-family: var(--font-main);
+		font-size: 0.84rem;
+		font-weight: var(--fw-semibold);
+		text-decoration: none;
+	}
+
+	.stack-page__more {
+		max-width: var(--container-max, 1400px);
+		margin: 96px auto 0;
+		padding: 0 var(--space-sm);
+	}
+	.stack-page__more-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		margin-bottom: 22px;
+		gap: 12px;
+		flex-wrap: wrap;
+	}
+	.stack-page__more-eyebrow {
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+	}
+	.stack-page__more-link {
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		font-weight: var(--fw-semibold);
+		color: var(--color-brand-cyan);
+		text-decoration: none;
+	}
+	.stack-page__more-grid {
+		display: grid;
+		gap: 16px;
+	}
+	.stack-page__more-grid[data-cols='2'] {
+		grid-template-columns: repeat(2, 1fr);
+	}
+	.stack-page__more-grid[data-cols='1'] {
+		grid-template-columns: 1fr;
+	}
+
+	@media (max-width: 1100px) {
+		.stack-page__hero {
+			grid-template-columns: 1fr;
+			padding: 32px 28px;
+		}
+		.stack-page__diamond {
+			height: 240px;
+		}
+		.stack-page__row-link {
+			grid-template-columns: 44px 44px minmax(0, 1fr);
+			gap: 14px;
+			align-items: start;
+		}
+		.stack-page__row-link > :nth-child(2) {
+			grid-column: 2;
+			grid-row: 1 / span 4;
+		}
+		.stack-page__row-meta {
+			grid-column: 3;
+			grid-row: 1;
+		}
+		.stack-page__row-role {
+			grid-column: 3;
+			grid-row: 2;
+		}
+		.stack-page__row-freq {
+			grid-column: 3;
+			grid-row: 3;
+			flex-direction: row;
+			align-items: center;
+			gap: var(--space-xs);
+		}
+		.stack-page__row-cta {
+			grid-column: 3;
+			grid-row: 4;
+			justify-self: start;
+		}
+		.stack-page__flow-grid[data-flow-cols='4'],
+		.stack-page__flow-grid[data-flow-cols='3'] {
+			grid-template-columns: repeat(2, 1fr);
+		}
+		.stack-page__flow-arrow {
+			display: none;
+		}
+	}
+	@media (max-width: 720px) {
+		.stack-page__hero {
+			padding: 24px 20px;
+		}
+		.stack-page__flow-grid[data-flow-cols='4'],
+		.stack-page__flow-grid[data-flow-cols='3'] {
+			grid-template-columns: 1fr;
+		}
+		.stack-page__deals {
+			grid-template-columns: 1fr;
+		}
+		.stack-page__more-grid[data-cols='2'] {
+			grid-template-columns: 1fr;
+		}
+	}
+	@media (max-width: 600px) {
+		.stack-page__diamond {
+			height: auto;
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			flex-wrap: wrap;
+			gap: var(--space-sm);
+			padding-top: var(--space-sm);
+		}
+		.stack-page__diamond-svg {
+			display: none;
+		}
+		.stack-page__diamond-pos {
+			position: static;
+			transform: none;
+		}
+		.stack-page__row-link {
+			align-items: center;
+		}
+		.stack-page__row-link > :nth-child(2) {
+			grid-row: 1;
+		}
+		.stack-page__row-meta {
+			grid-row: 1;
+		}
+		.stack-page__row-role,
+		.stack-page__row-freq,
+		.stack-page__row-cta {
+			display: none;
+		}
+	}
+</style>
