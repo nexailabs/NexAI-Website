@@ -1,0 +1,517 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Eyebrow from '../../components/vault/Eyebrow.astro';
+import ArtifactCard from '../../components/promptHub/ArtifactCard.astro';
+import PromptHubHero from '../../components/promptHub/PromptHubHero.astro';
+import FilterStrip from '../../components/promptHub/FilterStrip.astro';
+import {
+	ARTIFACTS,
+	PROMPT_CATEGORIES,
+	type ArtifactType,
+	type PromptArtifact,
+} from '../../data/promptHub';
+
+const counts = {
+	all: ARTIFACTS.length,
+	prompt: ARTIFACTS.filter((a) => a.type === 'prompt').length,
+	sop: ARTIFACTS.filter((a) => a.type === 'sop').length,
+	skill: ARTIFACTS.filter((a) => a.type === 'skill').length,
+};
+
+const totalRuns = ARTIFACTS.reduce((sum, a) => sum + (a.uses || 0), 0);
+const heroSample =
+	(ARTIFACTS.find((a) => a.slug === 'signal-cold-one-liner') as PromptArtifact | undefined) ??
+	(ARTIFACTS.find((a) => a.type === 'prompt') as PromptArtifact);
+
+const topRunning = [...ARTIFACTS].sort((a, b) => b.uses - a.uses).slice(0, 3);
+
+// Pre-compute per-(type,category) counts so the sidebar can update without recomputing in JS.
+type CountTable = Record<string, Record<string, number>>;
+const catCounts: CountTable = {};
+const allTypes: (string | ArtifactType)[] = ['all', 'prompt', 'sop', 'skill'];
+for (const t of allTypes) {
+	const base = t === 'all' ? ARTIFACTS : ARTIFACTS.filter((a) => a.type === t);
+	const row: Record<string, number> = { All: base.length };
+	for (const cat of PROMPT_CATEGORIES) {
+		row[cat] = base.filter((a) => a.category === cat).length;
+	}
+	catCounts[t as string] = row;
+}
+
+const sortedAll = [...ARTIFACTS].sort((a, b) => {
+	if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
+	return b.uses - a.uses;
+});
+---
+
+<Layout
+	title="Prompt Hub | NexAI Labs"
+	description="Prompts, runbooks, and skills that survived a month of real work. Some free, some paid via Razorpay. None theoretical."
+>
+	<main class="ph-index">
+		<PromptHubHero counts={counts} totalRuns={totalRuns} sample={heroSample} />
+
+		<FilterStrip counts={counts} topRunning={topRunning} />
+
+		<div class="ph-index__layout">
+			<aside class="ph-index__sidebar">
+				<div class="ph-index__search">
+					<svg
+						width="14"
+						height="14"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<circle cx="11" cy="11" r="7"></circle>
+						<line x1="21" y1="21" x2="16.5" y2="16.5"></line>
+					</svg>
+					<input type="search" placeholder="Search" data-search-input />
+				</div>
+
+				<Eyebrow tint="dim">Categories</Eyebrow>
+				<div class="ph-index__cats">
+					<button
+						type="button"
+						class="ph-index__cat ph-index__cat--active"
+						data-category="All"
+						aria-pressed="true"
+					>
+						<span>All</span>
+						<span class="ph-index__cat-n" data-cat-count="All">{counts.all}</span>
+					</button>
+					{
+						PROMPT_CATEGORIES.map((cat) => (
+							<button type="button" class="ph-index__cat" data-category={cat} aria-pressed="false">
+								<span>{cat}</span>
+								<span class="ph-index__cat-n" data-cat-count={cat}>
+									{catCounts.all[cat]}
+								</span>
+							</button>
+						))
+					}
+				</div>
+
+				<div class="ph-index__submit">
+					<p class="ph-index__submit-h">Have one that earned its keep?</p>
+					<p class="ph-index__submit-p">Send the artifact + a note on what it replaced.</p>
+					<a href="mailto:hello@nexailabs.com?subject=Prompt%20Hub%20submission">Submit →</a>
+				</div>
+			</aside>
+
+			<section class="ph-index__feed">
+				<div class="ph-index__feed-head">
+					<h2 class="ph-index__feed-title" data-feed-title>Everything</h2>
+					<span class="ph-index__feed-count" data-feed-count>{sortedAll.length}</span>
+					<span class="ph-index__feed-spacer"></span>
+					<span class="ph-index__feed-order">
+						Sorted by <span data-order-label>most used</span>
+					</span>
+				</div>
+
+				<div class="ph-index__list" data-feed-list>
+					{
+						sortedAll.map((a) => (
+							<div
+								class="ph-index__item"
+								data-artifact
+								data-type={a.type}
+								data-category={a.category}
+								data-paid={a.price > 0 ? 'true' : 'false'}
+								data-uses={a.uses}
+								data-pinned={a.pinned ? '1' : '0'}
+								data-title={a.title.toLowerCase()}
+								data-desc={a.description.toLowerCase()}
+								data-name-az={a.title}
+							>
+								<ArtifactCard a={a} />
+							</div>
+						))
+					}
+				</div>
+
+				<div class="ph-index__empty" data-feed-empty hidden>
+					<Eyebrow tint="dim">0 results</Eyebrow>
+					<p class="ph-index__empty-line">
+						Nothing in this drawer yet — we only publish artifacts after they've shipped real work
+						for a month.
+					</p>
+					<a
+						href="mailto:hello@nexailabs.com?subject=Prompt%20Hub%20submission"
+						class="ph-index__empty-cta"
+					>
+						Submit your own →
+					</a>
+				</div>
+
+				<p class="ph-index__credit" data-feed-credit>
+					Every artifact here ran on real client work. None are theoretical, none are demos.
+				</p>
+			</section>
+		</div>
+	</main>
+</Layout>
+
+<script>
+	type Order = 'Most used' | 'Newest' | 'A → Z';
+
+	function init() {
+		const root = document.querySelector<HTMLElement>('.ph-index');
+		if (!root || root.dataset.ready) return;
+		root.dataset.ready = '1';
+
+		const items = Array.from(root.querySelectorAll<HTMLElement>('[data-artifact]'));
+		const list = root.querySelector<HTMLElement>('[data-feed-list]')!;
+		const emptyEl = root.querySelector<HTMLElement>('[data-feed-empty]')!;
+		const creditEl = root.querySelector<HTMLElement>('[data-feed-credit]')!;
+		const countEl = root.querySelector<HTMLElement>('[data-feed-count]')!;
+		const titleEl = root.querySelector<HTMLElement>('[data-feed-title]')!;
+		const orderLabel = root.querySelector<HTMLElement>('[data-order-label]')!;
+
+		const state = {
+			type: 'all' as 'all' | 'prompt' | 'sop' | 'skill',
+			category: 'All' as string,
+			query: '',
+			paidOnly: false,
+			order: 'Most used' as Order,
+		};
+
+		const typeLabels: Record<string, string> = {
+			all: 'Everything',
+			prompt: 'Prompts',
+			sop: 'SOPs',
+			skill: 'Skills',
+		};
+
+		function update() {
+			const q = state.query.trim().toLowerCase();
+			const matches = items.filter((el) => {
+				if (state.type !== 'all' && el.dataset.type !== state.type) return false;
+				if (state.category !== 'All' && el.dataset.category !== state.category) return false;
+				if (state.paidOnly && el.dataset.paid !== 'true') return false;
+				if (q) {
+					const t = el.dataset.title || '';
+					const d = el.dataset.desc || '';
+					if (!t.includes(q) && !d.includes(q)) return false;
+				}
+				return true;
+			});
+
+			matches.sort((a, b) => {
+				if (state.order === 'A → Z') {
+					return (a.dataset.nameAz || '').localeCompare(b.dataset.nameAz || '');
+				}
+				if (state.order === 'Newest') {
+					return items.indexOf(b) - items.indexOf(a);
+				}
+				const ap = a.dataset.pinned === '1' ? 1 : 0;
+				const bp = b.dataset.pinned === '1' ? 1 : 0;
+				if (ap !== bp) return bp - ap;
+				return Number(b.dataset.uses || 0) - Number(a.dataset.uses || 0);
+			});
+
+			matches.forEach((el) => list.appendChild(el));
+			items.forEach((el) => {
+				el.style.display = matches.includes(el) ? '' : 'none';
+			});
+
+			const empty = matches.length === 0;
+			emptyEl.hidden = !empty;
+			creditEl.style.display = empty ? 'none' : '';
+			countEl.textContent = String(matches.length);
+
+			let title = typeLabels[state.type];
+			if (state.category !== 'All') title += ` · ${state.category}`;
+			titleEl.textContent = title;
+			orderLabel.textContent = state.order.toLowerCase();
+
+			updateCategoryCounts();
+		}
+
+		function updateCategoryCounts() {
+			const cats = root!.querySelectorAll<HTMLElement>('[data-cat-count]');
+			cats.forEach((el) => {
+				const cat = el.getAttribute('data-cat-count')!;
+				let n = 0;
+				items.forEach((it) => {
+					if (state.type !== 'all' && it.dataset.type !== state.type) return;
+					if (state.paidOnly && it.dataset.paid !== 'true') return;
+					if (cat !== 'All' && it.dataset.category !== cat) return;
+					n++;
+				});
+				el.textContent = String(n);
+			});
+		}
+
+		document.addEventListener('phstrip:type', (e) => {
+			const detail = (e as CustomEvent<{ type: typeof state.type }>).detail;
+			state.type = detail.type;
+			update();
+		});
+
+		root.querySelectorAll<HTMLButtonElement>('[data-category]').forEach((btn) => {
+			btn.addEventListener('click', () => {
+				state.category = btn.getAttribute('data-category')!;
+				root.querySelectorAll<HTMLElement>('[data-category]').forEach((b) => {
+					const active = b === btn;
+					b.classList.toggle('ph-index__cat--active', active);
+					b.setAttribute('aria-pressed', active ? 'true' : 'false');
+				});
+				update();
+			});
+		});
+
+		document.addEventListener('phstrip:order', (e) => {
+			const detail = (e as CustomEvent<{ order: Order }>).detail;
+			state.order = detail.order;
+			update();
+		});
+
+		document.addEventListener('phstrip:paid', (e) => {
+			const detail = (e as CustomEvent<{ paidOnly: boolean }>).detail;
+			state.paidOnly = detail.paidOnly;
+			update();
+		});
+
+		const search = root.querySelector<HTMLInputElement>('[data-search-input]');
+		search?.addEventListener('input', () => {
+			state.query = search.value;
+			update();
+		});
+
+		update();
+	}
+
+	init();
+	document.addEventListener('astro:page-load', init);
+</script>
+
+<style>
+	.ph-index {
+		max-width: 1280px;
+		margin: 0 auto;
+		padding: calc(var(--header-height, 5.9rem) + 32px) var(--space-sm) 80px;
+	}
+
+	.ph-index__layout {
+		display: grid;
+		grid-template-columns: 220px 1fr;
+		gap: 56px;
+		align-items: start;
+	}
+	.ph-index__sidebar {
+		position: sticky;
+		top: calc(var(--header-height, 5.9rem) + 24px);
+	}
+	.ph-index__search {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 10px 12px;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		border-radius: 6px;
+		background: rgba(255, 255, 255, 0.02);
+		margin-bottom: 28px;
+		color: var(--color-text-dim);
+	}
+	.ph-index__search input {
+		flex: 1;
+		background: transparent;
+		border: none;
+		outline: none;
+		font-family: var(--font-main);
+		font-size: 0.84rem;
+		color: var(--color-text-main);
+	}
+	.ph-index__cats {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		margin-top: 14px;
+		margin-bottom: 32px;
+	}
+	.ph-index__cat {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 7px 10px;
+		background: transparent;
+		border: none;
+		border-left: 2px solid transparent;
+		cursor: pointer;
+		text-align: left;
+		font-family: var(--font-main);
+		font-size: 0.85rem;
+		color: var(--color-text-muted);
+	}
+	.ph-index__cat--active {
+		background: rgba(78, 201, 180, 0.06);
+		border-left-color: var(--color-brand-cyan);
+		color: var(--color-text-main);
+		font-weight: 500;
+	}
+	.ph-index__cat-n {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.7rem;
+		color: var(--color-text-dim);
+	}
+	.ph-index__cat--active .ph-index__cat-n {
+		color: var(--color-brand-cyan);
+	}
+	.ph-index__submit {
+		padding: 16px;
+		border: 1px solid rgba(255, 255, 255, 0.06);
+		border-radius: 8px;
+		background: rgba(255, 255, 255, 0.012);
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+	.ph-index__submit-h {
+		margin: 0;
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-size: 1.05rem;
+		line-height: 1.25;
+		color: var(--color-text-main);
+	}
+	.ph-index__submit-p {
+		margin: 0;
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		line-height: 1.5;
+		color: var(--color-text-muted);
+	}
+	.ph-index__submit a {
+		font-family: var(--font-main);
+		font-size: 0.8rem;
+		color: var(--color-brand-cyan);
+		text-decoration: none;
+		font-weight: 500;
+	}
+
+	.ph-index__feed-head {
+		display: flex;
+		align-items: baseline;
+		gap: 12px;
+		margin-bottom: 22px;
+		flex-wrap: wrap;
+	}
+	.ph-index__feed-title {
+		margin: 0;
+		font-family: var(--font-accent);
+		font-weight: 500;
+		font-size: 1.5rem;
+		letter-spacing: -0.01em;
+		color: var(--color-text-main);
+	}
+	.ph-index__feed-count {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.78rem;
+		color: var(--color-text-dim);
+	}
+	.ph-index__feed-spacer {
+		flex: 1;
+	}
+	.ph-index__feed-order {
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		color: var(--color-text-dim);
+	}
+	.ph-index__feed-order span {
+		color: var(--color-text-subtle);
+	}
+	.ph-index__list {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+	}
+	.ph-index__item {
+		display: block;
+	}
+
+	.ph-index__empty {
+		padding: 72px 56px;
+		border: 1px dashed rgba(255, 255, 255, 0.1);
+		border-radius: 10px;
+		text-align: center;
+		background: rgba(255, 255, 255, 0.012);
+	}
+	.ph-index__empty-line {
+		margin: 18px auto 16px;
+		max-width: 480px;
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-size: 1.6rem;
+		line-height: 1.3;
+		color: var(--color-text-subtle);
+		letter-spacing: -0.01em;
+	}
+	.ph-index__empty-cta {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 10px 18px;
+		background: #fff;
+		color: #0a0b0c;
+		border-radius: var(--radius-full);
+		font-family: var(--font-main);
+		font-size: 0.82rem;
+		font-weight: 500;
+		text-decoration: none;
+		margin-top: 8px;
+	}
+	.ph-index__credit {
+		margin: 64px auto 80px;
+		max-width: 540px;
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-size: 1.15rem;
+		line-height: 1.4;
+		color: var(--color-text-dim);
+		text-align: center;
+	}
+
+	@media (max-width: 1100px) {
+		.ph-index__layout {
+			grid-template-columns: 200px 1fr;
+			gap: 36px;
+		}
+	}
+	@media (max-width: 900px) {
+		.ph-index__layout {
+			grid-template-columns: 1fr;
+			gap: 32px;
+		}
+		.ph-index__sidebar {
+			position: static;
+		}
+		.ph-index__cats {
+			flex-direction: row;
+			flex-wrap: wrap;
+			gap: 8px;
+		}
+		.ph-index__cat {
+			border-left: none;
+			border: 1px solid rgba(255, 255, 255, 0.08);
+			border-radius: var(--radius-full);
+			padding: 6px 12px;
+		}
+		.ph-index__cat--active {
+			border-color: rgba(78, 201, 180, 0.4);
+			background: rgba(78, 201, 180, 0.08);
+		}
+	}
+	@media (max-width: 600px) {
+		.ph-index__empty {
+			padding: 48px 24px;
+		}
+		.ph-index__empty-line {
+			font-size: 1.3rem;
+		}
+	}
+</style>

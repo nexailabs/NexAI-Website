@@ -1,0 +1,23 @@
+# Cloudflare Pages config for the NexAI Labs marketing site.
+# Astro builds in `output: 'static'` mode; Pages picks up the `dist/`
+# directory plus any Pages Functions under `functions/`.
+#
+# To create the KV namespaces this project needs (run from this repo root):
+#   wrangler kv:namespace create PROMPT_HUB_KV
+#   wrangler kv:namespace create PROMPT_HUB_KV --preview
+#
+# Paste the printed `id` and `preview_id` values into the binding below,
+# then commit. Cloudflare Pages will read this file on its next deploy.
+#
+# (Alternative path: bind the namespace via the Pages dashboard at
+#  Project → Settings → Functions → KV namespace bindings. Either works;
+#  wrangler.toml is preferred so the binding is version-controlled.)
+
+name = "nexailabs-website"
+compatibility_date = "2025-01-01"
+pages_build_output_dir = "dist"
+
+[[kv_namespaces]]
+binding = "PROMPT_HUB_KV"
+id = "c2b8e126dd6849ca93118dbd0ef3a656"
+preview_id = "5adb3b544a3d4cbb963a3806d393534f"

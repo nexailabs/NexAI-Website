@@ -1,0 +1,207 @@
+---
+interface Props {
+	seed?: number;
+	height?: string;
+	class?: string;
+}
+
+const { seed = 0, height = '100%', class: className = '' } = Astro.props;
+const s = ((seed % 6) + 6) % 6;
+const uid = `c${s}-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<div class:list={['blog-cover', className]} style={`height: ${height};`}>
+	{
+		s === 0 && (
+			<svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+				<defs>
+					<radialGradient id={`${uid}a`} cx="30%" cy="35%" r="75%">
+						<stop offset="0%" stop-color="#2a2a2a" />
+						<stop offset="100%" stop-color="#0a0a0a" />
+					</radialGradient>
+					<linearGradient id={`${uid}b`} x1="0%" y1="0%" x2="100%" y2="100%">
+						<stop offset="0%" stop-color="#4a4a4a" stop-opacity="0.9" />
+						<stop offset="100%" stop-color="#1a1a1a" stop-opacity="0.3" />
+					</linearGradient>
+				</defs>
+				<rect width="400" height="400" fill={`url(#${uid}a)`} />
+				<path
+					d="M -20 240 Q 100 180 180 260 T 420 220 L 420 420 L -20 420 Z"
+					fill={`url(#${uid}b)`}
+					opacity="0.85"
+				/>
+				<path
+					d="M -20 280 Q 120 220 200 300 T 420 260 L 420 420 L -20 420 Z"
+					fill="#0a0a0a"
+					opacity="0.6"
+				/>
+			</svg>
+		)
+	}
+
+	{
+		s === 1 && (
+			<svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+				<defs>
+					<linearGradient id={`${uid}a`} x1="0%" y1="0%" x2="100%" y2="100%">
+						<stop offset="0%" stop-color="#1f1f1f" />
+						<stop offset="100%" stop-color="#080808" />
+					</linearGradient>
+				</defs>
+				<rect width="400" height="400" fill={`url(#${uid}a)`} />
+				{Array.from({ length: 12 }).map((_, i) => (
+					<line
+						x1="0"
+						y1={i * 35 + 20}
+						x2="400"
+						y2={i * 35 + 20}
+						stroke="#2a2a2a"
+						stroke-width="0.5"
+					/>
+				))}
+				{Array.from({ length: 12 }).map((_, i) => (
+					<line
+						x1={i * 35 + 20}
+						y1="0"
+						x2={i * 35 + 20}
+						y2="400"
+						stroke="#2a2a2a"
+						stroke-width="0.5"
+					/>
+				))}
+				<circle
+					cx="200"
+					cy="200"
+					r="90"
+					fill="none"
+					stroke="#e5e5e5"
+					stroke-width="1"
+					opacity="0.8"
+				/>
+				<circle
+					cx="200"
+					cy="200"
+					r="55"
+					fill="none"
+					stroke="#e5e5e5"
+					stroke-width="0.6"
+					opacity="0.5"
+				/>
+				<line
+					x1="110"
+					y1="200"
+					x2="290"
+					y2="200"
+					stroke="#e5e5e5"
+					stroke-width="0.4"
+					opacity="0.4"
+				/>
+			</svg>
+		)
+	}
+
+	{
+		s === 2 && (
+			<svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+				<defs>
+					<linearGradient id={`${uid}a`} x1="0%" y1="0%" x2="0%" y2="100%">
+						<stop offset="0%" stop-color="#3a3a3a" />
+						<stop offset="100%" stop-color="#0f0f0f" />
+					</linearGradient>
+				</defs>
+				<rect width="400" height="400" fill={`url(#${uid}a)`} />
+				{Array.from({ length: 8 }).map((_, i) => (
+					<path
+						d={`M -20 ${60 + i * 42} Q ${80 + i * 10} ${40 + i * 42} 200 ${80 + i * 42} T 420 ${60 + i * 42}`}
+						fill="none"
+						stroke="#5a5a5a"
+						stroke-width="0.8"
+						opacity={0.5 + i * 0.04}
+					/>
+				))}
+			</svg>
+		)
+	}
+
+	{
+		s === 3 && (
+			<svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+				<defs>
+					<linearGradient id={`${uid}a`} x1="0%" y1="0%" x2="100%" y2="100%">
+						<stop offset="0%" stop-color="#0a0a0a" />
+						<stop offset="100%" stop-color="#2a2a2a" />
+					</linearGradient>
+				</defs>
+				<rect width="400" height="400" fill={`url(#${uid}a)`} />
+				<ellipse cx="200" cy="260" rx="130" ry="40" fill="#3a3a3a" opacity="0.8" />
+				<ellipse cx="200" cy="220" rx="110" ry="35" fill="#4a4a4a" opacity="0.7" />
+				<ellipse cx="200" cy="180" rx="90" ry="30" fill="#5a5a5a" opacity="0.6" />
+				<ellipse cx="200" cy="145" rx="70" ry="24" fill="#6a6a6a" opacity="0.5" />
+			</svg>
+		)
+	}
+
+	{
+		s === 4 && (
+			<svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+				<rect width="400" height="400" fill="#0a0a0a" />
+				<text
+					x="200"
+					y="215"
+					fill="#e5e5e5"
+					font-family="var(--font-main), Inter, sans-serif"
+					font-size="30"
+					font-weight="500"
+					text-anchor="middle"
+					letter-spacing="-0.5"
+				>
+					Finance Agent
+				</text>
+				<text
+					x="200"
+					y="245"
+					fill="#6a6a6a"
+					font-family="ui-monospace, monospace"
+					font-size="11"
+					text-anchor="middle"
+					letter-spacing="2"
+				>
+					v2.4 · APR 2026
+				</text>
+			</svg>
+		)
+	}
+
+	{
+		s === 5 && (
+			<svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+				<rect width="400" height="400" fill="#1a1a1a" />
+				<path d="M 0 0 L 400 0 L 0 400 Z" fill="#2e2e2e" />
+				<circle
+					cx="280"
+					cy="280"
+					r="80"
+					fill="none"
+					stroke="#e5e5e5"
+					stroke-width="1"
+					opacity="0.6"
+				/>
+			</svg>
+		)
+	}
+</div>
+
+<style>
+	.blog-cover {
+		position: relative;
+		overflow: hidden;
+		background: var(--color-surface);
+		border-radius: var(--radius-xs);
+		width: 100%;
+	}
+	.blog-cover svg {
+		width: 100%;
+		height: 100%;
+		display: block;
+	}
+</style>

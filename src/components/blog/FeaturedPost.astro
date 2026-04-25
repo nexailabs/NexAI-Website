@@ -1,0 +1,142 @@
+---
+import Cover from './Cover.astro';
+import Meta from './Meta.astro';
+import MonoLabel from './MonoLabel.astro';
+import AccentRule from './AccentRule.astro';
+import EmphasisText from './EmphasisText.astro';
+
+interface Props {
+	href: string;
+	title: string;
+	emphasis?: string;
+	excerpt: string;
+	category: string;
+	date: string;
+	read: string;
+	seed: number;
+}
+
+const { href, title, emphasis, excerpt, category, date, read, seed } = Astro.props;
+---
+
+<div class="featured">
+	<a href={href} class="featured__cover" aria-label={`Read: ${title}`}>
+		<Cover seed={seed} height="520px" />
+	</a>
+	<div class="featured__body">
+		<div class="featured__eyebrow">
+			<AccentRule width={18} />
+			<MonoLabel tint="accent">Featured — {category}</MonoLabel>
+		</div>
+		<h2 class="featured__title">
+			<a href={href}><EmphasisText text={title} emphasis={emphasis} /></a>
+		</h2>
+		<p class="featured__excerpt">{excerpt}</p>
+		<Meta category={category} date={date} read={read} />
+		<a href={href} class="featured__cta">
+			Read the playbook
+			<svg
+				width="14"
+				height="14"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1.5"
+				stroke-linecap="round"
+			>
+				<line x1="5" y1="12" x2="19" y2="12"></line>
+				<polyline points="13 6 19 12 13 18"></polyline>
+			</svg>
+		</a>
+	</div>
+</div>
+
+<style>
+	.featured {
+		display: grid;
+		grid-template-columns: 1.4fr 1fr;
+		gap: 56px;
+		align-items: start;
+	}
+
+	.featured__cover {
+		display: block;
+		text-decoration: none;
+	}
+
+	.featured__cover :global(.blog-cover) {
+		height: clamp(360px, 42vw, 520px) !important;
+	}
+
+	.featured__body {
+		padding-top: 4px;
+	}
+
+	.featured__eyebrow {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		margin-bottom: 20px;
+	}
+
+	.featured__title {
+		font-family: var(--font-accent);
+		font-weight: var(--fw-semibold);
+		font-size: clamp(2rem, 3.2vw, 2.8rem);
+		line-height: var(--lh-heading);
+		color: var(--color-text-main);
+		margin: 0;
+		letter-spacing: -0.01em;
+	}
+
+	.featured__title a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.featured__excerpt {
+		margin-top: 18px;
+		margin-bottom: 28px;
+		font-family: var(--font-main);
+		font-size: 1rem;
+		line-height: 1.6;
+		color: rgba(255, 255, 255, 0.55);
+		max-width: 460px;
+	}
+
+	.featured__cta {
+		margin-top: 28px;
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		font-family: var(--font-main);
+		font-size: 0.9rem;
+		color: var(--color-text-main);
+		text-decoration: none;
+		font-weight: 500;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+		padding-bottom: 3px;
+		transition: border-color 0.2s;
+	}
+
+	.featured__cta:hover {
+		border-color: var(--color-text-main);
+	}
+
+	@media (max-width: 900px) {
+		.featured {
+			grid-template-columns: 1fr;
+			gap: 32px;
+		}
+
+		.featured__cover :global(.blog-cover) {
+			height: clamp(300px, 62vw, 420px) !important;
+		}
+	}
+
+	@media (max-width: 380px) {
+		.featured__title {
+			font-size: 1.85rem;
+		}
+	}
+</style>

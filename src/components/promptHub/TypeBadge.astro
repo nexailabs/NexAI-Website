@@ -1,0 +1,42 @@
+---
+import { TYPE_LABELS, type ArtifactType } from '../../data/promptHub';
+
+interface Props {
+	type: ArtifactType;
+}
+
+const { type } = Astro.props;
+const label = TYPE_LABELS[type].label;
+---
+
+<span class:list={['type-badge', `type-badge--${type}`]}>{label}</span>
+
+<style>
+	.type-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 3px 9px;
+		border-radius: 4px;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.66rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+	.type-badge--prompt {
+		background: rgba(78, 201, 180, 0.1);
+		color: var(--color-brand-cyan);
+		border: 1px solid rgba(78, 201, 180, 0.3);
+	}
+	.type-badge--sop {
+		background: rgba(243, 196, 122, 0.08);
+		color: #f3c47a;
+		border: 1px solid rgba(243, 196, 122, 0.25);
+	}
+	.type-badge--skill {
+		background: rgba(160, 180, 255, 0.08);
+		color: #aab8ff;
+		border: 1px solid rgba(160, 180, 255, 0.25);
+	}
+</style>

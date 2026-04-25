@@ -1,0 +1,664 @@
+---
+import { VAULT_FACETS, VAULT_TOOLS, VAULT_ALL_TAGS } from '../../data/vault';
+
+type FacetCounts = Record<string, Record<string, number>>;
+
+const initialCounts: FacetCounts = Object.fromEntries(
+	VAULT_FACETS.map((f) => [
+		f.id,
+		Object.fromEntries(
+			f.values.map((v) => [
+				v,
+				VAULT_TOOLS.filter((t) => (t as unknown as Record<string, unknown>)[f.id] === v).length,
+			]),
+		),
+	]),
+);
+---
+
+<section class="dfilter" data-filter-bar>
+	<div class="dfilter__top">
+		<label class="dfilter__search">
+			<svg
+				width="13"
+				height="13"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1.6"
+				stroke-linecap="round"
+			>
+				<circle cx="11" cy="11" r="7"></circle>
+				<line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+			</svg>
+			<input
+				type="search"
+				placeholder="Search by name, what it does, or what it replaced…"
+				data-filter-search
+				autocomplete="off"
+			/>
+		</label>
+
+		<div class="dfilter__spacer"></div>
+
+		<div class="dfilter__order">
+			<span class="dfilter__order-label">Order</span>
+			<select data-filter-order>
+				<option value="daily">Daily use</option>
+				<option value="recent">Recent</option>
+				<option value="name">Name</option>
+			</select>
+		</div>
+
+		<button class="dfilter__clear" data-filter-clear hidden>
+			<svg
+				width="11"
+				height="11"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+			>
+				<line x1="18" y1="6" x2="6" y2="18"></line>
+				<line x1="6" y1="6" x2="18" y2="18"></line>
+			</svg>
+			Clear (<span data-filter-clear-count>0</span>)
+		</button>
+	</div>
+
+	<div class="dfilter__rows">
+		{
+			VAULT_FACETS.map((f) => (
+				<div class="dfilter__row">
+					<span class="dfilter__row-label">{f.label}</span>
+					<div class="dfilter__chips">
+						{f.values.map((v) => (
+							<button class="dfilter__chip" data-facet={f.id} data-value={v} type="button">
+								{v}
+								<span class="dfilter__chip-count" data-count>
+									{initialCounts[f.id][v]}
+								</span>
+							</button>
+						))}
+					</div>
+				</div>
+			))
+		}
+
+		<div class="dfilter__row dfilter__row--tags">
+			<span class="dfilter__row-label">Tags</span>
+			<div class="dfilter__chips" data-tag-strip>
+				{
+					VAULT_ALL_TAGS.slice(0, 12).map((t) => (
+						<button class="dfilter__tag" data-tag={t} type="button">
+							#{t}
+						</button>
+					))
+				}
+				{
+					VAULT_ALL_TAGS.length > 12 && (
+						<button class="dfilter__tags-more" data-tags-toggle type="button">
+							+ {VAULT_ALL_TAGS.length - 12} more
+						</button>
+					)
+				}
+				<div class="dfilter__tags-rest" data-tags-rest hidden>
+					{
+						VAULT_ALL_TAGS.slice(12).map((t) => (
+							<button class="dfilter__tag" data-tag={t} type="button">
+								#{t}
+							</button>
+						))
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="dfilter__results">
+		<span>
+			<strong data-filter-count>{VAULT_TOOLS.length}</strong>
+			<span data-filter-noun>tools</span> match
+			<span class="dfilter__active-summary" data-filter-active-summary hidden>
+				· <span data-filter-active-count>0</span> filters
+			</span>
+		</span>
+		<span class="dfilter__legend">
+			<em>Within facets:</em> AND · <em>across values:</em> OR
+		</span>
+	</div>
+</section>
+
+<style>
+	.dfilter {
+		padding: 20px 22px;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-radius: var(--radius-md);
+		background: #0a0b0c;
+		margin-bottom: 22px;
+	}
+	.dfilter__top {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding-bottom: 16px;
+		margin-bottom: 16px;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+		flex-wrap: wrap;
+	}
+	.dfilter__search {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		padding: 8px 14px;
+		border-radius: var(--radius-full);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		transition: all 0.2s ease;
+		flex: 1;
+		max-width: 360px;
+		min-width: 220px;
+		color: var(--color-text-dim);
+	}
+	.dfilter__search:focus-within {
+		background: rgba(255, 255, 255, 0.04);
+		border-color: rgba(255, 255, 255, 0.18);
+	}
+	.dfilter__search input {
+		background: transparent;
+		border: none;
+		outline: none;
+		color: var(--color-text-main);
+		font-family: var(--font-main);
+		font-size: 0.84rem;
+		flex: 1;
+		min-width: 0;
+	}
+	.dfilter__search input::placeholder {
+		color: var(--color-text-dim);
+	}
+	.dfilter__spacer {
+		flex: 1;
+	}
+
+	.dfilter__order {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 8px 14px;
+		border-radius: var(--radius-full);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		color: rgba(255, 255, 255, 0.65);
+	}
+	.dfilter__order-label {
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: var(--color-text-dim);
+	}
+	.dfilter__order select {
+		background: transparent;
+		border: none;
+		outline: none;
+		color: var(--color-text-main);
+		font-family: var(--font-main);
+		font-size: 0.8rem;
+		cursor: pointer;
+	}
+	.dfilter__order select option {
+		background: #0a0b0c;
+		color: var(--color-text-main);
+	}
+
+	.dfilter__clear {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 8px 14px;
+		border-radius: var(--radius-full);
+		background: transparent;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		font-family: var(--font-main);
+		font-size: 0.74rem;
+		font-weight: var(--fw-semibold);
+		color: var(--color-text-muted);
+		cursor: pointer;
+	}
+	.dfilter__clear:hover {
+		color: var(--color-text-main);
+	}
+
+	.dfilter__rows {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+	.dfilter__row {
+		display: grid;
+		grid-template-columns: 90px 1fr;
+		align-items: center;
+		gap: 16px;
+	}
+	.dfilter__row--tags {
+		align-items: flex-start;
+	}
+	.dfilter__row--tags .dfilter__row-label {
+		padding-top: 6px;
+	}
+	.dfilter__row-label {
+		font-family: var(--font-main);
+		font-size: 0.7rem;
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.42);
+	}
+	.dfilter__chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+	}
+
+	.dfilter__chip {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 5px 11px;
+		border-radius: var(--radius-full);
+		background: transparent;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		font-family: var(--font-main);
+		font-size: 0.76rem;
+		font-weight: var(--fw-semibold);
+		color: rgba(255, 255, 255, 0.72);
+		cursor: pointer;
+		transition: all 0.15s ease;
+	}
+	.dfilter__chip:hover:not([disabled]) {
+		border-color: rgba(255, 255, 255, 0.24);
+		color: var(--color-text-main);
+	}
+	.dfilter__chip.is-active {
+		background: rgba(78, 201, 180, 0.12);
+		border-color: rgba(78, 201, 180, 0.6);
+		color: var(--color-brand-cyan);
+	}
+	.dfilter__chip[disabled] {
+		color: rgba(255, 255, 255, 0.22);
+		cursor: not-allowed;
+	}
+	.dfilter__chip-count {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.66rem;
+		color: var(--color-text-dim);
+		font-weight: var(--fw-regular);
+	}
+	.dfilter__chip.is-active .dfilter__chip-count {
+		color: var(--color-brand-cyan);
+		opacity: 0.8;
+	}
+
+	.dfilter__tag {
+		display: inline-flex;
+		align-items: center;
+		padding: 4px 10px;
+		border-radius: var(--radius-full);
+		background: transparent;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		font-family: var(--font-main);
+		font-size: 0.72rem;
+		color: var(--color-text-subtle);
+		cursor: pointer;
+		transition: all 0.15s ease;
+	}
+	.dfilter__tag.is-active {
+		background: rgba(78, 201, 180, 0.12);
+		border-color: rgba(78, 201, 180, 0.6);
+		color: var(--color-brand-cyan);
+	}
+	.dfilter__tags-more {
+		padding: 4px 10px;
+		border-radius: var(--radius-full);
+		background: transparent;
+		border: none;
+		font-family: var(--font-main);
+		font-size: 0.72rem;
+		color: var(--color-text-subtle);
+		cursor: pointer;
+	}
+	.dfilter__tags-rest {
+		display: contents;
+	}
+	.dfilter__tags-rest[hidden] {
+		display: none;
+	}
+
+	.dfilter__results {
+		margin-top: 16px;
+		padding-top: 14px;
+		border-top: 1px solid rgba(255, 255, 255, 0.05);
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		color: var(--color-text-subtle);
+		flex-wrap: wrap;
+		gap: 12px;
+	}
+	.dfilter__results strong {
+		color: var(--color-text-main);
+		font-weight: var(--fw-semibold);
+	}
+	.dfilter__active-summary {
+		color: var(--color-text-dim);
+	}
+	.dfilter__legend {
+		color: var(--color-text-dim);
+		font-size: 0.74rem;
+	}
+	.dfilter__legend em {
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-weight: var(--fw-regular);
+	}
+
+	@media (max-width: 720px) {
+		.dfilter__top {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) auto;
+			align-items: start;
+			gap: var(--space-xs);
+		}
+		.dfilter__search {
+			grid-column: 1 / -1;
+			max-width: none;
+			min-width: 0;
+			width: 100%;
+		}
+		.dfilter__spacer {
+			display: none;
+		}
+		.dfilter__order {
+			grid-column: 1;
+			min-width: 0;
+		}
+		.dfilter__clear {
+			grid-column: 2;
+			justify-self: end;
+		}
+		.dfilter__row {
+			grid-template-columns: 1fr;
+			gap: var(--space-xs);
+		}
+		.dfilter__row--tags .dfilter__row-label {
+			padding-top: 0;
+		}
+		.dfilter__results {
+			align-items: flex-start;
+		}
+		.dfilter__legend {
+			display: none;
+		}
+	}
+
+	@media (max-width: 380px) {
+		.dfilter__top {
+			grid-template-columns: 1fr;
+		}
+		.dfilter__order,
+		.dfilter__clear {
+			grid-column: 1;
+			width: 100%;
+		}
+		.dfilter__clear {
+			justify-content: center;
+		}
+	}
+</style>
+
+<script>
+	// Faceted filter logic — mutates [data-vault-tile] visibility based on URL state.
+	(function () {
+		const FACETS = ['category', 'type', 'pricing', 'frequency'] as const;
+		type FacetId = (typeof FACETS)[number];
+
+		function readState() {
+			const params = new URLSearchParams(window.location.search);
+			const state: Record<FacetId, Set<string>> & { tags: Set<string>; q: string; order: string } =
+				{
+					category: new Set(),
+					type: new Set(),
+					pricing: new Set(),
+					frequency: new Set(),
+					tags: new Set(),
+					q: params.get('q') ?? '',
+					order: params.get('order') ?? 'daily',
+				};
+			for (const f of FACETS) {
+				const raw = params.get(f);
+				if (raw)
+					raw
+						.split(',')
+						.filter(Boolean)
+						.forEach((v) => state[f].add(v));
+			}
+			const t = params.get('tags');
+			if (t)
+				t.split(',')
+					.filter(Boolean)
+					.forEach((v) => state.tags.add(v));
+			return state;
+		}
+
+		function writeState(state: ReturnType<typeof readState>) {
+			const params = new URLSearchParams();
+			for (const f of FACETS) {
+				if (state[f].size) params.set(f, [...state[f]].join(','));
+			}
+			if (state.tags.size) params.set('tags', [...state.tags].join(','));
+			if (state.q) params.set('q', state.q);
+			if (state.order && state.order !== 'daily') params.set('order', state.order);
+			const qs = params.toString();
+			const url = window.location.pathname + (qs ? '?' + qs : '');
+			window.history.replaceState({}, '', url);
+		}
+
+		function getTileData(el: HTMLElement) {
+			return {
+				category: el.dataset.category ?? '',
+				type: el.dataset.type ?? '',
+				pricing: el.dataset.pricing ?? '',
+				frequency: el.dataset.frequency ?? '',
+				tags: (el.dataset.tags ?? '').split(',').filter(Boolean),
+				search: el.dataset.search ?? '',
+				inUseSince: el.dataset.inUseSince ?? '',
+				name: el.dataset.name ?? '',
+			};
+		}
+
+		function tileMatches(
+			t: ReturnType<typeof getTileData>,
+			state: ReturnType<typeof readState>,
+			skip?: FacetId | 'tags',
+		) {
+			for (const f of FACETS) {
+				if (skip === f) continue;
+				if (state[f].size && !state[f].has(t[f])) return false;
+			}
+			if (skip !== 'tags' && state.tags.size && !t.tags.some((x) => state.tags.has(x)))
+				return false;
+			if (state.q) {
+				const q = state.q.toLowerCase();
+				if (!t.search.includes(q)) return false;
+			}
+			return true;
+		}
+
+		function apply() {
+			const root = document.querySelector<HTMLElement>('[data-filter-bar]');
+			if (!root) return;
+			const tiles = Array.from(document.querySelectorAll<HTMLElement>('[data-vault-tile]'));
+			const state = readState();
+
+			// Update chip active states
+			root.querySelectorAll<HTMLButtonElement>('[data-facet]').forEach((btn) => {
+				const f = btn.dataset.facet as FacetId;
+				const v = btn.dataset.value!;
+				btn.classList.toggle('is-active', state[f].has(v));
+			});
+			root.querySelectorAll<HTMLButtonElement>('[data-tag]').forEach((btn) => {
+				btn.classList.toggle('is-active', state.tags.has(btn.dataset.tag!));
+			});
+
+			// Recompute counts per facet (faceted-search style)
+			root.querySelectorAll<HTMLButtonElement>('[data-facet]').forEach((btn) => {
+				const f = btn.dataset.facet as FacetId;
+				const v = btn.dataset.value!;
+				const c = tiles.filter((el) => {
+					const t = getTileData(el);
+					if (t[f] !== v) return false;
+					return tileMatches(t, state, f);
+				}).length;
+				const span = btn.querySelector<HTMLElement>('[data-count]');
+				if (span) span.textContent = String(c);
+				btn.toggleAttribute('disabled', c === 0 && !state[f].has(v));
+			});
+
+			// Filter visible tiles + collect for ordering
+			const matches: HTMLElement[] = [];
+			tiles.forEach((el) => {
+				const t = getTileData(el);
+				const ok = tileMatches(t, state);
+				el.style.display = ok ? '' : 'none';
+				if (ok) matches.push(el);
+			});
+
+			// Order
+			const grid = document.querySelector<HTMLElement>('[data-vault-grid]');
+			if (grid) {
+				const freqRank: Record<string, number> = { Daily: 0, Weekly: 1, Sometimes: 2 };
+				const sorted = [...matches];
+				if (state.order === 'daily') {
+					sorted.sort(
+						(a, b) =>
+							(freqRank[getTileData(a).frequency] ?? 99) -
+							(freqRank[getTileData(b).frequency] ?? 99),
+					);
+				} else if (state.order === 'recent') {
+					sorted.sort((a, b) =>
+						(getTileData(b).inUseSince ?? '').localeCompare(getTileData(a).inUseSince ?? ''),
+					);
+				} else if (state.order === 'name') {
+					sorted.sort((a, b) =>
+						(getTileData(a).name ?? '').localeCompare(getTileData(b).name ?? ''),
+					);
+				}
+				sorted.forEach((el) => grid.appendChild(el));
+			}
+
+			// Result count
+			const countEl = document.querySelector<HTMLElement>('[data-filter-count]');
+			const nounEl = document.querySelector<HTMLElement>('[data-filter-noun]');
+			if (countEl) countEl.textContent = String(matches.length);
+			if (nounEl) nounEl.textContent = matches.length === 1 ? 'tool' : 'tools';
+
+			// Active filter summary + clear button
+			const total =
+				FACETS.reduce((n, f) => n + state[f].size, 0) + state.tags.size + (state.q ? 1 : 0);
+			const summary = document.querySelector<HTMLElement>('[data-filter-active-summary]');
+			const summaryCount = document.querySelector<HTMLElement>('[data-filter-active-count]');
+			if (summary) summary.toggleAttribute('hidden', total === 0);
+			if (summaryCount) summaryCount.textContent = String(total);
+			const clearBtn = document.querySelector<HTMLElement>('[data-filter-clear]');
+			const clearCount = document.querySelector<HTMLElement>('[data-filter-clear-count]');
+			if (clearBtn) clearBtn.toggleAttribute('hidden', total === 0);
+			if (clearCount) clearCount.textContent = String(total);
+
+			// Empty state
+			const empty = document.querySelector<HTMLElement>('[data-vault-empty]');
+			if (empty) empty.style.display = matches.length === 0 ? '' : 'none';
+		}
+
+		function bind() {
+			const root = document.querySelector<HTMLElement>('[data-filter-bar]');
+			if (!root) return;
+
+			root.querySelectorAll<HTMLButtonElement>('[data-facet]').forEach((btn) => {
+				btn.addEventListener('click', () => {
+					const state = readState();
+					const f = btn.dataset.facet as FacetId;
+					const v = btn.dataset.value!;
+					if (state[f].has(v)) state[f].delete(v);
+					else state[f].add(v);
+					writeState(state);
+					apply();
+				});
+			});
+			root.querySelectorAll<HTMLButtonElement>('[data-tag]').forEach((btn) => {
+				btn.addEventListener('click', () => {
+					const state = readState();
+					const t = btn.dataset.tag!;
+					if (state.tags.has(t)) state.tags.delete(t);
+					else state.tags.add(t);
+					writeState(state);
+					apply();
+				});
+			});
+			const search = root.querySelector<HTMLInputElement>('[data-filter-search]');
+			if (search) {
+				search.addEventListener('input', () => {
+					const state = readState();
+					state.q = search.value;
+					writeState(state);
+					apply();
+				});
+				search.value = readState().q;
+			}
+			const order = root.querySelector<HTMLSelectElement>('[data-filter-order]');
+			if (order) {
+				order.addEventListener('change', () => {
+					const state = readState();
+					state.order = order.value;
+					writeState(state);
+					apply();
+				});
+				order.value = readState().order;
+			}
+			const clear = root.querySelector<HTMLButtonElement>('[data-filter-clear]');
+			if (clear) {
+				clear.addEventListener('click', () => {
+					window.history.replaceState({}, '', window.location.pathname);
+					if (search) search.value = '';
+					if (order) order.value = 'daily';
+					apply();
+				});
+			}
+			const tagsToggle = root.querySelector<HTMLButtonElement>('[data-tags-toggle]');
+			const tagsRest = root.querySelector<HTMLElement>('[data-tags-rest]');
+			if (tagsToggle && tagsRest) {
+				tagsToggle.addEventListener('click', () => {
+					const isHidden = tagsRest.hasAttribute('hidden');
+					if (isHidden) {
+						tagsRest.removeAttribute('hidden');
+						tagsToggle.textContent = '↑ less';
+					} else {
+						tagsRest.setAttribute('hidden', '');
+						tagsToggle.textContent = '+ more';
+					}
+				});
+			}
+
+			window.addEventListener('popstate', apply);
+		}
+
+		document.addEventListener('astro:page-load', () => {
+			bind();
+			apply();
+		});
+		bind();
+		apply();
+	})();
+</script>

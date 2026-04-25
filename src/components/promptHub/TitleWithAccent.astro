@@ -1,0 +1,36 @@
+---
+import Italic from './Italic.astro';
+
+interface Props {
+	title: string;
+	accent?: string;
+	mono?: boolean;
+}
+
+const { title, accent, mono = false } = Astro.props;
+
+function split(text: string, em?: string) {
+	if (!em) return { before: text };
+	const idx = text.toLowerCase().indexOf(em.toLowerCase());
+	if (idx < 0) return { before: text };
+	return {
+		before: text.slice(0, idx),
+		match: text.slice(idx, idx + em.length),
+		after: text.slice(idx + em.length),
+	};
+}
+
+const parts = split(title, accent);
+---
+
+{
+	mono ? (
+		<>{title}</>
+	) : (
+		<>
+			{parts.before}
+			{parts.match && <Italic>{parts.match}</Italic>}
+			{parts.after}
+		</>
+	)
+}

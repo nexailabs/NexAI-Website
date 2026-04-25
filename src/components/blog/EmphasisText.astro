@@ -1,0 +1,35 @@
+---
+interface Props {
+	text: string;
+	emphasis?: string;
+}
+
+const { text, emphasis } = Astro.props;
+
+function split(
+	text: string,
+	emphasis?: string,
+): { before: string; match?: string; after?: string } {
+	if (!emphasis) return { before: text };
+	const idx = text.indexOf(emphasis);
+	if (idx < 0) return { before: text };
+	return {
+		before: text.slice(0, idx),
+		match: emphasis,
+		after: text.slice(idx + emphasis.length),
+	};
+}
+
+const parts = split(text, emphasis);
+---
+
+{parts.before}{parts.match && <em class="blog-emphasis">{parts.match}</em>}{parts.after}
+
+<style>
+	.blog-emphasis {
+		font-family: var(--font-accent), Georgia, serif;
+		font-style: italic;
+		font-weight: 400;
+		letter-spacing: -0.005em;
+	}
+</style>

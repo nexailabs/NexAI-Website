@@ -1,0 +1,154 @@
+---
+interface Props {
+	label: string;
+	value: string;
+	icon?: 'clock' | 'coin' | 'tag' | 'zap' | 'user' | 'flag';
+}
+
+const { label, value, icon } = Astro.props;
+---
+
+<div class="stat-row">
+	{
+		icon === 'clock' && (
+			<svg
+				class="stat-row__icon"
+				width="13"
+				height="13"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1.6"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<circle cx="12" cy="12" r="9" />
+				<polyline points="12 7 12 12 15 14" />
+			</svg>
+		)
+	}
+	{
+		icon === 'coin' && (
+			<svg
+				class="stat-row__icon"
+				width="13"
+				height="13"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1.6"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<circle cx="12" cy="12" r="9" />
+				<path d="M9.5 9.5c0-1 1-1.7 2.5-1.7s2.5.7 2.5 1.7c0 2-5 1.5-5 3.5 0 1 1 1.7 2.5 1.7s2.5-.7 2.5-1.7" />
+				<line x1="12" y1="6" x2="12" y2="18" />
+			</svg>
+		)
+	}
+	{
+		icon === 'tag' && (
+			<svg
+				class="stat-row__icon"
+				width="13"
+				height="13"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1.6"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z" />
+				<circle cx="7.5" cy="7.5" r="1.2" />
+			</svg>
+		)
+	}
+	{
+		icon === 'zap' && (
+			<svg
+				class="stat-row__icon"
+				width="13"
+				height="13"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1.6"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+			</svg>
+		)
+	}
+	{
+		icon === 'user' && (
+			<svg
+				class="stat-row__icon"
+				width="13"
+				height="13"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1.6"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+				<circle cx="12" cy="7" r="4" />
+			</svg>
+		)
+	}
+	{
+		icon === 'flag' && (
+			<svg
+				class="stat-row__icon"
+				width="13"
+				height="13"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1.6"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<path d="M4 21V4a1 1 0 0 1 1-1h13l-3 5 3 5H5" />
+			</svg>
+		)
+	}
+	<span class="stat-row__label">{label}</span>
+	<span class="stat-row__leader" aria-hidden="true"></span>
+	<span class="stat-row__value">{value}</span>
+</div>
+
+<style>
+	.stat-row {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		color: var(--color-text-subtle);
+	}
+	.stat-row__icon {
+		color: var(--color-text-dim);
+		flex-shrink: 0;
+	}
+	.stat-row__label {
+		flex-shrink: 0;
+	}
+	.stat-row__leader {
+		flex: 1;
+		height: 1px;
+		background-image: radial-gradient(circle, rgba(255, 255, 255, 0.18) 1px, transparent 1px);
+		background-size: 4px 1px;
+		background-repeat: repeat-x;
+		background-position: center;
+		margin: 0 4px;
+	}
+	.stat-row__value {
+		color: rgba(255, 255, 255, 0.92);
+		font-weight: var(--fw-semibold);
+		flex-shrink: 0;
+	}
+</style>

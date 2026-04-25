@@ -1,0 +1,38 @@
+---
+interface Props {
+	name?: string;
+	size?: number;
+}
+
+const { name = 'Rahul Juneja', size = 28 } = Astro.props;
+const initials = name
+	.split(' ')
+	.map((n) => n[0])
+	.join('')
+	.slice(0, 2);
+const fontSize = +(size * 0.36).toFixed(2);
+---
+
+<div
+	class="blog-avatar"
+	style={`width: ${size}px; height: ${size}px; font-size: ${fontSize}px;`}
+	aria-hidden="true"
+>
+	{initials}
+</div>
+
+<style>
+	.blog-avatar {
+		border-radius: 50%;
+		background: #1a1a1a;
+		border: 1px solid rgba(255, 255, 255, 0.14);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		color: rgba(255, 255, 255, 0.7);
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-weight: 500;
+		letter-spacing: 0.04em;
+		flex-shrink: 0;
+	}
+</style>

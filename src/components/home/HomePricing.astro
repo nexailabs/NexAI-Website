@@ -1,0 +1,436 @@
+---
+import { site } from '../../config/site';
+
+interface Tier {
+	label: string;
+	sub: string;
+	currency: string;
+	price: string;
+	unit: string; // e.g. "USD / PROJECT"
+	cta: string;
+	ctaKind: 'outline' | 'gradient';
+	includes: string[];
+}
+
+const tiers: Tier[] = [
+	{
+		label: 'Strategy Sprint',
+		sub: 'A focused engagement to map where AI actually pays off in your business — and what to build first.',
+		currency: '$',
+		price: '4,249',
+		unit: 'USD / PROJECT',
+		cta: 'Pay Now',
+		ctaKind: 'outline',
+		includes: [
+			'Brand & Workflow Discovery',
+			'Strategic AI Use-Case Definition',
+			'Technical Feasibility Assessment',
+			'System Architecture Planning',
+			'Risk, Compliance & Reliability Review',
+			'Clear Roadmap & Execution Blueprint',
+			'1 Production-Ready Agent',
+		],
+	},
+	{
+		label: 'Build & Implementation',
+		sub: 'Full design, build, and deployment of the AI system — shipped, integrated, and stewarded into production.',
+		currency: '$',
+		price: '18,699',
+		unit: 'USD / PROJECT',
+		cta: 'Reach Us',
+		ctaKind: 'gradient',
+		includes: [
+			'Full AI System Design',
+			'Development & Engineering',
+			'Workflow & Data Integration',
+			'Testing, Deployment & Optimization',
+			'Performance Measurement',
+			'On-Ground Support & Iteration',
+			'Guaranteed, Production-Ready Delivery',
+		],
+	},
+];
+---
+
+<section class="home-pricing" aria-labelledby="home-pricing-h2">
+	<div class="home-pricing__inner">
+		<header class="home-pricing__header">
+			<p class="home-pricing__eyebrow">[ 06 ] How we engage</p>
+			<h2 class="home-pricing__h2" id="home-pricing-h2">
+				Two ways in.<br />
+				<span class="home-pricing__h2-em"
+					>fixed prices. no retainers we wouldn&apos;t pay ourselves.</span
+				>
+			</h2>
+		</header>
+
+		<div class="home-pricing__grid">
+			{
+				tiers.map((t) => (
+					<article class="home-pricing__card">
+						<span class="home-pricing__corner home-pricing__corner--tl" aria-hidden="true">
+							<svg viewBox="0 0 10 10">
+								<line x1="5" y1="0" x2="5" y2="10" />
+								<line x1="0" y1="5" x2="10" y2="5" />
+							</svg>
+						</span>
+						<span class="home-pricing__corner home-pricing__corner--tr" aria-hidden="true">
+							<svg viewBox="0 0 10 10">
+								<line x1="5" y1="0" x2="5" y2="10" />
+								<line x1="0" y1="5" x2="10" y2="5" />
+							</svg>
+						</span>
+						<span class="home-pricing__corner home-pricing__corner--bl" aria-hidden="true">
+							<svg viewBox="0 0 10 10">
+								<line x1="5" y1="0" x2="5" y2="10" />
+								<line x1="0" y1="5" x2="10" y2="5" />
+							</svg>
+						</span>
+						<span class="home-pricing__corner home-pricing__corner--br" aria-hidden="true">
+							<svg viewBox="0 0 10 10">
+								<line x1="5" y1="0" x2="5" y2="10" />
+								<line x1="0" y1="5" x2="10" y2="5" />
+							</svg>
+						</span>
+
+						<div class="home-pricing__card-inner">
+							<p class="home-pricing__tier">{t.label}</p>
+							<p class="home-pricing__sub">{t.sub}</p>
+
+							<div class="home-pricing__price">
+								<span class="home-pricing__price-currency">{t.currency}</span>
+								<span class="home-pricing__price-value">{t.price}</span>
+								<span class="home-pricing__price-unit">
+									{t.unit.split(' / ').map((s, k) => (
+										<span class="home-pricing__price-unit-line">{k === 0 ? s : `/ ${s}`}</span>
+									))}
+								</span>
+							</div>
+
+							{t.ctaKind === 'gradient' ? (
+								<a
+									href={site.bookingUrl ?? '#'}
+									class="home-pricing__cta home-pricing__cta--gradient"
+									data-open-cal
+								>
+									<span class="home-pricing__cta-noise" aria-hidden="true" />
+									<span class="home-pricing__cta-label">{t.cta}</span>
+								</a>
+							) : (
+								<button type="button" class="home-pricing__cta home-pricing__cta--outline">
+									<span class="home-pricing__cta-label">{t.cta}</span>
+								</button>
+							)}
+
+							<div class="home-pricing__divider" aria-hidden="true">
+								<span class="home-pricing__divider-tick home-pricing__divider-tick--l" />
+								<span class="home-pricing__divider-tick home-pricing__divider-tick--r" />
+							</div>
+
+							<ul class="home-pricing__list">
+								{t.includes.map((it) => (
+									<li class="home-pricing__list-item">
+										<svg
+											class="home-pricing__check"
+											width="14"
+											height="14"
+											viewBox="0 0 14 14"
+											fill="none"
+											aria-hidden="true"
+										>
+											<circle cx="7" cy="7" r="6" stroke="rgba(255,255,255,0.4)" stroke-width="1" />
+											<polyline
+												points="4,7 6,9 10,5"
+												stroke="#4ec9b4"
+												stroke-width="1.3"
+												fill="none"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+											/>
+										</svg>
+										<span>{it}</span>
+									</li>
+								))}
+							</ul>
+						</div>
+					</article>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<style>
+	.home-pricing {
+		position: relative;
+		padding: 120px 40px;
+		border-top: 1px solid rgba(255, 255, 255, 0.05);
+		background: #050607;
+		background-image: radial-gradient(
+			circle at 1px 1px,
+			rgba(255, 255, 255, 0.05) 1px,
+			transparent 1px
+		);
+		background-size: 14px 14px;
+	}
+
+	.home-pricing__inner {
+		max-width: 1280px;
+		margin: 0 auto;
+	}
+
+	.home-pricing__header {
+		margin-bottom: 56px;
+		max-width: 880px;
+	}
+
+	.home-pricing__eyebrow {
+		margin: 0 0 14px;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.72rem;
+		font-weight: 500;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--color-brand-cyan);
+	}
+
+	.home-pricing__h2 {
+		margin: 0;
+		font-family: 'Anton', 'Montserrat', 'Inter', sans-serif;
+		font-weight: 400;
+		font-size: clamp(2.8rem, 5.6vw, 4.6rem);
+		line-height: 0.96;
+		letter-spacing: 0.005em;
+		text-transform: uppercase;
+		color: #fff;
+	}
+
+	.home-pricing__h2-em {
+		font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+		font-style: italic;
+		color: var(--color-brand-cyan);
+		font-size: 0.62em;
+		letter-spacing: -0.02em;
+		text-transform: lowercase;
+	}
+
+	.home-pricing__grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 32px;
+	}
+
+	/* Card */
+	.home-pricing__card {
+		position: relative;
+		background: transparent;
+		border: 1px dashed rgba(255, 255, 255, 0.18);
+	}
+
+	.home-pricing__card-inner {
+		padding: 36px;
+	}
+
+	/* Corner crosshairs (4 per card) */
+	.home-pricing__corner {
+		position: absolute;
+		width: 10px;
+		height: 10px;
+		pointer-events: none;
+		color: rgba(255, 255, 255, 0.32);
+	}
+	.home-pricing__corner svg {
+		width: 100%;
+		height: 100%;
+		display: block;
+	}
+	.home-pricing__corner svg line {
+		stroke: currentColor;
+		stroke-width: 1;
+	}
+	.home-pricing__corner--tl {
+		top: -5px;
+		left: -5px;
+	}
+	.home-pricing__corner--tr {
+		top: -5px;
+		right: -5px;
+	}
+	.home-pricing__corner--bl {
+		bottom: -5px;
+		left: -5px;
+	}
+	.home-pricing__corner--br {
+		bottom: -5px;
+		right: -5px;
+	}
+
+	/* Tier label */
+	.home-pricing__tier {
+		margin: 0 0 18px;
+		font-family: 'Anton', 'Montserrat', 'Inter', sans-serif;
+		font-size: 1.5rem;
+		font-weight: 400;
+		letter-spacing: 0.005em;
+		text-transform: uppercase;
+		color: #fff;
+	}
+
+	/* Sub copy */
+	.home-pricing__sub {
+		margin: 0 0 28px;
+		max-width: 360px;
+		font-family: var(--font-main), 'Inter', sans-serif;
+		font-size: 0.92rem;
+		line-height: 1.55;
+		color: rgba(255, 255, 255, 0.6);
+	}
+
+	/* Price block */
+	.home-pricing__price {
+		display: flex;
+		align-items: flex-end;
+		gap: 12px;
+		margin-bottom: 32px;
+	}
+
+	.home-pricing__price-currency {
+		font-family: 'Anton', 'Montserrat', 'Inter', sans-serif;
+		font-size: 1.1rem;
+		color: rgba(255, 255, 255, 0.6);
+		letter-spacing: 0.02em;
+		padding-bottom: 14px;
+	}
+
+	.home-pricing__price-value {
+		font-family: 'Anton', 'Montserrat', 'Inter', sans-serif;
+		font-size: clamp(3.4rem, 5.4vw, 4.8rem);
+		line-height: 0.92;
+		letter-spacing: 0.005em;
+		color: #fff;
+	}
+
+	.home-pricing__price-unit {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.7rem;
+		font-weight: 500;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.5);
+		padding-bottom: 14px;
+		line-height: 1.4;
+	}
+	.home-pricing__price-unit-line {
+		display: block;
+	}
+
+	/* CTAs */
+	.home-pricing__cta {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		height: 52px;
+		text-decoration: none;
+		font-family: 'Anton', 'Montserrat', 'Inter', sans-serif;
+		font-size: 1rem;
+		font-weight: 400;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: #fff;
+		cursor: pointer;
+		border: 0;
+	}
+
+	.home-pricing__cta--outline {
+		background: rgba(255, 255, 255, 0.04);
+		border: 1px solid rgba(255, 255, 255, 0.18);
+		transition:
+			background 0.2s ease,
+			border-color 0.2s ease;
+	}
+	.home-pricing__cta--outline:hover {
+		background: rgba(78, 201, 180, 0.1);
+		border-color: rgba(78, 201, 180, 0.5);
+	}
+
+	.home-pricing__cta--gradient {
+		position: relative;
+		overflow: hidden;
+		background: linear-gradient(90deg, #1e7e72 0%, #4ec9b4 30%, #d96b3a 70%, #c8421f 100%);
+	}
+
+	.home-pricing__cta-noise {
+		position: absolute;
+		inset: 0;
+		background-image: radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.4) 1px, transparent 1px);
+		background-size: 3px 3px;
+		opacity: 0.5;
+		pointer-events: none;
+	}
+	.home-pricing__cta--gradient .home-pricing__cta-label {
+		position: relative;
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+	}
+
+	/* Divider with side ticks */
+	.home-pricing__divider {
+		position: relative;
+		height: 1px;
+		background: rgba(255, 255, 255, 0.12);
+		margin: 28px 0;
+	}
+	.home-pricing__divider-tick {
+		position: absolute;
+		top: -3px;
+		width: 6px;
+		height: 6px;
+		background: rgba(255, 255, 255, 0.4);
+	}
+	.home-pricing__divider-tick--l {
+		left: -3px;
+	}
+	.home-pricing__divider-tick--r {
+		right: -3px;
+	}
+
+	/* Includes list */
+	.home-pricing__list {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+
+	.home-pricing__list-item {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.78rem;
+		font-weight: 500;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.78);
+	}
+
+	.home-pricing__check {
+		flex-shrink: 0;
+	}
+
+	/* Responsive */
+	@media (max-width: 900px) {
+		.home-pricing {
+			padding: 96px 24px;
+		}
+		.home-pricing__grid {
+			grid-template-columns: 1fr;
+			gap: 28px;
+		}
+		.home-pricing__card-inner {
+			padding: 28px;
+		}
+	}
+</style>

@@ -1,0 +1,41 @@
+---
+interface Props {
+	level: 'Daily' | 'Weekly' | 'Sometimes';
+}
+
+const { level } = Astro.props;
+---
+
+<span class:list={['freq-dot', `freq-dot--${level.toLowerCase()}`]}>
+	<span class="freq-dot__bullet" aria-hidden="true"></span>
+	{level}
+</span>
+
+<style>
+	.freq-dot {
+		display: inline-flex;
+		align-items: center;
+		gap: 7px;
+		font-family: var(--font-main);
+		font-size: 0.7rem;
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+		color: var(--color-text-muted);
+	}
+	.freq-dot__bullet {
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+	}
+	.freq-dot--daily .freq-dot__bullet {
+		background: var(--color-brand-cyan);
+		box-shadow: 0 0 8px rgba(78, 201, 180, 0.33);
+	}
+	.freq-dot--weekly .freq-dot__bullet {
+		background: rgba(78, 201, 180, 0.55);
+	}
+	.freq-dot--sometimes .freq-dot__bullet {
+		background: rgba(255, 255, 255, 0.32);
+	}
+</style>

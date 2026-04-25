@@ -1,0 +1,165 @@
+---
+import Logomark from './Logomark.astro';
+import { VAULT_FEATURES, type VaultStack, getTool } from '../../data/vault';
+
+interface Props {
+	stack: VaultStack;
+}
+
+const { stack } = Astro.props;
+const href = `/apps/stacks/${stack.slug}`;
+const showDeals = VAULT_FEATURES.showDeals && stack.deals > 0;
+const tools = stack.items
+	.slice(0, 4)
+	.map((i) => getTool(i.slug))
+	.filter(Boolean);
+---
+
+<a href={href} class="stack-card" style={`--stack-accent: ${stack.accent};`}>
+	<div class="stack-card__watermark" aria-hidden="true">
+		{tools.map((t) => t && <Logomark tool={t.name} size={42} radius={8} />)}
+	</div>
+
+	<div class="stack-card__badge">Stack</div>
+
+	<h3 class="stack-card__title">{stack.name}</h3>
+	<p class="stack-card__blurb">{stack.blurb}</p>
+
+	<div class="stack-card__foot">
+		<span class="stack-card__count">
+			<strong>{stack.items.length} apps</strong>
+			{showDeals && <span class="stack-card__deals"> · {stack.deals} deals</span>}
+		</span>
+		<span class="stack-card__cta">See the stack →</span>
+	</div>
+</a>
+
+<style>
+	.stack-card {
+		--stack-accent: var(--color-brand-teal);
+		position: relative;
+		padding: 28px;
+		border-radius: var(--radius-md);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		background:
+			radial-gradient(
+				circle at 100% 0%,
+				color-mix(in srgb, var(--stack-accent) 13%, transparent) 0%,
+				transparent 55%
+			),
+			#0a0b0c;
+		overflow: hidden;
+		transition: border-color 0.25s ease;
+		cursor: pointer;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		text-decoration: none;
+		color: inherit;
+	}
+	.stack-card:hover {
+		border-color: var(--color-border-hover);
+	}
+
+	.stack-card__watermark {
+		position: absolute;
+		right: -20px;
+		top: -10px;
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 6px;
+		opacity: 0.7;
+		pointer-events: none;
+		transform: rotate(-6deg);
+	}
+
+	.stack-card__badge {
+		display: inline-flex;
+		align-items: center;
+		padding: 3px 9px;
+		border-radius: var(--radius-full);
+		background: color-mix(in srgb, var(--stack-accent) 20%, transparent);
+		border: 1px solid color-mix(in srgb, var(--stack-accent) 53%, transparent);
+		font-family: var(--font-main);
+		font-size: 0.66rem;
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+		color: var(--color-brand-cyan);
+		width: fit-content;
+		margin-bottom: 18px;
+	}
+
+	.stack-card__title {
+		font-family: var(--font-accent);
+		font-weight: var(--fw-semibold);
+		font-size: 1.85rem;
+		line-height: 1.1;
+		color: var(--color-text-main);
+		margin: 0 0 8px;
+		letter-spacing: -0.01em;
+		max-width: 70%;
+	}
+	.stack-card__blurb {
+		font-family: var(--font-main);
+		font-size: 0.9rem;
+		color: var(--color-text-subtle);
+		margin: 0 0 22px;
+		max-width: 70%;
+		line-height: 1.5;
+	}
+
+	.stack-card__foot {
+		margin-top: auto;
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		flex-wrap: wrap;
+	}
+	.stack-card__count {
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		color: rgba(255, 255, 255, 0.7);
+	}
+	.stack-card__count strong {
+		color: var(--color-text-main);
+		font-weight: var(--fw-semibold);
+	}
+	.stack-card__deals {
+		color: var(--color-text-dim);
+	}
+	.stack-card__cta {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 7px 14px;
+		border-radius: var(--radius-full);
+		background: var(--color-text-main);
+		color: var(--color-bg);
+		font-family: var(--font-main);
+		font-size: 0.75rem;
+		font-weight: var(--fw-semibold);
+	}
+
+	@media (max-width: 720px) {
+		.stack-card__watermark {
+			right: var(--space-sm);
+			top: auto;
+			bottom: var(--space-sm);
+			transform: scale(0.82);
+			transform-origin: bottom right;
+			opacity: 0.32;
+		}
+		.stack-card__title,
+		.stack-card__blurb {
+			max-width: 100%;
+		}
+	}
+
+	@media (max-width: 380px) {
+		.stack-card__watermark {
+			transform: scale(0.68);
+			opacity: 0.24;
+		}
+	}
+</style>

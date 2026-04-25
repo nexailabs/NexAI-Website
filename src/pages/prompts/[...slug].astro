@@ -1,0 +1,923 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Eyebrow from '../../components/vault/Eyebrow.astro';
+import Breadcrumb from '../../components/promptHub/Breadcrumb.astro';
+import TypeBadge from '../../components/promptHub/TypeBadge.astro';
+import TitleWithAccent from '../../components/promptHub/TitleWithAccent.astro';
+import MetaStrip from '../../components/promptHub/MetaStrip.astro';
+import Section from '../../components/promptHub/Section.astro';
+import PromptCodeBlock from '../../components/promptHub/PromptCodeBlock.astro';
+import LockedOverlay from '../../components/promptHub/LockedOverlay.astro';
+import PriceCard from '../../components/promptHub/PriceCard.astro';
+import AuthorCard from '../../components/promptHub/AuthorCard.astro';
+import TestedCard from '../../components/promptHub/TestedCard.astro';
+import StatsCard from '../../components/promptHub/StatsCard.astro';
+import FileTree from '../../components/promptHub/FileTree.astro';
+import InstallTabs from '../../components/promptHub/InstallTabs.astro';
+import BuyModal from '../../components/promptHub/BuyModal.astro';
+import BuyTriggers from '../../components/promptHub/BuyTriggers.astro';
+import BottomCta from '../../components/promptHub/BottomCta.astro';
+import { ARTIFACTS, formatUses } from '../../data/promptHub';
+
+export async function getStaticPaths() {
+	return ARTIFACTS.map((a) => ({ params: { slug: a.slug }, props: { artifact: a } }));
+}
+
+const { artifact: a } = Astro.props;
+const buyModalId = `buy-${a.slug}`;
+const isPaid = a.price > 0;
+---
+
+<Layout title={`${a.title} | Prompt Hub · NexAI Labs`} description={a.description}>
+	<main class="ph-detail">
+		<Breadcrumb type={a.type} category={a.category} />
+
+		{
+			a.type === 'prompt' && (
+				<>
+					<header class="ph-detail__header">
+						<div class="ph-detail__eyebrow-row">
+							<span class="ph-detail__rule" aria-hidden="true" />
+							<TypeBadge type="prompt" />
+							<Eyebrow tint="accent">{a.category}</Eyebrow>
+							{a.pinned && (
+								<>
+									<span class="ph-detail__sep" />
+									<span class="ph-detail__top">★ Top</span>
+								</>
+							)}
+						</div>
+						<h1 class="ph-detail__h1">
+							<TitleWithAccent title={a.title} accent={a.accent} />
+						</h1>
+						<p class="ph-detail__lede">{a.description}</p>
+						<MetaStrip
+							author={a.author}
+							uses={a.uses}
+							extra={[{ label: 'Model', value: a.model }]}
+						/>
+					</header>
+
+					<div class="ph-detail__body">
+						<div class="ph-detail__main">
+							<Section title="When to use it.">
+								<p class="ph-detail__p">{a.when}</p>
+							</Section>
+
+							<section class="ph-detail__prompt-section">
+								<div class="ph-detail__prompt-head">
+									<h2 class="ph-detail__h2">The prompt.</h2>
+									<button
+										type="button"
+										class="ph-detail__copy"
+										data-copy-prompt={a.slug}
+										data-locked-copy={isPaid ? 'true' : null}
+										data-buy-modal-id={isPaid ? buyModalId : null}
+										data-slug={a.slug}
+										data-unlocked-label="Copy prompt"
+									>
+										{isPaid ? 'Unlock to copy' : 'Copy prompt'}
+									</button>
+								</div>
+								<div class="ph-detail__prompt-wrap">
+									<div
+										class="ph-detail__prompt-inner"
+										data-locked-blur={isPaid ? 'true' : null}
+										data-slug={a.slug}
+										style={isPaid ? 'max-height: 320px; overflow: hidden;' : ''}
+									>
+										<PromptCodeBlock prompt={a.prompt} />
+										<pre id={`prompt-source-${a.slug}`} hidden>
+											{a.prompt}
+										</pre>
+									</div>
+									{isPaid && (
+										<div data-locked-overlay-wrap data-slug={a.slug}>
+											<LockedOverlay price={a.price} buyModalId={buyModalId} />
+										</div>
+									)}
+								</div>
+								<p class="ph-detail__token-note">
+									<span class="ph-detail__token">{'{{TOKENS}}'}</span> are filled in by the agent at
+									runtime.
+								</p>
+							</section>
+
+							<Section title="Where it tends to fail.">
+								<p class="ph-detail__pullquote">{a.failureMode}</p>
+							</Section>
+
+							{a.howWeUseIt.map((b) => (
+								<section class="ph-detail__how">
+									<h2 class="ph-detail__h2 ph-detail__h2--small">{b.h2}</h2>
+									<p class="ph-detail__p">{b.body}</p>
+								</section>
+							))}
+						</div>
+
+						<aside class="ph-detail__rail">
+							<PriceCard price={a.price} slug={a.slug} buyModalId={buyModalId} />
+							<AuthorCard author={a.author} />
+							<TestedCard models={a.testedOn} />
+						</aside>
+					</div>
+				</>
+			)
+		}
+
+		{
+			a.type === 'sop' && (
+				<>
+					<header class="ph-detail__header">
+						<div class="ph-detail__eyebrow-row">
+							<span class="ph-detail__rule ph-detail__rule--sop" aria-hidden="true" />
+							<TypeBadge type="sop" />
+							<Eyebrow tint="accent">{a.category} runbook</Eyebrow>
+						</div>
+						<h1 class="ph-detail__h1">
+							<TitleWithAccent title={a.title} accent={a.accent} />
+						</h1>
+						<p class="ph-detail__lede">{a.description}</p>
+						<MetaStrip
+							author={a.author}
+							uses={a.uses}
+							extra={[
+								{ label: 'Steps', value: String(a.steps.length) },
+								{ label: 'Time', value: a.duration },
+							]}
+						/>
+					</header>
+
+					<div class="ph-detail__body">
+						<div class="ph-detail__main">
+							<section class="ph-detail__panel ph-detail__panel--inputs">
+								<Eyebrow tint="default">What you'll need before you start</Eyebrow>
+								<ul class="ph-detail__inputs">
+									{a.inputs.map((it) => (
+										<li>
+											<span class="ph-detail__dash">—</span>
+											{it}
+										</li>
+									))}
+								</ul>
+							</section>
+
+							<section class="ph-detail__sop-section">
+								<h2 class="ph-detail__h2">The runbook.</h2>
+								<ol class="ph-detail__steps">
+									{a.steps.map((s, i) => {
+										const locked = isPaid && i >= 2;
+										return (
+											<li
+												class:list={['ph-detail__step', locked && 'ph-detail__step--locked']}
+												data-locked-blur={locked ? 'true' : null}
+												data-slug={a.slug}
+											>
+												<div class="ph-detail__step-n">STEP {String(s.n).padStart(2, '0')}</div>
+												<div>
+													<h3 class="ph-detail__step-title">{s.title}</h3>
+													<p class="ph-detail__step-sub">{s.subtitle}</p>
+													<p class="ph-detail__step-body">{s.body}</p>
+													{s.snippet && <pre class="ph-detail__snippet">{s.snippet}</pre>}
+												</div>
+											</li>
+										);
+									})}
+								</ol>
+								{isPaid && (
+									<div class="ph-detail__sop-gate" data-locked-overlay data-slug={a.slug}>
+										<button
+											type="button"
+											class="ph-detail__sop-unlock"
+											data-open-buy-modal={buyModalId}
+										>
+											Unlock all {a.steps.length} steps · ₹{a.price.toLocaleString('en-IN')}
+										</button>
+									</div>
+								)}
+							</section>
+
+							<section class="ph-detail__panel ph-detail__panel--outcomes">
+								<Eyebrow tint="accent">By the end you have</Eyebrow>
+								<ul class="ph-detail__outcomes">
+									{a.outcomes.map((o) => (
+										<li>
+											<svg
+												width="14"
+												height="14"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												stroke-width="2.4"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+											>
+												<polyline points="20 6 9 17 4 12" />
+											</svg>
+											{o}
+										</li>
+									))}
+								</ul>
+							</section>
+
+							<Section title="Where it tends to break.">
+								<p class="ph-detail__pullquote ph-detail__pullquote--sop">{a.failureMode}</p>
+							</Section>
+						</div>
+
+						<aside class="ph-detail__rail">
+							<PriceCard price={a.price} slug={a.slug} buyModalId={buyModalId} />
+							<AuthorCard author={a.author} />
+							<StatsCard
+								rows={[
+									{ label: 'Total steps', value: String(a.steps.length) },
+									{ label: 'Time to run', value: a.duration },
+									{ label: 'Times run', value: formatUses(a.uses) },
+									{ label: 'In production since', value: a.author.since },
+								]}
+							/>
+						</aside>
+					</div>
+				</>
+			)
+		}
+
+		{
+			a.type === 'skill' && (
+				<>
+					<header class="ph-detail__header">
+						<div class="ph-detail__eyebrow-row">
+							<TypeBadge type="skill" />
+							<span class="ph-detail__stars">★ {a.stars.toLocaleString('en-IN')}</span>
+							<Eyebrow tint="accent">{a.category}</Eyebrow>
+						</div>
+						<h1 class="ph-detail__h1 ph-detail__h1--mono">{a.title}</h1>
+						<p class="ph-detail__skill-comment">{a.comment}</p>
+						<p class="ph-detail__lede">{a.description}</p>
+						<MetaStrip
+							author={a.author}
+							uses={a.uses}
+							extra={[
+								{ label: 'Stars', value: a.stars.toLocaleString('en-IN') },
+								{ label: 'Runtime', value: a.runtime },
+							]}
+						/>
+					</header>
+
+					<div class="ph-detail__body">
+						<div class="ph-detail__main">
+							<Section title="Install it.">
+								<InstallTabs methods={a.installMethods} />
+								<p class="ph-detail__token-note">
+									Auto-detects your AI runtime. One install works across Claude Code, Cursor, and
+									Codex.
+								</p>
+							</Section>
+
+							<Section title="What's in the package.">
+								<FileTree files={a.files} />
+							</Section>
+
+							<section class="ph-detail__skillmd-section">
+								<h2 class="ph-detail__h2">SKILL.md preview.</h2>
+								<div class="ph-detail__prompt-wrap">
+									<pre
+										class="ph-detail__skillmd"
+										data-locked-blur={isPaid ? 'true' : null}
+										data-slug={a.slug}
+										style={isPaid ? 'max-height: 220px; overflow: hidden;' : ''}
+									>
+										{a.skillMd}
+									</pre>
+									{isPaid && (
+										<div data-locked-overlay-wrap data-slug={a.slug}>
+											<LockedOverlay price={a.price} buyModalId={buyModalId} />
+										</div>
+									)}
+								</div>
+							</section>
+						</div>
+
+						<aside class="ph-detail__rail">
+							<div class="ph-detail__cloud">
+								<Eyebrow tint="accent">Run with cloud agent</Eyebrow>
+								<p class="ph-detail__cloud-p">No setup. We run the skill on our agents.</p>
+								<div class="ph-detail__cloud-list" data-skill-providers>
+									{a.cloudAgents.map((ag, i) => (
+										<button
+											type="button"
+											class:list={[
+												'ph-detail__cloud-row',
+												ag.recommended && 'ph-detail__cloud-row--recommended',
+												i === 0 && 'ph-detail__cloud-row--selected',
+											]}
+											data-skill-provider={i}
+										>
+											<span class="ph-detail__cloud-name">
+												{ag.name}
+												{ag.recommended && <span class="ph-detail__cloud-rec">★</span>}
+											</span>
+											<span class="ph-detail__cloud-cost">{ag.cost}</span>
+										</button>
+									))}
+								</div>
+								<button
+									type="button"
+									class="ph-detail__cloud-btn"
+									data-open-buy-modal={isPaid ? buyModalId : null}
+								>
+									{isPaid ? 'Unlock & Try Now' : 'Try Now'}
+									<svg
+										width="13"
+										height="13"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2.4"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<line x1="5" y1="12" x2="19" y2="12" />
+										<polyline points="13 6 19 12 13 18" />
+									</svg>
+								</button>
+							</div>
+							<PriceCard price={a.price} slug={a.slug} buyModalId={buyModalId} />
+							<AuthorCard author={a.author} />
+							<div class="ph-detail__pkg">
+								<div class="ph-detail__pkg-brace">{`{`}</div>
+								<div class="ph-detail__pkg-body">
+									<span class="ph-detail__pkg-key">"name"</span>:
+									<span class="ph-detail__pkg-val">"{a.title}"</span>,<br />
+									<span class="ph-detail__pkg-key">"author"</span>:
+									<span class="ph-detail__pkg-val">"{a.author.name}"</span>,<br />
+									<span class="ph-detail__pkg-key">"runtime"</span>:
+									<span class="ph-detail__pkg-val">"{a.runtime}"</span>,<br />
+									<span class="ph-detail__pkg-key">"stars"</span>:
+									<span class="ph-detail__pkg-num">{a.stars}</span>
+								</div>
+								<div class="ph-detail__pkg-brace">{`}`}</div>
+							</div>
+						</aside>
+					</div>
+				</>
+			)
+		}
+
+		<BottomCta />
+	</main>
+
+	{isPaid && <BuyModal id={buyModalId} title={a.title} price={a.price} />}
+	<BuyTriggers slug={a.slug} />
+</Layout>
+
+<script
+	define:vars={{
+		slug: a.slug,
+		isPrompt: a.type === 'prompt',
+		promptText: a.type === 'prompt' ? a.prompt : '',
+	}}
+>
+	function recordRun(kind) {
+		try {
+			const payload = JSON.stringify({ slug: slug, kind: kind });
+			if (navigator.sendBeacon) {
+				const blob = new Blob([payload], { type: 'application/json' });
+				navigator.sendBeacon('/api/runs', blob);
+			} else {
+				fetch('/api/runs', {
+					method: 'POST',
+					headers: { 'content-type': 'application/json' },
+					body: payload,
+					keepalive: true,
+				}).catch(() => {});
+			}
+		} catch {
+			/* counter is best-effort */
+		}
+	}
+
+	function setupCopy() {
+		if (!isPrompt) return;
+		document.querySelectorAll('[data-copy-prompt="' + slug + '"]').forEach((btn) => {
+			if (btn.dataset.copyReady) return;
+			btn.dataset.copyReady = '1';
+			btn.addEventListener('click', () => {
+				if (btn.hasAttribute('data-locked-copy')) return;
+				navigator.clipboard?.writeText(promptText);
+				const original = btn.textContent;
+				btn.textContent = '✓ Copied';
+				setTimeout(() => (btn.textContent = original), 1600);
+				recordRun('copy');
+			});
+		});
+	}
+
+	function setupSkillProviders() {
+		document.querySelectorAll('[data-skill-providers]').forEach((root) => {
+			if (root.dataset.providersReady) return;
+			root.dataset.providersReady = '1';
+			const buttons = root.querySelectorAll('[data-skill-provider]');
+			buttons.forEach((btn) => {
+				btn.addEventListener('click', () => {
+					buttons.forEach((b) => b.classList.toggle('ph-detail__cloud-row--selected', b === btn));
+				});
+			});
+		});
+	}
+
+	setupCopy();
+	setupSkillProviders();
+	document.addEventListener('astro:page-load', () => {
+		setupCopy();
+		setupSkillProviders();
+	});
+</script>
+
+<style>
+	.ph-detail {
+		max-width: 1180px;
+		margin: 0 auto;
+		padding: calc(var(--header-height, 5.9rem) + 24px) var(--space-sm) 0;
+	}
+
+	.ph-detail__header {
+		margin-bottom: 48px;
+		max-width: 940px;
+	}
+	.ph-detail__eyebrow-row {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		margin-bottom: 22px;
+		flex-wrap: wrap;
+	}
+	.ph-detail__rule {
+		width: 28px;
+		height: 1px;
+		background: var(--color-brand-cyan);
+	}
+	.ph-detail__rule--sop {
+		background: #f3c47a;
+	}
+	.ph-detail__sep {
+		width: 3px;
+		height: 3px;
+		border-radius: 50%;
+		background: rgba(255, 255, 255, 0.2);
+	}
+	.ph-detail__top {
+		font-family: var(--font-main);
+		font-size: 0.65rem;
+		font-weight: 600;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--color-brand-cyan);
+	}
+	.ph-detail__stars {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 3px 10px;
+		border-radius: 4px;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		background: rgba(255, 255, 255, 0.02);
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.74rem;
+		color: var(--color-text-subtle);
+	}
+	.ph-detail__h1 {
+		margin: 0;
+		font-family: var(--font-accent);
+		font-weight: var(--fw-regular);
+		font-size: clamp(2.4rem, 5vw, 4.6rem);
+		line-height: 1.04;
+		letter-spacing: -0.02em;
+		color: var(--color-text-main);
+		text-wrap: balance;
+	}
+	.ph-detail__h1--mono {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-weight: 600;
+		font-size: clamp(2rem, 4.2vw, 3.6rem);
+		letter-spacing: -0.025em;
+		margin-bottom: 14px;
+	}
+	.ph-detail__skill-comment {
+		margin: 0 0 20px;
+		padding: 12px 16px;
+		background: rgba(160, 180, 255, 0.04);
+		border: 1px solid rgba(160, 180, 255, 0.12);
+		border-radius: 6px;
+		max-width: 760px;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.86rem;
+		line-height: 1.6;
+		color: rgba(170, 184, 255, 0.85);
+	}
+	.ph-detail__lede {
+		margin: 24px 0 0;
+		max-width: 760px;
+		font-family: var(--font-main);
+		font-size: 1.05rem;
+		line-height: 1.55;
+		color: var(--color-text-muted);
+	}
+
+	.ph-detail__body {
+		display: grid;
+		grid-template-columns: 1fr 320px;
+		gap: 64px;
+		align-items: start;
+	}
+	.ph-detail__main {
+		min-width: 0;
+	}
+	.ph-detail__rail {
+		position: sticky;
+		top: calc(var(--header-height, 5.9rem) + 24px);
+	}
+
+	.ph-detail__h2 {
+		margin: 0 0 14px;
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-weight: var(--fw-regular);
+		font-size: 1.85rem;
+		letter-spacing: -0.01em;
+		color: var(--color-text-main);
+	}
+	.ph-detail__h2--small {
+		font-size: 1.55rem;
+		margin-bottom: 12px;
+	}
+	.ph-detail__p {
+		margin: 0;
+		font-family: var(--font-main);
+		font-size: 1rem;
+		line-height: 1.65;
+		color: var(--color-text-subtle);
+		text-wrap: pretty;
+		max-width: 680px;
+	}
+	.ph-detail__how {
+		margin-bottom: 32px;
+	}
+
+	.ph-detail__prompt-section {
+		margin-bottom: 56px;
+	}
+	.ph-detail__prompt-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		margin-bottom: 14px;
+		gap: 12px;
+		flex-wrap: wrap;
+	}
+	.ph-detail__copy {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 7px 14px;
+		background: rgba(255, 255, 255, 0.04);
+		border: 1px solid rgba(255, 255, 255, 0.12);
+		border-radius: 6px;
+		color: var(--color-text-main);
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		font-weight: 500;
+		cursor: pointer;
+	}
+	.ph-detail__prompt-wrap {
+		position: relative;
+	}
+	.ph-detail__token-note {
+		margin: 12px 0 0;
+		font-family: var(--font-main);
+		font-size: 0.76rem;
+		color: var(--color-text-dim);
+	}
+	.ph-detail__token {
+		color: var(--color-brand-cyan);
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+	}
+
+	.ph-detail__pullquote {
+		margin: 0;
+		padding: 20px 24px;
+		border-left: 2px solid var(--color-brand-cyan);
+		background: rgba(78, 201, 180, 0.03);
+		font-family: var(--font-main);
+		font-size: 1rem;
+		line-height: 1.65;
+		color: var(--color-text-subtle);
+	}
+	.ph-detail__pullquote--sop {
+		border-left-color: #f3c47a;
+		background: rgba(243, 196, 122, 0.04);
+	}
+
+	.ph-detail__panel {
+		margin-bottom: 44px;
+		padding: 20px 24px;
+		border-radius: 8px;
+		background: rgba(255, 255, 255, 0.012);
+	}
+	.ph-detail__panel--inputs {
+		border: 1px solid var(--color-border);
+	}
+	.ph-detail__panel--outcomes {
+		border: 1px solid rgba(78, 201, 180, 0.2);
+		background: rgba(78, 201, 180, 0.03);
+		margin-bottom: 44px;
+	}
+	.ph-detail__inputs,
+	.ph-detail__outcomes {
+		margin: 14px 0 0;
+		padding: 0;
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+	.ph-detail__inputs li {
+		display: flex;
+		align-items: baseline;
+		gap: 12px;
+		font-family: var(--font-main);
+		font-size: 0.94rem;
+		color: var(--color-text-subtle);
+	}
+	.ph-detail__dash {
+		color: #f3c47a;
+	}
+	.ph-detail__outcomes li {
+		display: flex;
+		align-items: baseline;
+		gap: 12px;
+		font-family: var(--font-main);
+		font-size: 0.96rem;
+		color: var(--color-text-main);
+	}
+	.ph-detail__outcomes svg {
+		color: var(--color-brand-cyan);
+		flex-shrink: 0;
+		transform: translateY(2px);
+	}
+
+	.ph-detail__sop-section {
+		position: relative;
+		margin-bottom: 56px;
+	}
+	.ph-detail__steps {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		gap: 28px;
+	}
+	.ph-detail__step {
+		display: grid;
+		grid-template-columns: 70px 1fr;
+		gap: 18px;
+		padding-bottom: 28px;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+	}
+	.ph-detail__step:last-child {
+		border-bottom: none;
+	}
+	.ph-detail__step--locked {
+		filter: blur(4px);
+		opacity: 0.5;
+	}
+	.ph-detail__step-n {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.86rem;
+		font-weight: 600;
+		color: #f3c47a;
+		letter-spacing: 0.04em;
+	}
+	.ph-detail__step-title {
+		margin: 0 0 4px;
+		font-family: var(--font-accent);
+		font-weight: 500;
+		font-size: 1.65rem;
+		letter-spacing: -0.01em;
+		color: var(--color-text-main);
+	}
+	.ph-detail__step-sub {
+		margin: 0 0 10px;
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-size: 1.1rem;
+		color: rgba(243, 196, 122, 0.85);
+	}
+	.ph-detail__step-body {
+		margin: 0;
+		font-family: var(--font-main);
+		font-size: 0.98rem;
+		line-height: 1.65;
+		color: var(--color-text-muted);
+		text-wrap: pretty;
+		max-width: 640px;
+	}
+	.ph-detail__snippet {
+		margin: 12px 0 0;
+		padding: 10px 14px;
+		background: #0a0b0c;
+		border: 1px solid rgba(255, 255, 255, 0.06);
+		border-radius: 5px;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.78rem;
+		color: var(--color-text-subtle);
+		overflow-x: auto;
+	}
+	.ph-detail__sop-gate {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 60%;
+		display: flex;
+		align-items: flex-end;
+		justify-content: center;
+		background: linear-gradient(
+			to bottom,
+			transparent 0%,
+			rgba(10, 11, 12, 0.85) 50%,
+			#0a0b0c 100%
+		);
+		padding-bottom: 40px;
+		pointer-events: none;
+	}
+	.ph-detail__sop-unlock {
+		pointer-events: auto;
+		padding: 13px 24px;
+		background: var(--color-brand-cyan);
+		color: #050607;
+		border: none;
+		border-radius: 6px;
+		font-family: var(--font-main);
+		font-size: 0.86rem;
+		font-weight: 600;
+		cursor: pointer;
+	}
+
+	.ph-detail__skillmd-section {
+		margin-bottom: 56px;
+	}
+	.ph-detail__skillmd {
+		margin: 0;
+		padding: 22px 24px;
+		background: #0a0b0c;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-left: 3px solid #aab8ff;
+		border-radius: 6px;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.84rem;
+		line-height: 1.65;
+		color: var(--color-text-main);
+		white-space: pre-wrap;
+		overflow-x: auto;
+	}
+
+	.ph-detail__cloud {
+		padding: 20px;
+		border: 1px solid rgba(160, 180, 255, 0.25);
+		background: rgba(160, 180, 255, 0.04);
+		border-radius: 8px;
+		margin-bottom: 18px;
+	}
+	.ph-detail__cloud-p {
+		margin: 6px 0 14px;
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		color: var(--color-text-muted);
+		line-height: 1.5;
+	}
+	.ph-detail__cloud-list {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		margin-bottom: 14px;
+	}
+	.ph-detail__cloud-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 10px 12px;
+		background: rgba(255, 255, 255, 0.02);
+		border: 1px solid rgba(255, 255, 255, 0.06);
+		border-radius: 5px;
+		cursor: pointer;
+		text-align: left;
+		color: var(--color-text-subtle);
+	}
+	.ph-detail__cloud-row--selected {
+		background: rgba(160, 180, 255, 0.1);
+		border-color: rgba(160, 180, 255, 0.45);
+	}
+	.ph-detail__cloud-name {
+		font-family: var(--font-main);
+		font-size: 0.84rem;
+	}
+	.ph-detail__cloud-row--selected .ph-detail__cloud-name {
+		color: var(--color-text-main);
+		font-weight: 500;
+	}
+	.ph-detail__cloud-rec {
+		color: #aab8ff;
+		margin-left: 6px;
+		font-size: 0.7rem;
+	}
+	.ph-detail__cloud-cost {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.74rem;
+		color: var(--color-text-dim);
+	}
+	.ph-detail__cloud-row--selected .ph-detail__cloud-cost {
+		color: #aab8ff;
+	}
+	.ph-detail__cloud-btn {
+		width: 100%;
+		padding: 12px;
+		background: #aab8ff;
+		color: #050607;
+		border: none;
+		border-radius: 6px;
+		font-family: var(--font-main);
+		font-size: 0.86rem;
+		font-weight: 600;
+		cursor: pointer;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+	}
+
+	.ph-detail__pkg {
+		padding: 14px 16px;
+		border: 1px solid var(--color-border);
+		border-radius: 8px;
+		background: #0a0b0c;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.76rem;
+		line-height: 1.6;
+		color: var(--color-text-muted);
+	}
+	.ph-detail__pkg-brace {
+		color: var(--color-text-dim);
+	}
+	.ph-detail__pkg-body {
+		padding-left: 14px;
+	}
+	.ph-detail__pkg-key {
+		color: #aab8ff;
+	}
+	.ph-detail__pkg-val {
+		color: var(--color-brand-cyan);
+	}
+	.ph-detail__pkg-num {
+		color: #f3c47a;
+	}
+
+	@media (max-width: 1100px) {
+		.ph-detail__body {
+			grid-template-columns: 1fr 280px;
+			gap: 36px;
+		}
+	}
+	@media (max-width: 900px) {
+		.ph-detail__body {
+			grid-template-columns: 1fr;
+			gap: 32px;
+		}
+		.ph-detail__rail {
+			position: static;
+		}
+	}
+	@media (max-width: 600px) {
+		.ph-detail__h2 {
+			font-size: 1.5rem;
+		}
+		.ph-detail__h1--mono {
+			font-size: 1.65rem;
+		}
+		.ph-detail__panel {
+			padding: 18px;
+		}
+		.ph-detail__step {
+			grid-template-columns: 1fr;
+			gap: 8px;
+		}
+		.ph-detail__step-title {
+			font-size: 1.4rem;
+		}
+		.ph-detail__skillmd {
+			padding: 16px 18px;
+			font-size: 0.78rem;
+		}
+	}
+</style>

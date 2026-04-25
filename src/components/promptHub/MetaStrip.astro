@@ -1,0 +1,48 @@
+---
+import type { Author } from '../../data/promptHub';
+import { formatUses } from '../../data/promptHub';
+
+interface Props {
+	author: Author;
+	uses: number;
+	extra?: { label: string; value: string }[];
+}
+
+const { author, uses, extra = [] } = Astro.props;
+---
+
+<div class="meta-strip">
+	<span><span class="meta-strip__label">Author</span> {author.name}</span>
+	<span><span class="meta-strip__label">In production</span> {author.since}</span>
+	<span>
+		<span class="meta-strip__label">Runs</span>
+		<span class="meta-strip__teal">{formatUses(uses)}</span>
+	</span>
+	{
+		extra.map((e) => (
+			<span>
+				<span class="meta-strip__label">{e.label}</span> {e.value}
+			</span>
+		))
+	}
+</div>
+
+<style>
+	.meta-strip {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px 24px;
+		margin-top: 28px;
+		padding-top: 22px;
+		border-top: 1px solid var(--color-border);
+		font-family: var(--font-main);
+		font-size: 0.84rem;
+		color: var(--color-text-muted);
+	}
+	.meta-strip__label {
+		color: var(--color-text-dim);
+	}
+	.meta-strip__teal {
+		color: var(--color-brand-cyan);
+	}
+</style>

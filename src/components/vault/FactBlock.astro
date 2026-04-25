@@ -1,0 +1,79 @@
+---
+interface Props {
+	label: string;
+	items?: string[];
+	body?: string;
+	last?: boolean;
+}
+
+const { label, items, body, last = false } = Astro.props;
+---
+
+<div class:list={['fact-block', { 'fact-block--last': last }]}>
+	<div class="fact-block__label">{label}</div>
+	{
+		items ? (
+			<ul class="fact-block__list">
+				{items.map((it) => (
+					<li class="fact-block__item">{it}</li>
+				))}
+			</ul>
+		) : (
+			<p class="fact-block__body">{body}</p>
+		)
+	}
+</div>
+
+<style>
+	.fact-block {
+		padding-bottom: 14px;
+		margin-bottom: 14px;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+	}
+	.fact-block--last {
+		padding-bottom: 0;
+		margin-bottom: 0;
+		border-bottom: none;
+	}
+	.fact-block__label {
+		font-family: var(--font-main);
+		font-size: 0.66rem;
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--color-text-dim);
+		margin-bottom: 8px;
+	}
+	.fact-block__list {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+	.fact-block__item {
+		font-family: var(--font-main);
+		font-size: 0.84rem;
+		line-height: 1.45;
+		color: rgba(255, 255, 255, 0.78);
+		padding-left: 14px;
+		position: relative;
+	}
+	.fact-block__item::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0.55em;
+		width: 5px;
+		height: 1px;
+		background: rgba(78, 201, 180, 0.6);
+	}
+	.fact-block__body {
+		margin: 0;
+		font-family: var(--font-main);
+		font-size: 0.84rem;
+		line-height: 1.5;
+		color: rgba(255, 255, 255, 0.78);
+	}
+</style>

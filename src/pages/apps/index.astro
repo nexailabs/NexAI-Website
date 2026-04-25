@@ -1,0 +1,296 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Eyebrow from '../../components/vault/Eyebrow.astro';
+import AccentRule from '../../components/vault/AccentRule.astro';
+import StackCard from '../../components/vault/StackCard.astro';
+import DeepFilterBar from '../../components/vault/DeepFilterBar.astro';
+import ToolTile from '../../components/vault/ToolTile.astro';
+import RankedListModule from '../../components/vault/RankedListModule.astro';
+import { VAULT_TOOLS, VAULT_STACKS, VAULT_RANKINGS } from '../../data/vault';
+---
+
+<Layout
+	title="App Vault | NexAI Labs"
+	description="A short, opinionated catalog of the software we use to run NexAI Labs every day. What it is, why we picked it, what it replaced."
+>
+	<main class="vault-index">
+		<header class="vault-index__header">
+			<div class="vault-index__eyebrow-row">
+				<AccentRule width={24} />
+				<Eyebrow tint="accent">App Vault · {VAULT_TOOLS.length} tools</Eyebrow>
+			</div>
+			<h1 class="vault-index__title">
+				The stack we <em>actually</em> run on.
+			</h1>
+			<p class="vault-index__sub">
+				A short, opinionated catalog of the software we use every day. What it is, why we picked it,
+				what it replaced. Curated, tested, written by us — not affiliate links.
+			</p>
+		</header>
+
+		<section class="vault-index__stacks">
+			<div class="vault-index__section-head">
+				<div class="vault-index__section-meta">
+					<h2 class="vault-index__section-title">Curated stacks</h2>
+					<span class="vault-index__section-sub">
+						How our {VAULT_TOOLS.length} tools cluster into {VAULT_STACKS.length} working systems.
+					</span>
+				</div>
+				<a href="#all-tools" class="vault-index__see-all">See all stacks →</a>
+			</div>
+			<div class="vault-index__stack-grid">
+				{VAULT_STACKS.map((s) => <StackCard stack={s} />)}
+			</div>
+		</section>
+
+		<DeepFilterBar />
+
+		<div id="all-tools" class="vault-index__grid" data-vault-grid>
+			{VAULT_TOOLS.map((t) => <ToolTile tool={t} />)}
+		</div>
+
+		<div class="vault-index__empty" data-vault-empty style="display: none;">
+			<p class="vault-index__empty-title">Nothing in this corner of the vault yet.</p>
+			<p class="vault-index__empty-sub">
+				We only list tools we run ourselves. If you think we're missing one — tell us.
+			</p>
+			<a
+				href="mailto:hello@nexailabs.com?subject=Suggest%20a%20tool%20for%20the%20Vault"
+				class="vault-index__empty-cta"
+			>
+				Suggest a tool →
+			</a>
+		</div>
+
+		<section class="vault-index__ranked">
+			<RankedListModule ranking={VAULT_RANKINGS[0]} />
+		</section>
+
+		<footer class="vault-index__credit">
+			<div class="vault-index__credit-line">
+				<span class="vault-index__credit-tick" aria-hidden="true">
+					<svg
+						width="12"
+						height="12"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2.4"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<polyline points="20 6 9 17 4 12"></polyline>
+					</svg>
+				</span>
+				<span class="vault-index__credit-text">
+					Curated, tested, and written by <strong>NexAI Labs</strong> —
+					<em>Rahul Juneja</em>.
+				</span>
+			</div>
+			<a href="/blog" class="vault-index__credit-link">How we pick →</a>
+		</footer>
+	</main>
+</Layout>
+
+<style>
+	.vault-index {
+		max-width: var(--container-max, 1400px);
+		margin: 0 auto;
+		padding: calc(var(--header-height, 5.9rem) + 32px) var(--space-sm) 80px;
+	}
+
+	.vault-index__header {
+		margin-bottom: 48px;
+		max-width: 820px;
+	}
+	.vault-index__eyebrow-row {
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+		margin-bottom: 20px;
+	}
+	.vault-index__title {
+		font-family: var(--font-accent);
+		font-weight: var(--fw-semibold);
+		font-size: clamp(2.4rem, 4.6vw, 3.6rem);
+		line-height: var(--lh-heading);
+		letter-spacing: -0.01em;
+		color: var(--color-text-main);
+		margin: 0;
+		text-wrap: balance;
+	}
+	.vault-index__title em {
+		font-style: italic;
+		font-weight: var(--fw-regular);
+	}
+	.vault-index__sub {
+		margin-top: 16px;
+		margin-bottom: 0;
+		max-width: 640px;
+		font-family: var(--font-main);
+		font-size: 1rem;
+		line-height: 1.55;
+		color: var(--color-text-subtle);
+	}
+
+	.vault-index__stacks {
+		margin-bottom: 56px;
+	}
+	.vault-index__section-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		margin-bottom: 18px;
+		gap: 16px;
+		flex-wrap: wrap;
+	}
+	.vault-index__section-meta {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		flex-wrap: wrap;
+	}
+	.vault-index__section-title {
+		font-family: var(--font-main);
+		font-size: 0.95rem;
+		font-weight: var(--fw-semibold);
+		color: var(--color-text-main);
+		margin: 0;
+		letter-spacing: -0.005em;
+	}
+	.vault-index__section-sub {
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		color: var(--color-text-dim);
+	}
+	.vault-index__see-all {
+		font-family: var(--font-main);
+		font-size: 0.78rem;
+		font-weight: var(--fw-semibold);
+		color: var(--color-brand-cyan);
+		text-decoration: none;
+	}
+	.vault-index__stack-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 16px;
+	}
+
+	.vault-index__grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 16px;
+	}
+
+	.vault-index__empty {
+		padding: 72px 0;
+		text-align: center;
+		border: 1px dashed rgba(255, 255, 255, 0.08);
+		border-radius: var(--radius-md);
+		background: rgba(255, 255, 255, 0.01);
+		margin-top: 24px;
+	}
+	.vault-index__empty-title {
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-weight: var(--fw-regular);
+		font-size: 1.5rem;
+		color: rgba(255, 255, 255, 0.7);
+		margin: 0 0 18px;
+		letter-spacing: -0.005em;
+	}
+	.vault-index__empty-sub {
+		font-family: var(--font-main);
+		font-size: 0.86rem;
+		color: var(--color-text-dim);
+		margin: 0 auto 24px;
+		max-width: 420px;
+		line-height: 1.55;
+	}
+	.vault-index__empty-cta {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 0.65rem 1.2rem;
+		border-radius: var(--radius-full);
+		background: var(--color-text-main);
+		color: var(--color-bg);
+		font-family: var(--font-main);
+		font-size: 0.82rem;
+		font-weight: var(--fw-semibold);
+		text-decoration: none;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+
+	.vault-index__ranked {
+		margin-top: 80px;
+	}
+
+	.vault-index__credit {
+		margin-top: 80px;
+		padding: 32px 0;
+		border-top: 1px solid var(--color-border);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px;
+		flex-wrap: wrap;
+	}
+	.vault-index__credit-line {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+	}
+	.vault-index__credit-tick {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 22px;
+		height: 22px;
+		border-radius: 50%;
+		background: rgba(78, 201, 180, 0.13);
+		color: var(--color-brand-cyan);
+		flex-shrink: 0;
+	}
+	.vault-index__credit-text {
+		font-family: var(--font-main);
+		font-size: 0.84rem;
+		color: var(--color-text-muted);
+	}
+	.vault-index__credit-text strong {
+		color: var(--color-text-main);
+		font-weight: var(--fw-semibold);
+	}
+	.vault-index__credit-text em {
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-weight: var(--fw-regular);
+		color: rgba(255, 255, 255, 0.7);
+	}
+	.vault-index__credit-link {
+		font-family: var(--font-main);
+		font-size: 0.82rem;
+		font-weight: var(--fw-semibold);
+		color: var(--color-brand-cyan);
+		text-decoration: none;
+	}
+
+	@media (max-width: 1100px) {
+		.vault-index__stack-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+		.vault-index__grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+	@media (max-width: 720px) {
+		.vault-index {
+			padding-inline: var(--space-sm);
+		}
+		.vault-index__stack-grid,
+		.vault-index__grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

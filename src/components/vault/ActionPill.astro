@@ -1,0 +1,84 @@
+---
+interface Props {
+	icon?: 'bookmark' | 'flag' | 'code';
+	label: string;
+}
+
+const { icon, label } = Astro.props;
+---
+
+<button class="action-pill" type="button">
+	{
+		icon === 'bookmark' && (
+			<svg
+				width="13"
+				height="13"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1.6"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+			</svg>
+		)
+	}
+	{
+		icon === 'flag' && (
+			<svg
+				width="13"
+				height="13"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1.6"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<path d="M4 21V4a1 1 0 0 1 1-1h13l-3 5 3 5H5" />
+			</svg>
+		)
+	}
+	{
+		icon === 'code' && (
+			<svg
+				width="13"
+				height="13"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1.6"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<polyline points="16 18 22 12 16 6" />
+				<polyline points="8 6 2 12 8 18" />
+			</svg>
+		)
+	}
+	{label}
+</button>
+
+<style>
+	.action-pill {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 6px 12px;
+		border-radius: var(--radius-sm);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		background: transparent;
+		color: rgba(255, 255, 255, 0.7);
+		font-family: var(--font-main);
+		font-size: 0.76rem;
+		font-weight: var(--fw-semibold);
+		cursor: pointer;
+		transition: all 0.2s ease;
+	}
+	.action-pill:hover {
+		color: var(--color-text-main);
+		border-color: var(--color-border-hover);
+		background: rgba(255, 255, 255, 0.03);
+	}
+</style>

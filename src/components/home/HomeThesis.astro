@@ -1,0 +1,395 @@
+---
+interface Pillar {
+	num: string;
+	eyebrow: string;
+	title: string;
+	body: string;
+	tag: string;
+}
+
+const pillars: Pillar[] = [
+	{
+		num: '01',
+		eyebrow: 'We build',
+		title: 'The agent.',
+		body: 'Prompts, runbooks, integrations, the daily review window. Two-week sprint, fixed price. Live in your stack on day 14.',
+		tag: 'sprint · fixed price',
+	},
+	{
+		num: '02',
+		eyebrow: 'You run',
+		title: 'The business.',
+		body: 'Your team owns the agent on Monday. We document the seams, train your reviewers, and stay on Slack for edge cases.',
+		tag: 'handoff · day 14',
+	},
+	{
+		num: '03',
+		eyebrow: 'It compounds',
+		title: 'Across departments.',
+		body: 'Outreach feeds Strategy. Strategy feeds Marketing. Each new agent makes the existing ones smarter — that’s the unlock.',
+		tag: 'network effect',
+	},
+];
+---
+
+<section class="home-thesis" aria-labelledby="home-thesis-h2">
+	{/* Section header bar */}
+	<div class="home-thesis__bar">
+		<div class="home-thesis__bar-left">
+			<span class="home-thesis__bar-dot" aria-hidden="true"></span>
+			<span>&sect; 02 &middot; The thesis</span>
+		</div>
+		<div class="home-thesis__bar-right">Why we exist</div>
+	</div>
+
+	{/* Statement block */}
+	<div class="home-thesis__statement">
+		<div class="home-thesis__statement-grid">
+			{/* Left rail */}
+			<div class="home-thesis__rail">
+				<div class="home-thesis__rail-eyebrow">The standard pitch</div>
+				<p class="home-thesis__rail-quote">&ldquo;Hand us six weeks and a discovery deck.&rdquo;</p>
+				<p class="home-thesis__rail-counter">
+					Most &ldquo;AI consultancies&rdquo; sell decks. We sell agents that ran in production for
+					a month before we put a price on them.
+				</p>
+			</div>
+
+			{/* Right — the actual statement */}
+			<div class="home-thesis__position">
+				<div class="home-thesis__position-eyebrow">Our position &rarr;</div>
+				<h2 class="home-thesis__h2" id="home-thesis-h2">
+					We don&rsquo;t sell software.<br />
+					We sell <span class="home-thesis__h2-em">agents</span> that do the work &mdash; and a way to
+					run them you&rsquo;ll still trust on month two.
+				</h2>
+			</div>
+		</div>
+	</div>
+
+	{/* Pillars */}
+	<div class="home-thesis__pillars">
+		<div class="home-thesis__pillars-head">
+			<span class="home-thesis__pillars-head-l">How it lands</span>
+			<span class="home-thesis__pillars-head-r">3 commitments &middot; in order</span>
+		</div>
+
+		<div class="home-thesis__pillars-grid">
+			{
+				pillars.map((p, i) => (
+					<div
+						class:list={[
+							'home-thesis__pillar',
+							i === 0 && 'home-thesis__pillar--first',
+							i < 2 && 'home-thesis__pillar--bordered',
+						]}
+					>
+						<div class="home-thesis__pillar-row">
+							<span class="home-thesis__pillar-num">{p.num}</span>
+							<span class="home-thesis__pillar-line" aria-hidden="true" />
+							<span class="home-thesis__pillar-tag">{p.tag}</span>
+						</div>
+						<p class="home-thesis__pillar-eyebrow">{p.eyebrow}</p>
+						<h3 class="home-thesis__pillar-title">{p.title}</h3>
+						<p class="home-thesis__pillar-body">{p.body}</p>
+					</div>
+				))
+			}
+		</div>
+
+		{/* Bottom seal */}
+		<div class="home-thesis__seal">
+			<span>Build &rarr; Run &rarr; Compound</span>
+			<span class="home-thesis__seal-right">
+				<span class="home-thesis__seal-dot" aria-hidden="true"></span>
+				End &sect; 02
+			</span>
+		</div>
+	</div>
+</section>
+
+<style>
+	.home-thesis {
+		position: relative;
+		border-top: 1px solid rgba(255, 255, 255, 0.06);
+		background: #050607;
+	}
+
+	/* Section header bar */
+	.home-thesis__bar {
+		position: relative;
+		max-width: 1280px;
+		margin: 0 auto;
+		padding: 20px 40px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+	}
+	.home-thesis__bar-left {
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.7rem;
+		font-weight: 500;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.42);
+	}
+	.home-thesis__bar-dot {
+		width: 6px;
+		height: 6px;
+		background: var(--color-brand-cyan);
+		display: inline-block;
+	}
+	.home-thesis__bar-right {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.66rem;
+		font-weight: 500;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.32);
+	}
+
+	/* Statement block */
+	.home-thesis__statement {
+		max-width: 1280px;
+		margin: 0 auto;
+		padding: 110px 40px 80px;
+	}
+	.home-thesis__statement-grid {
+		display: grid;
+		grid-template-columns: 1fr 1.7fr;
+		gap: 80px;
+		align-items: start;
+	}
+
+	.home-thesis__rail {
+		padding-top: 8px;
+	}
+	.home-thesis__rail-eyebrow {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.62rem;
+		font-weight: 500;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.32);
+		margin-bottom: 18px;
+		padding-bottom: 12px;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+	}
+	.home-thesis__rail-quote {
+		margin: 0 0 14px;
+		font-family: var(--font-accent), 'Cormorant Garamond', serif;
+		font-style: italic;
+		font-size: 1.35rem;
+		line-height: 1.35;
+		font-weight: 400;
+		color: rgba(255, 255, 255, 0.45);
+		text-decoration: line-through;
+		text-decoration-color: rgba(255, 80, 80, 0.4);
+		text-decoration-thickness: 1px;
+		text-wrap: pretty;
+	}
+	.home-thesis__rail-counter {
+		margin: 0;
+		font-family: var(--font-main), 'Inter', sans-serif;
+		font-size: 0.86rem;
+		line-height: 1.6;
+		color: rgba(255, 255, 255, 0.5);
+		text-wrap: pretty;
+	}
+
+	.home-thesis__position {
+		position: relative;
+	}
+	.home-thesis__position-eyebrow {
+		position: absolute;
+		top: -28px;
+		left: 0;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.6rem;
+		font-weight: 500;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		color: var(--color-brand-cyan);
+	}
+	.home-thesis__h2 {
+		margin: 0;
+		font-family: var(--font-accent), 'Cormorant Garamond', serif;
+		font-weight: 400;
+		font-size: clamp(2.4rem, 4.6vw, 4rem);
+		line-height: 1.08;
+		letter-spacing: -0.02em;
+		color: rgba(255, 255, 255, 0.96);
+		text-wrap: pretty;
+	}
+	.home-thesis__h2-em {
+		font-style: italic;
+		color: var(--color-brand-cyan);
+	}
+
+	/* Pillars */
+	.home-thesis__pillars {
+		max-width: 1280px;
+		margin: 0 auto;
+		padding: 0 40px 110px;
+	}
+	.home-thesis__pillars-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		padding-bottom: 14px;
+		margin-bottom: 0;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+	}
+	.home-thesis__pillars-head-l {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.66rem;
+		font-weight: 500;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.42);
+	}
+	.home-thesis__pillars-head-r {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.62rem;
+		font-weight: 500;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.3);
+	}
+
+	.home-thesis__pillars-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+	}
+	.home-thesis__pillar {
+		position: relative;
+		padding: 36px 32px 32px;
+	}
+	.home-thesis__pillar--first {
+		padding-left: 0;
+	}
+	.home-thesis__pillar--bordered {
+		border-right: 1px solid rgba(255, 255, 255, 0.06);
+	}
+
+	.home-thesis__pillar-row {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		margin-bottom: 28px;
+	}
+	.home-thesis__pillar-num {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.78rem;
+		font-weight: 500;
+		letter-spacing: 0.08em;
+		color: var(--color-brand-cyan);
+	}
+	.home-thesis__pillar-line {
+		flex: 1;
+		height: 1px;
+		background: linear-gradient(to right, rgba(78, 201, 180, 0.32), rgba(255, 255, 255, 0.04));
+	}
+	.home-thesis__pillar-tag {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.6rem;
+		font-weight: 500;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.32);
+	}
+
+	.home-thesis__pillar-eyebrow {
+		margin: 0 0 8px;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.66rem;
+		font-weight: 500;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.5);
+	}
+	.home-thesis__pillar-title {
+		margin: 0 0 14px;
+		font-family: var(--font-accent), 'Cormorant Garamond', serif;
+		font-weight: 500;
+		font-size: 1.95rem;
+		letter-spacing: -0.01em;
+		color: rgba(255, 255, 255, 0.96);
+	}
+	.home-thesis__pillar-body {
+		margin: 0;
+		font-family: var(--font-main), 'Inter', sans-serif;
+		font-size: 0.92rem;
+		line-height: 1.6;
+		color: rgba(255, 255, 255, 0.6);
+		text-wrap: pretty;
+	}
+
+	/* Bottom seal */
+	.home-thesis__seal {
+		margin-top: 0;
+		padding-top: 20px;
+		border-top: 1px solid rgba(255, 255, 255, 0.08);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.62rem;
+		font-weight: 500;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.32);
+	}
+	.home-thesis__seal-right {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+	}
+	.home-thesis__seal-dot {
+		width: 6px;
+		height: 6px;
+		background: var(--color-brand-cyan);
+		display: inline-block;
+	}
+
+	@media (max-width: 900px) {
+		.home-thesis__bar {
+			padding: 16px 24px;
+			flex-wrap: wrap;
+			gap: 8px;
+		}
+		.home-thesis__statement {
+			padding: 64px 24px 48px;
+		}
+		.home-thesis__statement-grid {
+			grid-template-columns: 1fr;
+			gap: 48px;
+		}
+		.home-thesis__pillars {
+			padding: 0 24px 72px;
+		}
+		.home-thesis__pillars-head {
+			flex-wrap: wrap;
+			gap: 8px;
+		}
+		.home-thesis__pillars-grid {
+			grid-template-columns: 1fr;
+		}
+		.home-thesis__pillar {
+			padding: 28px 0;
+			border-right: none !important;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+		}
+		.home-thesis__pillar--first {
+			padding-top: 28px;
+		}
+		.home-thesis__seal {
+			flex-wrap: wrap;
+			gap: 8px;
+		}
+	}
+</style>

@@ -1,0 +1,42 @@
+---
+import type { Author } from '../../data/promptHub';
+
+interface Props {
+	author: Author;
+}
+
+const { author } = Astro.props;
+---
+
+<span class="author-chip">
+	<span class="author-chip__avatar">{author.initials}</span>
+	<span class="author-chip__name">{author.name}</span>
+</span>
+
+<style>
+	.author-chip {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		font-family: var(--font-main);
+		font-size: 0.74rem;
+		color: var(--color-text-muted);
+	}
+	.author-chip__avatar {
+		width: 22px;
+		height: 22px;
+		border-radius: 50%;
+		background: rgba(78, 201, 180, 0.12);
+		color: var(--color-brand-cyan);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 0.62rem;
+		font-weight: var(--fw-semibold);
+		border: 1px solid rgba(78, 201, 180, 0.25);
+		flex-shrink: 0;
+	}
+	.author-chip__name {
+		color: var(--color-text-subtle);
+	}
+</style>

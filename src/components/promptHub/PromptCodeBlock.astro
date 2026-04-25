@@ -1,0 +1,84 @@
+---
+interface Props {
+	prompt: string;
+	preview?: boolean;
+	maxLines?: number;
+}
+
+const { prompt, preview = false, maxLines = 5 } = Astro.props;
+
+const lines = preview ? prompt.split('\n').slice(0, maxLines) : prompt.split('\n');
+
+type Segment = { text: string; token: boolean };
+
+function tokenize(line: string): Segment[] {
+	const segs: Segment[] = [];
+	const parts = line.split(/(\{\{[A-Z_]+\}\})/g);
+	for (const part of parts) {
+		if (part === '') continue;
+		segs.push({ text: part, token: /^\{\{[A-Z_]+\}\}$/.test(part) });
+	}
+	return segs;
+}
+
+const rendered = lines.map((line) => tokenize(line));
+---
+
+<pre
+	class:list={[
+		'prompt-block',
+		preview && 'prompt-block--preview',
+	]}>{
+	rendered.map((segs, i) => (
+		<span class="prompt-block__line">
+			{segs.length === 0 ? ' ' : segs.map((s) => (
+				s.token ? <span class="prompt-block__token">{s.text}</span> : <span>{s.text}</span>
+			))}
+			{i < rendered.length - 1 && '\n'}
+		</span>
+	))
+}{preview && <span class="prompt-block__fade" aria-hidden="true" />}</pre>
+
+<style>
+	.prompt-block {
+		position: relative;
+		margin: 0;
+		padding: 24px 26px;
+		background: #0a0b0c;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-left: 3px solid var(--color-brand-cyan);
+		border-radius: 6px;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.84rem;
+		line-height: 1.65;
+		color: rgba(255, 255, 255, 0.85);
+		white-space: pre-wrap;
+		overflow-x: auto;
+	}
+	.prompt-block--preview {
+		padding: 12px 14px;
+		font-size: 0.76rem;
+		line-height: 1.55;
+		color: rgba(255, 255, 255, 0.6);
+		max-height: 80px;
+		overflow: hidden;
+		border: 1px solid rgba(255, 255, 255, 0.05);
+		background: #0c0d0e;
+	}
+	.prompt-block__line {
+		display: block;
+	}
+	.prompt-block__token {
+		color: var(--color-brand-cyan);
+		font-weight: 500;
+	}
+	.prompt-block__fade {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 46px;
+		background: linear-gradient(to bottom, transparent, #0c0d0e 75%);
+		pointer-events: none;
+	}
+</style>

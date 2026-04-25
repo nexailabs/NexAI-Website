@@ -1,0 +1,54 @@
+---
+import Eyebrow from '../vault/Eyebrow.astro';
+
+interface Props {
+	models: string[];
+}
+
+const { models } = Astro.props;
+---
+
+<div class="tested-card">
+	<Eyebrow tint="dim">Tested on</Eyebrow>
+	<div class="tested-card__list">
+		{
+			models.map((m) => (
+				<div class="tested-card__row">
+					<span class="tested-card__dot" aria-hidden="true" />
+					{m}
+				</div>
+			))
+		}
+	</div>
+</div>
+
+<style>
+	.tested-card {
+		padding: 20px;
+		border: 1px solid var(--color-border);
+		border-radius: 8px;
+		background: rgba(255, 255, 255, 0.015);
+		margin-bottom: 18px;
+	}
+	.tested-card__list {
+		margin-top: 14px;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+	.tested-card__row {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		font-family: var(--font-main);
+		font-size: 0.84rem;
+		color: var(--color-text-subtle);
+	}
+	.tested-card__dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: var(--color-brand-cyan);
+		flex-shrink: 0;
+	}
+</style>

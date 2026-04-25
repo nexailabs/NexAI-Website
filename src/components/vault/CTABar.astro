@@ -1,0 +1,116 @@
+---
+interface Props {
+	title: string;
+	accent?: string;
+	sub?: string;
+	bookingUrl?: string;
+	ctaLabel?: string;
+}
+
+const {
+	title,
+	accent,
+	sub = '15-min call. No slides, no hard sell.',
+	bookingUrl = 'https://cal.com/rahul-juneja/15min',
+	ctaLabel = 'Book a call →',
+} = Astro.props;
+
+import TitleWithAccent from './TitleWithAccent.astro';
+import Eyebrow from './Eyebrow.astro';
+---
+
+<section class="vault-cta">
+	<div>
+		<Eyebrow tint="accent" class="vault-cta__eyebrow">Catch us</Eyebrow>
+		<h2 class="vault-cta__title">
+			<TitleWithAccent text={title} accent={accent} />
+		</h2>
+		<p class="vault-cta__sub">{sub}</p>
+	</div>
+	<a href={bookingUrl} class="vault-cta__btn" data-open-cal>
+		{ctaLabel}
+	</a>
+</section>
+
+<style>
+	.vault-cta {
+		max-width: var(--container-max, 1400px);
+		margin: 96px auto 80px;
+		padding: 56px var(--space-sm);
+		border-top: 1px solid var(--color-border);
+		border-bottom: 1px solid var(--color-border);
+		display: grid;
+		grid-template-columns: 1fr auto;
+		align-items: center;
+		gap: 48px;
+	}
+	.vault-cta__eyebrow {
+		display: block;
+		margin-bottom: 14px;
+	}
+	.vault-cta__title {
+		font-family: var(--font-accent);
+		font-weight: var(--fw-semibold);
+		font-size: clamp(1.6rem, 3vw, 2.3rem);
+		line-height: var(--lh-heading);
+		color: var(--color-text-main);
+		margin: 0;
+		letter-spacing: -0.015em;
+		max-width: 720px;
+	}
+	.vault-cta__sub {
+		margin-top: 14px;
+		margin-bottom: 0;
+		color: var(--color-text-muted);
+		font-size: var(--text-base);
+		line-height: var(--lh-body);
+	}
+	.vault-cta__btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 10px;
+		padding: 0.85rem 1.75rem;
+		font-family: var(--font-main);
+		font-size: var(--text-btn);
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--color-bg);
+		background: var(--color-text-main);
+		text-decoration: none;
+		border: 1px solid var(--color-text-main);
+		border-radius: var(--radius-full);
+		transition:
+			background 0.3s var(--ease-out-expo),
+			transform 0.3s var(--ease-out-expo);
+	}
+	.vault-cta__btn:hover {
+		background: rgba(255, 255, 255, 0.88);
+		transform: translateY(-1px);
+	}
+	.vault-cta__btn:active {
+		transform: scale(0.97);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.vault-cta__btn:hover,
+		.vault-cta__btn:active {
+			transform: none;
+		}
+	}
+	@media (max-width: 720px) {
+		.vault-cta {
+			grid-template-columns: 1fr;
+			padding: 48px var(--space-sm);
+		}
+		.vault-cta__btn {
+			justify-self: start;
+			margin-top: var(--space-xs);
+		}
+	}
+	@media (max-width: 380px) {
+		.vault-cta__btn {
+			width: 100%;
+		}
+	}
+</style>

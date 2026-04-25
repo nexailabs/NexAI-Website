@@ -1,0 +1,710 @@
+---
+import type { Artifact, ArtifactType } from '../../data/promptHub';
+
+interface Props {
+	counts: { all: number; prompt: number; sop: number; skill: number };
+	topRunning: Artifact[];
+}
+
+const { counts, topRunning } = Astro.props;
+
+const tabs: { id: 'all' | ArtifactType; label: string }[] = [
+	{ id: 'all', label: 'All' },
+	{ id: 'prompt', label: 'Prompts' },
+	{ id: 'sop', label: 'SOPs' },
+	{ id: 'skill', label: 'Skills' },
+];
+
+const sortOptions = ['Most used', 'Newest', 'A → Z'] as const;
+---
+
+<div class="ph-strip">
+	<span class="ph-strip__corner ph-strip__corner--tl" aria-hidden="true">
+		<svg viewBox="0 0 10 10"
+			><line x1="5" y1="0" x2="5" y2="10"></line><line x1="0" y1="5" x2="10" y2="5"></line></svg
+		>
+	</span>
+	<span class="ph-strip__corner ph-strip__corner--tr" aria-hidden="true">
+		<svg viewBox="0 0 10 10"
+			><line x1="5" y1="0" x2="5" y2="10"></line><line x1="0" y1="5" x2="10" y2="5"></line></svg
+		>
+	</span>
+	<span class="ph-strip__corner ph-strip__corner--bl" aria-hidden="true">
+		<svg viewBox="0 0 10 10"
+			><line x1="5" y1="0" x2="5" y2="10"></line><line x1="0" y1="5" x2="10" y2="5"></line></svg
+		>
+	</span>
+	<span class="ph-strip__corner ph-strip__corner--br" aria-hidden="true">
+		<svg viewBox="0 0 10 10"
+			><line x1="5" y1="0" x2="5" y2="10"></line><line x1="0" y1="5" x2="10" y2="5"></line></svg
+		>
+	</span>
+
+	<div class="ph-strip__bar">
+		<div class="ph-strip__label">[ Filter / Type ]</div>
+
+		<div class="ph-strip__tabs">
+			{
+				tabs.map((t) => {
+					const ct = t.id === 'all' ? counts.all : counts[t.id];
+					return (
+						<button
+							type="button"
+							class:list={['ph-strip__tab', t.id === 'all' && 'ph-strip__tab--active']}
+							data-type-tab={t.id}
+							aria-pressed={t.id === 'all'}
+						>
+							<span class="ph-strip__tab-icon" aria-hidden="true">
+								{t.id === 'all' && (
+									<svg
+										width="12"
+										height="12"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="1.8"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<rect x="3" y="3" width="7" height="7" />
+										<rect x="14" y="3" width="7" height="7" />
+										<rect x="3" y="14" width="7" height="7" />
+										<rect x="14" y="14" width="7" height="7" />
+									</svg>
+								)}
+								{t.id === 'prompt' && (
+									<svg
+										width="12"
+										height="12"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="1.8"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<path d="M14 4l-8 16M8 4h8M16 20H8" />
+									</svg>
+								)}
+								{t.id === 'sop' && (
+									<svg
+										width="12"
+										height="12"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="1.8"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<line x1="3" y1="6" x2="21" y2="6" />
+										<line x1="3" y1="12" x2="21" y2="12" />
+										<line x1="3" y1="18" x2="14" y2="18" />
+									</svg>
+								)}
+								{t.id === 'skill' && (
+									<svg
+										width="12"
+										height="12"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="1.8"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5" />
+									</svg>
+								)}
+							</span>
+							<span class="ph-strip__tab-label">{t.label}</span>
+							<span class="ph-strip__tab-n">{ct}</span>
+						</button>
+					);
+				})
+			}
+		</div>
+
+		<div class="ph-strip__ticker" data-ticker>
+			<span class="ph-strip__ticker-live">
+				<span class="ph-strip__ticker-dot" aria-hidden="true"></span>
+				Live
+			</span>
+			<div class="ph-strip__ticker-track">
+				{
+					topRunning.map((a, i) => (
+						<div
+							class:list={['ph-strip__ticker-row', i === 0 && 'ph-strip__ticker-row--active']}
+							data-ticker-row={i}
+						>
+							<span class="ph-strip__ticker-idx">
+								{String(i + 1).padStart(2, '0')} / {String(topRunning.length).padStart(2, '0')}
+							</span>
+							<span class="ph-strip__ticker-title">{a.title.replace(/\.$/, '')}</span>
+							<span class="ph-strip__ticker-uses">{a.uses.toLocaleString('en-IN')} runs</span>
+							<span class="ph-strip__ticker-tag">{a.type}</span>
+						</div>
+					))
+				}
+			</div>
+		</div>
+
+		<div class="ph-strip__sort" data-sort>
+			<button
+				type="button"
+				class="ph-strip__sort-btn"
+				data-sort-toggle
+				aria-haspopup="listbox"
+				aria-expanded="false"
+			>
+				<span class="ph-strip__sort-label">Sort</span>
+				<span class="ph-strip__sort-value" data-sort-value>Most used</span>
+				<svg
+					class="ph-strip__sort-caret"
+					width="10"
+					height="10"
+					viewBox="0 0 10 10"
+					aria-hidden="true"
+				>
+					<polyline points="2,3 5,7 8,3" stroke="currentColor" stroke-width="1.2" fill="none"
+					></polyline>
+				</svg>
+			</button>
+			<ul class="ph-strip__sort-menu" role="listbox" hidden>
+				{
+					sortOptions.map((o, i) => (
+						<li>
+							<button
+								type="button"
+								class:list={['ph-strip__sort-opt', i === 0 && 'ph-strip__sort-opt--active']}
+								data-order={o}
+								role="option"
+								aria-selected={i === 0}
+							>
+								<span>{o}</span>
+								<svg
+									class="ph-strip__sort-tick"
+									width="11"
+									height="11"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2.4"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<polyline points="20 6 9 17 4 12" />
+								</svg>
+							</button>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+
+		<button type="button" class="ph-strip__paid" data-paid-toggle aria-pressed="false">
+			<span class="ph-strip__paid-box" aria-hidden="true">
+				<svg
+					width="9"
+					height="9"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="#050607"
+					stroke-width="3.5"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<polyline points="20 6 9 17 4 12"></polyline>
+				</svg>
+			</span>
+			<span class="ph-strip__paid-label">Paid only</span>
+			<span class="ph-strip__paid-glyph" aria-hidden="true">₹</span>
+		</button>
+	</div>
+</div>
+
+<script>
+	function setupStrip(root: HTMLElement) {
+		if (root.dataset.stripReady) return;
+		root.dataset.stripReady = '1';
+
+		// Sort dropdown open/close
+		const sortWrap = root.querySelector<HTMLElement>('[data-sort]');
+		const sortBtn = root.querySelector<HTMLButtonElement>('[data-sort-toggle]');
+		const sortMenu = sortWrap?.querySelector<HTMLElement>('.ph-strip__sort-menu');
+		const sortValue = root.querySelector<HTMLElement>('[data-sort-value]');
+		const caret = sortBtn?.querySelector<SVGElement>('.ph-strip__sort-caret');
+
+		const closeSort = () => {
+			if (!sortMenu || !sortBtn) return;
+			sortMenu.hidden = true;
+			sortBtn.setAttribute('aria-expanded', 'false');
+			sortBtn.classList.remove('ph-strip__sort-btn--open');
+			if (caret) caret.style.transform = '';
+		};
+		const openSort = () => {
+			if (!sortMenu || !sortBtn) return;
+			sortMenu.hidden = false;
+			sortBtn.setAttribute('aria-expanded', 'true');
+			sortBtn.classList.add('ph-strip__sort-btn--open');
+			if (caret) caret.style.transform = 'rotate(180deg)';
+		};
+
+		sortBtn?.addEventListener('click', (e) => {
+			e.stopPropagation();
+			if (sortMenu?.hidden) openSort();
+			else closeSort();
+		});
+		document.addEventListener('click', (e) => {
+			if (!sortWrap?.contains(e.target as Node)) closeSort();
+		});
+
+		root.querySelectorAll<HTMLButtonElement>('[data-order]').forEach((opt) => {
+			opt.addEventListener('click', () => {
+				const value = opt.getAttribute('data-order') || 'Most used';
+				root.querySelectorAll<HTMLElement>('[data-order]').forEach((o) => {
+					const active = o === opt;
+					o.classList.toggle('ph-strip__sort-opt--active', active);
+					o.setAttribute('aria-selected', active ? 'true' : 'false');
+				});
+				if (sortValue) sortValue.textContent = value;
+				closeSort();
+				document.dispatchEvent(new CustomEvent('phstrip:order', { detail: { order: value } }));
+			});
+		});
+
+		// Paid toggle aria-pressed
+		const paidBtn = root.querySelector<HTMLButtonElement>('[data-paid-toggle]');
+		paidBtn?.addEventListener('click', () => {
+			const next = paidBtn.getAttribute('aria-pressed') !== 'true';
+			paidBtn.setAttribute('aria-pressed', next ? 'true' : 'false');
+			document.dispatchEvent(new CustomEvent('phstrip:paid', { detail: { paidOnly: next } }));
+		});
+
+		// Type tab active class
+		root.querySelectorAll<HTMLButtonElement>('[data-type-tab]').forEach((btn) => {
+			btn.addEventListener('click', () => {
+				const id = btn.getAttribute('data-type-tab') || 'all';
+				root.querySelectorAll<HTMLElement>('[data-type-tab]').forEach((b) => {
+					const active = b === btn;
+					b.classList.toggle('ph-strip__tab--active', active);
+					b.setAttribute('aria-pressed', active ? 'true' : 'false');
+				});
+				document.dispatchEvent(new CustomEvent('phstrip:type', { detail: { type: id } }));
+			});
+		});
+
+		// Ticker rotation
+		const rows = Array.from(root.querySelectorAll<HTMLElement>('[data-ticker-row]'));
+		if (rows.length > 1) {
+			let idx = 0;
+			let timer: number | undefined;
+			const start = () => {
+				timer = window.setInterval(() => {
+					idx = (idx + 1) % rows.length;
+					rows.forEach((r, i) => {
+						const active = i === idx;
+						r.classList.toggle('ph-strip__ticker-row--active', active);
+						if (active) {
+							// re-trigger CSS animation
+							r.style.animation = 'none';
+							void r.offsetWidth;
+							r.style.animation = '';
+						}
+					});
+				}, 3200);
+			};
+			start();
+			document.addEventListener('astro:before-swap', () => {
+				if (timer) clearInterval(timer);
+			});
+		}
+	}
+
+	function init() {
+		document.querySelectorAll<HTMLElement>('.ph-strip').forEach(setupStrip);
+	}
+	init();
+	document.addEventListener('astro:page-load', init);
+</script>
+
+<style>
+	.ph-strip {
+		position: relative;
+		margin-bottom: 40px;
+	}
+
+	.ph-strip__corner {
+		position: absolute;
+		width: 10px;
+		height: 10px;
+		pointer-events: none;
+		color: rgba(255, 255, 255, 0.32);
+	}
+	.ph-strip__corner svg {
+		width: 100%;
+		height: 100%;
+		display: block;
+	}
+	.ph-strip__corner svg line {
+		stroke: currentColor;
+		stroke-width: 1;
+	}
+	.ph-strip__corner--tl {
+		top: -5px;
+		left: -5px;
+	}
+	.ph-strip__corner--tr {
+		top: -5px;
+		right: -5px;
+	}
+	.ph-strip__corner--bl {
+		bottom: -5px;
+		left: -5px;
+	}
+	.ph-strip__corner--br {
+		bottom: -5px;
+		right: -5px;
+	}
+
+	.ph-strip__bar {
+		display: flex;
+		align-items: stretch;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		background: rgba(255, 255, 255, 0.012);
+		min-height: 56px;
+	}
+
+	.ph-strip__label {
+		padding: 0 18px;
+		display: flex;
+		align-items: center;
+		border-right: 1px solid rgba(255, 255, 255, 0.07);
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.66rem;
+		font-weight: 500;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.45);
+		white-space: nowrap;
+		flex-shrink: 0;
+	}
+
+	.ph-strip__tabs {
+		display: flex;
+		align-items: center;
+		padding-left: 4px;
+		flex-shrink: 0;
+	}
+	.ph-strip__tab {
+		position: relative;
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 0 18px;
+		min-height: 56px;
+		background: transparent;
+		border: none;
+		border-top: 2px solid transparent;
+		border-bottom: 2px solid transparent;
+		color: rgba(255, 255, 255, 0.6);
+		font-family: var(--font-main);
+		font-size: 0.86rem;
+		font-weight: 400;
+		cursor: pointer;
+		transition:
+			color 0.15s ease,
+			background 0.15s ease,
+			border-color 0.15s ease;
+	}
+	.ph-strip__tab:hover {
+		background: rgba(255, 255, 255, 0.025);
+	}
+	.ph-strip__tab--active {
+		color: var(--color-brand-cyan);
+		background: rgba(78, 201, 180, 0.06);
+		border-bottom-color: var(--color-brand-cyan);
+		font-weight: 500;
+	}
+	.ph-strip__tab-icon {
+		display: inline-flex;
+		align-items: center;
+	}
+	.ph-strip__tab-n {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.7rem;
+		padding: 2px 6px;
+		border-radius: 2px;
+		background: rgba(255, 255, 255, 0.05);
+		color: rgba(255, 255, 255, 0.5);
+	}
+	.ph-strip__tab--active .ph-strip__tab-n {
+		background: rgba(78, 201, 180, 0.14);
+		color: var(--color-brand-cyan);
+	}
+
+	.ph-strip__ticker {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		padding: 0 28px;
+		border-left: 1px solid rgba(255, 255, 255, 0.07);
+		min-width: 0;
+		overflow: hidden;
+	}
+	.ph-strip__ticker-live {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.66rem;
+		font-weight: 500;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.4);
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		flex-shrink: 0;
+	}
+	.ph-strip__ticker-dot {
+		display: inline-block;
+		width: 6px;
+		height: 6px;
+		background: var(--color-brand-cyan);
+		animation: nx-pulse-dot 1.6s ease-in-out infinite;
+	}
+	.ph-strip__ticker-track {
+		position: relative;
+		flex: 1;
+		min-width: 0;
+		overflow: hidden;
+	}
+	.ph-strip__ticker-row {
+		display: none;
+		align-items: baseline;
+		gap: 14px;
+		min-width: 0;
+		overflow: hidden;
+	}
+	.ph-strip__ticker-row--active {
+		display: flex;
+		animation: ph-ticker-in 0.5s cubic-bezier(0.2, 0.9, 0.3, 1);
+	}
+	.ph-strip__ticker-idx {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.7rem;
+		color: rgba(255, 255, 255, 0.4);
+		white-space: nowrap;
+	}
+	.ph-strip__ticker-title {
+		font-family: var(--font-accent);
+		font-style: italic;
+		font-size: 0.98rem;
+		font-weight: 500;
+		color: rgba(255, 255, 255, 0.92);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		min-width: 0;
+	}
+	.ph-strip__ticker-uses {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.72rem;
+		font-weight: 500;
+		color: var(--color-brand-cyan);
+		white-space: nowrap;
+	}
+	.ph-strip__ticker-tag {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.66rem;
+		font-weight: 500;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.32);
+		padding: 2px 6px;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		white-space: nowrap;
+	}
+
+	.ph-strip__sort {
+		position: relative;
+		border-left: 1px solid rgba(255, 255, 255, 0.07);
+		flex-shrink: 0;
+	}
+	.ph-strip__sort-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		padding: 0 18px;
+		min-height: 56px;
+		background: transparent;
+		border: none;
+		cursor: pointer;
+		font-family: var(--font-main);
+		font-size: 0.82rem;
+		color: rgba(255, 255, 255, 0.7);
+	}
+	.ph-strip__sort-btn--open {
+		background: rgba(255, 255, 255, 0.04);
+	}
+	.ph-strip__sort-label {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.66rem;
+		font-weight: 500;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.4);
+	}
+	.ph-strip__sort-caret {
+		transition: transform 0.15s ease;
+		color: rgba(255, 255, 255, 0.5);
+	}
+	.ph-strip__sort-menu {
+		position: absolute;
+		top: 100%;
+		right: 0;
+		min-width: 180px;
+		margin: 4px 0 0;
+		padding: 0;
+		list-style: none;
+		background: #0a0b0c;
+		border: 1px solid rgba(255, 255, 255, 0.12);
+		box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+		z-index: 20;
+	}
+	.ph-strip__sort-opt {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+		padding: 10px 14px;
+		background: transparent;
+		border: none;
+		cursor: pointer;
+		text-align: left;
+		font-family: var(--font-main);
+		font-size: 0.82rem;
+		color: rgba(255, 255, 255, 0.78);
+	}
+	.ph-strip__sort-opt:hover {
+		background: rgba(255, 255, 255, 0.04);
+	}
+	.ph-strip__sort-opt--active {
+		background: rgba(78, 201, 180, 0.06);
+		color: var(--color-brand-cyan);
+	}
+	.ph-strip__sort-tick {
+		opacity: 0;
+	}
+	.ph-strip__sort-opt--active .ph-strip__sort-tick {
+		opacity: 1;
+	}
+
+	.ph-strip__paid {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		padding: 0 18px;
+		min-height: 56px;
+		background: transparent;
+		border: none;
+		border-left: 1px solid rgba(255, 255, 255, 0.07);
+		cursor: pointer;
+		flex-shrink: 0;
+		font-family: var(--font-main);
+		font-size: 0.82rem;
+		color: rgba(255, 255, 255, 0.7);
+	}
+	.ph-strip__paid[aria-pressed='true'] {
+		background: rgba(78, 201, 180, 0.06);
+		color: var(--color-brand-cyan);
+	}
+	.ph-strip__paid-box {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 14px;
+		height: 14px;
+		border: 1px solid rgba(255, 255, 255, 0.3);
+		background: transparent;
+	}
+	.ph-strip__paid[aria-pressed='true'] .ph-strip__paid-box {
+		border-color: var(--color-brand-cyan);
+		background: var(--color-brand-cyan);
+	}
+	.ph-strip__paid-box svg {
+		opacity: 0;
+	}
+	.ph-strip__paid[aria-pressed='true'] .ph-strip__paid-box svg {
+		opacity: 1;
+	}
+	.ph-strip__paid-glyph {
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.7rem;
+		color: rgba(255, 255, 255, 0.35);
+	}
+
+	@keyframes nx-pulse-dot {
+		0%,
+		100% {
+			opacity: 0.5;
+			transform: scale(1);
+		}
+		50% {
+			opacity: 1;
+			transform: scale(1.4);
+		}
+	}
+	@keyframes ph-ticker-in {
+		0% {
+			opacity: 0;
+			transform: translateX(8px);
+		}
+		100% {
+			opacity: 1;
+			transform: translateX(0);
+		}
+	}
+
+	@media (max-width: 1240px) {
+		.ph-strip__sort-label {
+			display: none;
+		}
+	}
+	@media (max-width: 1200px) {
+		.ph-strip__paid-glyph {
+			display: none;
+		}
+	}
+	@media (max-width: 1180px) {
+		.ph-strip__label {
+			display: none;
+		}
+	}
+	@media (max-width: 1080px) {
+		.ph-strip__ticker-track {
+			display: none;
+		}
+	}
+	@media (max-width: 900px) {
+		.ph-strip__bar {
+			flex-wrap: wrap;
+			min-height: 0;
+		}
+		.ph-strip__tabs {
+			width: 100%;
+			overflow-x: auto;
+			border-top: 1px solid rgba(255, 255, 255, 0.07);
+		}
+		.ph-strip__ticker {
+			display: none;
+		}
+		.ph-strip__sort,
+		.ph-strip__paid {
+			border-left: none;
+		}
+		.ph-strip__sort {
+			flex: 1;
+		}
+	}
+</style>

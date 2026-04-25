@@ -1,0 +1,43 @@
+---
+interface Props {
+	category?: string;
+	date: string;
+	read?: string;
+	class?: string;
+}
+
+const { category, date, read, class: className = '' } = Astro.props;
+---
+
+<div class:list={['blog-meta', className]}>
+	{category && <span>{category}</span>}
+	{category && <span class="blog-meta__dash">—</span>}
+	<span>{date}</span>
+	{
+		read && (
+			<>
+				<span class="blog-meta__dash">—</span>
+				<span>{read}</span>
+			</>
+		)
+	}
+</div>
+
+<style>
+	.blog-meta {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		font-family: var(--font-main);
+		font-size: var(--text-xs);
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+		color: var(--color-text-muted);
+		font-variant-numeric: tabular-nums;
+	}
+	.blog-meta__dash {
+		color: var(--color-text-dim);
+		padding: 0 8px;
+	}
+</style>

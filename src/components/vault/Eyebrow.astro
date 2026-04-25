@@ -1,0 +1,31 @@
+---
+interface Props {
+	tint?: 'accent' | 'default' | 'dim';
+	class?: string;
+}
+
+const { tint = 'accent', class: className = '' } = Astro.props;
+---
+
+<span class:list={['vault-eyebrow', `vault-eyebrow--${tint}`, className]}>
+	<slot />
+</span>
+
+<style>
+	.vault-eyebrow {
+		font-family: var(--font-main);
+		font-size: var(--text-xs);
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+	}
+	.vault-eyebrow--accent {
+		color: var(--color-brand-cyan);
+	}
+	.vault-eyebrow--default {
+		color: var(--color-text-muted);
+	}
+	.vault-eyebrow--dim {
+		color: var(--color-text-dim);
+	}
+</style>

@@ -1,0 +1,108 @@
+---
+interface Props {
+	items: { id: string; label: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<nav class="blog-toc" aria-label="Table of contents">
+	<div class="blog-toc__label">Contents</div>
+	<ol class="blog-toc__list">
+		{
+			items.map((it, i) => (
+				<li class="blog-toc__item">
+					<span class="blog-toc__num">{String(i + 1).padStart(2, '0')}</span>
+					<a href={`#${it.id}`} class="blog-toc__link" data-toc-link={it.id}>
+						{it.label}
+					</a>
+				</li>
+			))
+		}
+	</ol>
+</nav>
+
+<style>
+	.blog-toc {
+		position: sticky;
+		top: calc(var(--header-height, 5.9rem) + 2rem);
+	}
+	.blog-toc__label {
+		font-family: var(--font-main);
+		font-size: var(--text-xs);
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+		color: var(--color-text-dim);
+		margin-bottom: 20px;
+	}
+	.blog-toc__list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+	}
+	.blog-toc__item {
+		display: flex;
+		align-items: baseline;
+		gap: 12px;
+	}
+	.blog-toc__num {
+		font-family: var(--font-main);
+		font-size: 0.72rem;
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.08em;
+		color: var(--color-text-dim);
+		min-width: 18px;
+		font-variant-numeric: tabular-nums;
+	}
+	.blog-toc__link {
+		font-family: var(--font-main);
+		font-size: 0.9rem;
+		line-height: var(--lh-ui);
+		color: var(--color-text-muted);
+		font-weight: var(--fw-regular);
+		text-decoration: none;
+		transition: color 0.2s;
+	}
+	.blog-toc__link:hover,
+	.blog-toc__link.is-active {
+		color: var(--color-text-main);
+	}
+
+	@media (max-width: 1100px) {
+		.blog-toc {
+			display: none;
+		}
+	}
+</style>
+
+<script>
+	(function () {
+		function track() {
+			const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-article] h2[id]'));
+			if (!sections.length) return;
+
+			const onScroll = () => {
+				let current: string | null = null;
+				for (const s of sections) {
+					const rect = s.getBoundingClientRect();
+					if (rect.top < 200) current = s.id;
+				}
+				if (!current) current = sections[0].id;
+
+				document.querySelectorAll<HTMLElement>('[data-toc-link]').forEach((a) => {
+					a.classList.toggle('is-active', a.dataset.tocLink === current);
+				});
+			};
+
+			window.addEventListener('scroll', onScroll, { passive: true });
+			onScroll();
+		}
+
+		document.addEventListener('astro:page-load', track);
+		track();
+	})();
+</script>
