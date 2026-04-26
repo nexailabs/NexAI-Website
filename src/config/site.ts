@@ -5,7 +5,7 @@ export const site = {
 	url: 'https://www.nexailabs.com',
 	email: 'hello@nexailabs.com',
 	bookingUrl: 'https://cal.com/rahul-juneja/15min',
-	description: 'Building AI Agents for Businesses',
+	description: "Six AI agents we built to run our company. We'll build yours next.",
 };
 
 export const socials: SocialLink[] = [
