@@ -196,7 +196,7 @@ const totalPadded = String(total).padStart(2, '0');
 	.home-roster__h2 {
 		margin: 0;
 		max-width: 880px;
-		font-family: 'Anton', 'Montserrat', 'Inter', sans-serif;
+		font-family: var(--font-display);
 		font-weight: 400;
 		font-size: clamp(2.8rem, 5.6vw, 4.6rem);
 		line-height: 0.96;
@@ -205,7 +205,7 @@ const totalPadded = String(total).padStart(2, '0');
 		color: #fff;
 	}
 	.home-roster__h2-em {
-		font-family: var(--font-accent), 'Cormorant Garamond', serif;
+		font-family: var(--font-display);
 		font-style: italic;
 		color: var(--color-brand-cyan);
 		font-size: 0.68em;
@@ -231,7 +231,7 @@ const totalPadded = String(total).padStart(2, '0');
 		border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 	}
 	.home-roster__bar-l {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 0.66rem;
 		font-weight: 500;
 		letter-spacing: 0.18em;
@@ -239,7 +239,7 @@ const totalPadded = String(total).padStart(2, '0');
 		color: rgba(255, 255, 255, 0.42);
 	}
 	.home-roster__bar-r {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 0.62rem;
 		font-weight: 500;
 		letter-spacing: 0.16em;
@@ -289,7 +289,7 @@ const totalPadded = String(total).padStart(2, '0');
 		margin-bottom: 26px;
 	}
 	.home-roster__idx {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 0.7rem;
 		font-weight: 500;
 		letter-spacing: 0.1em;
@@ -319,7 +319,7 @@ const totalPadded = String(total).padStart(2, '0');
 
 	.home-roster__name {
 		margin: 0 0 4px;
-		font-family: 'Anton', 'Montserrat', 'Inter', sans-serif;
+		font-family: var(--font-display);
 		font-weight: 400;
 		font-size: 2.1rem;
 		line-height: 1;
@@ -329,7 +329,7 @@ const totalPadded = String(total).padStart(2, '0');
 	}
 	.home-roster__sublabel {
 		margin: 0 0 14px;
-		font-family: var(--font-accent), 'Cormorant Garamond', serif;
+		font-family: var(--font-display);
 		font-style: italic;
 		font-size: 1.02rem;
 		color: var(--color-brand-cyan);
@@ -362,7 +362,7 @@ const totalPadded = String(total).padStart(2, '0');
 		border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 	}
 	.home-roster__cap-n {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 0.62rem;
 		font-weight: 500;
 		color: rgba(255, 255, 255, 0.32);
@@ -380,7 +380,7 @@ const totalPadded = String(total).padStart(2, '0');
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 0.62rem;
 		font-weight: 500;
 		letter-spacing: 0.16em;

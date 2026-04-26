@@ -37,10 +37,11 @@
 	--color-surface-elevated: #18191b;
 	--color-surface-hover: #151515;
 
-	/* Brand teal (from logo gradient) */
-	--color-brand-teal: #1e7e72;
-	--color-brand-cyan: #4ec9b4;
-	--color-brand-gradient: linear-gradient(135deg, #1e7e72, #4ec9b4);
+	/* Brand teal — aliases pointing to canonical tokens in brand.css.
+	   New code should use --brand-teal-bright/-dark/--brand-gradient-teal directly. */
+	--color-brand-teal: var(--brand-teal-dark);
+	--color-brand-cyan: var(--brand-teal-bright);
+	--color-brand-gradient: var(--brand-gradient-teal);
 
 	/* Text */
 	--color-text-main: #ffffff;
@@ -65,9 +66,14 @@
 	--gradient-hero:
 		radial-gradient(ellipse at 20% 0%, rgba(30, 126, 114, 0.15) 0%, transparent 50%),
 		radial-gradient(ellipse at 80% 100%, rgba(78, 201, 180, 0.08) 0%, transparent 50%);
-	/* Typography — Families (Astro Fonts API injects the real family names) */
-	--font-main: var(--font-inter), system-ui, -apple-system, sans-serif;
-	--font-brand: var(--font-montserrat), sans-serif;
+	/* Typography — Families. Legacy aliases pointing to canonical brand stacks
+	   in brand.css. New code should use --font-display / --font-body /
+	   --font-accent-jakarta directly. The `--font-accent` alias still points at
+	   Cormorant during migration; it gets retired with Cormorant in the cleanup
+	   commit, after the headline-emphasis sweep replaces its uses with
+	   --font-display + font-style: italic. */
+	--font-main: var(--font-body);
+	--font-brand: var(--font-display);
 	--font-accent: var(--font-cormorant), serif;
 
 	/* Typography — Weights */
