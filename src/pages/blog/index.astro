@@ -7,7 +7,7 @@ import TabNav from '../../components/blog/TabNav.astro';
 import PostCard from '../../components/blog/PostCard.astro';
 import FeaturedPost from '../../components/blog/FeaturedPost.astro';
 
-const allPosts = await getCollection('blog');
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 
 const posts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 

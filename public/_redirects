@@ -3,8 +3,8 @@
 /home/ / 301
 /ai-photoshoot /studio 301
 /home-joi / 301
+# Legacy blog post URLs from the previous site only — these target specific
+# slugs that don't exist in the new content collection.
 /blog/how-ai-is-replacing* /studio 301
 /blog/how-ai-sales-agents* / 301
 /blog/cracking-the-code-j* / 301
-/blog / 301
-/blog/* / 301
