@@ -6,7 +6,14 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
 	site: 'https://www.nexailabs.com',
 	output: 'static',
-	integrations: [sitemap()],
+	integrations: [
+		sitemap({
+			filter: (page) =>
+				!page.includes('/coming-soon') &&
+				!page.includes('/prompts/empty') &&
+				!page.includes('/apps/empty'),
+		}),
+	],
 	prefetch: {
 		defaultStrategy: 'tap',
 		prefetchAll: false,
