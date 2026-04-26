@@ -133,7 +133,7 @@ export const VAULT_TOOLS: VaultTool[] = [
 		link: 'astro.build',
 		tags: ['framework', 'static-site', 'islands', 'mdx'],
 		builtWith: ['Cloudflare Pages', 'ImageKit'],
-		usedFor: ['Marketing site', 'Blog (Field Notes)', 'Docs', 'Anything mostly static'],
+		usedFor: ['Marketing site', 'Field Notes', 'Docs', 'Anything mostly static'],
 		usedAgainst: 'Heavily-interactive app shells. We use Vite + React there.',
 		bestFeature: 'Islands architecture — every component is opt-in JS.',
 		watchOut: 'Plugin ecosystem is younger. Some integrations need elbow grease.',

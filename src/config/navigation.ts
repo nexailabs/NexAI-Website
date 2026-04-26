@@ -27,8 +27,8 @@ const main: NavConfig = {
 			caption: 'The best AI tools we use and recommend.',
 		},
 		{
-			id: 'ai-drops',
-			label: 'AI Drops',
+			id: 'field-notes',
+			label: 'Field Notes',
 			href: '/blog',
 			caption: "Dispatches on what we're building and learning.",
 		},
