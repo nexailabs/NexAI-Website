@@ -22,6 +22,7 @@
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
 		"type-check": "astro check",
+		"guard:fonts": "node scripts/guard-fonts.mjs",
 		"test": "playwright test",
 		"test:ui": "playwright test --ui",
 		"test:update": "playwright test --update-snapshots",
