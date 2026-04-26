@@ -16,38 +16,38 @@ interface Tier {
 const tiers: Tier[] = [
 	{
 		label: 'Strategy Sprint',
-		sub: 'A focused engagement to map where AI actually pays off in your business — and what to build first.',
+		sub: 'Two weeks to map where AI actually pays off in your business — and what to build first.',
 		currency: '$',
 		price: '4,249',
 		unit: 'USD / PROJECT',
 		cta: 'Email to start',
 		ctaKind: 'outline',
 		includes: [
-			'Brand & Workflow Discovery',
-			'Strategic AI Use-Case Definition',
-			'Technical Feasibility Assessment',
-			'System Architecture Planning',
-			'Risk, Compliance & Reliability Review',
-			'Clear Roadmap & Execution Blueprint',
-			'1 Production-Ready Agent',
+			'Discovery — what to build, what to skip',
+			'Architecture — system design, integration map',
+			'Risk brief — failure modes, on-call plan',
+			'One agent shipped, in your stack',
+			'Roadmap — next 90 days, ranked',
+			'90-min handoff — your team owns it',
+			'Slack on-call for two weeks after',
 		],
 	},
 	{
 		label: 'Build & Implementation',
-		sub: 'Full design, build, and deployment of the AI system — shipped, integrated, and stewarded into production.',
+		sub: 'Full agent system — designed, built, deployed, and stewarded into production.',
 		currency: '$',
 		price: '18,699',
 		unit: 'USD / PROJECT',
 		cta: 'Reach Us',
 		ctaKind: 'gradient',
 		includes: [
-			'Full AI System Design',
-			'Development & Engineering',
-			'Workflow & Data Integration',
-			'Testing, Deployment & Optimization',
-			'Performance Measurement',
-			'On-Ground Support & Iteration',
-			'Guaranteed, Production-Ready Delivery',
+			'Full agent system — design, build, deploy',
+			'Integrations — your data, your tools, your auth',
+			'Test + production — load, edge cases, observability',
+			'30 days in-production support',
+			'Performance review — what worked, what to fix',
+			'Maintained for 90 days — bug fixes, drift correction',
+			'Documented seams — your team can extend it',
 		],
 	},
 ];
@@ -355,7 +355,7 @@ const tiers: Tier[] = [
 	.home-pricing__cta--gradient {
 		position: relative;
 		overflow: hidden;
-		background: linear-gradient(90deg, #1e7e72 0%, #4ec9b4 30%, #d96b3a 70%, #c8421f 100%);
+		background: var(--brand-gradient-teal);
 	}
 
 	.home-pricing__cta-noise {
