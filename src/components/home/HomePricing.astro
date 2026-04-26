@@ -19,7 +19,7 @@ const tiers: Tier[] = [
 		currency: '$',
 		price: '4,249',
 		unit: 'USD / PROJECT',
-		cta: 'Pay Now',
+		cta: 'Email to start',
 		ctaKind: 'outline',
 		includes: [
 			'Brand & Workflow Discovery',
@@ -117,9 +117,12 @@ const tiers: Tier[] = [
 									<span class="home-pricing__cta-label">{t.cta}</span>
 								</a>
 							) : (
-								<button type="button" class="home-pricing__cta home-pricing__cta--outline">
+								<a
+									href={`mailto:${site.email}?subject=Strategy%20Sprint%20—%20${encodeURIComponent(t.label)}`}
+									class="home-pricing__cta home-pricing__cta--outline"
+								>
 									<span class="home-pricing__cta-label">{t.cta}</span>
-								</button>
+								</a>
 							)}
 
 							<div class="home-pricing__divider" aria-hidden="true">

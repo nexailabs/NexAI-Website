@@ -11,7 +11,7 @@ import TOC from '../../components/blog/TOC.astro';
 import PostCard from '../../components/blog/PostCard.astro';
 
 export async function getStaticPaths() {
-	const posts = await getCollection('blog');
+	const posts = await getCollection('blog', ({ data }) => !data.draft);
 	return posts.map((post) => ({
 		params: { slug: post.id },
 		props: { post },
@@ -29,7 +29,7 @@ const fmtDate = (d: Date) =>
 	d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
 
 // Related posts: same collection, different slug, max 3
-const all = await getCollection('blog');
+const all = await getCollection('blog', ({ data }) => !data.draft);
 const related = all
 	.filter((p) => p.id !== post.id)
 	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
