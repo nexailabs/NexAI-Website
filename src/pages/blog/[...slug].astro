@@ -3,7 +3,7 @@ import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Cover from '../../components/blog/Cover.astro';
 import Meta from '../../components/blog/Meta.astro';
-import MonoLabel from '../../components/blog/MonoLabel.astro';
+import Eyebrow from '../../components/brand/Eyebrow.astro';
 import AccentRule from '../../components/blog/AccentRule.astro';
 import Avatar from '../../components/blog/Avatar.astro';
 import EmphasisText from '../../components/blog/EmphasisText.astro';
@@ -106,7 +106,7 @@ const bookingUrl = 'https://cal.com/rahul-juneja/15min';
 				<section class="blog-post__related">
 					<div class="blog-post__related-label">
 						<AccentRule width={24} />
-						<MonoLabel>Keep reading</MonoLabel>
+						<Eyebrow tint="muted">Keep reading</Eyebrow>
 					</div>
 					<div class="blog-post__related-grid">
 						{related.map((p) => (
@@ -127,7 +127,7 @@ const bookingUrl = 'https://cal.com/rahul-juneja/15min';
 
 		<section class="blog-post__cta">
 			<div class="blog-post__cta-text">
-				<MonoLabel class="blog-post__cta-eyebrow" tint="accent">Catch us</MonoLabel>
+				<Eyebrow class="blog-post__cta-eyebrow" tint="accent">Catch us</Eyebrow>
 				<h2 class="blog-post__cta-title">
 					Want agents like these running <em>your</em> company?
 				</h2>

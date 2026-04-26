@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Eyebrow from '../../components/vault/Eyebrow.astro';
+import Eyebrow from '../../components/brand/Eyebrow.astro';
 import Breadcrumb from '../../components/promptHub/Breadcrumb.astro';
 import TypeBadge from '../../components/promptHub/TypeBadge.astro';
 import TitleWithAccent from '../../components/promptHub/TitleWithAccent.astro';
@@ -151,7 +151,7 @@ const isPaid = a.price > 0;
 					<div class="ph-detail__body">
 						<div class="ph-detail__main">
 							<section class="ph-detail__panel ph-detail__panel--inputs">
-								<Eyebrow tint="default">What you'll need before you start</Eyebrow>
+								<Eyebrow tint="muted">What you'll need before you start</Eyebrow>
 								<ul class="ph-detail__inputs">
 									{a.inputs.map((it) => (
 										<li>

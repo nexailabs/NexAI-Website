@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import MonoLabel from '../../components/blog/MonoLabel.astro';
+import Eyebrow from '../../components/brand/Eyebrow.astro';
 import AccentRule from '../../components/blog/AccentRule.astro';
 import TabNav from '../../components/blog/TabNav.astro';
 import PostCard from '../../components/blog/PostCard.astro';
@@ -34,7 +34,7 @@ const layoutCycle = [
 >
 	<main class="blog-index">
 		<header class="blog-index__header">
-			<MonoLabel class="blog-index__eyebrow" tint="accent">Field Notes</MonoLabel>
+			<Eyebrow class="blog-index__eyebrow" tint="accent">Field Notes</Eyebrow>
 			<h1 class="blog-index__title">
 				Essays, playbooks, and <em>build logs</em> from a company run on agents.
 			</h1>
@@ -67,9 +67,9 @@ const layoutCycle = [
 		}
 
 		<div class="blog-index__archive-label">
-			<MonoLabel tint="default">
+			<Eyebrow tint="muted">
 				<span data-archive-label>Archive · {rest.length} posts</span>
-			</MonoLabel>
+			</Eyebrow>
 		</div>
 
 		<div class="blog-index__grid">

@@ -1,4 +1,6 @@
 ---
+import Eyebrow from '../brand/Eyebrow.astro';
+
 const tiles = [
 	{
 		title: 'App Vault',
@@ -34,7 +36,7 @@ const tiles = [
 	<div class="toolkit__inner">
 		<div class="toolkit__header">
 			<div>
-				<p class="toolkit__eyebrow">[ 04 ] How we work, in public</p>
+				<Eyebrow class="toolkit__eyebrow" number={5}>How we work, in public</Eyebrow>
 				<h2 class="toolkit__h2" id="toolkit-h2">
 					The toolkit<br />is open.<br />
 					<span class="toolkit__h2-em">even the parts we sell.</span>
@@ -244,12 +246,6 @@ const tiles = [
 	}
 	.toolkit__eyebrow {
 		margin: 0 0 14px;
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.72rem;
-		font-weight: 500;
-		letter-spacing: 0.18em;
-		text-transform: uppercase;
-		color: var(--color-brand-cyan);
 	}
 	.toolkit__h2 {
 		margin: 0;

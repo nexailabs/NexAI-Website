@@ -1,5 +1,6 @@
 ---
 import { site } from '../../config/site';
+import Eyebrow from '../brand/Eyebrow.astro';
 
 interface Tier {
 	label: string;
@@ -55,7 +56,7 @@ const tiers: Tier[] = [
 <section class="home-pricing" aria-labelledby="home-pricing-h2">
 	<div class="home-pricing__inner">
 		<header class="home-pricing__header">
-			<p class="home-pricing__eyebrow">[ 06 ] How we engage</p>
+			<Eyebrow class="home-pricing__eyebrow" number={6}>How we engage</Eyebrow>
 			<h2 class="home-pricing__h2" id="home-pricing-h2">
 				Two ways in.<br />
 				<span class="home-pricing__h2-em"
@@ -189,12 +190,6 @@ const tiers: Tier[] = [
 
 	.home-pricing__eyebrow {
 		margin: 0 0 14px;
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.72rem;
-		font-weight: 500;
-		letter-spacing: 0.18em;
-		text-transform: uppercase;
-		color: var(--color-brand-cyan);
 	}
 
 	.home-pricing__h2 {

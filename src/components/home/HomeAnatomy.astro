@@ -1,4 +1,6 @@
 ---
+import Eyebrow from '../brand/Eyebrow.astro';
+
 const stages = [
 	{
 		key: 'input',
@@ -34,7 +36,7 @@ const reasoningLines = [
 	<div class="anatomy__inner">
 		<div class="anatomy__grid">
 			<div class="anatomy__left">
-				<p class="anatomy__eyebrow">Anatomy of an agent</p>
+				<Eyebrow class="anatomy__eyebrow" number={3}>Anatomy of an agent</Eyebrow>
 				<h2 class="anatomy__h2" id="anatomy-h2">
 					One job, four <span class="anatomy__h2-em">moving parts</span>.
 				</h2>
@@ -262,12 +264,6 @@ const reasoningLines = [
 
 	.anatomy__eyebrow {
 		margin: 0 0 22px;
-		font-family: var(--font-main);
-		font-size: 0.7rem;
-		font-weight: var(--fw-semibold);
-		letter-spacing: 0.22em;
-		text-transform: uppercase;
-		color: var(--color-brand-cyan);
 	}
 	.anatomy__h2 {
 		margin: 0 0 22px;
