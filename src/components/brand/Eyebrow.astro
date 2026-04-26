@@ -2,14 +2,9 @@
 /**
  * Brand-canonical eyebrow chip.
  *
- * Per Brand Guidelines.pdf and audits/06-branding-opus.md: ONE eyebrow style
- * across the site. Plus Jakarta Sans, semibold, uppercase, accent-teal by
- * default. Optional sequential section number renders as `[ 0N ]  ` prefix.
- *
- * Replaces:
- *   - src/components/vault/Eyebrow.astro      (byte-twin, deleted)
- *   - src/components/blog/MonoLabel.astro     (byte-twin, deleted)
- *   - inline `.toolkit__eyebrow` / `.home-pricing__eyebrow` / `.thesis__eyebrow` etc.
+ * Single eyebrow style across the site — anchored to the .t-eyebrow utility
+ * class in src/styles/global.css. Optional sequential section number renders
+ * as `[ 0N ]  ` prefix.
  */
 interface Props {
 	/** Sequential section number, renders as `[ 0N ]  ` prefix when provided. */
@@ -27,25 +22,26 @@ const { number = null, tint = 'accent', uppercase = true, class: className = '' 
 const prefix = number != null ? `[ ${String(number).padStart(2, '0')} ] ` : '';
 ---
 
-<span class:list={['eyebrow', `eyebrow--${tint}`, { 'eyebrow--upper': uppercase }, className]}>
+<span
+	class:list={[
+		't-eyebrow',
+		'eyebrow',
+		`eyebrow--${tint}`,
+		{ 'eyebrow--upper': uppercase },
+		className,
+	]}
+>
 	{prefix}<slot />
 </span>
 
 <style>
 	.eyebrow {
-		font-family: var(--font-accent-jakarta);
-		font-size: var(--text-xs);
-		font-weight: 600;
-		letter-spacing: 0.18em;
-		line-height: 1;
 		display: inline-block;
 	}
 	.eyebrow--upper {
 		text-transform: uppercase;
 	}
-	.eyebrow--accent {
-		color: var(--brand-teal-bright);
-	}
+	/* tint variants override the .t-eyebrow default color */
 	.eyebrow--muted {
 		color: var(--white-a55);
 	}
@@ -55,4 +51,5 @@ const prefix = number != null ? `[ ${String(number).padStart(2, '0')} ] ` : '';
 	.eyebrow--ink {
 		color: var(--brand-ink);
 	}
+	/* .eyebrow--accent inherits the teal default from .t-eyebrow */
 </style>

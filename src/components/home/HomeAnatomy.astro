@@ -266,25 +266,17 @@ const reasoningLines = [
 		margin: 0 0 22px;
 	}
 	.anatomy__h2 {
+		/* h2 element recipe supplies font / size / weight / line-height / tracking */
 		margin: 0 0 22px;
-		font-family: var(--font-display);
-		font-weight: var(--fw-regular);
-		font-size: clamp(2.2rem, 4vw, 3.4rem);
-		line-height: 1.08;
-		letter-spacing: -0.02em;
-		color: #fff;
 	}
 	.anatomy__h2-em {
 		font-style: italic;
-		color: var(--color-brand-cyan);
+		color: var(--brand-teal-bright);
 	}
 	.anatomy__lede {
 		margin: 0 0 28px;
 		max-width: 420px;
-		font-family: var(--font-main);
-		font-size: 0.98rem;
-		line-height: 1.6;
-		color: rgba(255, 255, 255, 0.6);
+		color: var(--white-a55);
 	}
 
 	.anatomy__steps {
@@ -310,15 +302,16 @@ const reasoningLines = [
 		border-left-color: var(--color-brand-cyan);
 	}
 	.anatomy__step-n {
-		font-family: var(--font-mono);
-		font-size: 0.72rem;
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-eyebrow-size);
 		font-weight: var(--fw-semibold);
-		color: rgba(255, 255, 255, 0.35);
+		letter-spacing: var(--tracking-ui);
+		color: var(--white-a35);
 		width: 28px;
 		flex-shrink: 0;
 	}
 	.anatomy__step--active .anatomy__step-n {
-		color: var(--color-brand-cyan);
+		color: var(--brand-teal-bright);
 	}
 	.anatomy__step-text {
 		display: flex;
@@ -326,20 +319,17 @@ const reasoningLines = [
 		gap: 2px;
 	}
 	.anatomy__step-label {
-		font-family: var(--font-main);
-		font-size: 0.92rem;
-		font-weight: var(--fw-regular);
-		color: rgba(255, 255, 255, 0.7);
+		font-size: var(--text-btn);
+		color: var(--white-a55);
 	}
 	.anatomy__step--active .anatomy__step-label {
-		color: #fff;
-		font-weight: 500;
+		color: var(--color-text-main);
+		font-weight: var(--fw-medium);
 	}
 	.anatomy__step-desc {
-		font-family: var(--font-main);
-		font-size: 0.82rem;
-		color: rgba(255, 255, 255, 0.5);
-		line-height: 1.45;
+		font-size: var(--type-caption-size);
+		color: var(--white-a55);
+		line-height: var(--type-caption-line);
 	}
 
 	.anatomy__viz {
@@ -384,9 +374,11 @@ const reasoningLines = [
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
-		font-family: var(--font-main);
-		font-size: 0.7rem;
-		color: var(--color-brand-cyan);
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-tag-size);
+		font-weight: var(--type-tag-weight);
+		letter-spacing: var(--tracking-ui);
+		color: var(--brand-teal-bright);
 	}
 	.anatomy__chrome-live-dot {
 		width: 6px;
@@ -415,11 +407,12 @@ const reasoningLines = [
 	}
 	.anatomy__block-label {
 		margin: 0 0 8px;
-		font-family: var(--font-mono);
-		font-size: 0.66rem;
-		font-weight: var(--fw-semibold);
-		letter-spacing: 0.14em;
-		color: rgba(255, 255, 255, 0.35);
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-eyebrow-size);
+		font-weight: var(--type-eyebrow-weight);
+		letter-spacing: var(--tracking-eyebrow);
+		text-transform: uppercase;
+		color: var(--white-a35);
 	}
 	.anatomy__block--active .anatomy__block-label {
 		color: var(--color-brand-cyan);
@@ -464,13 +457,13 @@ const reasoningLines = [
 	.anatomy__quote {
 		margin: 0;
 		padding: 10px 14px;
-		background: rgba(255, 255, 255, 0.02);
-		border-left: 2px solid rgba(255, 255, 255, 0.1);
+		background: var(--white-a04);
+		border-left: 2px solid var(--white-a14);
 		font-family: var(--font-display);
 		font-style: italic;
-		font-size: 1.05rem;
+		font-size: var(--text-lg);
 		line-height: 1.5;
-		color: rgba(255, 255, 255, 0.92);
+		color: var(--color-text-main);
 		transition: all 0.4s ease;
 	}
 	.anatomy__block--output.anatomy__block--active .anatomy__quote {
@@ -483,12 +476,11 @@ const reasoningLines = [
 		align-items: center;
 		gap: 10px;
 		padding: 10px 14px;
-		background: rgba(255, 255, 255, 0.02);
-		border: 1px solid rgba(255, 255, 255, 0.06);
+		background: var(--white-a04);
+		border: 1px solid var(--white-a08);
 		border-radius: 5px;
-		font-family: var(--font-main);
-		font-size: 0.84rem;
-		color: rgba(255, 255, 255, 0.85);
+		font-size: var(--type-caption-size);
+		color: var(--color-text-main);
 		transition: all 0.3s ease;
 	}
 	.anatomy__block--review.anatomy__block--active .anatomy__review {

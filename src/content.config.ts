@@ -5,7 +5,7 @@ const blog = defineCollection({
 	loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
 	schema: z.object({
 		title: z.string(),
-		// One word or short phrase inside `title` to render in italic Cormorant.
+		// One word or short phrase inside `title` to render in italic display.
 		emphasis: z.string().optional(),
 		category: z.enum([
 			'Playbook',

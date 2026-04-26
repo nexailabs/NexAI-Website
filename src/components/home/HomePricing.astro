@@ -193,18 +193,15 @@ const tiers: Tier[] = [
 	}
 
 	.home-pricing__h2 {
+		/* h2 element recipe supplies font / size / weight / line-height / tracking.
+		   Pricing uppercases for visual identity (matches Roster, Toolkit). */
 		margin: 0;
-		font-family: var(--font-display);
-		font-weight: 400;
-		font-size: clamp(2.8rem, 5.6vw, 4.6rem);
+		text-transform: uppercase;
 		line-height: 0.96;
 		letter-spacing: 0.005em;
-		text-transform: uppercase;
-		color: #fff;
 	}
 
 	.home-pricing__h2-em {
-		font-family: var(--font-display);
 		font-style: italic;
 		color: var(--brand-teal-bright);
 		font-size: 0.62em;
@@ -263,28 +260,25 @@ const tiers: Tier[] = [
 		right: -5px;
 	}
 
-	/* Tier label */
+	/* Tier label — h3 element recipe supplies font / weight. Pricing uppercases. */
 	.home-pricing__tier {
 		margin: 0 0 18px;
-		font-family: var(--font-display);
 		font-size: 1.5rem;
-		font-weight: 400;
 		letter-spacing: 0.005em;
 		text-transform: uppercase;
-		color: #fff;
 	}
 
 	/* Sub copy */
 	.home-pricing__sub {
 		margin: 0 0 28px;
 		max-width: 360px;
-		font-family: var(--font-main), 'Inter', sans-serif;
-		font-size: 0.92rem;
+		font-size: var(--text-btn);
 		line-height: 1.55;
-		color: rgba(255, 255, 255, 0.6);
+		color: var(--white-a55);
 	}
 
-	/* Price block */
+	/* Price block — display font for the value, mono for the per-unit line.
+	   Mono is intentional here (numeric / runtime feel) per typography policy. */
 	.home-pricing__price {
 		display: flex;
 		align-items: flex-end;
@@ -294,8 +288,8 @@ const tiers: Tier[] = [
 
 	.home-pricing__price-currency {
 		font-family: var(--font-display);
-		font-size: 1.1rem;
-		color: rgba(255, 255, 255, 0.6);
+		font-size: var(--text-lg);
+		color: var(--white-a55);
 		letter-spacing: 0.02em;
 		padding-bottom: 14px;
 	}
@@ -305,16 +299,16 @@ const tiers: Tier[] = [
 		font-size: clamp(3.4rem, 5.4vw, 4.8rem);
 		line-height: 0.92;
 		letter-spacing: 0.005em;
-		color: #fff;
+		color: var(--color-text-main);
 	}
 
 	.home-pricing__price-unit {
 		font-family: var(--font-mono);
-		font-size: 0.7rem;
-		font-weight: 500;
-		letter-spacing: 0.12em;
+		font-size: var(--type-tag-size);
+		font-weight: var(--fw-medium);
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
-		color: rgba(255, 255, 255, 0.5);
+		color: var(--white-a55);
 		padding-bottom: 14px;
 		line-height: 1.4;
 	}
@@ -331,11 +325,11 @@ const tiers: Tier[] = [
 		height: 52px;
 		text-decoration: none;
 		font-family: var(--font-display);
-		font-size: 1rem;
-		font-weight: 400;
-		letter-spacing: 0.04em;
+		font-size: var(--text-base);
+		font-weight: var(--fw-medium);
+		letter-spacing: var(--tracking-ui);
 		text-transform: uppercase;
-		color: #fff;
+		color: var(--color-text-main);
 		cursor: pointer;
 		border: 0;
 	}
@@ -406,12 +400,12 @@ const tiers: Tier[] = [
 		display: flex;
 		align-items: center;
 		gap: 12px;
-		font-family: var(--font-mono);
-		font-size: 0.78rem;
-		font-weight: 500;
-		letter-spacing: 0.04em;
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--text-sm);
+		font-weight: var(--fw-medium);
+		letter-spacing: var(--tracking-ui);
 		text-transform: uppercase;
-		color: rgba(255, 255, 255, 0.78);
+		color: var(--color-text-main);
 	}
 
 	.home-pricing__check {
