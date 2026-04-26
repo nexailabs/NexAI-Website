@@ -29,14 +29,6 @@ export default defineConfig({
 		},
 		{
 			provider: fontProviders.fontsource(),
-			name: 'Cormorant Garamond',
-			cssVariable: '--font-cormorant',
-			weights: [400, 600],
-			styles: ['normal', 'italic'],
-			subsets: ['latin'],
-		},
-		{
-			provider: fontProviders.fontsource(),
 			name: 'Montserrat',
 			cssVariable: '--font-montserrat',
 			weights: [600, 700],

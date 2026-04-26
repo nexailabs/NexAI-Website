@@ -68,13 +68,10 @@
 		radial-gradient(ellipse at 80% 100%, rgba(78, 201, 180, 0.08) 0%, transparent 50%);
 	/* Typography — Families. Legacy aliases pointing to canonical brand stacks
 	   in brand.css. New code should use --font-display / --font-body /
-	   --font-accent-jakarta directly. The `--font-accent` alias still points at
-	   Cormorant during migration; it gets retired with Cormorant in the cleanup
-	   commit, after the headline-emphasis sweep replaces its uses with
-	   --font-display + font-style: italic. */
+	   --font-accent-jakarta directly. */
 	--font-main: var(--font-body);
 	--font-brand: var(--font-display);
-	--font-accent: var(--font-cormorant), serif;
+	--font-accent: var(--font-accent-jakarta);
 
 	/* Typography — Weights */
 	--fw-regular: 400;
