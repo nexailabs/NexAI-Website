@@ -1,0 +1,55 @@
+---
+/**
+ * Brand-canonical eyebrow chip.
+ *
+ * Single eyebrow style across the site — anchored to the .t-eyebrow utility
+ * class in src/styles/global.css. Optional sequential section number renders
+ * as `[ 0N ]  ` prefix.
+ */
+interface Props {
+	/** Sequential section number, renders as `[ 0N ]  ` prefix when provided. */
+	number?: number | null;
+	/** Color treatment. */
+	tint?: 'accent' | 'muted' | 'dim' | 'ink';
+	/** Default true. Set false for sentence-case eyebrows (rare). */
+	uppercase?: boolean;
+	/** Extra class hook for layout positioning. */
+	class?: string;
+}
+
+const { number = null, tint = 'accent', uppercase = true, class: className = '' } = Astro.props;
+
+const prefix = number != null ? `[ ${String(number).padStart(2, '0')} ] ` : '';
+---
+
+<span
+	class:list={[
+		't-eyebrow',
+		'eyebrow',
+		`eyebrow--${tint}`,
+		{ 'eyebrow--upper': uppercase },
+		className,
+	]}
+>
+	{prefix}<slot />
+</span>
+
+<style>
+	.eyebrow {
+		display: inline-block;
+	}
+	.eyebrow--upper {
+		text-transform: uppercase;
+	}
+	/* tint variants override the .t-eyebrow default color */
+	.eyebrow--muted {
+		color: var(--white-a55);
+	}
+	.eyebrow--dim {
+		color: var(--white-a35);
+	}
+	.eyebrow--ink {
+		color: var(--brand-ink);
+	}
+	/* .eyebrow--accent inherits the teal default from .t-eyebrow */
+</style>

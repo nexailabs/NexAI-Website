@@ -1,5 +1,5 @@
 ---
-import Eyebrow from '../vault/Eyebrow.astro';
+import Eyebrow from '../brand/Eyebrow.astro';
 import PriceTag from './PriceTag.astro';
 
 interface Props {
@@ -13,7 +13,7 @@ const { price, slug, buyModalId } = Astro.props;
 
 <div class:list={['price-card', price > 0 && 'price-card--paid']} data-price-card data-slug={slug}>
 	<div class="price-card__head">
-		<Eyebrow tint="default">{price > 0 ? 'Price' : 'License'}</Eyebrow>
+		<Eyebrow tint="muted">{price > 0 ? 'Price' : 'License'}</Eyebrow>
 		<PriceTag price={price} big />
 	</div>
 

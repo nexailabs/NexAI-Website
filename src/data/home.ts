@@ -1,8 +1,8 @@
 import { site } from '../config/site';
 
 // ── Hero content ──
-export const heroEyebrow = 'AI Agents as a Service';
-export const heroHeadlineBefore = 'AI Agents for';
+export const heroEyebrow = 'Six agents. One company. Three humans.';
+export const heroHeadlineBefore = 'AI agents for';
 export const heroHeadlineAfter = '.';
 export const heroRotationWords = [
 	'Outreach',
@@ -12,7 +12,8 @@ export const heroRotationWords = [
 	'Strategy',
 	'Creatives',
 ];
-export const heroSubtext = 'We build the agents. You run the business.';
+export const heroSubtext =
+	"We built six to run our own company. We'll build yours next — live in your stack on day 14.";
 export const bookingUrl = site.bookingUrl;
 
 // ── Agent orbit data ──

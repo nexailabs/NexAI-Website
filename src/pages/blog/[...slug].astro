@@ -3,7 +3,7 @@ import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Cover from '../../components/blog/Cover.astro';
 import Meta from '../../components/blog/Meta.astro';
-import MonoLabel from '../../components/blog/MonoLabel.astro';
+import Eyebrow from '../../components/brand/Eyebrow.astro';
 import AccentRule from '../../components/blog/AccentRule.astro';
 import Avatar from '../../components/blog/Avatar.astro';
 import EmphasisText from '../../components/blog/EmphasisText.astro';
@@ -73,7 +73,7 @@ const bookingUrl = 'https://cal.com/rahul-juneja/15min';
 		</div>
 
 		<div class="blog-post__grid">
-			<div class="blog-post__body">
+			<div class="blog-post__body prose">
 				<Content />
 
 				<div class="blog-post__author-card">
@@ -106,7 +106,7 @@ const bookingUrl = 'https://cal.com/rahul-juneja/15min';
 				<section class="blog-post__related">
 					<div class="blog-post__related-label">
 						<AccentRule width={24} />
-						<MonoLabel>Keep reading</MonoLabel>
+						<Eyebrow tint="muted">Keep reading</Eyebrow>
 					</div>
 					<div class="blog-post__related-grid">
 						{related.map((p) => (
@@ -127,7 +127,7 @@ const bookingUrl = 'https://cal.com/rahul-juneja/15min';
 
 		<section class="blog-post__cta">
 			<div class="blog-post__cta-text">
-				<MonoLabel class="blog-post__cta-eyebrow" tint="accent">Catch us</MonoLabel>
+				<Eyebrow class="blog-post__cta-eyebrow" tint="accent">Catch us</Eyebrow>
 				<h2 class="blog-post__cta-title">
 					Want agents like these running <em>your</em> company?
 				</h2>
@@ -179,7 +179,7 @@ const bookingUrl = 'https://cal.com/rahul-juneja/15min';
 	}
 
 	.blog-post__title {
-		font-family: var(--font-accent);
+		font-family: var(--font-display);
 		font-weight: var(--fw-semibold);
 		font-size: clamp(2.4rem, 4.6vw, 3.6rem);
 		line-height: var(--lh-heading);
@@ -264,7 +264,7 @@ const bookingUrl = 'https://cal.com/rahul-juneja/15min';
 	}
 
 	.blog-post__body :global(h2) {
-		font-family: var(--font-accent);
+		font-family: var(--font-display);
 		font-style: italic;
 		font-weight: 400;
 		font-size: 2.1rem;
@@ -296,7 +296,7 @@ const bookingUrl = 'https://cal.com/rahul-juneja/15min';
 			1;
 		padding: 0.25rem 0 0.25rem 1.5rem;
 		margin: 2.5rem 0;
-		font-family: var(--font-accent);
+		font-family: var(--font-display);
 		font-style: italic;
 		font-weight: 400;
 		font-size: 1.45rem;
@@ -314,7 +314,7 @@ const bookingUrl = 'https://cal.com/rahul-juneja/15min';
 	}
 
 	.blog-post__body :global(code) {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 0.88em;
 		background: var(--color-surface-elevated);
 		color: rgba(255, 255, 255, 0.85);
@@ -324,7 +324,7 @@ const bookingUrl = 'https://cal.com/rahul-juneja/15min';
 	}
 
 	.blog-post__body :global(pre) {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 0.88rem;
 		line-height: var(--lh-body);
 		background: var(--color-surface-elevated);
@@ -451,7 +451,7 @@ const bookingUrl = 'https://cal.com/rahul-juneja/15min';
 		display: block;
 	}
 	.blog-post__cta-title {
-		font-family: var(--font-accent);
+		font-family: var(--font-display);
 		font-weight: var(--fw-semibold);
 		font-size: clamp(1.8rem, 3.2vw, 2.6rem);
 		line-height: var(--lh-heading);

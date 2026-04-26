@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar.astro';
 import CustomCursor from '../components/CustomCursor.astro';
 import Footer from '../components/Footer.astro';
 import { navConfigs } from '../config/navigation';
+import '../styles/brand.css';
 import '../styles/global.css';
 
 interface Props {
@@ -47,10 +48,10 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 		<link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
 		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-		<!-- Fonts — Astro 5 Fonts API. Only Cormorant preloads (LCP h1 font). -->
-		<Font cssVariable="--font-inter" />
-		<Font cssVariable="--font-cormorant" preload />
+		<!-- Fonts — Astro Fonts API. Three brand fonts per Brand Guidelines.pdf. -->
+		<Font cssVariable="--font-inter" preload />
 		<Font cssVariable="--font-montserrat" />
+		<Font cssVariable="--font-jakarta" />
 
 		<link rel="preconnect" href="https://ik.imagekit.io" crossorigin />
 		<link rel="dns-prefetch" href="https://ik.imagekit.io" />

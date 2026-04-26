@@ -57,10 +57,26 @@ style: adjust card spacing on mobile
 
 Keep the first line under 72 characters. Add detail in the body if needed.
 
+## Typography & fonts
+
+The site uses **exactly four** typefaces — Montserrat (display), Inter (body),
+Plus Jakarta Sans (accent), and the system mono stack. Adding a new font is
+a brand decision and is not allowed in a feature PR.
+
+Hard rules and the typography system are documented in `./CLAUDE.md` (and
+`./AGENTS.md` for non-Claude agents). CI enforces this via
+`npm run guard:fonts` — the build fails if any banned typeface name leaks
+into `src/` or a non-allow-listed `@fontsource/*` package is added.
+
+When in doubt, read `Brand Guidelines.pdf` (NexAI Labs Branding folder).
+
 ## Key Files
 
-| File                    | Note                                                    |
-| ----------------------- | ------------------------------------------------------- |
-| `src/scripts/lenis.ts`  | Locked — do not modify without discussion               |
-| `src/styles/global.css` | Design tokens and utilities — changes affect everything |
-| `public/_headers`       | Cloudflare security headers — changes affect production |
+| File                      | Note                                                    |
+| ------------------------- | ------------------------------------------------------- |
+| `src/scripts/lenis.ts`    | Locked — do not modify without discussion               |
+| `src/styles/brand.css`    | Brand primitive tokens (fonts, colors, radii)           |
+| `src/styles/global.css`   | Cascade layers, element recipes, typography utilities   |
+| `CLAUDE.md` / `AGENTS.md` | Agent-facing typography + brand-color rules             |
+| `scripts/guard-fonts.mjs` | CI guard for banned fonts                               |
+| `public/_headers`         | Cloudflare security headers — changes affect production |

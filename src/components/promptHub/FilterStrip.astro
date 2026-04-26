@@ -381,7 +381,7 @@ const sortOptions = ['Most used', 'Newest', 'A → Z'] as const;
 		display: flex;
 		align-items: center;
 		border-right: 1px solid rgba(255, 255, 255, 0.07);
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 0.66rem;
 		font-weight: 500;
 		letter-spacing: 0.16em;
@@ -432,7 +432,7 @@ const sortOptions = ['Most used', 'Newest', 'A → Z'] as const;
 		align-items: center;
 	}
 	.ph-strip__tab-n {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 0.7rem;
 		padding: 2px 6px;
 		border-radius: 2px;
@@ -455,7 +455,7 @@ const sortOptions = ['Most used', 'Newest', 'A → Z'] as const;
 		overflow: hidden;
 	}
 	.ph-strip__ticker-live {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 0.66rem;
 		font-weight: 500;
 		letter-spacing: 0.16em;
@@ -491,13 +491,13 @@ const sortOptions = ['Most used', 'Newest', 'A → Z'] as const;
 		animation: ph-ticker-in 0.5s cubic-bezier(0.2, 0.9, 0.3, 1);
 	}
 	.ph-strip__ticker-idx {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 0.7rem;
 		color: rgba(255, 255, 255, 0.4);
 		white-space: nowrap;
 	}
 	.ph-strip__ticker-title {
-		font-family: var(--font-accent);
+		font-family: var(--font-display);
 		font-style: italic;
 		font-size: 0.98rem;
 		font-weight: 500;
@@ -508,14 +508,14 @@ const sortOptions = ['Most used', 'Newest', 'A → Z'] as const;
 		min-width: 0;
 	}
 	.ph-strip__ticker-uses {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 0.72rem;
 		font-weight: 500;
 		color: var(--color-brand-cyan);
 		white-space: nowrap;
 	}
 	.ph-strip__ticker-tag {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 0.66rem;
 		font-weight: 500;
 		letter-spacing: 0.12em;
@@ -548,7 +548,7 @@ const sortOptions = ['Most used', 'Newest', 'A → Z'] as const;
 		background: rgba(255, 255, 255, 0.04);
 	}
 	.ph-strip__sort-label {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 0.66rem;
 		font-weight: 500;
 		letter-spacing: 0.14em;
@@ -639,7 +639,7 @@ const sortOptions = ['Most used', 'Newest', 'A → Z'] as const;
 		opacity: 1;
 	}
 	.ph-strip__paid-glyph {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 0.7rem;
 		color: rgba(255, 255, 255, 0.35);
 	}

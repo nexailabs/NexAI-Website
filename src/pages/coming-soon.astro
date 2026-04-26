@@ -5,7 +5,7 @@ import { site } from '../config/site';
 
 <Layout
 	title="Coming Soon | NexAI Labs"
-	description="Agent Lab, Prompt Hub, and App Vault — launching soon from NexAI Labs."
+	description="Agent Lab and our booking page — live once they've been used by 10 teams."
 	mainClass="cs"
 	noFooter={true}
 	noIndex
@@ -13,26 +13,23 @@ import { site } from '../config/site';
 	<section class="cs__inner">
 		<!-- Left: Text content -->
 		<div class="cs__text">
-			<p class="cs__eyebrow">IN THE PIPELINE</p>
-			<h1 class="cs__heading">
-				Something's <em>Brewing</em>
-			</h1>
+			<p class="cs__eyebrow">Shipping next</p>
+			<h1 class="cs__heading">Not ready to <em>ship.</em></h1>
 			<p class="cs__sub">
-				We're building the next layer of the NexAI stack.<br />
-				Early access opens soon — get in before the queue.
+				Agent Lab and our booking page go live once each one's been used by 10 teams in production.
+				Drop your email and we'll send the link the day it lands.
 			</p>
 
 			<!-- Product chips -->
-			<div class="cs__products" aria-label="Upcoming products">
+			<div class="cs__products" aria-label="Upcoming surfaces">
 				<span class="cs__chip">Agent Lab</span>
-				<span class="cs__chip">Prompt Hub</span>
-				<span class="cs__chip">App Vault</span>
+				<span class="cs__chip">Catch Us</span>
 			</div>
 
 			<!-- CTAs -->
 			<div class="cs__ctas">
 				<a href={site.bookingUrl} class="cs__cta cs__cta--primary" data-open-cal>
-					Get Early Access
+					Tell me when it ships
 				</a>
 				<a href="/" class="cs__cta cs__cta--ghost">Back to Home</a>
 			</div>
@@ -91,7 +88,7 @@ import { site } from '../config/site';
 	}
 
 	.cs__heading {
-		font-family: var(--font-accent);
+		font-family: var(--font-display);
 		font-size: clamp(2rem, 3.8vw, 3.2rem);
 		font-weight: var(--fw-semibold);
 		line-height: var(--lh-heading);

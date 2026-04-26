@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Eyebrow from '../../components/vault/Eyebrow.astro';
+import Eyebrow from '../../components/brand/Eyebrow.astro';
 import AccentRule from '../../components/vault/AccentRule.astro';
 import StackCard from '../../components/vault/StackCard.astro';
 import DeepFilterBar from '../../components/vault/DeepFilterBar.astro';
@@ -110,7 +110,7 @@ import { VAULT_TOOLS, VAULT_STACKS, VAULT_RANKINGS } from '../../data/vault';
 		margin-bottom: 20px;
 	}
 	.vault-index__title {
-		font-family: var(--font-accent);
+		font-family: var(--font-display);
 		font-weight: var(--fw-semibold);
 		font-size: clamp(2.4rem, 4.6vw, 3.6rem);
 		line-height: var(--lh-heading);
@@ -191,7 +191,7 @@ import { VAULT_TOOLS, VAULT_STACKS, VAULT_RANKINGS } from '../../data/vault';
 		margin-top: 24px;
 	}
 	.vault-index__empty-title {
-		font-family: var(--font-accent);
+		font-family: var(--font-display);
 		font-style: italic;
 		font-weight: var(--fw-regular);
 		font-size: 1.5rem;
@@ -263,7 +263,7 @@ import { VAULT_TOOLS, VAULT_STACKS, VAULT_RANKINGS } from '../../data/vault';
 		font-weight: var(--fw-semibold);
 	}
 	.vault-index__credit-text em {
-		font-family: var(--font-accent);
+		font-family: var(--font-display);
 		font-style: italic;
 		font-weight: var(--fw-regular);
 		color: rgba(255, 255, 255, 0.7);
