@@ -6,6 +6,8 @@ Premium website for NexAI Labs, an AI agency based in India. Built with Astro 5,
 
 **Live site:** [nexailabs.com](https://nexailabs.com)
 
+> **For AI coding agents:** read [`./AGENTS.md`](./AGENTS.md) (workflow, hooks, off-limits files) before making changes. Branch and commit conventions are in [`./CONTRIBUTING.md`](./CONTRIBUTING.md).
+
 ---
 
 ## Quick Start
@@ -74,84 +76,40 @@ Website/
 
 ---
 
-## Git Workflow (READ THIS CAREFULLY)
+## Git Workflow
 
-### Branch Structure
-
-```
-main ──────── Production. Only merged PRs. Never push directly.
-  │
-  └── dev ──── Integration branch. Test here before promoting to main.
-        │
-        ├── feature/navbar-fix ──── Your working branch
-        ├── feature/pricing ──────── Another feature
-        └── feature/responsive ───── Another feature
-```
-
-### Starting New Work
+Single trunk: `main`. Branch protection blocks direct pushes; everything goes through a PR. There is no `dev` branch.
 
 ```bash
-# 1. Always start from the latest dev
-git checkout dev
-git pull origin dev
+git checkout main
+git pull origin main
+git checkout -b feat/<short-name>     # or fix/, chore/, refactor/, docs/, polish/, perf/
 
-# 2. Create a feature branch with a descriptive name
-git checkout -b feature/your-task-name
+# work, stage specific files, commit
+git add src/components/Foo.astro
+git commit -m "feat(home): tighten hero copy"
 
-# 3. Do your work, then stage SPECIFIC files (not everything)
-git add src/components/Navbar.astro src/styles/global.css
-git commit -m "fix: navbar hamburger menu on mobile"
-
-# 4. Push your branch
-git push origin feature/your-task-name
+git push -u origin feat/<short-name>
+gh pr create --base main
 ```
 
-### Creating a Pull Request
+Conventional commits — `type(scope): subject`. Types: `feat`, `fix`, `chore`, `refactor`, `docs`, `perf`, `polish`, `test`. Scopes are optional; examples in this repo: `prompts`, `seo`, `deps`, `security`, `audit-NN`, `home`, `studio`.
 
-1. Go to GitHub > your repo > "Compare & pull request"
-2. Set base branch to `dev` (NOT main)
-3. Write a clear title: what changed and why
-4. Request a review from your teammate
-5. After approval > click "Merge pull request"
-6. Delete the feature branch after merging
+Required CI check: **`Lint, Type-check & Build`**. CODEOWNERS auto-assigns reviewers; **Rahul (`@rahul-nexailabs`) merges after approval — do not self-merge.**
 
-### Promoting to Production
-
-When `dev` is stable and tested:
-
-1. Create PR: `dev` > `main`
-2. Review together
-3. Merge = Cloudflare Pages auto-deploys to production
+Pre-commit hooks (Husky + lint-staged) run `eslint --fix` and `prettier --write` on staged files. Don't bypass with `--no-verify`. Full PR + hooks workflow: [`./CONTRIBUTING.md`](./CONTRIBUTING.md) and [`./AGENTS.md`](./AGENTS.md).
 
 ### Rules
 
-| Rule                                  | Why                                               |
-| ------------------------------------- | ------------------------------------------------- |
-| Never push directly to `main`         | Keeps production safe                             |
-| Never use `git push --force`          | Destroys other people's work permanently          |
-| One feature per branch                | If something breaks, only that branch is affected |
-| Always `git pull` before starting     | Prevents merge conflicts                          |
-| Stage specific files, not `git add .` | Prevents committing logs, secrets, huge images    |
-| Don't commit images to git            | Use ImageKit instead (see Image Guidelines)       |
-| Don't commit `.log` files             | They're in `.gitignore` for a reason              |
-
-### Common Mistakes & Fixes
-
-**"I made changes on the wrong branch!"**
-
-```bash
-git stash                          # Save your changes temporarily
-git checkout feature/correct-branch  # Switch to the right branch
-git stash pop                      # Apply your changes here
-```
-
-**"I committed something I shouldn't have!"**
-
-> Stop. Don't try to fix it yourself. Ask for help before running any undo commands.
-
-**"Git says there's a merge conflict!"**
-
-> Don't panic. Open the conflicted file, look for `<<<<<<<` markers, choose which version to keep, remove the markers, then commit.
+| Rule                                          | Why                                                |
+| --------------------------------------------- | -------------------------------------------------- |
+| Never push directly to `main`                 | Branch protection blocks it; keeps production safe |
+| Never use `git push --force` on main          | Destroys other people's work permanently           |
+| One feature per branch                        | If something breaks, only that branch is affected  |
+| Always `git pull origin main` before starting | Prevents merge conflicts                           |
+| Stage specific files, not `git add .`         | Prevents committing logs, secrets, huge images     |
+| Don't commit images to git                    | Use ImageKit instead (see Image Guidelines)        |
+| Don't commit `.log` files                     | They're in `.gitignore` for a reason               |
 
 ---
 
