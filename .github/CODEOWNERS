@@ -1,14 +1,5 @@
-# Default — all PRs require review from Rahul
+# All PRs require review from Rahul.
+# He approves and merges. AI coding agents working on his behalf
+# action via his admin override — no other reviewers configured.
+
 * @rahul-nexailabs
-
-# Components and pages — Rahul or Amit
-src/components/ @rahul-nexailabs @amit-nexai
-src/pages/ @rahul-nexailabs @amit-nexai
-
-# Styles — Rahul
-src/styles/ @rahul-nexailabs
-
-# CI/CD and config — Rahul only
-.github/ @rahul-nexailabs
-astro.config.mjs @rahul-nexailabs
-package.json @rahul-nexailabs

@@ -25,7 +25,7 @@ This file is auto-loaded by AI coding agents (Cursor, Codex, Cline, GitHub Copil
 1. Push the branch.
 2. Open a PR against `main`; fill `.github/PULL_REQUEST_TEMPLATE.md`.
 3. Required CI status check: **`Lint, Type-check & Build`** (job `quality` in `.github/workflows/ci.yml`). Must be green.
-4. CODEOWNERS routes review to `@rahul-nexailabs` (and `@amit-nexai` for `src/components/` and `src/pages/`).
+4. CODEOWNERS routes review to `@rahul-nexailabs` (sole reviewer for all paths).
 5. **Rahul merges after approval.** Do not self-merge even if GitHub allows it.
 
 ## Pre-commit hooks

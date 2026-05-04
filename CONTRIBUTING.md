@@ -40,16 +40,9 @@ Add a body when the why isn't obvious. Example:
 feat(home): agent orbit card states + hero rewrite
 ```
 
-## CODEOWNERS map
+## CODEOWNERS
 
-| Path                                           | Reviewer(s)                       |
-| ---------------------------------------------- | --------------------------------- |
-| `*` (default)                                  | `@rahul-nexailabs`                |
-| `src/components/`, `src/pages/`                | `@rahul-nexailabs`, `@amit-nexai` |
-| `src/styles/`                                  | `@rahul-nexailabs` (Rahul-only)   |
-| `.github/`, `astro.config.mjs`, `package.json` | `@rahul-nexailabs` (Rahul-only)   |
-
-PRs that change Rahul-only paths cannot merge without his review. Avoid touching those paths unless the PR is explicitly about them.
+`@rahul-nexailabs` owns every path. Every PR routes to him; no other reviewers are configured. He approves and merges. AI coding agents working on his behalf action via his admin override.
 
 ## Off-limits without prior approval
 
