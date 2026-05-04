@@ -1,69 +1,87 @@
-# NexAI Website — Agent Rules
+# NexAI Website — Agent Operating Manual
 
-This file mirrors `CLAUDE.md` and is auto-loaded by Codex, Cursor, Cline,
-and other agent tools that follow the AGENTS.md convention. The rules are
-identical regardless of which agent is reading.
+This file is auto-loaded by AI coding agents (Cursor, Codex, Cline, GitHub Copilot, etc.) that follow the `AGENTS.md` convention. It is the operational manual for working in this repo.
 
-> **See `./CLAUDE.md` for the canonical version. Both files are kept in sync.**
+> **Brand and typography rules** live in [`./CLAUDE.md`](./CLAUDE.md) and apply to every agent regardless of name. Read them before editing any component or style. This file does not restate them.
 
-## Brand fonts (HARD RULE)
+## Setup
 
-The site uses exactly **three** typefaces plus a system mono stack:
+- Node ≥ 22 (see `.nvmrc`).
+- `npm install`
+- `npm run dev` → http://localhost:4321
+- `npm run build` → static build to `dist/`
+- `npm run preview` → serve `dist/` locally
 
-| Role    | Font              | CSS token                    |
-| ------- | ----------------- | ---------------------------- |
-| Display | Montserrat        | `var(--font-display)`        |
-| Body    | Inter             | `var(--font-body)`           |
-| Accent  | Plus Jakarta Sans | `var(--font-accent-jakarta)` |
-| Mono    | system mono stack | `var(--font-mono)`           |
+## Branch + commit convention
 
-Brand authority: `Brand Guidelines.pdf` at
-`file:///C:/Users/junej/Desktop/NexAI%20Labs/Branding/Brand%20Guidelines.pdf`.
+- Single trunk: `main`. **No `dev` branch.** Direct push to `main` is blocked by branch protection.
+- Branch from `main`: `feat/<slug>`, `fix/<slug>`, `chore/<slug>`, `refactor/<slug>`, `docs/<slug>`, `polish/<slug>`.
+- Conventional Commits: `type(scope): subject`. Subject under 72 chars.
+  - Types: `feat`, `fix`, `chore`, `refactor`, `docs`, `perf`, `polish`, `test`.
+  - Scopes (use one that fits): `home`, `prompts`, `apps`, `blog`, `brand`, `seo`, `repo`, `copy`, `typography`, `policy`, `deps`, `audit-NN`, `security`.
 
-### Do NOT
+## PR workflow
 
-- Add a new `@fontsource/*` package or any font file under `public/`.
-- Add a new `<Font cssVariable="…" />` to `src/layouts/Layout.astro`.
-- Write a literal font-family stack in component CSS.
-- Reintroduce **Anton, Cormorant, Cormorant Garamond, Roboto, Poppins,
-  IBM Plex, JetBrains Mono, Geist, Space Grotesk, DM Sans, Manrope**, or
-  any typeface not listed above.
+1. Push the branch.
+2. Open a PR against `main`; fill `.github/PULL_REQUEST_TEMPLATE.md`.
+3. Required CI status check: **`Lint, Type-check & Build`** (job `quality` in `.github/workflows/ci.yml`). Must be green.
+4. CODEOWNERS routes review to `@rahul-nexailabs` (and `@amit-nexai` for `src/components/` and `src/pages/`).
+5. **Rahul merges after approval.** Do not self-merge even if GitHub allows it.
 
-CI enforces this via `npm run guard:fonts`.
+## Pre-commit hooks
 
-## Typography system
+`.husky/pre-commit` runs `lint-staged` (`eslint --fix` + `prettier --write` on staged files). On failure:
 
-All typography lives in `src/styles/global.css` under
-`@layer reset, tokens, base, components, utilities;`.
+```bash
+npm run lint:fix && npm run format
+git add <files>
+git commit          # retry
+```
 
-- Use semantic HTML (`<h1>–<h6>`, `<p>`, `<small>`). Element recipes auto-style.
-- For non-semantic roles use the utility classes: `.t-eyebrow`, `.t-tag`,
-  `.t-lead`, `.t-caption`, `.t-numeric`, `.t-mono`.
-- Use the `<Eyebrow>` component for sequential numbered section labels.
+Never bypass with `--no-verify`. Do not blanket-disable lint rules — use a single-line `// eslint-disable-next-line <rule>` with a reason on the line above the offence.
 
-### Do NOT
+## Verify before pushing
 
-- Add component-level `font-family` / `font-size` / `font-weight` /
-  `line-height` / `letter-spacing` declarations unless the case is a
-  documented one-off (rotating word, AgentOrbit dynamic labels, StudioHero
-  decorative title, HomePricing per-unit text, HomeAnatomy code microcopy).
-- Add new `--font-*` or `--text-*` CSS variables outside `brand.css` /
-  `global.css`.
+```bash
+npm run lint && npm run format:check && npm run type-check && npm run guard:fonts && npm run build
+```
 
-### Mono usage
+Same checks CI runs. Getting them green locally avoids round-trips.
 
-Mono is reserved for code, numeric/runtime contexts, and the pricing per-unit
-line. Section eyebrows / tags / labels use Plus Jakarta Sans, not mono.
+## Off-limits without Rahul approval
 
-## Brand colors
+- `.github/` (workflows, CODEOWNERS, PR template)
+- `astro.config.mjs`, `package.json`, `package-lock.json`, `tsconfig.json`
+- `wrangler.toml`, `public/_headers`, `public/_redirects`
+- `src/styles/brand.css`, `src/styles/global.css`
+- `scripts/guard-fonts.mjs`
+- `src/scripts/lenis.ts`
 
-Defined in `src/styles/brand.css`. No new color literals in component CSS.
-Use `--brand-teal-bright` / `--brand-teal-dark` / `--brand-ink` and the
-quantized `--teal-aXX` / `--white-aXX` scales.
+If a task requires touching one of these, flag it in the PR description.
 
-## Cross-references
+## Component patterns
 
-- `CLAUDE.md` — canonical version of this file.
-- `audits/12-typography-inventory.md` — current typography state.
-- `CONTRIBUTING.md` — workflow, commit conventions, key files.
-- `Brand Guidelines.pdf` — typography + color source of truth.
+- **Data-driven content.** Section copy, lists, agent specs, prompt entries live in `src/data/*.ts` (e.g. `home.ts`, `promptHub.ts`, `vault.ts`, `studio.ts`). Components consume typed data; do not hard-code content in markup.
+- **Client behaviour.** Astro client scripts go in `src/scripts/` and are imported once from the consuming component. Use `astro:before-swap` and `astro:page-load` for SPA-safe init/teardown — see `src/scripts/agent-orbit.ts` for the pattern.
+- **Brand primitives.** Reusable UI atoms live in `src/components/brand/`. `<Eyebrow number={N}>LABEL</Eyebrow>` is the reference impl for sequential numbered section labels.
+- **Icons.** Inline SVG; component-local icon registry next to the consumer (e.g. `src/components/home/orbit-icons.ts`).
+
+## Asset / media policy
+
+- Images, thumbnails, short clips: **ImageKit** (CDN with transforms). URL builder: `src/config/imagekit.ts`.
+- Long-form video: **YouTube embed**.
+- `public/` holds only `favicon`, `robots.txt`, `_headers`, `_redirects`. **Do not commit images, video, or fonts under `public/`.**
+
+## Audits
+
+`audits/` is the decision log — numbered `NN-<slug>.md`. Read the relevant audit before changing the area it covers. Next free number: `15-<slug>.md`.
+
+## Where to look first
+
+| Question                                      | File                                     |
+| --------------------------------------------- | ---------------------------------------- |
+| Can I add a new font / color / utility class? | [`./CLAUDE.md`](./CLAUDE.md)             |
+| Branch / commit / PR / hooks rules            | [`./CONTRIBUTING.md`](./CONTRIBUTING.md) |
+| Project overview, stack, routes               | [`./README.md`](./README.md)             |
+| Past decisions on a given area                | `audits/`                                |
+| Visual source of truth                        | `Brand Guidelines.pdf`                   |
