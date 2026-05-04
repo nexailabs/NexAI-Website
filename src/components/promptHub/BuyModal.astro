@@ -218,14 +218,14 @@ const { id, title, price } = Astro.props;
 	}
 	.buy-modal__h3 {
 		margin: 0 0 6px;
-		font-family: var(--font-accent);
+		font-family: var(--font-display);
 		font-weight: var(--fw-regular);
 		font-size: 1.85rem;
 		letter-spacing: -0.015em;
 		color: var(--color-text-main);
 	}
 	.buy-modal__h3 em {
-		font-family: var(--font-accent);
+		font-family: var(--font-display);
 		font-style: italic;
 		font-weight: var(--fw-regular);
 	}
@@ -275,7 +275,7 @@ const { id, title, price } = Astro.props;
 		color: var(--color-text-subtle);
 	}
 	.buy-modal__amount {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 1.4rem;
 		font-weight: 600;
 		color: var(--color-brand-cyan);
@@ -331,7 +331,7 @@ const { id, title, price } = Astro.props;
 	}
 	.buy-modal__processing {
 		margin: 0;
-		font-family: var(--font-accent);
+		font-family: var(--font-display);
 		font-style: italic;
 		font-size: 1.3rem;
 		color: var(--color-text-subtle);

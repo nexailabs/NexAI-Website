@@ -1,4 +1,6 @@
 ---
+import Eyebrow from '../brand/Eyebrow.astro';
+
 const tiles = [
 	{
 		title: 'App Vault',
@@ -34,7 +36,7 @@ const tiles = [
 	<div class="toolkit__inner">
 		<div class="toolkit__header">
 			<div>
-				<p class="toolkit__eyebrow">[ 04 ] How we work, in public</p>
+				<Eyebrow class="toolkit__eyebrow" number={5}>How we work, in public</Eyebrow>
 				<h2 class="toolkit__h2" id="toolkit-h2">
 					The toolkit<br />is open.<br />
 					<span class="toolkit__h2-em">even the parts we sell.</span>
@@ -197,7 +199,7 @@ const tiles = [
 
 						<div class="toolkit__band">
 							<div>
-								<p class="toolkit__title">{t.title}</p>
+								<h3 class="toolkit__title">{t.title}</h3>
 								<p class="toolkit__sub">{t.sub}</p>
 							</div>
 							<svg
@@ -244,28 +246,19 @@ const tiles = [
 	}
 	.toolkit__eyebrow {
 		margin: 0 0 14px;
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.72rem;
-		font-weight: 500;
-		letter-spacing: 0.18em;
-		text-transform: uppercase;
-		color: var(--color-brand-cyan);
 	}
 	.toolkit__h2 {
+		/* h2 element recipe supplies font / size / weight / line-height / tracking.
+		   Toolkit uppercases for visual identity (matches Roster). */
 		margin: 0;
 		max-width: 800px;
-		font-family: 'Anton', 'Montserrat', 'Inter', sans-serif;
-		font-weight: 400;
-		font-size: clamp(2.8rem, 5.6vw, 4.6rem);
+		text-transform: uppercase;
 		line-height: 0.96;
 		letter-spacing: 0.005em;
-		text-transform: uppercase;
-		color: #fff;
 	}
 	.toolkit__h2-em {
-		font-family: var(--font-accent);
 		font-style: italic;
-		color: var(--color-brand-cyan);
+		color: var(--brand-teal-bright);
 		font-size: 0.62em;
 		letter-spacing: -0.02em;
 		text-transform: lowercase;
@@ -274,10 +267,7 @@ const tiles = [
 		margin: 0;
 		max-width: 360px;
 		padding-bottom: 12px;
-		font-family: var(--font-main);
-		font-size: 0.95rem;
-		line-height: 1.6;
-		color: rgba(255, 255, 255, 0.55);
+		color: var(--white-a55);
 	}
 
 	.toolkit__grid {
@@ -315,22 +305,22 @@ const tiles = [
 		top: 16px;
 		left: 0;
 		right: 0;
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.68rem;
-		font-weight: 500;
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-tag-size);
+		font-weight: var(--type-tag-weight);
 		letter-spacing: 0.2em;
-		color: rgba(255, 255, 255, 0.6);
+		color: var(--color-text-muted);
 		text-align: center;
 	}
 	.toolkit__idx {
 		position: absolute;
 		top: 14px;
 		right: 18px;
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.68rem;
-		font-weight: 500;
-		letter-spacing: 0.16em;
-		color: rgba(255, 255, 255, 0.4);
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-tag-size);
+		font-weight: var(--type-tag-weight);
+		letter-spacing: var(--tracking-tag);
+		color: var(--white-a35);
 	}
 	.toolkit__mark {
 		position: absolute;
@@ -357,20 +347,19 @@ const tiles = [
 		background: rgba(78, 201, 180, 0.06);
 	}
 	.toolkit__title {
+		/* h3 element recipe supplies font / weight / line-height. Toolkit uppercases. */
 		margin: 0;
-		font-family: 'Anton', 'Montserrat', 'Inter', sans-serif;
 		font-size: 1.4rem;
-		font-weight: 400;
 		letter-spacing: 0.005em;
 		text-transform: uppercase;
-		color: #fff;
 	}
 	.toolkit__sub {
 		margin: 2px 0 0;
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.72rem;
-		color: rgba(255, 255, 255, 0.5);
-		letter-spacing: 0.04em;
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-eyebrow-size);
+		font-weight: var(--type-tag-weight);
+		color: var(--white-a55);
+		letter-spacing: var(--tracking-ui);
 	}
 	.toolkit__arrow {
 		color: #fff;

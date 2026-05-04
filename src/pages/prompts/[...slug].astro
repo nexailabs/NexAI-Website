@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Eyebrow from '../../components/vault/Eyebrow.astro';
+import Eyebrow from '../../components/brand/Eyebrow.astro';
 import Breadcrumb from '../../components/promptHub/Breadcrumb.astro';
 import TypeBadge from '../../components/promptHub/TypeBadge.astro';
 import TitleWithAccent from '../../components/promptHub/TitleWithAccent.astro';
@@ -151,7 +151,7 @@ const isPaid = a.price > 0;
 					<div class="ph-detail__body">
 						<div class="ph-detail__main">
 							<section class="ph-detail__panel ph-detail__panel--inputs">
-								<Eyebrow tint="default">What you'll need before you start</Eyebrow>
+								<Eyebrow tint="muted">What you'll need before you start</Eyebrow>
 								<ul class="ph-detail__inputs">
 									{a.inputs.map((it) => (
 										<li>
@@ -482,13 +482,13 @@ const isPaid = a.price > 0;
 		border-radius: 4px;
 		border: 1px solid rgba(255, 255, 255, 0.08);
 		background: rgba(255, 255, 255, 0.02);
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 0.74rem;
 		color: var(--color-text-subtle);
 	}
 	.ph-detail__h1 {
 		margin: 0;
-		font-family: var(--font-accent);
+		font-family: var(--font-display);
 		font-weight: var(--fw-regular);
 		font-size: clamp(2.4rem, 5vw, 4.6rem);
 		line-height: 1.04;
@@ -497,7 +497,7 @@ const isPaid = a.price > 0;
 		text-wrap: balance;
 	}
 	.ph-detail__h1--mono {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-weight: 600;
 		font-size: clamp(2rem, 4.2vw, 3.6rem);
 		letter-spacing: -0.025em;
@@ -510,7 +510,7 @@ const isPaid = a.price > 0;
 		border: 1px solid rgba(160, 180, 255, 0.12);
 		border-radius: 6px;
 		max-width: 760px;
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 0.86rem;
 		line-height: 1.6;
 		color: rgba(170, 184, 255, 0.85);
@@ -540,7 +540,7 @@ const isPaid = a.price > 0;
 
 	.ph-detail__h2 {
 		margin: 0 0 14px;
-		font-family: var(--font-accent);
+		font-family: var(--font-display);
 		font-style: italic;
 		font-weight: var(--fw-regular);
 		font-size: 1.85rem;
@@ -600,7 +600,7 @@ const isPaid = a.price > 0;
 	}
 	.ph-detail__token {
 		color: var(--color-brand-cyan);
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 	}
 
 	.ph-detail__pullquote {
@@ -693,7 +693,7 @@ const isPaid = a.price > 0;
 		opacity: 0.5;
 	}
 	.ph-detail__step-n {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 0.86rem;
 		font-weight: 600;
 		color: #f3c47a;
@@ -701,7 +701,7 @@ const isPaid = a.price > 0;
 	}
 	.ph-detail__step-title {
 		margin: 0 0 4px;
-		font-family: var(--font-accent);
+		font-family: var(--font-display);
 		font-weight: 500;
 		font-size: 1.65rem;
 		letter-spacing: -0.01em;
@@ -709,7 +709,7 @@ const isPaid = a.price > 0;
 	}
 	.ph-detail__step-sub {
 		margin: 0 0 10px;
-		font-family: var(--font-accent);
+		font-family: var(--font-display);
 		font-style: italic;
 		font-size: 1.1rem;
 		color: rgba(243, 196, 122, 0.85);
@@ -729,7 +729,7 @@ const isPaid = a.price > 0;
 		background: #0a0b0c;
 		border: 1px solid rgba(255, 255, 255, 0.06);
 		border-radius: 5px;
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 0.78rem;
 		color: var(--color-text-subtle);
 		overflow-x: auto;
@@ -775,7 +775,7 @@ const isPaid = a.price > 0;
 		border: 1px solid rgba(255, 255, 255, 0.08);
 		border-left: 3px solid #aab8ff;
 		border-radius: 6px;
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 0.84rem;
 		line-height: 1.65;
 		color: var(--color-text-main);
@@ -833,7 +833,7 @@ const isPaid = a.price > 0;
 		font-size: 0.7rem;
 	}
 	.ph-detail__cloud-cost {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 0.74rem;
 		color: var(--color-text-dim);
 	}
@@ -862,7 +862,7 @@ const isPaid = a.price > 0;
 		border: 1px solid var(--color-border);
 		border-radius: 8px;
 		background: #0a0b0c;
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 0.76rem;
 		line-height: 1.6;
 		color: var(--color-text-muted);

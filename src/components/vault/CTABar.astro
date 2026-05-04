@@ -16,7 +16,7 @@ const {
 } = Astro.props;
 
 import TitleWithAccent from './TitleWithAccent.astro';
-import Eyebrow from './Eyebrow.astro';
+import Eyebrow from '../brand/Eyebrow.astro';
 ---
 
 <section class="vault-cta">
@@ -49,7 +49,7 @@ import Eyebrow from './Eyebrow.astro';
 		margin-bottom: 14px;
 	}
 	.vault-cta__title {
-		font-family: var(--font-accent);
+		font-family: var(--font-display);
 		font-weight: var(--fw-semibold);
 		font-size: clamp(1.6rem, 3vw, 2.3rem);
 		line-height: var(--lh-heading);

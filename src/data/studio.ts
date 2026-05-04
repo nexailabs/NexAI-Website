@@ -93,6 +93,17 @@ export const heroDeckD: HeroImage[] = [
 
 export const heroDecks: HeroImage[][] = [heroDeckD, heroDeckC, heroDeckB, heroDeckA];
 
+// ── Reveal-tile thumbnails (used by the homepage ghost CTA hover effect) ──
+// One representative shot per brand deck + a second DBJ to fill the 5-slot row.
+// `tr.thumb` = 150x200, q60 — keep these tiny; they're decorative.
+export const revealTiles: HeroImage[] = [
+	{ src: `${ik}/studio/hero/yufta/yufta-01.jpg${tr.thumb}`, alt: '' },
+	{ src: `${ik}/studio/hero/leemboodi/leemboodi-01.jpg${tr.thumb}`, alt: '' },
+	{ src: `${ik}/studio/hero/soilearth/soilearth-01.jpg${tr.thumb}`, alt: '' },
+	{ src: `${ik}/studio/hero/dbj/dbj-02.jpg${tr.thumb}`, alt: '' },
+	{ src: `${ik}/studio/hero/dbj/dbj-04.jpg${tr.thumb}`, alt: '' },
+];
+
 // ── Brand logos (marquee) ──
 export const brandLogos: BrandLogo[] = [
 	{

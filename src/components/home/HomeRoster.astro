@@ -1,4 +1,6 @@
 ---
+import Eyebrow from '../brand/Eyebrow.astro';
+
 interface Agent {
 	slug: string;
 	label: string;
@@ -76,7 +78,7 @@ const totalPadded = String(total).padStart(2, '0');
 		{/* Header */}
 		<div class="home-roster__header">
 			<div>
-				<p class="home-roster__eyebrow">[ 04 ] The Roster</p>
+				<Eyebrow class="home-roster__eyebrow" number={4}>The Roster</Eyebrow>
 				<h2 class="home-roster__h2" id="home-roster-h2">
 					One agent per seat.<br />
 					<span class="home-roster__h2-em">built, not bought.</span>
@@ -190,28 +192,19 @@ const totalPadded = String(total).padStart(2, '0');
 	}
 	.home-roster__eyebrow {
 		margin: 0 0 14px;
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.72rem;
-		font-weight: 500;
-		letter-spacing: 0.18em;
-		text-transform: uppercase;
-		color: var(--color-brand-cyan);
 	}
 	.home-roster__h2 {
+		/* h2 element recipe supplies font / size / weight / line-height / tracking.
+		   Roster uppercases for visual identity. */
 		margin: 0;
 		max-width: 880px;
-		font-family: 'Anton', 'Montserrat', 'Inter', sans-serif;
-		font-weight: 400;
-		font-size: clamp(2.8rem, 5.6vw, 4.6rem);
+		text-transform: uppercase;
 		line-height: 0.96;
 		letter-spacing: 0.005em;
-		text-transform: uppercase;
-		color: #fff;
 	}
 	.home-roster__h2-em {
-		font-family: var(--font-accent), 'Cormorant Garamond', serif;
 		font-style: italic;
-		color: var(--color-brand-cyan);
+		color: var(--brand-teal-bright);
 		font-size: 0.68em;
 		letter-spacing: -0.02em;
 		text-transform: lowercase;
@@ -219,10 +212,7 @@ const totalPadded = String(total).padStart(2, '0');
 	.home-roster__lede {
 		margin: 0;
 		max-width: 360px;
-		font-family: var(--font-main), 'Inter', sans-serif;
-		font-size: 0.95rem;
-		line-height: 1.6;
-		color: rgba(255, 255, 255, 0.55);
+		color: var(--white-a55);
 	}
 
 	.home-roster__bar {
@@ -235,20 +225,20 @@ const totalPadded = String(total).padStart(2, '0');
 		border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 	}
 	.home-roster__bar-l {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.66rem;
-		font-weight: 500;
-		letter-spacing: 0.18em;
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-eyebrow-size);
+		font-weight: var(--type-eyebrow-weight);
+		letter-spacing: var(--tracking-eyebrow);
 		text-transform: uppercase;
-		color: rgba(255, 255, 255, 0.42);
+		color: var(--white-a55);
 	}
 	.home-roster__bar-r {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.62rem;
-		font-weight: 500;
-		letter-spacing: 0.16em;
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-tag-size);
+		font-weight: var(--type-tag-weight);
+		letter-spacing: var(--tracking-tag);
 		text-transform: uppercase;
-		color: rgba(255, 255, 255, 0.32);
+		color: var(--white-a35);
 	}
 
 	.home-roster__grid {
@@ -293,11 +283,11 @@ const totalPadded = String(total).padStart(2, '0');
 		margin-bottom: 26px;
 	}
 	.home-roster__idx {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.7rem;
-		font-weight: 500;
-		letter-spacing: 0.1em;
-		color: rgba(255, 255, 255, 0.4);
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-tag-size);
+		font-weight: var(--fw-semibold);
+		letter-spacing: var(--tracking-ui);
+		color: var(--white-a35);
 		transition: color 0.25s ease;
 	}
 	.home-roster__card:hover .home-roster__idx {
@@ -322,33 +312,28 @@ const totalPadded = String(total).padStart(2, '0');
 	}
 
 	.home-roster__name {
+		/* h3 element recipe supplies font / weight / line-height. Roster uppercases. */
 		margin: 0 0 4px;
-		font-family: 'Anton', 'Montserrat', 'Inter', sans-serif;
-		font-weight: 400;
 		font-size: 2.1rem;
 		line-height: 1;
 		letter-spacing: 0.005em;
 		text-transform: uppercase;
-		color: #fff;
 	}
 	.home-roster__sublabel {
 		margin: 0 0 14px;
-		font-family: var(--font-accent), 'Cormorant Garamond', serif;
+		font-family: var(--font-display);
 		font-style: italic;
 		font-size: 1.02rem;
-		color: var(--color-brand-cyan);
-		font-weight: 400;
+		color: var(--brand-teal-bright);
 	}
 	.home-roster__sublabel-spacer {
 		height: 14px;
 	}
 	.home-roster__sub {
 		margin: 0 0 22px;
-		font-family: var(--font-main), 'Inter', sans-serif;
-		font-size: 0.9rem;
+		font-size: var(--type-caption-size);
 		line-height: 1.55;
-		color: rgba(255, 255, 255, 0.62);
-		text-wrap: pretty;
+		color: var(--white-a55);
 	}
 
 	.home-roster__caps {
@@ -366,16 +351,15 @@ const totalPadded = String(total).padStart(2, '0');
 		border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 	}
 	.home-roster__cap-n {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.62rem;
-		font-weight: 500;
-		color: rgba(255, 255, 255, 0.32);
-		letter-spacing: 0.05em;
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-tag-size);
+		font-weight: var(--type-tag-weight);
+		color: var(--white-a35);
+		letter-spacing: var(--tracking-ui);
 	}
 	.home-roster__cap-t {
-		font-family: var(--font-main), 'Inter', sans-serif;
-		font-size: 0.84rem;
-		color: rgba(255, 255, 255, 0.78);
+		font-size: var(--type-caption-size);
+		color: var(--color-text-main);
 		flex: 1;
 	}
 
@@ -384,12 +368,12 @@ const totalPadded = String(total).padStart(2, '0');
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.62rem;
-		font-weight: 500;
-		letter-spacing: 0.16em;
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-tag-size);
+		font-weight: var(--type-tag-weight);
+		letter-spacing: var(--tracking-tag);
 		text-transform: uppercase;
-		color: rgba(255, 255, 255, 0.32);
+		color: var(--white-a35);
 	}
 	.home-roster__footer-r {
 		display: inline-flex;

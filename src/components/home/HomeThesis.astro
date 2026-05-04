@@ -37,7 +37,7 @@ const pillars: Pillar[] = [
 	<div class="home-thesis__bar">
 		<div class="home-thesis__bar-left">
 			<span class="home-thesis__bar-dot" aria-hidden="true"></span>
-			<span>&sect; 02 &middot; The thesis</span>
+			<span>[ 02 ] The thesis</span>
 		</div>
 		<div class="home-thesis__bar-right">Why we exist</div>
 	</div>
@@ -130,26 +130,26 @@ const pillars: Pillar[] = [
 		display: inline-flex;
 		align-items: center;
 		gap: 12px;
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.7rem;
-		font-weight: 500;
-		letter-spacing: 0.18em;
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-eyebrow-size);
+		font-weight: var(--type-eyebrow-weight);
+		letter-spacing: var(--tracking-eyebrow);
 		text-transform: uppercase;
-		color: rgba(255, 255, 255, 0.42);
+		color: var(--white-a55);
 	}
 	.home-thesis__bar-dot {
 		width: 6px;
 		height: 6px;
-		background: var(--color-brand-cyan);
+		background: var(--brand-teal-bright);
 		display: inline-block;
 	}
 	.home-thesis__bar-right {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.66rem;
-		font-weight: 500;
-		letter-spacing: 0.16em;
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-tag-size);
+		font-weight: var(--type-tag-weight);
+		letter-spacing: var(--tracking-tag);
 		text-transform: uppercase;
-		color: rgba(255, 255, 255, 0.32);
+		color: var(--white-a35);
 	}
 
 	/* Statement block */
@@ -169,24 +169,23 @@ const pillars: Pillar[] = [
 		padding-top: 8px;
 	}
 	.home-thesis__rail-eyebrow {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.62rem;
-		font-weight: 500;
-		letter-spacing: 0.2em;
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-tag-size);
+		font-weight: var(--type-tag-weight);
+		letter-spacing: var(--tracking-tag);
 		text-transform: uppercase;
-		color: rgba(255, 255, 255, 0.32);
+		color: var(--white-a35);
 		margin-bottom: 18px;
 		padding-bottom: 12px;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+		border-bottom: 1px solid var(--white-a08);
 	}
 	.home-thesis__rail-quote {
 		margin: 0 0 14px;
-		font-family: var(--font-accent), 'Cormorant Garamond', serif;
+		font-family: var(--font-display);
 		font-style: italic;
-		font-size: 1.35rem;
+		font-size: var(--text-xl);
 		line-height: 1.35;
-		font-weight: 400;
-		color: rgba(255, 255, 255, 0.45);
+		color: var(--white-a55);
 		text-decoration: line-through;
 		text-decoration-color: rgba(255, 80, 80, 0.4);
 		text-decoration-thickness: 1px;
@@ -194,11 +193,7 @@ const pillars: Pillar[] = [
 	}
 	.home-thesis__rail-counter {
 		margin: 0;
-		font-family: var(--font-main), 'Inter', sans-serif;
-		font-size: 0.86rem;
-		line-height: 1.6;
-		color: rgba(255, 255, 255, 0.5);
-		text-wrap: pretty;
+		color: var(--white-a55);
 	}
 
 	.home-thesis__position {
@@ -208,26 +203,20 @@ const pillars: Pillar[] = [
 		position: absolute;
 		top: -28px;
 		left: 0;
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.6rem;
-		font-weight: 500;
-		letter-spacing: 0.22em;
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-eyebrow-size);
+		font-weight: var(--type-eyebrow-weight);
+		letter-spacing: var(--tracking-eyebrow);
 		text-transform: uppercase;
-		color: var(--color-brand-cyan);
+		color: var(--brand-teal-bright);
 	}
 	.home-thesis__h2 {
+		/* Element recipe (h2) supplies font-family / size / weight / line-height / tracking */
 		margin: 0;
-		font-family: var(--font-accent), 'Cormorant Garamond', serif;
-		font-weight: 400;
-		font-size: clamp(2.4rem, 4.6vw, 4rem);
-		line-height: 1.08;
-		letter-spacing: -0.02em;
-		color: rgba(255, 255, 255, 0.96);
-		text-wrap: pretty;
 	}
 	.home-thesis__h2-em {
 		font-style: italic;
-		color: var(--color-brand-cyan);
+		color: var(--brand-teal-bright);
 	}
 
 	/* Pillars */
@@ -245,20 +234,20 @@ const pillars: Pillar[] = [
 		border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 	}
 	.home-thesis__pillars-head-l {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.66rem;
-		font-weight: 500;
-		letter-spacing: 0.18em;
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-eyebrow-size);
+		font-weight: var(--type-eyebrow-weight);
+		letter-spacing: var(--tracking-eyebrow);
 		text-transform: uppercase;
-		color: rgba(255, 255, 255, 0.42);
+		color: var(--white-a55);
 	}
 	.home-thesis__pillars-head-r {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.62rem;
-		font-weight: 500;
-		letter-spacing: 0.16em;
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-tag-size);
+		font-weight: var(--type-tag-weight);
+		letter-spacing: var(--tracking-tag);
 		text-transform: uppercase;
-		color: rgba(255, 255, 255, 0.3);
+		color: var(--white-a35);
 	}
 
 	.home-thesis__pillars-grid {
@@ -283,66 +272,59 @@ const pillars: Pillar[] = [
 		margin-bottom: 28px;
 	}
 	.home-thesis__pillar-num {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.78rem;
-		font-weight: 500;
-		letter-spacing: 0.08em;
-		color: var(--color-brand-cyan);
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--text-sm);
+		font-weight: var(--fw-semibold);
+		letter-spacing: var(--tracking-ui);
+		color: var(--brand-teal-bright);
 	}
 	.home-thesis__pillar-line {
 		flex: 1;
 		height: 1px;
-		background: linear-gradient(to right, rgba(78, 201, 180, 0.32), rgba(255, 255, 255, 0.04));
+		background: linear-gradient(to right, var(--teal-a40), var(--white-a04));
 	}
 	.home-thesis__pillar-tag {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.6rem;
-		font-weight: 500;
-		letter-spacing: 0.16em;
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-tag-size);
+		font-weight: var(--type-tag-weight);
+		letter-spacing: var(--tracking-tag);
 		text-transform: uppercase;
-		color: rgba(255, 255, 255, 0.32);
+		color: var(--white-a35);
 	}
 
 	.home-thesis__pillar-eyebrow {
 		margin: 0 0 8px;
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.66rem;
-		font-weight: 500;
-		letter-spacing: 0.18em;
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-eyebrow-size);
+		font-weight: var(--type-eyebrow-weight);
+		letter-spacing: var(--tracking-eyebrow);
 		text-transform: uppercase;
-		color: rgba(255, 255, 255, 0.5);
+		color: var(--white-a55);
 	}
 	.home-thesis__pillar-title {
+		/* h3 element recipe supplies font / size / weight / line-height */
 		margin: 0 0 14px;
-		font-family: var(--font-accent), 'Cormorant Garamond', serif;
-		font-weight: 500;
-		font-size: 1.95rem;
 		letter-spacing: -0.01em;
-		color: rgba(255, 255, 255, 0.96);
 	}
 	.home-thesis__pillar-body {
 		margin: 0;
-		font-family: var(--font-main), 'Inter', sans-serif;
-		font-size: 0.92rem;
-		line-height: 1.6;
-		color: rgba(255, 255, 255, 0.6);
-		text-wrap: pretty;
+		color: var(--white-a55);
 	}
 
 	/* Bottom seal */
 	.home-thesis__seal {
 		margin-top: 0;
 		padding-top: 20px;
-		border-top: 1px solid rgba(255, 255, 255, 0.08);
+		border-top: 1px solid var(--white-a08);
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.62rem;
-		font-weight: 500;
-		letter-spacing: 0.16em;
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-tag-size);
+		font-weight: var(--type-tag-weight);
+		letter-spacing: var(--tracking-tag);
 		text-transform: uppercase;
-		color: rgba(255, 255, 255, 0.32);
+		color: var(--white-a35);
 	}
 	.home-thesis__seal-right {
 		display: inline-flex;
@@ -352,7 +334,7 @@ const pillars: Pillar[] = [
 	.home-thesis__seal-dot {
 		width: 6px;
 		height: 6px;
-		background: var(--color-brand-cyan);
+		background: var(--brand-teal-bright);
 		display: inline-block;
 	}
 

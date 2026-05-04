@@ -1,5 +1,5 @@
 ---
-import Eyebrow from '../vault/Eyebrow.astro';
+import Eyebrow from '../brand/Eyebrow.astro';
 import Italic from './Italic.astro';
 import type { PromptArtifact } from '../../data/promptHub';
 
@@ -258,7 +258,7 @@ Cap it at 22 words. Ban "hope you're well."</pre>
 	}
 	.ph-hero__title {
 		margin: 36px 0 0;
-		font-family: var(--font-accent);
+		font-family: var(--font-display);
 		font-weight: var(--fw-regular);
 		font-size: clamp(1.8rem, 3.2vw, 2.6rem);
 		line-height: 1.1;
@@ -329,7 +329,7 @@ Cap it at 22 words. Ban "hope you're well."</pre>
 	}
 	.ph-hero__stat-n {
 		margin: 0;
-		font-family: var(--font-accent);
+		font-family: var(--font-display);
 		font-weight: 500;
 		font-size: 2rem;
 		letter-spacing: -0.015em;
@@ -354,7 +354,7 @@ Cap it at 22 words. Ban "hope you're well."</pre>
 	}
 	.ph-hero__runs-n {
 		margin: 0;
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 1.18rem;
 		font-weight: 500;
 		color: var(--color-brand-cyan);
@@ -424,7 +424,7 @@ Cap it at 22 words. Ban "hope you're well."</pre>
 	}
 	.ph-hero__card-title {
 		margin: 0 0 4px;
-		font-family: var(--font-accent);
+		font-family: var(--font-display);
 		font-weight: 500;
 		font-size: 1.18rem;
 		letter-spacing: -0.005em;
@@ -484,7 +484,7 @@ Cap it at 22 words. Ban "hope you're well."</pre>
 	.ph-hero__tree,
 	.ph-hero__prompt {
 		margin: 0;
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 0.7rem;
 		line-height: 1.55;
 		color: var(--color-text-subtle);
@@ -503,7 +503,7 @@ Cap it at 22 words. Ban "hope you're well."</pre>
 		display: flex;
 		flex-direction: column;
 		gap: 4px;
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-family: var(--font-mono);
 		font-size: 0.7rem;
 		color: var(--color-text-subtle);
 	}
@@ -535,7 +535,7 @@ Cap it at 22 words. Ban "hope you're well."</pre>
 	}
 	.ph-hero__badge-quote {
 		margin: 4px 0 0;
-		font-family: var(--font-accent);
+		font-family: var(--font-display);
 		font-style: italic;
 		font-size: 1rem;
 		color: var(--color-text-main);

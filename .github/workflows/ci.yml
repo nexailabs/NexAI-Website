@@ -30,6 +30,9 @@ jobs:
       - name: Type check
         run: npm run type-check
 
+      - name: Brand-font guard
+        run: npm run guard:fonts
+
       - name: Build
         run: npm run build
 

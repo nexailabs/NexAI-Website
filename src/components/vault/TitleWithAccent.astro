@@ -1,6 +1,6 @@
 ---
 // Splits a title around a `accent` substring (case-insensitive)
-// and wraps the matched portion in italic Cormorant.
+// and wraps the matched portion in italic display.
 interface Props {
 	text: string;
 	accent?: string;
@@ -26,7 +26,7 @@ const parts = split(text, accent);
 
 <style>
 	.vault-italic {
-		font-family: var(--font-accent);
+		font-family: var(--font-display);
 		font-style: italic;
 		font-weight: var(--fw-regular);
 		letter-spacing: -0.005em;

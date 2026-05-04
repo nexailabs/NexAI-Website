@@ -1,5 +1,6 @@
 ---
 import { site } from '../../config/site';
+import Eyebrow from '../brand/Eyebrow.astro';
 
 interface Tier {
 	label: string;
@@ -15,38 +16,38 @@ interface Tier {
 const tiers: Tier[] = [
 	{
 		label: 'Strategy Sprint',
-		sub: 'A focused engagement to map where AI actually pays off in your business — and what to build first.',
+		sub: 'Two weeks to map where AI actually pays off in your business — and what to build first.',
 		currency: '$',
 		price: '4,249',
 		unit: 'USD / PROJECT',
 		cta: 'Email to start',
 		ctaKind: 'outline',
 		includes: [
-			'Brand & Workflow Discovery',
-			'Strategic AI Use-Case Definition',
-			'Technical Feasibility Assessment',
-			'System Architecture Planning',
-			'Risk, Compliance & Reliability Review',
-			'Clear Roadmap & Execution Blueprint',
-			'1 Production-Ready Agent',
+			'Discovery — what to build, what to skip',
+			'Architecture — system design, integration map',
+			'Risk brief — failure modes, on-call plan',
+			'One agent shipped, in your stack',
+			'Roadmap — next 90 days, ranked',
+			'90-min handoff — your team owns it',
+			'Slack on-call for two weeks after',
 		],
 	},
 	{
 		label: 'Build & Implementation',
-		sub: 'Full design, build, and deployment of the AI system — shipped, integrated, and stewarded into production.',
+		sub: 'Full agent system — designed, built, deployed, and stewarded into production.',
 		currency: '$',
 		price: '18,699',
 		unit: 'USD / PROJECT',
 		cta: 'Reach Us',
 		ctaKind: 'gradient',
 		includes: [
-			'Full AI System Design',
-			'Development & Engineering',
-			'Workflow & Data Integration',
-			'Testing, Deployment & Optimization',
-			'Performance Measurement',
-			'On-Ground Support & Iteration',
-			'Guaranteed, Production-Ready Delivery',
+			'Full agent system — design, build, deploy',
+			'Integrations — your data, your tools, your auth',
+			'Test + production — load, edge cases, observability',
+			'30 days in-production support',
+			'Performance review — what worked, what to fix',
+			'Maintained for 90 days — bug fixes, drift correction',
+			'Documented seams — your team can extend it',
 		],
 	},
 ];
@@ -55,7 +56,7 @@ const tiers: Tier[] = [
 <section class="home-pricing" aria-labelledby="home-pricing-h2">
 	<div class="home-pricing__inner">
 		<header class="home-pricing__header">
-			<p class="home-pricing__eyebrow">[ 06 ] How we engage</p>
+			<Eyebrow class="home-pricing__eyebrow" number={6}>How we engage</Eyebrow>
 			<h2 class="home-pricing__h2" id="home-pricing-h2">
 				Two ways in.<br />
 				<span class="home-pricing__h2-em"
@@ -94,7 +95,7 @@ const tiers: Tier[] = [
 						</span>
 
 						<div class="home-pricing__card-inner">
-							<p class="home-pricing__tier">{t.label}</p>
+							<h3 class="home-pricing__tier">{t.label}</h3>
 							<p class="home-pricing__sub">{t.sub}</p>
 
 							<div class="home-pricing__price">
@@ -189,29 +190,20 @@ const tiers: Tier[] = [
 
 	.home-pricing__eyebrow {
 		margin: 0 0 14px;
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.72rem;
-		font-weight: 500;
-		letter-spacing: 0.18em;
-		text-transform: uppercase;
-		color: var(--color-brand-cyan);
 	}
 
 	.home-pricing__h2 {
+		/* h2 element recipe supplies font / size / weight / line-height / tracking.
+		   Pricing uppercases for visual identity (matches Roster, Toolkit). */
 		margin: 0;
-		font-family: 'Anton', 'Montserrat', 'Inter', sans-serif;
-		font-weight: 400;
-		font-size: clamp(2.8rem, 5.6vw, 4.6rem);
+		text-transform: uppercase;
 		line-height: 0.96;
 		letter-spacing: 0.005em;
-		text-transform: uppercase;
-		color: #fff;
 	}
 
 	.home-pricing__h2-em {
-		font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
 		font-style: italic;
-		color: var(--color-brand-cyan);
+		color: var(--brand-teal-bright);
 		font-size: 0.62em;
 		letter-spacing: -0.02em;
 		text-transform: lowercase;
@@ -268,28 +260,25 @@ const tiers: Tier[] = [
 		right: -5px;
 	}
 
-	/* Tier label */
+	/* Tier label — h3 element recipe supplies font / weight. Pricing uppercases. */
 	.home-pricing__tier {
 		margin: 0 0 18px;
-		font-family: 'Anton', 'Montserrat', 'Inter', sans-serif;
 		font-size: 1.5rem;
-		font-weight: 400;
 		letter-spacing: 0.005em;
 		text-transform: uppercase;
-		color: #fff;
 	}
 
 	/* Sub copy */
 	.home-pricing__sub {
 		margin: 0 0 28px;
 		max-width: 360px;
-		font-family: var(--font-main), 'Inter', sans-serif;
-		font-size: 0.92rem;
+		font-size: var(--text-btn);
 		line-height: 1.55;
-		color: rgba(255, 255, 255, 0.6);
+		color: var(--white-a55);
 	}
 
-	/* Price block */
+	/* Price block — display font for the value, mono for the per-unit line.
+	   Mono is intentional here (numeric / runtime feel) per typography policy. */
 	.home-pricing__price {
 		display: flex;
 		align-items: flex-end;
@@ -298,28 +287,28 @@ const tiers: Tier[] = [
 	}
 
 	.home-pricing__price-currency {
-		font-family: 'Anton', 'Montserrat', 'Inter', sans-serif;
-		font-size: 1.1rem;
-		color: rgba(255, 255, 255, 0.6);
+		font-family: var(--font-display);
+		font-size: var(--text-lg);
+		color: var(--white-a55);
 		letter-spacing: 0.02em;
 		padding-bottom: 14px;
 	}
 
 	.home-pricing__price-value {
-		font-family: 'Anton', 'Montserrat', 'Inter', sans-serif;
+		font-family: var(--font-display);
 		font-size: clamp(3.4rem, 5.4vw, 4.8rem);
 		line-height: 0.92;
 		letter-spacing: 0.005em;
-		color: #fff;
+		color: var(--color-text-main);
 	}
 
 	.home-pricing__price-unit {
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.7rem;
-		font-weight: 500;
-		letter-spacing: 0.12em;
+		font-family: var(--font-mono);
+		font-size: var(--type-tag-size);
+		font-weight: var(--fw-medium);
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
-		color: rgba(255, 255, 255, 0.5);
+		color: var(--white-a55);
 		padding-bottom: 14px;
 		line-height: 1.4;
 	}
@@ -335,12 +324,12 @@ const tiers: Tier[] = [
 		width: 100%;
 		height: 52px;
 		text-decoration: none;
-		font-family: 'Anton', 'Montserrat', 'Inter', sans-serif;
-		font-size: 1rem;
-		font-weight: 400;
-		letter-spacing: 0.04em;
+		font-family: var(--font-display);
+		font-size: var(--text-base);
+		font-weight: var(--fw-medium);
+		letter-spacing: var(--tracking-ui);
 		text-transform: uppercase;
-		color: #fff;
+		color: var(--color-text-main);
 		cursor: pointer;
 		border: 0;
 	}
@@ -360,7 +349,7 @@ const tiers: Tier[] = [
 	.home-pricing__cta--gradient {
 		position: relative;
 		overflow: hidden;
-		background: linear-gradient(90deg, #1e7e72 0%, #4ec9b4 30%, #d96b3a 70%, #c8421f 100%);
+		background: var(--brand-gradient-teal);
 	}
 
 	.home-pricing__cta-noise {
@@ -411,12 +400,12 @@ const tiers: Tier[] = [
 		display: flex;
 		align-items: center;
 		gap: 12px;
-		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-		font-size: 0.78rem;
-		font-weight: 500;
-		letter-spacing: 0.04em;
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--text-sm);
+		font-weight: var(--fw-medium);
+		letter-spacing: var(--tracking-ui);
 		text-transform: uppercase;
-		color: rgba(255, 255, 255, 0.78);
+		color: var(--color-text-main);
 	}
 
 	.home-pricing__check {

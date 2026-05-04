@@ -2,7 +2,7 @@
 	"name": "@nexailabs/website",
 	"type": "module",
 	"version": "1.0.0",
-	"description": "NexAI Labs website — Astro 5, Lenis. Hosted on Cloudflare Pages.",
+	"description": "NexAI Labs website — Astro 6, Lenis. Hosted on Cloudflare Pages.",
 	"author": "NexAI Labs",
 	"license": "MIT",
 	"repository": {
@@ -22,6 +22,7 @@
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
 		"type-check": "astro check",
+		"guard:fonts": "node scripts/guard-fonts.mjs",
 		"test": "playwright test",
 		"test:ui": "playwright test --ui",
 		"test:update": "playwright test --update-snapshots",
@@ -42,9 +43,6 @@
 	},
 	"dependencies": {
 		"@astrojs/sitemap": "^3.7.2",
-		"@fontsource/cormorant-garamond": "^5.2.11",
-		"@fontsource/inter": "^5.2.8",
-		"@fontsource/montserrat": "^5.2.8",
 		"astro": "^6.1.7",
 		"lenis": "^1.3.23"
 	},
