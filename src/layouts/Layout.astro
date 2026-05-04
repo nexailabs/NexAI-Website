@@ -48,9 +48,11 @@ const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
 		<link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
 		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-		<!-- Fonts — Astro Fonts API. Three brand fonts per Brand Guidelines.pdf. -->
+		<!-- Fonts — Astro Fonts API. Three brand fonts per Brand Guidelines.pdf.
+		     Inter (body) and Montserrat (display, used by H1/H2 element recipes)
+		     are both preloaded so neither blocks the LCP on the homepage hero. -->
 		<Font cssVariable="--font-inter" preload />
-		<Font cssVariable="--font-montserrat" />
+		<Font cssVariable="--font-montserrat" preload />
 		<Font cssVariable="--font-jakarta" />
 
 		<link rel="preconnect" href="https://ik.imagekit.io" crossorigin />

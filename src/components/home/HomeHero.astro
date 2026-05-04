@@ -17,8 +17,7 @@ import { site } from '../../config/site';
 		<div class="home-hero__text">
 			<p class="home-hero__eyebrow">{heroEyebrow}</p>
 			<h1 class="home-hero__heading">
-				{heroHeadlineBefore}
-				<em
+				<span class="home-hero__heading-prefix">{heroHeadlineBefore}</span>{' '}<em
 					><span
 						class="home-hero__rotate"
 						aria-hidden="true"
@@ -31,9 +30,11 @@ import { site } from '../../config/site';
 			<p class="home-hero__sub">{heroSubtext}</p>
 			<div class="home-hero__ctas">
 				<a href={site.bookingUrl} class="home-hero__cta home-hero__cta--primary" data-open-cal>
-					Book a Call
+					Build My Agent
 				</a>
-				<a href="/studio" class="home-hero__cta home-hero__cta--ghost"> See Our Work </a>
+				<a href="#how" class="home-hero__cta home-hero__cta--ghost">
+					<span class="home-hero__cta-label">See how it works</span>
+				</a>
 			</div>
 		</div>
 
@@ -76,6 +77,16 @@ import { site } from '../../config/site';
 		gap: 1.5rem;
 	}
 
+	/* At ≥1100px the orbit card is pinned to the orbit's left edge and
+	 * protrudes ~140px left of the orbit container. Reserve a matching
+	 * right-padding on the text column so the headline can never collide
+	 * with the card under any rotating word. */
+	@media (min-width: 1100px) {
+		.home-hero__text {
+			padding-right: clamp(80px, 9vw, 140px);
+		}
+	}
+
 	.home-hero__eyebrow {
 		font-family: var(--font-accent-jakarta);
 		font-size: var(--type-eyebrow-size);
@@ -85,23 +96,35 @@ import { site } from '../../config/site';
 		color: var(--brand-teal-bright);
 	}
 
+	/* ── Hero headline ──
+	 * Hero-only h1 size override (documented one-off): the global h1 token
+	 * is sized for editorial pages; the hero needs to stay on one line at
+	 * desktop without colliding with the orbit card pinned to the right
+	 * column. line-height and tracking still inherit from the element
+	 * recipe in global.css. */
 	.home-hero__heading {
-		/* h1 element recipe supplies font / size / weight / line-height / tracking. */
+		font-size: clamp(1.85rem, 3.3vw, 2.9rem);
 	}
 
 	.home-hero__heading em {
 		font-style: italic;
 	}
 
+	/* Keep the static prefix together so the wrap break (when it happens
+	 * on narrow viewports) falls between "AI Agents for" and the rotating
+	 * word — never inside the prefix. */
+	.home-hero__heading-prefix {
+		white-space: nowrap;
+	}
+
 	/* ── Rotating word scramble ──
-	 * min-width reserves space for the widest possible scramble state at
-	 * CSS-time (not post-JS) so no layout shift ever occurs. 7em fits
-	 * every real word + trailing period at desktop font size inside the
-	 * ~685px text column, and at mobile font size forces the rotating
-	 * word onto line 2 from first paint (stable, no reflow). */
+	 * Per-char `.home-hero__rotate-char { min-width: 0.5ch }` already
+	 * prevents collapse during scramble; the parent reserves just enough
+	 * for the longest resolved word ("Creatives.") at the current h1 size.
+	 * Scales with viewport so it's not over-buffered on narrow screens. */
 	.home-hero__rotate {
 		display: inline-block;
-		min-width: 7em;
+		min-width: clamp(4em, 8vw, 5em);
 	}
 
 	.home-hero__rotate-char {
@@ -171,6 +194,16 @@ import { site } from '../../config/site';
 		transform: scale(0.97);
 	}
 
+	/* Keyboard-only focus ring — runs on top of any hover styling so the focus
+	   boundary is unambiguous, including when the ghost CTA's tile reveal fires. */
+	.home-hero__cta:focus-visible {
+		outline: 2px solid var(--brand-teal-bright);
+		outline-offset: 3px;
+	}
+	.home-hero__cta--ghost:focus-visible {
+		outline-offset: 4px;
+	}
+
 	.home-hero__cta--primary {
 		background: var(--color-text-main);
 		color: var(--color-bg);
@@ -184,15 +217,24 @@ import { site } from '../../config/site';
 	}
 
 	.home-hero__cta--ghost {
-		background: rgba(255, 255, 255, 0.03);
+		background: rgba(255, 255, 255, 0.04);
 		color: var(--color-text-main);
-		border: 1px solid var(--color-border);
+		border: 1px solid var(--white-a14);
+		backdrop-filter: blur(14px) saturate(140%);
+		-webkit-backdrop-filter: blur(14px) saturate(140%);
 	}
 
 	.home-hero__cta--ghost:hover {
-		border-color: var(--color-border-hover);
-		background: rgba(255, 255, 255, 0.06);
+		background: var(--white-a08);
+		border-color: var(--brand-teal-bright);
+		box-shadow:
+			0 0 0 1px var(--teal-a40),
+			0 0 28px var(--teal-a25);
 		transform: translateY(-1px);
+	}
+
+	.home-hero__cta-label {
+		position: relative;
 	}
 
 	/* ── Right: Orbit ── */
@@ -206,12 +248,13 @@ import { site } from '../../config/site';
 		max-width: 100%;
 	}
 
-	/* Wide desktop only — bleed orbit into the text column per design intent.
-	 * Below 1100px the grid is cramped; the negative margin yanks the orbit
-	 * visibly left of viewport center, so it only kicks in at ≥1100px. */
+	/* Wide desktop only — slight bleed of orbit into the text column. The card
+	 * to the orbit's left also needs breathing room from the hero copy, so
+	 * the previous -11rem yank was too aggressive once the card became
+	 * permanent. -5rem keeps some negative space without crowding the text. */
 	@media (min-width: 1100px) {
 		.home-hero__orbit {
-			margin-left: -11rem;
+			margin-left: 5rem;
 			margin-top: -3rem;
 		}
 	}
@@ -375,12 +418,12 @@ import { site } from '../../config/site';
 				rotateEl.appendChild(tail);
 			}
 
-			const HOLD_MS = 2500;
+			// Auto-cycle is OFF — the AgentOrbit component drives the rotating
+			// word via the `orbit:transition-start` custom event. The hero word
+			// scrambles in sync with the orbit's snap-and-dwell motion.
 			const SCRAMBLE_MS = 600;
 			const CYCLE_MS = 30;
-			const INITIAL_DELAY = 1200;
 
-			let currentIndex = 0;
 			let charSpans: HTMLSpanElement[] = [];
 
 			function track(id: number) {
@@ -446,16 +489,21 @@ import { site } from '../../config/site';
 				});
 			}
 
-			function nextWord() {
-				currentIndex = (currentIndex + 1) % words.length;
-				scrambleTo(words[currentIndex], () => {
-					track(window.setTimeout(nextWord, HOLD_MS));
-				});
-			}
-
 			renderWord(words[0]);
 
-			track(window.setTimeout(nextWord, INITIAL_DELAY + HOLD_MS));
+			// Orbit drives the word. Every transition the orbit announces its
+			// target agent title; we scramble to that title.
+			const onOrbitTransition = (e: Event) => {
+				const detail = (e as CustomEvent<{ title?: string }>).detail;
+				if (!detail || !detail.title) return;
+				scrambleTo(detail.title, () => {});
+			};
+			window.addEventListener('orbit:transition-start', onOrbitTransition);
+			document.addEventListener(
+				'astro:before-swap',
+				() => window.removeEventListener('orbit:transition-start', onOrbitTransition),
+				{ once: true },
+			);
 		});
 	}
 </script>

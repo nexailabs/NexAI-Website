@@ -1,19 +1,19 @@
 import { site } from '../config/site';
 
 // ── Hero content ──
-export const heroEyebrow = 'Six agents. One company. Three humans.';
-export const heroHeadlineBefore = 'AI agents for';
+export const heroEyebrow = 'Your business on autopilot';
+export const heroHeadlineBefore = 'AI Agents for';
 export const heroHeadlineAfter = '.';
 export const heroRotationWords = [
 	'Outreach',
 	'Marketing',
-	'Finance',
 	'Research',
-	'Strategy',
+	'Finance',
 	'Creatives',
+	'Sales',
 ];
 export const heroSubtext =
-	"We built six to run our own company. We'll build yours next — live in your stack on day 14.";
+	'We understand your business — then design, develop, and train AI agents to run it for you.';
 export const bookingUrl = site.bookingUrl;
 
 // ── Agent orbit data ──
@@ -22,6 +22,97 @@ export interface Capability {
 	status: 'active' | 'planned';
 }
 
+// Each agent's card shows a different operational state. The body is
+// rendered by mode (one of the AgentCardState union variants below) using
+// the visual primitives in `agent-orbit.ts` (status pip, ring, sparkline,
+// network, avatar, continuation button, channel grid, icon row).
+
+export type AgentCardState =
+	| {
+			mode: 'tool-calls';
+			badge: string;
+			steps: {
+				tool: string;
+				iconKey: string;
+				status: 'done' | 'running';
+				label: string;
+			}[];
+			progress: { current: number; total: number; unit: string };
+	  }
+	| {
+			mode: 'approval';
+			badge: string;
+			amount: string;
+			avatar: string;
+			client: string;
+			invoice: string;
+			context: string;
+			ageMin: number;
+			risk: 'green' | 'amber' | 'red';
+	  }
+	| {
+			mode: 'thread';
+			badge: string;
+			peers: { label: string; dir: 'in' | 'out' }[];
+			messages: { dir: 'in' | 'out'; agent: string; text: string }[];
+			decision: { text: string; outcome: 'green' | 'amber' | 'red' };
+			footer: string;
+	  }
+	| {
+			mode: 'connectors';
+			badge: string;
+			channels: {
+				iconKey: string;
+				status: 'done' | 'running' | 'queued';
+				label: string;
+				caption: string;
+				live?: boolean;
+			}[];
+			recent: { iconKey: string; title: string };
+			footer: string;
+	  }
+	| {
+			mode: 'batch';
+			badge: string;
+			ring: { current: number; total: number; unit: string };
+			channels: { iconKey: string; label: string; action: string }[];
+			footer: string;
+	  }
+	| {
+			mode: 'metrics';
+			badge: string;
+			tiles: {
+				label: string;
+				value: string;
+				points?: number[];
+				trend?: 'up' | 'down' | 'flat';
+				sub?: string;
+				featured?: boolean;
+			}[];
+			footer?: string;
+	  }
+	| {
+			mode: 'pipeline';
+			badge: string;
+			tools: {
+				iconKey: string;
+				label: string;
+				value: string;
+				status: 'done' | 'running';
+				pending?: boolean;
+			}[];
+			deal: {
+				name: string;
+				stage: string;
+				stageNum: number;
+				totalStages: number;
+				value: string;
+				subtext?: string;
+			};
+			headline: { label: string; value: string; sub?: string; trend?: string; points?: number[] };
+			footer: string;
+	  };
+
 export interface AgentNode {
 	id: string;
 	title: string;
@@ -29,6 +120,7 @@ export interface AgentNode {
 	description: string;
 	icon: string;
 	capabilities: Capability[];
+	cardState: AgentCardState;
 }
 
 export const agents: AgentNode[] = [
@@ -45,6 +137,22 @@ export const agents: AgentNode[] = [
 			{ text: 'Follow-up reminders', status: 'planned' },
 			{ text: 'Partnership discovery', status: 'planned' },
 		],
+		cardState: {
+			mode: 'tool-calls',
+			badge: 'running',
+			steps: [
+				{ tool: 'apollo', iconKey: 'apollo', status: 'done', label: 'query · D2C, Series A, IN' },
+				{
+					tool: 'clearbit',
+					iconKey: 'clearbit',
+					status: 'done',
+					label: 'enrich · harshita@moshal',
+				},
+				{ tool: 'score', iconKey: 'brain', status: 'done', label: 'intent · 84/100' },
+				{ tool: 'gmail', iconKey: 'gmail', status: 'running', label: 'draft · subject A/B test' },
+			],
+			progress: { current: 4, total: 12, unit: 'leads processed' },
+		},
 	},
 	{
 		id: 'marketing',
@@ -59,20 +167,47 @@ export const agents: AgentNode[] = [
 			{ text: 'Campaign performance summaries', status: 'active' },
 			{ text: 'Ad creative A/B testing', status: 'planned' },
 		],
+		cardState: {
+			mode: 'batch',
+			badge: 'batch',
+			ring: { current: 11, total: 18, unit: 'posts' },
+			channels: [
+				{ iconKey: 'linkedin', label: 'LinkedIn', action: 'carousel · live now' },
+				{ iconKey: 'x', label: 'X', action: '5-post thread · 4PM' },
+				{ iconKey: 'buffer', label: 'Buffer', action: '9 queued · IG + LI' },
+				{ iconKey: 'mailchimp', label: 'Mailchimp', action: 'digest → 8AM IST' },
+			],
+			footer: '~4 posts/min',
+		},
 	},
 	{
-		id: 'ceo',
-		title: 'CEO',
-		role: 'Strategy & Decisions',
+		id: 'research',
+		title: 'Research',
+		role: 'Signals & Insights',
 		description:
-			"Synthesizes what's happening across every team and surfaces the one thing that needs your attention.",
-		icon: 'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5',
+			'Reads the market, scans competitors, and surfaces signals that change what to ship next.',
+		icon: 'M11 19a8 8 0 100-16 8 8 0 000 16zm5.5-2.5L21 21M9 11h4M11 9v4',
 		capabilities: [
-			{ text: 'Daily cross-team briefings', status: 'active' },
-			{ text: 'Goal vs. reality tracking', status: 'active' },
-			{ text: 'Task delegation by department', status: 'active' },
-			{ text: 'Scenario planning assistant', status: 'active' },
+			{ text: 'Weekly competitor scans', status: 'active' },
+			{ text: 'Trend & signal reports', status: 'active' },
+			{ text: 'Customer interview synthesis', status: 'planned' },
+			{ text: 'Market sizing briefs', status: 'planned' },
 		],
+		cardState: {
+			mode: 'thread',
+			badge: 'scanning',
+			peers: [
+				{ label: 'S', dir: 'in' },
+				{ label: 'C', dir: 'out' },
+			],
+			messages: [
+				{ dir: 'in', agent: 'sales', text: 'Banno win — next play?' },
+				{ dir: 'out', agent: 'creatives', text: 'Indie jewelry trend?' },
+				{ dir: 'in', agent: 'creatives', text: '+28% search · 30d' },
+			],
+			decision: { text: 'Trend: indie jewelry → adopt', outcome: 'green' },
+			footer: '3 signals tracked',
+		},
 	},
 	{
 		id: 'finance',
@@ -87,33 +222,93 @@ export const agents: AgentNode[] = [
 			{ text: 'Expense categorization', status: 'planned' },
 			{ text: 'Revenue forecast modeling', status: 'planned' },
 		],
-	},
-	{
-		id: 'research',
-		title: 'Research',
-		role: 'Intel & Trends',
-		description:
-			'Monitors competitors, reads the market, and delivers a tight brief instead of a 40-page report.',
-		icon: 'M11 17.25a6.25 6.25 0 110-12.5 6.25 6.25 0 010 12.5zM16 16l4.5 4.5',
-		capabilities: [
-			{ text: 'Competitor monitoring', status: 'active' },
-			{ text: 'Weekly trend digests', status: 'planned' },
-			{ text: 'On-demand research briefs', status: 'planned' },
-			{ text: 'Patent & whitespace analysis', status: 'planned' },
-		],
+		cardState: {
+			mode: 'approval',
+			badge: 'waiting',
+			amount: '$18,500',
+			avatar: 'RJ',
+			client: 'Rahul Juneja',
+			invoice: '#INV-047',
+			context: '32 SKUs · jewelry restock',
+			ageMin: 14,
+			risk: 'amber',
+		},
 	},
 	{
 		id: 'creatives',
 		title: 'Creatives',
-		role: 'Visuals & Brand',
+		role: 'Visual & Brand',
 		description:
-			'Produces product shots, brand assets, and video edits without a studio or a shoot day.',
-		icon: 'M12 19l7-7 3 3-7 7-3-3zM18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5zM2 2l7.586 7.586',
+			'Generates cover art, ad variants, and brand visuals on cue — keeps every channel fed.',
+		icon: 'M12 19l7-7 3 3-7 7-3-3zM18 13l-1.5-7.5L2 2l3.5 14.5L13 18zM2 2l7.586 7.586M11 11a2 2 0 11-4 0 2 2 0 014 0z',
 		capabilities: [
-			{ text: 'AI product photoshoots', status: 'active' },
-			{ text: 'Brand asset generation', status: 'active' },
-			{ text: 'Video workflow automation', status: 'active' },
-			{ text: 'Motion graphics via prompt', status: 'planned' },
+			{ text: 'AI cover art & banners', status: 'active' },
+			{ text: 'Ad creative variants', status: 'active' },
+			{ text: 'Video edits & motion', status: 'planned' },
+			{ text: 'Brand asset library sync', status: 'planned' },
 		],
+		cardState: {
+			mode: 'connectors',
+			badge: 'rendering',
+			channels: [
+				{
+					iconKey: 'midjourney',
+					status: 'running',
+					label: 'Midjourney',
+					caption: 'cover · 4 variants',
+				},
+				{
+					iconKey: 'figma',
+					status: 'done',
+					label: 'Figma',
+					caption: 'hero · v3 ready',
+					live: true,
+				},
+				{ iconKey: 'canva', status: 'done', label: 'Canva', caption: 'ad set · 6 sizes' },
+				{ iconKey: 'runway', status: 'queued', label: 'Runway', caption: 'reel · 12s queued' },
+			],
+			recent: { iconKey: 'midjourney', title: 'shore-blue cover · v3 ready' },
+			footer: 'last render · 4m ago',
+		},
+	},
+	{
+		id: 'sales',
+		title: 'Sales',
+		role: 'Pipeline & Demos',
+		description:
+			'Qualifies inbound leads, drafts proposals, and books demos before you remember to.',
+		icon: 'M23 6l-9.5 9.5-5-5L1 18M17 6h6v6',
+		capabilities: [
+			{ text: 'Lead qualification scoring', status: 'active' },
+			{ text: 'Proposal drafting', status: 'active' },
+			{ text: 'Demo scheduling automation', status: 'planned' },
+			{ text: 'Pipeline health alerts', status: 'planned' },
+		],
+		cardState: {
+			mode: 'pipeline',
+			badge: 'on call',
+			tools: [
+				{ iconKey: 'phone', value: '18', label: 'calls', status: 'done' },
+				{ iconKey: 'clock', value: '12h', label: 'active', status: 'done' },
+				{ iconKey: 'gmail', value: '47', label: 'emails', status: 'done' },
+				{ iconKey: 'bell', value: '31', label: 'queued', status: 'running', pending: true },
+			],
+			deal: {
+				name: 'Banno · Enterprise',
+				stage: 'Negotiation',
+				stageNum: 4,
+				totalStages: 5,
+				value: '$12K',
+				subtext: 'Follow-up scheduled May 2 · pricing deck sent',
+			},
+			headline: {
+				label: 'pipeline value',
+				value: '$42K',
+				sub: '8 deals · 3 closing this week',
+				trend: '↑ 18% WoW',
+				points: [26, 24, 28, 27, 31, 29, 34, 33, 37, 36, 40, 42],
+			},
+			footer: 'Agent closed $5.6K today · 2 deals won',
+		},
 	},
 ];
