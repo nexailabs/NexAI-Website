@@ -13,7 +13,7 @@
 #  Project → Settings → Functions → KV namespace bindings. Either works;
 #  wrangler.toml is preferred so the binding is version-controlled.)
 
-name = "nexailabs-website"
+name = "nexai-website"
 compatibility_date = "2025-01-01"
 pages_build_output_dir = "dist"
 
