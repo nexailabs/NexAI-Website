@@ -185,7 +185,9 @@ const sinceTool = tools[0]?.tool;
 
 				<footer class="stack-page__list-foot">
 					<span class="stack-page__list-credit">
-						<em>Tested in production</em> at NexAI Labs since {sinceTool?.inUseSinceShort ?? '—'}.
+						<em>Tested in production</em> at NexAI Labs since {
+							sinceTool?.inUseSinceShort ?? 'launch'
+						}.
 					</span>
 					<a href="/blog" class="stack-page__list-cta">▶ Watch the full breakdown</a>
 				</footer>

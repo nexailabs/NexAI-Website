@@ -16,38 +16,38 @@ interface Tier {
 const tiers: Tier[] = [
 	{
 		label: 'Strategy Sprint',
-		sub: 'Two weeks to map where AI actually pays off in your business — and what to build first.',
+		sub: 'Two weeks to map where AI actually pays off in your business, and what to build first.',
 		currency: '$',
 		price: '4,249',
 		unit: 'USD / PROJECT',
 		cta: 'Email to start',
 		ctaKind: 'outline',
 		includes: [
-			'Discovery — what to build, what to skip',
-			'Architecture — system design, integration map',
-			'Risk brief — failure modes, on-call plan',
+			'Discovery: what to build, what to skip',
+			'Architecture: system design, integration map',
+			'Risk brief: failure modes, on-call plan',
 			'One agent shipped, in your stack',
-			'Roadmap — next 90 days, ranked',
-			'90-min handoff — your team owns it',
+			'Roadmap: next 90 days, ranked',
+			'90-min handoff so your team owns it',
 			'Slack on-call for two weeks after',
 		],
 	},
 	{
 		label: 'Build & Implementation',
-		sub: 'Full agent system — designed, built, deployed, and stewarded into production.',
+		sub: 'Full agent system: designed, built, deployed, and stewarded into production.',
 		currency: '$',
 		price: '18,699',
 		unit: 'USD / PROJECT',
 		cta: 'Reach Us',
 		ctaKind: 'gradient',
 		includes: [
-			'Full agent system — design, build, deploy',
-			'Integrations — your data, your tools, your auth',
-			'Test + production — load, edge cases, observability',
+			'Full agent system: design, build, deploy',
+			'Integrations: your data, your tools, your auth',
+			'Test + production: load, edge cases, observability',
 			'30 days in-production support',
-			'Performance review — what worked, what to fix',
-			'Maintained for 90 days — bug fixes, drift correction',
-			'Documented seams — your team can extend it',
+			'Performance review: what worked, what to fix',
+			'Maintained for 90 days: bug fixes, drift correction',
+			'Documented seams so your team can extend it',
 		],
 	},
 ];
@@ -119,7 +119,7 @@ const tiers: Tier[] = [
 								</a>
 							) : (
 								<a
-									href={`mailto:${site.email}?subject=Strategy%20Sprint%20—%20${encodeURIComponent(t.label)}`}
+									href={`mailto:${site.email}?subject=Strategy%20Sprint%3A%20${encodeURIComponent(t.label)}`}
 									class="home-pricing__cta home-pricing__cta--outline"
 								>
 									<span class="home-pricing__cta-label">{t.cta}</span>

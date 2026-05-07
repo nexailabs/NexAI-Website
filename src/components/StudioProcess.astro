@@ -13,8 +13,11 @@ const { steps } = Astro.props;
 		<div class="sp__sticky">
 			<div class="container sp__inner">
 				<header class="section-header">
-					<h2 class="section-title">How It Works</h2>
-					<p class="section-sub">Product to photoshoot. Days, not weeks.</p>
+					<h3 class="section-title">Product in. Campaign <em>out</em>.</h3>
+					<p class="section-sub">
+						Upload the product. Approve the looks. Get your assets. No casting, no location, no
+						lighting.
+					</p>
 				</header>
 
 				<!-- Steps: number → [image slot] → title + desc -->
@@ -72,7 +75,7 @@ const { steps } = Astro.props;
 		<div class="sp__mob-sticky">
 			<div class="container sp__mob-inner">
 				<header class="section-header">
-					<h2 class="section-title">How It Works</h2>
+					<h3 class="section-title">How It Works</h3>
 					<p class="section-sub">Product to photoshoot. Days, not weeks.</p>
 				</header>
 				<div class="sp__mob-stage">
@@ -275,7 +278,7 @@ const { steps } = Astro.props;
 	/* ── Mobile ── */
 	@media (max-width: 720px) {
 		.sp {
-			padding-top: clamp(0.5rem, 1vh, 1rem);
+			padding-top: clamp(2rem, 4.5vh, 3.5rem);
 		}
 
 		.sp__scroll {

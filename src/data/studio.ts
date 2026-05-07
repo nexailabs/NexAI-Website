@@ -14,81 +14,81 @@ export const email = site.email;
 export const heroDeckA: HeroImage[] = [
 	{
 		src: `${ik}/studio/hero/dbj/dbj-01.jpg${tr.hero}`,
-		alt: 'Dhwani Bansal Jewelry — earring mirror closeup',
+		alt: 'Dhwani Bansal Jewelry, earring mirror closeup',
 	},
 	{
 		src: `${ik}/studio/hero/dbj/dbj-02.jpg${tr.hero}`,
-		alt: 'Dhwani Bansal Jewelry — gold leaf earring',
+		alt: 'Dhwani Bansal Jewelry, gold leaf earring',
 	},
 	{
 		src: `${ik}/studio/hero/dbj/dbj-03.jpg${tr.hero}`,
-		alt: 'Dhwani Bansal Jewelry — two models dining',
+		alt: 'Dhwani Bansal Jewelry, two models dining',
 	},
 	{
 		src: `${ik}/studio/hero/dbj/dbj-04.jpg${tr.hero}`,
-		alt: 'Dhwani Bansal Jewelry — bridal styling',
+		alt: 'Dhwani Bansal Jewelry, bridal styling',
 	},
 	{
 		src: `${ik}/studio/hero/dbj/dbj-05.jpg${tr.hero}`,
-		alt: 'Dhwani Bansal Jewelry — heritage look',
+		alt: 'Dhwani Bansal Jewelry, heritage look',
 	},
 ];
 
 export const heroDeckB: HeroImage[] = [
 	{
 		src: `${ik}/studio/hero/leemboodi/leemboodi-01.jpg${tr.hero}`,
-		alt: 'Leemboodi — bandhani saree heritage courtyard',
+		alt: 'Leemboodi, bandhani saree heritage courtyard',
 	},
 	{
 		src: `${ik}/studio/hero/leemboodi/leemboodi-02.jpg${tr.hero}`,
-		alt: 'Leemboodi — colorful saree outdoor',
+		alt: 'Leemboodi, colorful saree outdoor',
 	},
 	{
 		src: `${ik}/studio/hero/leemboodi/leemboodi-03.jpg${tr.hero}`,
-		alt: 'Leemboodi — white bandhani saree sunset arch',
+		alt: 'Leemboodi, white bandhani saree sunset arch',
 	},
 	{
 		src: `${ik}/studio/hero/leemboodi/leemboodi-04.jpg${tr.hero}`,
-		alt: 'Leemboodi — saree editorial palace',
+		alt: 'Leemboodi, saree editorial palace',
 	},
 	{
 		src: `${ik}/studio/hero/leemboodi/leemboodi-05.jpg${tr.hero}`,
-		alt: 'Leemboodi — saree detail shot',
+		alt: 'Leemboodi, saree detail shot',
 	},
 ];
 
 export const heroDeckC: HeroImage[] = [
 	{
 		src: `${ik}/studio/hero/soilearth/soilearth-01.jpg${tr.hero}`,
-		alt: 'Soil & Earth — product flat-lay oils',
+		alt: 'Soil & Earth, product flat-lay oils',
 	},
 	{
 		src: `${ik}/studio/hero/soilearth/soilearth-02.jpg${tr.hero}`,
-		alt: 'Soil & Earth — hair oil botanical',
+		alt: 'Soil & Earth, hair oil botanical',
 	},
 	{
 		src: `${ik}/studio/hero/soilearth/soilearth-03.jpg${tr.hero}`,
-		alt: 'Soil & Earth — oudhwood soap',
+		alt: 'Soil & Earth, oudhwood soap',
 	},
 	{
 		src: `${ik}/studio/hero/soilearth/soilearth-04.jpg${tr.hero}`,
-		alt: 'Soil & Earth — product lifestyle',
+		alt: 'Soil & Earth, product lifestyle',
 	},
 	{
 		src: `${ik}/studio/hero/soilearth/soilearth-05.jpg${tr.hero}`,
-		alt: 'Soil & Earth — skincare range',
+		alt: 'Soil & Earth, skincare range',
 	},
 ];
 
 export const heroDeckD: HeroImage[] = [
-	{ src: `${ik}/studio/hero/yufta/yufta-01.jpg${tr.hero}`, alt: 'Yufta — boho print dress model' },
-	{ src: `${ik}/studio/hero/yufta/yufta-02.jpg${tr.hero}`, alt: 'Yufta — floral dress studio' },
+	{ src: `${ik}/studio/hero/yufta/yufta-01.jpg${tr.hero}`, alt: 'Yufta, boho print dress model' },
+	{ src: `${ik}/studio/hero/yufta/yufta-02.jpg${tr.hero}`, alt: 'Yufta, floral dress studio' },
 	{
 		src: `${ik}/studio/hero/yufta/yufta-03.jpg${tr.hero}`,
-		alt: 'Yufta — print dress walking pose',
+		alt: 'Yufta, print dress walking pose',
 	},
-	{ src: `${ik}/studio/hero/yufta/yufta-04.jpg${tr.hero}`, alt: 'Yufta — summer dress detail' },
-	{ src: `${ik}/studio/hero/yufta/yufta-05.jpg${tr.hero}`, alt: 'Yufta — casual wear studio' },
+	{ src: `${ik}/studio/hero/yufta/yufta-04.jpg${tr.hero}`, alt: 'Yufta, summer dress detail' },
+	{ src: `${ik}/studio/hero/yufta/yufta-05.jpg${tr.hero}`, alt: 'Yufta, casual wear studio' },
 ];
 
 export const heroDecks: HeroImage[][] = [heroDeckD, heroDeckC, heroDeckB, heroDeckA];
@@ -168,27 +168,27 @@ export const brandLogos: BrandLogo[] = [
 export const ctaFloats: HeroImage[] = [
 	{
 		src: `${ik}/studio/hero/dbj/dbj-01.jpg${tr.ctaFloat}`,
-		alt: 'Jewelry editorial — earring mirror closeup',
+		alt: 'Jewelry editorial, earring mirror closeup',
 	},
 	{
 		src: `${ik}/studio/hero/leemboodi/leemboodi-02.jpg${tr.ctaFloat}`,
-		alt: 'Saree editorial — colorful outdoor',
+		alt: 'Saree editorial, colorful outdoor',
 	},
 	{
 		src: `${ik}/studio/hero/soilearth/soilearth-01.jpg${tr.ctaFloat}`,
-		alt: 'Product photography — oils flat-lay',
+		alt: 'Product photography, oils flat-lay',
 	},
 	{
 		src: `${ik}/studio/hero/yufta/yufta-02.jpg${tr.ctaFloat}`,
-		alt: 'Fashion editorial — floral dress studio',
+		alt: 'Fashion editorial, floral dress studio',
 	},
 	{
 		src: `${ik}/studio/showcase/rasvidha/rasvidha-output-01.jpg${tr.ctaFloat}`,
-		alt: 'AI saree photoshoot — standing drape pose',
+		alt: 'AI saree photoshoot, standing drape pose',
 	},
 	{
 		src: `${ik}/studio/showcase/xyxx/xyxx-output-01.jpg${tr.ctaFloat}`,
-		alt: 'AI menswear photoshoot — full-length front view',
+		alt: 'AI menswear photoshoot, full-length front view',
 	},
 ];
 
@@ -204,27 +204,27 @@ export const showcaseCategories: ShowcaseCategory[] = [
 		outputs: [
 			{
 				src: `${ik}/studio/showcase/yufta/yufta-output-01.jpg${tr.showcase}`,
-				alt: 'Kurta set AI output — full-length front view',
+				alt: 'Kurta set AI output, full-length front view',
 				aspect: '3x4',
 			},
 			{
 				src: `${ik}/studio/showcase/yufta/yufta-output-02.jpg${tr.showcase}`,
-				alt: 'Kurta set AI output — detail crop',
+				alt: 'Kurta set AI output, detail crop',
 				aspect: '1x1',
 			},
 			{
 				src: `${ik}/studio/showcase/yufta/yufta-output-03.jpg${tr.showcase}`,
-				alt: 'Kurta set AI output — three-quarter angle',
+				alt: 'Kurta set AI output, three-quarter angle',
 				aspect: '2x3',
 			},
 			{
 				src: `${ik}/studio/showcase/yufta/yufta-output-04.jpg${tr.showcase}`,
-				alt: 'Kurta set AI output — accessory detail',
+				alt: 'Kurta set AI output, accessory detail',
 				aspect: '1x1',
 			},
 			{
 				src: `${ik}/studio/showcase/yufta/yufta-output-05.jpg${tr.showcase}`,
-				alt: 'Kurta set AI output — alternate angle',
+				alt: 'Kurta set AI output, alternate angle',
 				aspect: '3x4',
 			},
 		],
@@ -236,27 +236,27 @@ export const showcaseCategories: ShowcaseCategory[] = [
 		outputs: [
 			{
 				src: `${ik}/studio/showcase/selvia/selvia-output-01.jpg${tr.showcase}`,
-				alt: 'Western wear AI output — full-length front view',
+				alt: 'Western wear AI output, full-length front view',
 				aspect: '3x4',
 			},
 			{
 				src: `${ik}/studio/showcase/selvia/selvia-output-02.jpg${tr.showcase}`,
-				alt: 'Western wear AI output — detail crop',
+				alt: 'Western wear AI output, detail crop',
 				aspect: '1x1',
 			},
 			{
 				src: `${ik}/studio/showcase/selvia/selvia-output-03.jpg${tr.showcase}`,
-				alt: 'Western wear AI output — three-quarter angle',
+				alt: 'Western wear AI output, three-quarter angle',
 				aspect: '2x3',
 			},
 			{
 				src: `${ik}/studio/showcase/selvia/selvia-output-04.jpg${tr.showcase}`,
-				alt: 'Western wear AI output — accessory detail',
+				alt: 'Western wear AI output, accessory detail',
 				aspect: '1x1',
 			},
 			{
 				src: `${ik}/studio/showcase/selvia/selvia-output-05.jpg${tr.showcase}`,
-				alt: 'Western wear AI output — alternate angle',
+				alt: 'Western wear AI output, alternate angle',
 				aspect: '3x4',
 			},
 		],
@@ -268,27 +268,27 @@ export const showcaseCategories: ShowcaseCategory[] = [
 		outputs: [
 			{
 				src: `${ik}/studio/showcase/rasvidha/rasvidha-output-01.jpg${tr.showcase}`,
-				alt: 'Saree AI output — standing drape pose',
+				alt: 'Saree AI output, standing drape pose',
 				aspect: '3x4',
 			},
 			{
 				src: `${ik}/studio/showcase/rasvidha/rasvidha-output-02.jpg${tr.showcase}`,
-				alt: 'Saree AI output — pallu detail',
+				alt: 'Saree AI output, pallu detail',
 				aspect: '1x1',
 			},
 			{
 				src: `${ik}/studio/showcase/rasvidha/rasvidha-output-03.jpg${tr.showcase}`,
-				alt: 'Saree AI output — side profile',
+				alt: 'Saree AI output, side profile',
 				aspect: '2x3',
 			},
 			{
 				src: `${ik}/studio/showcase/rasvidha/rasvidha-output-04.jpg${tr.showcase}`,
-				alt: 'Saree AI output — border detail',
+				alt: 'Saree AI output, border detail',
 				aspect: '1x1',
 			},
 			{
 				src: `${ik}/studio/showcase/rasvidha/rasvidha-output-05.jpg${tr.showcase}`,
-				alt: 'Saree AI output — alternate pose',
+				alt: 'Saree AI output, alternate pose',
 				aspect: '3x4',
 			},
 		],
@@ -300,27 +300,27 @@ export const showcaseCategories: ShowcaseCategory[] = [
 		outputs: [
 			{
 				src: `${ik}/studio/showcase/xyxx/xyxx-output-01.jpg${tr.showcase}`,
-				alt: 'Menswear AI output — full-length front view',
+				alt: 'Menswear AI output, full-length front view',
 				aspect: '3x4',
 			},
 			{
 				src: `${ik}/studio/showcase/xyxx/xyxx-output-02.jpg${tr.showcase}`,
-				alt: 'Menswear AI output — detail crop',
+				alt: 'Menswear AI output, detail crop',
 				aspect: '1x1',
 			},
 			{
 				src: `${ik}/studio/showcase/xyxx/xyxx-output-03.jpg${tr.showcase}`,
-				alt: 'Menswear AI output — three-quarter angle',
+				alt: 'Menswear AI output, three-quarter angle',
 				aspect: '2x3',
 			},
 			{
 				src: `${ik}/studio/showcase/xyxx/xyxx-output-04.jpg${tr.showcase}`,
-				alt: 'Menswear AI output — accessory detail',
+				alt: 'Menswear AI output, accessory detail',
 				aspect: '1x1',
 			},
 			{
 				src: `${ik}/studio/showcase/xyxx/xyxx-output-05.jpg${tr.showcase}`,
-				alt: 'Menswear AI output — alternate angle',
+				alt: 'Menswear AI output, alternate angle',
 				aspect: '3x4',
 			},
 		],
@@ -332,27 +332,27 @@ export const showcaseCategories: ShowcaseCategory[] = [
 		outputs: [
 			{
 				src: `${ik}/studio/showcase/dbj/dbj-output-05.png${tr.showcase}`,
-				alt: 'Jewelry AI output — alternate angle',
+				alt: 'Jewelry AI output, alternate angle',
 				aspect: '3x4',
 			},
 			{
 				src: `${ik}/studio/showcase/dbj/dbj-output-02.png${tr.showcase}`,
-				alt: 'Jewelry AI output — detail crop',
+				alt: 'Jewelry AI output, detail crop',
 				aspect: '1x1',
 			},
 			{
 				src: `${ik}/studio/showcase/dbj/dbj-output-03.png${tr.showcase}`,
-				alt: 'Jewelry AI output — three-quarter angle',
+				alt: 'Jewelry AI output, three-quarter angle',
 				aspect: '2x3',
 			},
 			{
 				src: `${ik}/studio/showcase/dbj/dbj-output-04.png${tr.showcase}`,
-				alt: 'Jewelry AI output — accessory detail',
+				alt: 'Jewelry AI output, accessory detail',
 				aspect: '1x1',
 			},
 			{
 				src: `${ik}/studio/showcase/dbj/dbj-output-01.png${tr.showcase}`,
-				alt: 'Jewelry AI output — full-length front view',
+				alt: 'Jewelry AI output, full-length front view',
 				aspect: '3x4',
 			},
 		],
@@ -364,27 +364,27 @@ export const showcaseCategories: ShowcaseCategory[] = [
 		outputs: [
 			{
 				src: `${ik}/studio/showcase/thrive/thrive-output-01.png${tr.showcase}`,
-				alt: 'Cosmetics AI output — product front view',
+				alt: 'Cosmetics AI output, product front view',
 				aspect: '3x4',
 			},
 			{
 				src: `${ik}/studio/showcase/thrive/thrive-output-02.png${tr.showcase}`,
-				alt: 'Cosmetics AI output — detail crop',
+				alt: 'Cosmetics AI output, detail crop',
 				aspect: '1x1',
 			},
 			{
 				src: `${ik}/studio/showcase/thrive/thrive-output-03.png${tr.showcase}`,
-				alt: 'Cosmetics AI output — angled view',
+				alt: 'Cosmetics AI output, angled view',
 				aspect: '2x3',
 			},
 			{
 				src: `${ik}/studio/showcase/thrive/thrive-output-04.png${tr.showcase}`,
-				alt: 'Cosmetics AI output — lifestyle detail',
+				alt: 'Cosmetics AI output, lifestyle detail',
 				aspect: '1x1',
 			},
 			{
 				src: `${ik}/studio/showcase/thrive/thrive-output-05.png${tr.showcase}`,
-				alt: 'Cosmetics AI output — alternate angle',
+				alt: 'Cosmetics AI output, alternate angle',
 				aspect: '3x4',
 			},
 		],

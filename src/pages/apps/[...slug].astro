@@ -103,7 +103,7 @@ const featured = VAULT_TOOLS.filter((t) => t.slug !== tool.slug).slice(0, 12);
 				<p class="vault-detail__lede">{tool.one}</p>
 				<p class="vault-detail__body">
 					We picked {tool.name} after running a couple of alternatives in parallel for a month. The decision
-					wasn't a feature checklist — it was about which one disappeared into the workflow fastest. {
+					wasn't a feature checklist; it was about which one disappeared into the workflow fastest. {
 						tool.name
 					} did.
 				</p>
@@ -113,7 +113,7 @@ const featured = VAULT_TOOLS.filter((t) => t.slug !== tool.slug).slice(0, 12);
 				<h2 class="vault-detail__h2">What it replaced.</h2>
 				<p class="vault-detail__body">
 					We were on <strong>{tool.replaced}</strong> before
-					{tool.replacedNote && <span class="vault-detail__note"> — {tool.replacedNote}</span>}. It
+					{tool.replacedNote && <span class="vault-detail__note">, {tool.replacedNote}</span>}. It
 					wasn't bad, it was just heavier than the job we were asking it to do. Switching cost us a
 					weekend; we got it back inside a month.
 				</p>
@@ -121,7 +121,7 @@ const featured = VAULT_TOOLS.filter((t) => t.slug !== tool.slug).slice(0, 12);
 				<h2 class="vault-detail__h2">How it sits in the stack.</h2>
 				<p class="vault-detail__body">
 					{tool.name} is one of the {VAULT_TOOLS.length} tools in the vault. It talks to the others through
-					the usual seams — webhooks, APIs, copy-paste when nothing else works. The shape of the stack
+					the usual seams: webhooks, APIs, copy-paste when nothing else works. The shape of the stack
 					matters more than any one tool in it.
 				</p>
 

@@ -22,6 +22,10 @@ slides/
 .env
 .env.production
 
+# gallery upload runtime state — both contain absolute local paths
+scripts/upload-progress.json
+scripts/gallery-manifest.json
+
 # macOS-specific files
 .DS_Store
 

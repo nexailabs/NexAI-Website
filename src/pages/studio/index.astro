@@ -3,6 +3,8 @@ import Layout from '../../layouts/Layout.astro';
 import StudioHero from '../../components/StudioHero.astro';
 import ClientMarquee from '../../components/ClientMarquee.astro';
 import StudioShowcase from '../../components/StudioShowcase.astro';
+import StudioReel from '../../components/StudioReel.astro';
+import StudioGalleryCTA from '../../components/StudioGalleryCTA.astro';
 import StudioCTA from '../../components/StudioCTA.astro';
 import StudioProcess from '../../components/StudioProcess.astro';
 import StudioFAQ from '../../components/StudioFAQ.astro';
@@ -92,11 +94,19 @@ const heroPreloadSrcset = [
 
 	<section class="shoots-hero" id="top">
 		<StudioHero decks={heroDecks} />
+	</section>
+
+	<section class="shoots-bridge" aria-label="Brands we shoot for">
+		<header class="shoots-bridge__head container">
+			<h3 class="section-title">AI <em>shoots</em> for D2C brands.</h3>
+		</header>
 		<ClientMarquee brands={brandLogos} />
 	</section>
 
 	<StudioShowcase categories={showcaseCategories} />
+	<StudioReel />
 	<StudioProcess steps={processSteps} />
+	<StudioGalleryCTA />
 	<div class="faq-cta-zone">
 		<div class="faq-cta-zone__sticky-scope">
 			<!-- Sticky floating images — stay in viewport while FAQ+CTA scroll past -->
@@ -172,31 +182,74 @@ const heroPreloadSrcset = [
 	}
 
 	.shoots-hero {
-		--shoots-marquee-space: 5.75rem;
 		min-height: 100svh;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		position: relative;
 		padding-top: calc(var(--header-height, 5rem) + 1rem);
-		padding-bottom: var(--shoots-marquee-space);
+		padding-bottom: clamp(1rem, 2vh, 2rem);
 		box-sizing: border-box;
 		overflow-x: clip;
 		overflow-y: visible;
 	}
 
+	@media (min-width: 721px) {
+		.shoots-hero {
+			min-height: 88svh;
+			align-items: flex-start;
+			padding-top: calc(var(--header-height, 5rem) + 0.25rem);
+		}
+	}
+
 	@media (max-width: 720px) {
 		.shoots-hero {
-			--shoots-marquee-space: 5.75rem;
-			padding-top: calc(var(--header-height, 5rem) + 0.5rem);
+			min-height: 92svh;
+			padding-top: calc(var(--header-height, 5rem) + 0.25rem);
 		}
+	}
+
+	/* ── Bridge: pitch line + client logos ── */
+	.shoots-bridge {
+		position: relative;
+		padding: 0 0 clamp(2rem, 4vh, 3.5rem);
+		display: flex;
+		flex-direction: column;
+		gap: clamp(0.5rem, 1.25vh, 1rem);
+	}
+
+	@media (min-width: 721px) {
+		.shoots-bridge {
+			margin-top: clamp(-1rem, -0.5vh, 0rem);
+		}
+	}
+
+	@media (max-width: 720px) {
+		.shoots-bridge {
+			margin-top: clamp(-3rem, -4.5vh, -0.5rem);
+		}
+	}
+
+	.shoots-bridge__head {
+		text-align: center;
+	}
+
+	.shoots-bridge__head .section-title {
+		margin: 0;
+	}
+
+	/* Override ClientMarquee's absolute positioning when placed in this bridge */
+	.shoots-bridge :global(.client-marquee) {
+		position: relative;
+		bottom: auto;
+		padding: 0;
 	}
 
 	/* ── FAQ + CTA shared float zone ── */
 	.faq-cta-zone {
 		position: relative;
 		z-index: 1;
-		margin-top: clamp(5rem, 10vh, 8rem);
+		margin-top: clamp(0.5rem, 2vh, 2rem);
 	}
 
 	.faq-cta-zone__sticky-scope {

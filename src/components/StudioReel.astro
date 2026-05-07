@@ -1,0 +1,618 @@
+---
+import { generatedGalleryItems } from '../data/gallery-items.generated';
+import { brandLabels } from '../data/gallery';
+
+const videoItems = generatedGalleryItems.filter((it) => it.type === 'video');
+
+// Spread items across brands so the dominant brand doesn't cluster.
+const reelItems = (() => {
+	const buckets = new Map<string, typeof videoItems>();
+	for (const item of videoItems) {
+		const arr = buckets.get(item.brand) ?? [];
+		arr.push(item);
+		buckets.set(item.brand, arr);
+	}
+	const out: typeof videoItems = [];
+	let lastBrand: string | null = null;
+	while (Array.from(buckets.values()).some((b) => b.length > 0)) {
+		let pickBrand: string | null = null;
+		let pickLen = 0;
+		let fallbackBrand: string | null = null;
+		let fallbackLen = 0;
+		for (const [brand, bucket] of buckets) {
+			if (bucket.length === 0) continue;
+			if (brand === lastBrand) {
+				if (bucket.length > fallbackLen) {
+					fallbackBrand = brand;
+					fallbackLen = bucket.length;
+				}
+			} else if (bucket.length > pickLen) {
+				pickBrand = brand;
+				pickLen = bucket.length;
+			}
+		}
+		const chosen: string | null = pickBrand ?? fallbackBrand;
+		if (!chosen) break;
+		const bucket = buckets.get(chosen);
+		const item = bucket?.shift();
+		if (item) {
+			out.push(item);
+			lastBrand = chosen;
+		}
+	}
+	return out;
+})();
+
+function videoPoster(src: string): string {
+	return src.replace(/\.[^./]+$/, '.poster.jpg');
+}
+
+// Duplicated for a seamless infinite loop — translateX wraps modulo halfWidth.
+// The clone tiles are intentionally interactive (hover for audio, drag); a11y
+// treats them as decorative duplicates via aria-hidden.
+const marqueeTiles = [...reelItems, ...reelItems];
+---
+
+{
+	reelItems.length > 0 && (
+		<section class="reel" id="motion" aria-label="Video showcase">
+			<svg class="reel__sprite" aria-hidden="true" focusable="false">
+				<symbol id="reel-audio-icon" viewBox="0 0 24 24">
+					<path
+						d="M3 10v4h4l5 4V6L7 10H3zm13.5 2a4.5 4.5 0 00-2.5-4v8a4.5 4.5 0 002.5-4zM14 3.23v2.06a7 7 0 010 13.42v2.06a9 9 0 000-17.54z"
+						fill="currentColor"
+					/>
+				</symbol>
+			</svg>
+
+			<div class="container reel__head">
+				<header class="section-header">
+					<h3 class="section-title">
+						Stills are half the <em>story</em>.
+					</h3>
+					<p class="section-sub">
+						The same product, ad-ready in video, no second crew, no second invoice.
+					</p>
+				</header>
+			</div>
+
+			<div class="reel__viewport" data-reel>
+				<ul class="reel__track" data-reel-track>
+					{marqueeTiles.map((item, i) => {
+						const isClone = i >= reelItems.length;
+						return (
+							<li
+								class="reel__tile"
+								data-reel-tile
+								data-audio="false"
+								aria-hidden={isClone ? 'true' : 'false'}
+							>
+								<div class="reel__media">
+									<video
+										class="reel__video"
+										data-reel-video
+										data-src={item.src}
+										data-poster={videoPoster(item.src)}
+										muted
+										loop
+										playsinline
+										preload="none"
+										aria-label={`${brandLabels[item.brand] ?? item.brand}, ${item.alt}`}
+									/>
+									<span class="reel__brand">{brandLabels[item.brand] ?? item.brand}</span>
+									<span class="reel__audio-badge" aria-hidden="true">
+										<svg viewBox="0 0 24 24" width="14" height="14">
+											<use href="#reel-audio-icon" />
+										</svg>
+									</span>
+								</div>
+							</li>
+						);
+					})}
+				</ul>
+			</div>
+		</section>
+	)
+}
+
+<style>
+	.reel {
+		padding: clamp(3.5rem, 7vh, 5.5rem) 0 clamp(1.25rem, 2.5vh, 2rem);
+		position: relative;
+	}
+
+	.reel__sprite {
+		position: absolute;
+		width: 0;
+		height: 0;
+		overflow: hidden;
+	}
+
+	.reel__head {
+		margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+	}
+
+	.reel__viewport {
+		overflow: hidden;
+		padding-block: 0.75rem;
+		-webkit-mask-image: linear-gradient(
+			to right,
+			transparent 0,
+			#000 6%,
+			#000 94%,
+			transparent 100%
+		);
+		mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+		cursor: grab;
+		user-select: none;
+		-webkit-user-select: none;
+		touch-action: pan-y;
+	}
+
+	.reel__viewport[data-dragging='true'] {
+		cursor: grabbing;
+	}
+
+	.reel__track {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		width: max-content;
+		will-change: transform;
+		transform: translate3d(0, 0, 0);
+	}
+
+	.reel__tile {
+		flex: 0 0 auto;
+		width: clamp(180px, 22vw, 280px);
+		margin-inline-end: clamp(0.75rem, 1.5vw, 1.25rem);
+		position: relative;
+	}
+
+	.reel__media {
+		display: block;
+		width: 100%;
+		aspect-ratio: 9 / 16;
+		position: relative;
+		background: var(--white-a04);
+		border: 1px solid var(--white-a08);
+		border-radius: var(--brand-radius-lg, 16px);
+		overflow: hidden;
+		transition:
+			border-color 0.3s ease,
+			box-shadow 0.3s ease;
+	}
+
+	.reel__video {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+		background: var(--brand-ink);
+		pointer-events: none;
+		-webkit-user-drag: none;
+	}
+
+	.reel__brand {
+		position: absolute;
+		top: 0.65rem;
+		left: 0.65rem;
+		font-family: var(--font-accent-jakarta);
+		font-size: 0.62rem;
+		font-weight: 600;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--white-a90);
+		background: rgba(12, 20, 24, 0.65);
+		backdrop-filter: blur(8px);
+		-webkit-backdrop-filter: blur(8px);
+		padding: 0.35rem 0.6rem;
+		border-radius: 99rem;
+		border: 1px solid var(--white-a14);
+		pointer-events: none;
+		z-index: 2;
+	}
+
+	.reel__audio-badge {
+		position: absolute;
+		top: 0.65rem;
+		right: 0.65rem;
+		width: 1.85rem;
+		height: 1.85rem;
+		display: grid;
+		place-items: center;
+		background: var(--brand-teal-bright);
+		color: var(--brand-ink);
+		border-radius: 50%;
+		opacity: 0;
+		transform: scale(0.85);
+		transition:
+			opacity 0.2s ease,
+			transform 0.2s ease;
+		pointer-events: none;
+		z-index: 3;
+		box-shadow: 0 4px 12px -2px rgba(48, 192, 203, 0.45);
+	}
+
+	.reel__tile[data-audio='true'] .reel__audio-badge {
+		opacity: 1;
+		transform: scale(1);
+	}
+
+	.reel__tile[data-audio='true'] .reel__media {
+		border-color: var(--teal-a40);
+		box-shadow:
+			0 0 0 1px var(--teal-a40),
+			0 18px 40px -18px rgba(0, 0, 0, 0.6),
+			0 0 28px -6px var(--teal-a25);
+	}
+
+	@media (max-width: 720px) {
+		.reel__tile {
+			width: clamp(160px, 60vw, 220px);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.reel__media,
+		.reel__audio-badge {
+			transition: none !important;
+		}
+	}
+</style>
+
+<script>
+	type TileOffset = { left: number; right: number };
+
+	function initReel() {
+		const viewportEl = document.querySelector<HTMLElement>('[data-reel]');
+		const trackEl = document.querySelector<HTMLUListElement>('[data-reel-track]');
+		if (!viewportEl || !trackEl) return;
+
+		// Shadow into non-null locals so TS narrowing carries into closures.
+		const viewport = viewportEl;
+		const track = trackEl;
+
+		const tiles = Array.from(viewport.querySelectorAll<HTMLLIElement>('[data-reel-tile]'));
+		if (tiles.length === 0) return;
+
+		const ac = new AbortController();
+		const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		// ── Layout state ──
+		let halfWidth = 0;
+		const tileOffsets: TileOffset[] = [];
+		let translateX = 0;
+		let isSectionVisible = false;
+		let isDragging = false;
+		let dragMoved = false;
+		let dragStartX = 0;
+		let dragStartTranslate = 0;
+		let lastInteraction = performance.now(); // calm entrance — no auto-drift on initial load
+		let rafId: number | null = null;
+		let refreshIntervalId: number | null = null;
+
+		const AUTO_SPEED = 0.4; // px/frame ≈ 24 px/s @60Hz
+		const IDLE_RESUME_MS = 1500;
+		const REFRESH_MS = 100;
+
+		function measure() {
+			halfWidth = track.scrollWidth / 2;
+			tileOffsets.length = 0;
+			for (const tile of tiles) {
+				tileOffsets.push({
+					left: tile.offsetLeft,
+					right: tile.offsetLeft + tile.offsetWidth,
+				});
+			}
+		}
+
+		function wrap(x: number) {
+			if (halfWidth <= 0) return x;
+			while (x >= 0) x -= halfWidth;
+			while (x < -halfWidth) x += halfWidth;
+			return x;
+		}
+
+		function applyTransform() {
+			track.style.transform = `translate3d(${translateX}px, 0, 0)`;
+		}
+
+		// ── rAF tick: only the auto-drift, nothing else ──
+		function tick() {
+			if (!isSectionVisible) {
+				rafId = null;
+				return;
+			}
+			const idle = performance.now() - lastInteraction > IDLE_RESUME_MS;
+			if (idle && !isDragging && !reduced) {
+				translateX = wrap(translateX + AUTO_SPEED);
+				applyTransform();
+			}
+			rafId = requestAnimationFrame(tick);
+		}
+
+		function startTick() {
+			if (rafId != null) return;
+			rafId = requestAnimationFrame(tick);
+		}
+
+		function stopTick() {
+			if (rafId != null) {
+				cancelAnimationFrame(rafId);
+				rafId = null;
+			}
+		}
+
+		// ── Per-tile play state — runs on its own cadence (~10 Hz) ──
+		function tryPlay(video: HTMLVideoElement) {
+			const p = video.play();
+			if (p && typeof p.catch === 'function') {
+				p.catch(() => {
+					video.addEventListener(
+						'canplay',
+						() => {
+							video.play().catch(() => {});
+						},
+						{ once: true, signal: ac.signal },
+					);
+				});
+			}
+		}
+
+		function refreshPlayState() {
+			if (reduced || tileOffsets.length === 0) return;
+			const vWidth = viewport.clientWidth;
+			for (let i = 0; i < tiles.length; i++) {
+				const off = tileOffsets[i];
+				if (!off) continue;
+				const visible = off.right + translateX > 0 && off.left + translateX < vWidth;
+				const tile = tiles[i];
+				const video = tile.querySelector<HTMLVideoElement>('[data-reel-video]');
+				if (!video) continue;
+				if (visible) {
+					if (!video.src && video.dataset.src) video.src = video.dataset.src;
+					if (!video.poster && video.dataset.poster) video.poster = video.dataset.poster;
+					if (video.paused) tryPlay(video);
+				} else if (!video.paused) {
+					video.pause();
+				}
+			}
+		}
+
+		function startRefresh() {
+			if (refreshIntervalId != null) return;
+			refreshIntervalId = window.setInterval(refreshPlayState, REFRESH_MS);
+		}
+
+		function stopRefresh() {
+			if (refreshIntervalId != null) {
+				clearInterval(refreshIntervalId);
+				refreshIntervalId = null;
+			}
+		}
+
+		// ── Drag-to-scroll ──
+		// Wheel events are intentionally NOT intercepted — vertical wheel scrolls
+		// the page, horizontal trackpad scroll handled by native overflow if any.
+		viewport.addEventListener(
+			'pointerdown',
+			(e) => {
+				if (e.pointerType === 'mouse' && e.button !== 0) return;
+				isDragging = true;
+				dragMoved = false;
+				dragStartX = e.clientX;
+				dragStartTranslate = translateX;
+				viewport.setPointerCapture(e.pointerId);
+				viewport.dataset.dragging = 'true';
+				lastInteraction = performance.now();
+			},
+			{ signal: ac.signal },
+		);
+
+		viewport.addEventListener(
+			'pointermove',
+			(e) => {
+				if (!isDragging) return;
+				const dx = e.clientX - dragStartX;
+				if (Math.abs(dx) > 4) dragMoved = true;
+				translateX = wrap(dragStartTranslate + dx);
+				applyTransform();
+				lastInteraction = performance.now();
+			},
+			{ signal: ac.signal },
+		);
+
+		const endDrag = (e: PointerEvent) => {
+			if (!isDragging) return;
+			// Touch tap (no drag): toggle audio on the tile under the pointer.
+			// Hover-to-unmute is mouse-only, and tile-level pointerup is swallowed
+			// by viewport.setPointerCapture, so detect taps here while we still
+			// know whether the pointer moved.
+			if (e.pointerType !== 'mouse' && !dragMoved && e.type === 'pointerup') {
+				const hit = document.elementFromPoint(e.clientX, e.clientY);
+				const tappedTile = hit?.closest<HTMLLIElement>('[data-reel-tile]') ?? null;
+				if (tappedTile) {
+					if (audioTile === tappedTile) {
+						clearAudio();
+					} else {
+						setAudio(tappedTile);
+					}
+				}
+			}
+			isDragging = false;
+			dragMoved = false;
+			viewport.removeAttribute('data-dragging');
+			try {
+				viewport.releasePointerCapture(e.pointerId);
+			} catch {
+				/* already released */
+			}
+			lastInteraction = performance.now();
+			startTick();
+		};
+		viewport.addEventListener('pointerup', endDrag, { signal: ac.signal });
+		viewport.addEventListener('pointercancel', endDrag, { signal: ac.signal });
+
+		// ── Audio: hover any tile to unmute (others stay muted, keep playing) ──
+		let audioTile: HTMLLIElement | null = null;
+
+		function clearAudio() {
+			if (audioTile) {
+				const v = audioTile.querySelector<HTMLVideoElement>('[data-reel-video]');
+				if (v) v.muted = true;
+				audioTile.dataset.audio = 'false';
+				audioTile = null;
+			}
+		}
+
+		function setAudio(tile: HTMLLIElement) {
+			if (audioTile === tile) return;
+			clearAudio();
+			const video = tile.querySelector<HTMLVideoElement>('[data-reel-video]');
+			if (!video) return;
+			if (!video.src && video.dataset.src) video.src = video.dataset.src;
+			if (!video.poster && video.dataset.poster) video.poster = video.dataset.poster;
+			video.muted = false;
+			tile.dataset.audio = 'true';
+			audioTile = tile;
+			video.play().catch(() => {
+				video.muted = true;
+				tile.dataset.audio = 'false';
+				if (audioTile === tile) audioTile = null;
+				video.play().catch(() => {});
+			});
+		}
+
+		for (const tile of tiles) {
+			tile.addEventListener(
+				'pointerenter',
+				(e) => {
+					if (e.pointerType !== 'mouse') return;
+					if (isDragging || dragMoved) return;
+					setAudio(tile);
+				},
+				{ signal: ac.signal },
+			);
+			tile.addEventListener(
+				'pointerleave',
+				(e) => {
+					if (e.pointerType !== 'mouse') return;
+					if (isDragging) return;
+					if (audioTile === tile) clearAudio();
+				},
+				{ signal: ac.signal },
+			);
+		}
+
+		// ── Section vertical visibility ──
+		const sectionIO = new IntersectionObserver(
+			([entry]) => {
+				isSectionVisible = entry.isIntersecting;
+				if (isSectionVisible) {
+					startTick();
+					startRefresh();
+					refreshPlayState();
+				} else {
+					stopTick();
+					stopRefresh();
+					clearAudio();
+					for (const tile of tiles) {
+						const v = tile.querySelector<HTMLVideoElement>('[data-reel-video]');
+						if (v && !v.paused) v.pause();
+					}
+				}
+			},
+			{ threshold: 0 },
+		);
+		sectionIO.observe(viewport);
+
+		// ── Init layout ──
+		// Run synchronously first; if scrollWidth isn't ready yet (e.g., during a
+		// view-transition swap), a ResizeObserver re-measures once it stabilises.
+		measure();
+		if (halfWidth > 0) {
+			translateX = -halfWidth;
+			applyTransform();
+		}
+
+		const ro = new ResizeObserver(() => {
+			const wasZero = halfWidth <= 0;
+			measure();
+			if (wasZero && halfWidth > 0) {
+				translateX = -halfWidth;
+				applyTransform();
+				if (isSectionVisible) refreshPlayState();
+			}
+		});
+		ro.observe(track);
+
+		// Reduce-motion: pause all videos and skip drift; user gets posters only.
+		if (reduced) {
+			for (const tile of tiles) {
+				const v = tile.querySelector<HTMLVideoElement>('[data-reel-video]');
+				if (v && !v.paused) v.pause();
+			}
+		} else {
+			// Defer the first src/poster wave to the next idle slice — keeps LCP
+			// on /studio clean of poster fetches if the strip is below the fold.
+			const triggerInitial = () => {
+				if (halfWidth > 0) refreshPlayState();
+			};
+			const idleApi = (
+				window as unknown as {
+					requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+				}
+			).requestIdleCallback;
+			if (typeof idleApi === 'function') {
+				idleApi(triggerInitial, { timeout: 200 });
+			} else {
+				setTimeout(triggerInitial, 0);
+			}
+		}
+
+		window.addEventListener(
+			'resize',
+			() => {
+				const ratio = halfWidth > 0 ? translateX / halfWidth : 0;
+				measure();
+				translateX = wrap(ratio * halfWidth);
+				applyTransform();
+			},
+			{ passive: true, signal: ac.signal },
+		);
+
+		document.addEventListener(
+			'visibilitychange',
+			() => {
+				if (document.hidden) {
+					clearAudio();
+					stopTick();
+					stopRefresh();
+				} else if (isSectionVisible) {
+					startTick();
+					startRefresh();
+				}
+			},
+			{ signal: ac.signal },
+		);
+
+		document.addEventListener(
+			'astro:before-swap',
+			() => {
+				stopTick();
+				stopRefresh();
+				clearAudio();
+				sectionIO.disconnect();
+				ro.disconnect();
+				ac.abort();
+			},
+			{ once: true },
+		);
+	}
+
+	document.addEventListener('astro:page-load', initReel);
+</script>

@@ -13,7 +13,7 @@ export const heroRotationWords = [
 	'Sales',
 ];
 export const heroSubtext =
-	'We understand your business — then design, develop, and train AI agents to run it for you.';
+	'We understand your business, then design, develop, and train AI agents to run it for you.';
 export const bookingUrl = site.bookingUrl;
 
 // ── Agent orbit data ──
@@ -201,7 +201,7 @@ export const agents: AgentNode[] = [
 				{ label: 'C', dir: 'out' },
 			],
 			messages: [
-				{ dir: 'in', agent: 'sales', text: 'Banno win — next play?' },
+				{ dir: 'in', agent: 'sales', text: 'Banno win, next play?' },
 				{ dir: 'out', agent: 'creatives', text: 'Indie jewelry trend?' },
 				{ dir: 'in', agent: 'creatives', text: '+28% search · 30d' },
 			],
@@ -239,7 +239,7 @@ export const agents: AgentNode[] = [
 		title: 'Creatives',
 		role: 'Visual & Brand',
 		description:
-			'Generates cover art, ad variants, and brand visuals on cue — keeps every channel fed.',
+			'Generates cover art, ad variants, and brand visuals on cue. Keeps every channel fed.',
 		icon: 'M12 19l7-7 3 3-7 7-3-3zM18 13l-1.5-7.5L2 2l3.5 14.5L13 18zM2 2l7.586 7.586M11 11a2 2 0 11-4 0 2 2 0 014 0z',
 		capabilities: [
 			{ text: 'AI cover art & banners', status: 'active' },

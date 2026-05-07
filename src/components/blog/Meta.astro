@@ -11,12 +11,12 @@ const { category, date, read, class: className = '' } = Astro.props;
 
 <div class:list={['blog-meta', className]}>
 	{category && <span>{category}</span>}
-	{category && <span class="blog-meta__dash">—</span>}
+	{category && <span class="blog-meta__dash">·</span>}
 	<span>{date}</span>
 	{
 		read && (
 			<>
-				<span class="blog-meta__dash">—</span>
+				<span class="blog-meta__dash">·</span>
 				<span>{read}</span>
 			</>
 		)

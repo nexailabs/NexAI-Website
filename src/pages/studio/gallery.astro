@@ -1,15 +1,83 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import StudioCTA from '../../components/StudioCTA.astro';
-import { galleryItems, galleryCategories } from '../../data/gallery';
+import {
+	galleryItems,
+	galleryBrands,
+	galleryCategories,
+	galleryTypes,
+	subcategoryByCategory,
+	subcategoryLabels,
+	categoryLabels,
+	typeLabels,
+	type Subcategory,
+} from '../../data/gallery';
 import { ctaFloats } from '../../data/studio';
 import { site } from '../../config/site';
+import { showcaseSrcset, stripTr } from '../../config/imagekit';
+
+// Subcategories present in data, tagged with their parent category for cascade.
+const subcategoryItems = (() => {
+	const present = new Set<Subcategory>();
+	for (const item of galleryItems) present.add(item.subcategory);
+	const out: Array<{ slug: Subcategory; label: string; cat: string }> = [];
+	for (const cat of galleryCategories) {
+		for (const sub of subcategoryByCategory[cat]) {
+			if (!present.has(sub)) continue;
+			out.push({ slug: sub, label: subcategoryLabels[sub], cat });
+		}
+	}
+	return out;
+})();
+
+type FilterOption = { value: string; label: string; cat?: string };
+type FilterDef = {
+	key: 'brand' | 'category' | 'subcategory' | 'type';
+	label: string;
+	allLabel: string;
+	options: FilterOption[];
+};
+
+const filterDefs: FilterDef[] = [
+	{
+		key: 'brand',
+		label: 'Brand',
+		allLabel: 'All Brands',
+		options: galleryBrands.map((b) => ({ value: b.slug, label: b.label })),
+	},
+	{
+		key: 'category',
+		label: 'Category',
+		allLabel: 'All Categories',
+		options: galleryCategories.map((c) => ({ value: c, label: categoryLabels[c] })),
+	},
+	{
+		key: 'subcategory',
+		label: 'Subcategory',
+		allLabel: 'All Subcategories',
+		options: subcategoryItems.map((s) => ({ value: s.slug, label: s.label, cat: s.cat })),
+	},
+	{
+		key: 'type',
+		label: 'Type',
+		allLabel: 'All Types',
+		options: galleryTypes.map((t) => ({ value: t, label: typeLabels[t] })),
+	},
+];
+
+const INITIAL_VISIBLE = 60;
+
+// Poster URL for a video. Videos live on R2; the upload pipeline writes a
+// sibling .poster.jpg next to every .mp4 (extracted via ffmpeg at 1s offset).
+function videoPoster(videoUrl: string): string {
+	return videoUrl.replace(/\.[^./]+$/, '.poster.jpg');
+}
 ---
 
 <Layout
-	title="Gallery | NexAI Studio — AI Fashion Photography"
-	description="Browse AI-generated fashion photography across kurta sets, sarees, western wear, menswear, jewelry, and cosmetics. Real brands, real results."
-	ogImage="https://ik.imagekit.io/nexailabs/studio/showcase/yufta/yufta-output-01.jpg?tr=w-1200,h-630,fo-auto,f-auto,q-85"
+	title="Gallery | NexAI Studio · AI Fashion Photography"
+	description="Browse AI-generated fashion photography across apparel, jewelry, and cosmetics. Filter by brand, category, subcategory, and creative type."
+	ogImage={`${galleryItems[0].src}?tr=w-1200,h-630,fo-auto,f-auto,q-85`}
 >
 	<script
 		slot="head"
@@ -26,50 +94,184 @@ import { site } from '../../config/site';
 	<section class="gallery">
 		<div class="container gallery__inner">
 			<header class="section-header gallery__header">
-				<h1 class="section-title">Our <em>Work</em></h1>
-				<p class="section-sub">Real brands, real shoots. Browse by category.</p>
+				<h1 class="section-title">500+ shoots from 20+ <em>brands</em>.</h1>
+				<p class="section-sub">
+					Hand-picked from 60,000+ delivered. Filter by brand, category, or type.
+				</p>
 			</header>
 
-			<!-- Filters -->
-			<div class="gallery__filters">
-				<div class="gallery__filter-row" data-gallery-filter="category">
-					{
-						galleryCategories.map((cat) => (
-							<button
-								class:list={[
-									'gallery__filter-btn',
-									{ 'gallery__filter-btn--active': cat.id === 'all' },
-								]}
-								data-filter-value={cat.id}
-								aria-pressed={cat.id === 'all' ? 'true' : 'false'}
-							>
-								{cat.label}
-							</button>
-						))
-					}
-				</div>
-			</div>
-
-			<!-- Masonry grid -->
-			<div class="gallery__grid" data-gallery-grid>
+			<!-- Filters: 4 custom dropdowns (Brand → Category → Subcategory → Type) -->
+			<div class="gfilter" data-gallery-filters>
 				{
-					galleryItems.map((item) => (
-						<div
-							class="gallery__item"
-							data-gallery-item
-							data-category={item.category}
-							data-type={item.type}
-						>
-							<img
-								class="gallery__img"
-								src={item.src}
-								alt={item.alt}
-								loading="lazy"
-								decoding="async"
-							/>
+					filterDefs.map((def) => (
+						<div class="gfilter__field" data-filter-field data-filter-key={def.key}>
+							<button
+								type="button"
+								class="gfilter__btn"
+								data-filter-toggle
+								aria-haspopup="listbox"
+								aria-expanded="false"
+							>
+								<span class="gfilter__btn-label">{def.label}</span>
+								<span class="gfilter__btn-value" data-filter-value>
+									{def.allLabel}
+								</span>
+								<svg
+									class="gfilter__caret"
+									width="10"
+									height="10"
+									viewBox="0 0 10 10"
+									aria-hidden="true"
+								>
+									<polyline
+										points="2,3.5 5,6.5 8,3.5"
+										stroke="currentColor"
+										stroke-width="1.4"
+										fill="none"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									/>
+								</svg>
+							</button>
+
+							<ul class="gfilter__menu" role="listbox" hidden data-lenis-prevent>
+								<li>
+									<button
+										type="button"
+										class="gfilter__opt gfilter__opt--active"
+										data-filter-opt
+										data-value="all"
+										data-label={def.allLabel}
+										role="option"
+										aria-selected="true"
+									>
+										<span>{def.allLabel}</span>
+										<svg
+											class="gfilter__tick"
+											width="11"
+											height="11"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.4"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											aria-hidden="true"
+										>
+											<polyline points="20 6 9 17 4 12" />
+										</svg>
+									</button>
+								</li>
+								{def.options.map((opt) => (
+									<li>
+										<button
+											type="button"
+											class="gfilter__opt"
+											data-filter-opt
+											data-value={opt.value}
+											data-label={opt.label}
+											data-cat={opt.cat}
+											role="option"
+											aria-selected="false"
+										>
+											<span>{opt.label}</span>
+											<svg
+												class="gfilter__tick"
+												width="11"
+												height="11"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												stroke-width="2.4"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												aria-hidden="true"
+											>
+												<polyline points="20 6 9 17 4 12" />
+											</svg>
+										</button>
+									</li>
+								))}
+							</ul>
 						</div>
 					))
 				}
+
+				<button type="button" class="gfilter__reset" data-filter-reset hidden>
+					<svg
+						width="11"
+						height="11"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						aria-hidden="true"
+					>
+						<line x1="18" y1="6" x2="6" y2="18"></line>
+						<line x1="6" y1="6" x2="18" y2="18"></line>
+					</svg>
+					Clear
+				</button>
+			</div>
+
+			<div class="gallery__empty" data-gallery-empty hidden>
+				<p class="t-caption">No items match these filters. Use Clear above to reset them.</p>
+			</div>
+
+			<div class="gallery__grid" data-gallery-grid>
+				{
+					galleryItems.map((item, idx) => (
+						<div
+							class:list={[
+								'gallery__item',
+								`gallery__item--${item.aspect}`,
+								{ 'gallery__item--video': item.type === 'video' },
+								{ 'is-paged-out': idx >= INITIAL_VISIBLE },
+							]}
+							data-gallery-item
+							data-brand={item.brand}
+							data-category={item.category}
+							data-subcategory={item.subcategory}
+							data-type={item.type}
+							data-aspect={item.aspect}
+						>
+							{item.type === 'video' ? (
+								<button
+									type="button"
+									class="gallery__video-trigger"
+									data-video-src={item.src}
+									aria-label={`Play video: ${item.alt}`}
+								>
+									<img
+										class="gallery__img"
+										src={`${videoPoster(item.src)}`}
+										alt={item.alt}
+										loading="lazy"
+										decoding="async"
+									/>
+									<span class="gallery__play" aria-hidden="true">
+										▶
+									</span>
+								</button>
+							) : (
+								<img
+									class="gallery__img"
+									src={`${stripTr(item.src)}?tr=w-800,f-auto,q-80`}
+									srcset={showcaseSrcset(item.src)}
+									sizes="(max-width: 720px) 50vw, (max-width: 1100px) 33vw, 25vw"
+									alt={item.alt}
+									loading="lazy"
+									decoding="async"
+								/>
+							)}
+						</div>
+					))
+				}
+			</div>
+
+			<div class="gallery__more-wrap">
+				<button type="button" class="gallery__more" data-gallery-more> See more </button>
 			</div>
 
 			<StudioCTA floats={ctaFloats} />
@@ -93,50 +295,192 @@ import { site } from '../../config/site';
 		margin-bottom: 0;
 	}
 
-	/* ── Filters ── */
-	.gallery__filters {
+	/* ── Filter bar — custom dropdown pattern matching site language ── */
+	.gfilter {
 		display: flex;
-		flex-direction: column;
-		gap: 0.75rem;
-		align-items: center;
-		margin-bottom: clamp(0.5rem, 1.5vh, 1rem);
-	}
-
-	.gallery__filter-row {
-		display: flex;
+		align-items: stretch;
 		flex-wrap: wrap;
-		gap: 0.5rem;
-		justify-content: center;
+		border: 1px solid var(--white-a08);
+		background: var(--white-a04);
+		min-height: 56px;
 	}
 
-	.gallery__filter-btn {
-		padding: 0.5rem 1.2rem;
-		border-radius: 999px;
-		border: 1px solid var(--color-border);
-		background: rgba(255, 255, 255, 0.03);
-		color: var(--color-text-muted);
-		font-family: var(--font-main);
-		font-size: var(--text-sm);
-		font-weight: var(--fw-semibold);
+	.gfilter__field {
+		position: relative;
+		flex: 1 1 0;
+		min-width: 0;
+		border-right: 1px solid var(--white-a08);
+	}
+
+	.gfilter__field:last-of-type {
+		border-right: none;
+	}
+
+	.gfilter__btn {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.65rem;
+		width: 100%;
+		min-height: 56px;
+		padding: 0 1rem;
+		background: transparent;
+		border: 0;
 		cursor: pointer;
-		transition:
-			color 0.2s ease,
-			border-color 0.2s ease,
-			background 0.2s ease;
+		color: inherit;
+		text-align: left;
+		transition: background 0.15s ease;
 	}
 
-	.gallery__filter-btn:hover {
-		color: var(--color-text-main);
-		border-color: var(--color-border-hover);
+	.gfilter__btn:hover,
+	.gfilter__btn[aria-expanded='true'] {
+		background: var(--white-a04);
 	}
 
-	.gallery__filter-btn--active {
-		color: var(--color-text-main);
-		border-color: var(--color-brand-cyan);
-		background: rgba(78, 201, 180, 0.1);
+	.gfilter__btn-label {
+		font-family: var(--font-mono);
+		font-size: 0.66rem;
+		font-weight: 500;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--white-a55);
+		flex-shrink: 0;
 	}
 
-	/* ── Masonry grid — always 4 columns ── */
+	.gfilter__btn-value {
+		flex: 1;
+		min-width: 0;
+		font-family: var(--font-body);
+		font-size: 0.86rem;
+		color: var(--white-a90);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.gfilter__btn[data-active='true'] .gfilter__btn-value {
+		color: var(--brand-teal-bright);
+	}
+
+	.gfilter__caret {
+		flex-shrink: 0;
+		color: var(--white-a55);
+		transition: transform 0.15s ease;
+	}
+
+	.gfilter__btn[aria-expanded='true'] .gfilter__caret {
+		transform: rotate(180deg);
+		color: var(--brand-teal-bright);
+	}
+
+	/* Floating menu */
+	.gfilter__menu {
+		position: absolute;
+		top: 100%;
+		left: -1px;
+		right: -1px;
+		margin: 4px 0 0;
+		padding: 4px 0;
+		list-style: none;
+		max-height: 320px;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+		background: var(--brand-ink);
+		border: 1px solid var(--white-a14);
+		box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+		z-index: 20;
+
+		/* Custom scrollbar — thin, brand-aligned. Firefox + WebKit. */
+		scrollbar-width: thin;
+		scrollbar-color: var(--white-a14) transparent;
+	}
+
+	.gfilter__menu::-webkit-scrollbar {
+		width: 8px;
+	}
+	.gfilter__menu::-webkit-scrollbar-track {
+		background: transparent;
+	}
+	.gfilter__menu::-webkit-scrollbar-thumb {
+		background: var(--white-a14);
+		border-radius: 4px;
+		border: 2px solid transparent;
+		background-clip: padding-box;
+	}
+	.gfilter__menu::-webkit-scrollbar-thumb:hover {
+		background: var(--brand-teal-bright);
+		background-clip: padding-box;
+	}
+
+	.gfilter__opt {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.65rem;
+		width: 100%;
+		padding: 0.6rem 1rem;
+		background: transparent;
+		border: 0;
+		cursor: pointer;
+		text-align: left;
+		font-family: var(--font-body);
+		font-size: 0.84rem;
+		color: var(--white-a90);
+		transition: background 0.12s ease;
+	}
+
+	.gfilter__opt:hover {
+		background: var(--white-a04);
+	}
+
+	.gfilter__opt[hidden],
+	.gfilter__opt[data-out-of-scope='true'] {
+		display: none;
+	}
+
+	.gfilter__opt--active {
+		color: var(--brand-teal-bright);
+		background: var(--teal-a08);
+	}
+
+	.gfilter__tick {
+		opacity: 0;
+		flex-shrink: 0;
+		color: var(--brand-teal-bright);
+	}
+
+	.gfilter__opt--active .gfilter__tick {
+		opacity: 1;
+	}
+
+	.gfilter__reset {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		padding: 0 1rem;
+		min-height: 56px;
+		background: transparent;
+		border: 0;
+		border-left: 1px solid var(--white-a08);
+		cursor: pointer;
+		font-family: var(--font-mono);
+		font-size: 0.7rem;
+		font-weight: 500;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--white-a55);
+		transition: color 0.15s ease;
+	}
+
+	.gfilter__reset:hover {
+		color: var(--brand-teal-bright);
+	}
+
+	.gfilter__reset[hidden] {
+		display: none;
+	}
+
+	/* ── Masonry grid — 4 columns desktop, with pre-set aspect ratios to avoid CLS ── */
 	.gallery__grid {
 		display: grid;
 		grid-template-columns: repeat(4, 1fr);
@@ -148,16 +492,136 @@ import { site } from '../../config/site';
 		overflow: hidden;
 	}
 
+	.gallery__item.is-hidden,
+	.gallery__item.is-paged-out {
+		display: none !important;
+	}
+
 	.gallery__img {
+		width: 100%;
+		height: auto;
+		display: block;
+		border-radius: 10px;
+	}
+
+	/* Pre-set aspect ratios per item — prevents layout shift while images load
+	   AND keeps the slot stable when the video player swaps in over the poster */
+	.gallery__item--portrait .gallery__img,
+	.gallery__item--portrait .gallery__video-trigger,
+	.gallery__item--portrait .gallery__video-player {
+		aspect-ratio: 3 / 4;
+	}
+	.gallery__item--landscape .gallery__img,
+	.gallery__item--landscape .gallery__video-trigger,
+	.gallery__item--landscape .gallery__video-player {
+		aspect-ratio: 4 / 3;
+	}
+	.gallery__item--square .gallery__img,
+	.gallery__item--square .gallery__video-trigger,
+	.gallery__item--square .gallery__video-player {
+		aspect-ratio: 1 / 1;
+	}
+	.gallery__img,
+	.gallery__video-player {
+		object-fit: cover;
+	}
+
+	.gallery__empty {
+		padding: 3rem 1rem;
+		text-align: center;
+	}
+	.gallery__empty[hidden] {
+		display: none;
+	}
+
+	/* ── Video items: button wrapper for click-to-play ── */
+	.gallery__item--video .gallery__video-trigger {
+		position: relative;
+		display: block;
+		width: 100%;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		cursor: pointer;
+		border-radius: 10px;
+		overflow: hidden;
+	}
+
+	.gallery__item--video .gallery__play {
+		position: absolute;
+		inset: 0;
+		display: grid;
+		place-items: center;
+		font-size: 2.5rem;
+		color: var(--white-a90);
+		text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+		pointer-events: none;
+		transition: transform 0.18s ease;
+	}
+
+	.gallery__item--video .gallery__video-trigger:hover .gallery__play {
+		transform: scale(1.1);
+	}
+
+	.gallery__video-player {
 		width: 100%;
 		display: block;
 		border-radius: 10px;
+		background: var(--brand-ink);
+	}
+
+	/* ── See more ── */
+	.gallery__more-wrap {
+		display: flex;
+		justify-content: center;
+		margin-top: 1rem;
+	}
+
+	.gallery__more {
+		padding: 0.85rem 2rem;
+		border-radius: 999px;
+		border: 1px solid var(--brand-teal-bright);
+		background: var(--teal-a08);
+		color: var(--brand-teal-bright);
+		cursor: pointer;
+		transition:
+			background-color 0.18s ease,
+			color 0.18s ease;
+	}
+
+	.gallery__more:hover {
+		background: var(--brand-teal-bright);
+		color: var(--brand-ink);
+	}
+
+	.gallery__more.is-hidden {
+		display: none;
 	}
 
 	/* ── Tablet ── */
 	@media (max-width: 1100px) {
 		.gallery__grid {
 			grid-template-columns: repeat(3, 1fr);
+		}
+		.gfilter {
+			flex-wrap: wrap;
+		}
+		.gfilter__field {
+			flex: 1 1 50%;
+			border-right: 1px solid var(--white-a08);
+			border-bottom: 1px solid var(--white-a08);
+		}
+		.gfilter__field:nth-of-type(2n) {
+			border-right: none;
+		}
+		.gfilter__field:nth-of-type(n + 3) {
+			border-bottom: none;
+		}
+		.gfilter__reset {
+			flex: 1 1 100%;
+			border-left: 0;
+			border-top: 1px solid var(--white-a08);
+			justify-content: center;
 		}
 	}
 
@@ -172,105 +636,443 @@ import { site } from '../../config/site';
 			border-radius: 8px;
 		}
 
-		.gallery__filter-btn {
-			font-size: var(--text-xs);
-			padding: 0.4rem 0.9rem;
+		.gfilter__field {
+			flex: 1 1 100%;
+			border-right: none;
+			border-bottom: 1px solid var(--white-a08);
+		}
+		.gfilter__field:last-of-type {
+			border-bottom: none;
+		}
+
+		.gallery__item--video .gallery__play {
+			font-size: 2rem;
 		}
 	}
 </style>
 
 <script>
 	function initGallery() {
-		const ROW_GAP = 16; // px gap between masonry items
+		const ROW_GAP = 16;
 		const grid = document.querySelector<HTMLElement>('[data-gallery-grid]');
 		const items = Array.from(document.querySelectorAll<HTMLElement>('[data-gallery-item]'));
-		const categoryBtns = document.querySelectorAll<HTMLButtonElement>(
-			'[data-gallery-filter="category"] [data-filter-value]',
-		);
+		const filterRoot = document.querySelector<HTMLElement>('[data-gallery-filters]');
+		const moreBtn = document.querySelector<HTMLButtonElement>('[data-gallery-more]');
+		const resetBtn = document.querySelector<HTMLButtonElement>('[data-filter-reset]');
+		const emptyEl = document.querySelector<HTMLElement>('[data-gallery-empty]');
 
-		if (!grid || !items.length) return;
+		if (!grid || !items.length || !filterRoot || !moreBtn || !resetBtn || !emptyEl) return;
 
-		let activeCategory = 'all';
+		// Narrow to non-null for nested closures.
+		const $moreBtn = moreBtn;
+		const $emptyEl = emptyEl;
+		const $resetBtn = resetBtn;
 
-		/* Measure each image and set grid-row-end span for masonry packing */
-		function layoutMasonry() {
-			if (!grid) return;
-			const rowH = 1; // grid-auto-rows: 1px
-			grid.querySelectorAll<HTMLElement>('[data-gallery-item]').forEach((item) => {
-				// Reset span so we can measure natural height
-				item.style.gridRowEnd = '';
-				const img = item.querySelector<HTMLImageElement>('.gallery__img');
-				if (!img) return;
-				const h = img.getBoundingClientRect().height;
-				if (h > 0) {
-					item.style.gridRowEnd = `span ${Math.ceil((h + ROW_GAP) / (rowH + 0))}`;
-				}
+		const fields = Array.from(filterRoot.querySelectorAll<HTMLElement>('[data-filter-field]'));
+
+		// Single AbortController governs every global listener and image-load wait
+		// in this gallery instance. Aborted on astro:before-swap to prevent
+		// duplicate handlers accumulating across SPA navigations.
+		const ac = new AbortController();
+		const { signal } = ac;
+
+		// ── Video lifecycle: single-active playback + auto-pause off-screen ──
+		// Pauses every <video> in the gallery; used by hide/page-out/swap/single-active paths.
+		function pauseAllVideos(except?: HTMLVideoElement) {
+			document.querySelectorAll<HTMLVideoElement>('.gallery__video-player').forEach((v) => {
+				if (v !== except && !v.paused) v.pause();
 			});
 		}
 
-		/* Wait for all visible images to load, then run layout */
-		function layoutAfterImages() {
-			if (!grid) return;
-			const visibleImgs = Array.from(grid.querySelectorAll<HTMLImageElement>('.gallery__img'));
-			let pending = 0;
+		// Pause whatever video may live inside a specific gallery item.
+		function pauseVideosInItem(item: HTMLElement) {
+			const v = item.querySelector<HTMLVideoElement>('.gallery__video-player');
+			if (v && !v.paused) v.pause();
+		}
 
-			visibleImgs.forEach((img) => {
-				if (img.complete) return;
-				pending++;
-				img.addEventListener(
-					'load',
-					() => {
-						pending--;
-						if (pending === 0) layoutMasonry();
-					},
-					{ once: true },
+		// Auto-pause any playing video that scrolls out of viewport.
+		const videoObserver =
+			typeof IntersectionObserver !== 'undefined'
+				? new IntersectionObserver(
+						(entries) => {
+							for (const entry of entries) {
+								const v = entry.target as HTMLVideoElement;
+								if (!entry.isIntersecting && !v.paused) v.pause();
+							}
+						},
+						{ threshold: 0 },
+					)
+				: null;
+
+		const INITIAL_VISIBLE = 60;
+		const PAGE_SIZE = 60;
+		let visibleLimit = INITIAL_VISIBLE;
+
+		const filters: Record<string, string> = {
+			brand: 'all',
+			category: 'all',
+			subcategory: 'all',
+			type: 'all',
+		};
+
+		// URL ↔ filter state sync. Drives shareable links: ?brand=X&category=Y&...
+		// Only non-default values land in the URL, so the canonical "no filters"
+		// path stays at /studio/gallery (clean for SEO and copy-paste).
+		const FILTER_KEYS = ['brand', 'category', 'subcategory', 'type'] as const;
+
+		function syncURL() {
+			const params = new URLSearchParams();
+			for (const k of FILTER_KEYS) {
+				const v = filters[k];
+				if (v && v !== 'all') params.set(k, v);
+			}
+			const qs = params.toString();
+			const newURL = qs ? `${location.pathname}?${qs}` : location.pathname;
+			if (newURL !== location.pathname + location.search) {
+				history.replaceState(null, '', newURL);
+			}
+		}
+
+		function applyURLToFilters() {
+			const sp = new URL(location.href).searchParams;
+			// Process in cascade order — category must land before subcategory so
+			// the in-scope check in setFilterValue keeps the chosen subcategory.
+			for (const key of FILTER_KEYS) {
+				const value = sp.get(key);
+				if (!value || value === 'all') continue;
+				const field = fields.find((f) => f.dataset.filterKey === key);
+				if (!field) continue;
+				const opt = field.querySelector<HTMLButtonElement>(
+					`[data-filter-opt][data-value="${CSS.escape(value)}"]`,
 				);
-			});
-
-			// Run immediately for already-loaded images
-			layoutMasonry();
+				if (!opt) continue; // unknown / stale param — ignore
+				const label = opt.dataset.label || '';
+				setFilterValue(key, value, label);
+			}
 		}
 
-		/* Filter: remove hidden items from DOM, re-append visible ones */
+		function matchesFilters(el: HTMLElement): boolean {
+			for (const key of Object.keys(filters)) {
+				if (filters[key] === 'all') continue;
+				if (el.dataset[key] !== filters[key]) return false;
+			}
+			return true;
+		}
+
 		function applyFilters() {
-			if (!grid) return;
-			const frag = document.createDocumentFragment();
-			items.forEach((item) => {
-				const cat = item.dataset.category || '';
-				if (activeCategory === 'all' || cat === activeCategory) {
-					frag.appendChild(item);
-				} else {
-					item.remove();
+			let visibleSoFar = 0;
+			let totalMatching = 0;
+
+			for (const item of items) {
+				const matches = matchesFilters(item);
+				if (!matches) {
+					if (!item.classList.contains('is-hidden')) pauseVideosInItem(item);
+					item.classList.add('is-hidden');
+					item.classList.remove('is-paged-out');
+					continue;
 				}
-			});
-			grid.appendChild(frag);
+				totalMatching++;
+				item.classList.remove('is-hidden');
+				if (visibleSoFar < visibleLimit) {
+					item.classList.remove('is-paged-out');
+					visibleSoFar++;
+				} else {
+					if (!item.classList.contains('is-paged-out')) pauseVideosInItem(item);
+					item.classList.add('is-paged-out');
+				}
+			}
+
+			$moreBtn.classList.toggle('is-hidden', visibleSoFar >= totalMatching);
+			$emptyEl.toggleAttribute('hidden', totalMatching > 0);
+
+			const anyActive = Object.values(filters).some((v) => v !== 'all');
+			$resetBtn.toggleAttribute('hidden', !anyActive);
+
 			layoutAfterImages();
 		}
 
-		categoryBtns.forEach((btn) => {
-			btn.addEventListener('click', () => {
-				activeCategory = btn.dataset.filterValue || 'all';
+		function cascadeSubcategoryOptions() {
+			const subField = fields.find((f) => f.dataset.filterKey === 'subcategory');
+			if (!subField) return;
+			const cat = filters.category;
+			let validForCurrent = false;
+			subField.querySelectorAll<HTMLButtonElement>('[data-filter-opt]').forEach((opt) => {
+				const optCat = opt.dataset.cat;
+				const isAll = opt.dataset.value === 'all';
+				const inScope = isAll || cat === 'all' || optCat === cat;
+				opt.dataset.outOfScope = inScope ? '' : 'true';
+				if (opt.dataset.value === filters.subcategory && inScope) validForCurrent = true;
+			});
+			if (!validForCurrent && filters.subcategory !== 'all') {
+				setFilterValue('subcategory', 'all', 'All Subcategories');
+			}
+		}
 
-				categoryBtns.forEach((b) => {
-					b.classList.remove('gallery__filter-btn--active');
-					b.setAttribute('aria-pressed', 'false');
+		// ── Custom dropdown machinery ──
+
+		function closeAllMenus() {
+			fields.forEach((field) => {
+				const btn = field.querySelector<HTMLButtonElement>('[data-filter-toggle]');
+				const menu = field.querySelector<HTMLElement>('.gfilter__menu');
+				if (btn) btn.setAttribute('aria-expanded', 'false');
+				if (menu) menu.hidden = true;
+			});
+		}
+
+		function openMenu(field: HTMLElement) {
+			closeAllMenus();
+			const btn = field.querySelector<HTMLButtonElement>('[data-filter-toggle]');
+			const menu = field.querySelector<HTMLElement>('.gfilter__menu');
+			if (btn) btn.setAttribute('aria-expanded', 'true');
+			if (menu) menu.hidden = false;
+		}
+
+		function setFilterValue(key: string, value: string, label: string) {
+			filters[key] = value;
+			const field = fields.find((f) => f.dataset.filterKey === key);
+			if (!field) return;
+
+			const valueEl = field.querySelector<HTMLElement>('[data-filter-value]');
+			if (valueEl) valueEl.textContent = label;
+
+			const btn = field.querySelector<HTMLButtonElement>('[data-filter-toggle]');
+			if (btn) btn.dataset.active = value !== 'all' ? 'true' : 'false';
+
+			field.querySelectorAll<HTMLButtonElement>('[data-filter-opt]').forEach((opt) => {
+				const isActive = opt.dataset.value === value;
+				opt.classList.toggle('gfilter__opt--active', isActive);
+				opt.setAttribute('aria-selected', isActive ? 'true' : 'false');
+			});
+
+			// Cascade invariant: changing category may invalidate the current subcategory.
+			// Owning it here means programmatic callers (e.g. reset, future link state)
+			// don't need to remember to call cascadeSubcategoryOptions separately.
+			if (key === 'category') cascadeSubcategoryOptions();
+		}
+
+		fields.forEach((field) => {
+			const btn = field.querySelector<HTMLButtonElement>('[data-filter-toggle]');
+			if (btn) {
+				btn.addEventListener('click', (e) => {
+					e.stopPropagation();
+					const isOpen = btn.getAttribute('aria-expanded') === 'true';
+					if (isOpen) closeAllMenus();
+					else openMenu(field);
 				});
-				btn.classList.add('gallery__filter-btn--active');
-				btn.setAttribute('aria-pressed', 'true');
+			}
 
-				applyFilters();
+			field.querySelectorAll<HTMLButtonElement>('[data-filter-opt]').forEach((opt) => {
+				opt.addEventListener('click', (e) => {
+					e.stopPropagation();
+					const key = field.dataset.filterKey || '';
+					const value = opt.dataset.value || 'all';
+					const label = opt.dataset.label || '';
+					setFilterValue(key, value, label);
+					closeAllMenus();
+					if (key === 'category') cascadeSubcategoryOptions();
+					visibleLimit = INITIAL_VISIBLE;
+					applyFilters();
+					syncURL();
+				});
 			});
 		});
 
-		// Initial layout
-		layoutAfterImages();
+		// Click outside or Escape closes menus. Both routed through the AbortController
+		// so they get released on astro:before-swap (no leak on SPA back-and-forth).
+		document.addEventListener(
+			'click',
+			(e) => {
+				if (!filterRoot.contains(e.target as Node)) closeAllMenus();
+			},
+			{ signal },
+		);
+		document.addEventListener(
+			'keydown',
+			(e) => {
+				if (e.key === 'Escape') closeAllMenus();
+			},
+			{ signal },
+		);
 
-		// Re-layout on resize
-		let resizeTimer: number;
-		window.addEventListener('resize', () => {
-			clearTimeout(resizeTimer);
-			resizeTimer = window.setTimeout(layoutMasonry, 150);
+		$resetBtn.addEventListener('click', () => {
+			setFilterValue('brand', 'all', 'All Brands');
+			setFilterValue('category', 'all', 'All Categories');
+			setFilterValue('subcategory', 'all', 'All Subcategories');
+			setFilterValue('type', 'all', 'All Types');
+			visibleLimit = INITIAL_VISIBLE;
+			applyFilters();
+			syncURL();
 		});
+
+		moreBtn.addEventListener('click', () => {
+			visibleLimit += PAGE_SIZE;
+			applyFilters();
+		});
+
+		// ── Click-to-play for video items ──
+		// Aspect comes from the parent .gallery__item--{portrait|landscape|square} class,
+		// applied via CSS to .gallery__video-player → keeps the slot stable when video swaps in.
+		// Lifecycle:
+		//  - Starting any video pauses every other (single-active rule).
+		//  - IntersectionObserver pauses any playing video that scrolls offscreen.
+		//  - Filter/pagination paths in applyFilters() pause hidden videos.
+		//  - astro:before-swap pauses everything before the page is unmounted.
+		const ASPECT_RATIO_MAP: Record<string, string> = {
+			portrait: '3 / 4',
+			landscape: '4 / 3',
+			square: '1 / 1',
+		};
+
+		document.querySelectorAll<HTMLButtonElement>('[data-video-src]').forEach((trigger) => {
+			trigger.addEventListener(
+				'click',
+				() => {
+					const src = trigger.dataset.videoSrc;
+					if (!src) return;
+
+					// Pin aspect-ratio inline so the video honors the slot, not its own
+					// intrinsic dimensions. Without this the browser uses the loaded
+					// video's natural aspect and the tile blows up to several rows tall.
+					const item = trigger.closest<HTMLElement>('.gallery__item');
+					const aspect = item?.dataset.aspect || 'portrait';
+
+					const video = document.createElement('video');
+					video.src = src;
+					video.controls = true;
+					video.autoplay = true;
+					video.playsInline = true;
+					video.muted = true; // required for autoplay across browsers
+					video.className = 'gallery__video-player';
+					// Astro scopes component CSS via [data-astro-cid-*] attributes; JS-created
+					// elements don't get them, so .gallery__video-player CSS rules don't apply.
+					// Set the layout-critical styles inline so they take effect.
+					video.style.aspectRatio = ASPECT_RATIO_MAP[aspect] || ASPECT_RATIO_MAP.portrait;
+					video.style.width = '100%';
+					video.style.height = 'auto';
+					video.style.display = 'block';
+					video.style.objectFit = 'cover';
+					video.style.borderRadius = '10px';
+					video.style.background = 'var(--brand-ink)';
+
+					// Single-active rule: any other playing video gets paused when this one plays.
+					video.addEventListener('play', () => pauseAllVideos(video), { signal });
+
+					// Re-measure once the video knows its true layout dimensions.
+					video.addEventListener('loadedmetadata', () => layoutMasonry(), {
+						once: true,
+						signal,
+					});
+
+					trigger.replaceWith(video);
+					if (videoObserver) videoObserver.observe(video);
+					layoutMasonry();
+				},
+				{ signal },
+			);
+		});
+
+		// ── Masonry packing — two-pass (read-then-write) inside rAF to avoid layout thrash ──
+		type Measurement = { el: HTMLElement; span: number | null };
+
+		function layoutMasonry() {
+			if (!grid) return;
+			const measurements: Measurement[] = [];
+
+			grid.querySelectorAll<HTMLElement>('[data-gallery-item]').forEach((item) => {
+				if (item.classList.contains('is-hidden') || item.classList.contains('is-paged-out')) {
+					measurements.push({ el: item, span: null });
+					return;
+				}
+				const child = item.querySelector<HTMLElement>('img, video, .gallery__video-trigger');
+				if (!child) {
+					measurements.push({ el: item, span: null });
+					return;
+				}
+				const h = child.getBoundingClientRect().height;
+				measurements.push({ el: item, span: h > 0 ? Math.ceil(h + ROW_GAP) : null });
+			});
+
+			requestAnimationFrame(() => {
+				for (const { el, span } of measurements) {
+					el.style.gridRowEnd = span ? `span ${span}` : '';
+				}
+			});
+		}
+
+		// Dedupe load-listener attachment across rapid applyFilters() calls so we don't
+		// stack hundreds of one-shot 'load'/'error' handlers on the same <img>.
+		let pendingImageLoads = 0;
+		function layoutAfterImages() {
+			if (!grid) return;
+			const visibleImgs = Array.from(
+				grid.querySelectorAll<HTMLImageElement>(
+					'[data-gallery-item]:not(.is-hidden):not(.is-paged-out) img',
+				),
+			);
+			visibleImgs.forEach((img) => {
+				if (img.complete && img.naturalHeight > 0) return;
+				if (img.dataset.pendingLayout === '1') return; // already waiting on it
+				img.dataset.pendingLayout = '1';
+				pendingImageLoads++;
+				const onDone = () => {
+					delete img.dataset.pendingLayout;
+					pendingImageLoads--;
+					if (pendingImageLoads === 0) layoutMasonry();
+				};
+				img.addEventListener('load', onDone, { once: true, signal });
+				img.addEventListener('error', onDone, { once: true, signal });
+			});
+			layoutMasonry();
+		}
+
+		// Initial state — hydrate filters from ?brand=…&category=… first so a
+		// shared link lands on a pre-filtered grid.
+		applyURLToFilters();
+		applyFilters();
+
+		// Browser back/forward should re-sync filter state from the URL.
+		window.addEventListener(
+			'popstate',
+			() => {
+				// Reset to defaults, then re-apply from the new URL.
+				setFilterValue('brand', 'all', 'All Brands');
+				setFilterValue('category', 'all', 'All Categories');
+				setFilterValue('subcategory', 'all', 'All Subcategories');
+				setFilterValue('type', 'all', 'All Types');
+				applyURLToFilters();
+				visibleLimit = INITIAL_VISIBLE;
+				applyFilters();
+			},
+			{ signal },
+		);
+
+		// Re-layout on resize — handler released by AbortController on swap.
+		let resizeTimer: number;
+		window.addEventListener(
+			'resize',
+			() => {
+				clearTimeout(resizeTimer);
+				resizeTimer = window.setTimeout(layoutMasonry, 150);
+			},
+			{ signal },
+		);
+
+		// Tear down everything when the page is about to unmount under view transitions.
+		// Without this, audio from any playing video would carry over to the next page.
+		document.addEventListener(
+			'astro:before-swap',
+			() => {
+				clearTimeout(resizeTimer);
+				if (videoObserver) videoObserver.disconnect();
+				document.querySelectorAll<HTMLVideoElement>('.gallery__video-player').forEach((v) => {
+					v.pause();
+					v.removeAttribute('src');
+					v.load(); // releases buffered media
+				});
+				ac.abort(); // releases every signal-attached listener in one shot
+			},
+			{ once: true },
+		);
 	}
 
 	document.addEventListener('astro:page-load', initGallery);

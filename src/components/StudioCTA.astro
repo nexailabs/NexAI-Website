@@ -10,11 +10,14 @@ const { floats } = Astro.props;
 
 <section class="studio-cta">
 	<div class="container studio-cta__inner">
-		<h2 class="section-title">
-			Launch your next <em>collection</em><br />without booking a <em>shoot</em>.
-		</h2>
+		<h3 class="section-title">
+			Launch the collection.<br />Skip the <em>shoot</em>.
+		</h3>
 		<p class="section-sub">
-			We'll show you samples from brands in your category — before you commit to anything.
+			<span class="studio-cta__sub-desktop"
+				>Get sample shoots on the house. See your category in action before you commit.</span
+			>
+			<span class="studio-cta__sub-mobile">Get sample shoots on the house.</span>
 		</p>
 		<a class="studio-cta__btn" href={site.bookingUrl} data-open-cal> Book a Free Call </a>
 		<div class="studio-cta__proof">
@@ -128,10 +131,25 @@ const { floats } = Astro.props;
 		color: var(--color-text-main);
 	}
 
+	.studio-cta__sub-mobile {
+		display: none;
+	}
+
 	/* ── Mobile ── */
 	@media (max-width: 720px) {
 		.studio-cta {
 			padding: clamp(4rem, 10vh, 7rem) 0;
+		}
+
+		.studio-cta__inner .section-sub {
+			margin-top: -0.75rem;
+		}
+
+		.studio-cta__sub-desktop {
+			display: none;
+		}
+		.studio-cta__sub-mobile {
+			display: inline;
 		}
 
 		.studio-cta__proof {

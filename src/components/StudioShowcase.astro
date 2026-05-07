@@ -22,8 +22,8 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 <section class="sc3" id="showcase">
 	<div class="container sc3__shell">
 		<header class="section-header">
-			<h2 class="section-title">See the <em>difference</em></h2>
-			<p class="section-sub">Product in, photoshoot out. Pick a category to explore.</p>
+			<h3 class="section-title">Product in, campaign <em>out</em>.</h3>
+			<p class="section-sub">Pick a category to see the work.</p>
 		</header>
 		<div class="sc3__nav">
 			<ul class="sc3__nav-list" role="tablist" aria-label="Showcase categories">
@@ -354,7 +354,7 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 	.sc3__shell {
 		display: flex;
 		flex-direction: column;
-		gap: clamp(1.25rem, 2.5vw, 2rem);
+		gap: clamp(0.5rem, 1vw, 0.85rem);
 	}
 
 	/* ── Horizontal Top Nav ── */
@@ -493,6 +493,9 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 		letter-spacing: 0.15em;
 		text-transform: uppercase;
 		flex-shrink: 0;
+	}
+	.sc3__col--right .sc3__label {
+		align-self: flex-end;
 	}
 
 	/* ── Placeholder Styles ── */
@@ -999,6 +1002,12 @@ const placeholderSvgLg = `<svg class="sc3__ph-icon sc3__ph-icon--lg" viewBox="0 
 			grid-area: 4 / 2 / 6 / 3;
 		}
 	}
+	@media (max-width: 720px) {
+		.sc3 {
+			padding-top: clamp(2.5rem, 5.5vh, 4rem);
+		}
+	}
+
 	@media (max-width: 600px) {
 		.sc3__panel {
 			grid-template-columns: 1fr;

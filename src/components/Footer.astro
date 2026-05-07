@@ -19,21 +19,7 @@ const year = new Date().getFullYear();
 				/>
 				<span>NexAI Labs</span>
 			</a>
-			<p class="site-footer__tagline">{site.description}</p>
 		</div>
-
-		<!-- Mobile CTA (hidden on desktop) -->
-		<a class="site-footer__cta" href={site.bookingUrl} data-open-cal>
-			Book a Free Call
-			<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-				<path
-					d="M3 8h10M9 4l4 4-4 4"
-					stroke="currentColor"
-					stroke-width="1.5"
-					stroke-linecap="round"
-					stroke-linejoin="round"></path>
-			</svg>
-		</a>
 
 		<!-- Link columns -->
 		<nav class="site-footer__nav" aria-label="Footer navigation">
@@ -118,19 +104,6 @@ const year = new Date().getFullYear();
 
 	.site-footer__logo img {
 		border-radius: 6px;
-	}
-
-	.site-footer__tagline {
-		font-size: var(--text-sm);
-		color: var(--color-text-muted);
-		line-height: var(--lh-body);
-		margin-top: 0.75rem;
-		max-width: 22ch;
-	}
-
-	/* ── CTA (mobile only) ── */
-	.site-footer__cta {
-		display: none;
 	}
 
 	/* ── Nav columns ── */
@@ -260,35 +233,6 @@ const year = new Date().getFullYear();
 			align-items: center;
 			gap: 1rem;
 			padding-bottom: 1.5rem;
-		}
-
-		.site-footer__tagline {
-			margin-top: 0;
-			font-size: var(--text-xs);
-			max-width: none;
-		}
-
-		/* ── CTA button — full width teal gradient ── */
-		.site-footer__cta {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			gap: 0.5rem;
-			width: 100%;
-			padding: 1rem;
-			border-radius: 12px;
-			background: var(--color-brand-gradient);
-			color: #fff;
-			font-family: var(--font-main);
-			font-weight: var(--fw-semibold);
-			font-size: 0.95rem;
-			text-decoration: none;
-			margin-bottom: 1.5rem;
-			transition: opacity 0.2s ease;
-		}
-
-		.site-footer__cta:hover {
-			opacity: 0.9;
 		}
 
 		/* ── Nav columns — compact sections ── */

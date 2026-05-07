@@ -51,7 +51,7 @@ const tiles = [
 		<div class="toolkit__grid">
 			{
 				tiles.map((t, i) => (
-					<a class="toolkit__tile" href={t.href} aria-label={`${t.title} — ${t.sub}`}>
+					<a class="toolkit__tile" href={t.href} aria-label={`${t.title}: ${t.sub}`}>
 						<div class="toolkit__art">
 							{t.bgPattern === 'mesh' && (
 								<svg

@@ -1,0 +1,189 @@
+---
+import { generatedGalleryItems } from '../data/gallery-items.generated';
+
+// Six thumbs spread across the catalogue — preview strip above the title.
+const thumbs = (() => {
+	const images = generatedGalleryItems.filter((i) => i.type !== 'video');
+	const out: typeof images = [];
+	const step = Math.max(1, Math.floor(images.length / 6));
+	for (let i = 0; i < 6 && i * step < images.length; i++) {
+		out.push(images[i * step]);
+	}
+	return out;
+})();
+
+const total = generatedGalleryItems.length;
+const countLabel = `${Math.ceil(total / 50) * 50}+`; // 496 → "500+"
+---
+
+<section class="g-cta">
+	<div class="container g-cta__inner">
+		<h3 class="g-cta__lead-mobile section-title">{countLabel} creatives</h3>
+
+		<div class="g-cta__strip" aria-hidden="true">
+			{
+				thumbs.map((t) => (
+					<div class="g-cta__thumb">
+						<img
+							src={`${t.src}?tr=w-200,h-267,fo-auto,f-auto,q-75`}
+							alt=""
+							width="120"
+							height="160"
+							loading="lazy"
+							decoding="async"
+						/>
+					</div>
+				))
+			}
+		</div>
+
+		<header class="section-header g-cta__header">
+			<h3 class="section-title">
+				<span class="g-cta__creatives-prefix">{countLabel} creatives </span>from 20+ <em>brands</em
+				>.
+			</h3>
+			<p class="section-sub">
+				<span class="g-cta__sub-desktop"
+					>A curated cut from 60,000+ shipped. Filter by brand, category, or type to find a shoot
+					that matches yours.</span
+				>
+				<span class="g-cta__sub-mobile">Filter by brand, category, or type.</span>
+			</p>
+		</header>
+
+		<a class="btn-ghost g-cta__btn" href="/studio/gallery">
+			Open Gallery
+			<svg class="g-cta__arrow" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+				<path
+					d="M5 12h14M12 5l7 7-7 7"
+					stroke="currentColor"
+					stroke-width="2"
+					fill="none"
+					stroke-linecap="round"
+					stroke-linejoin="round"></path>
+			</svg>
+		</a>
+	</div>
+</section>
+
+<style>
+	.g-cta {
+		position: relative;
+		padding: clamp(8rem, 18vh, 13rem) 0 clamp(2rem, 4vh, 3rem);
+		background: radial-gradient(ellipse at 50% 60%, rgba(48, 192, 203, 0.08), transparent 70%);
+	}
+
+	.g-cta__inner {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: clamp(1.5rem, 3vw, 2.25rem);
+	}
+
+	/* ── Preview strip — six tasteful thumbnails ── */
+	.g-cta__strip {
+		display: flex;
+		gap: 0.5rem;
+		justify-content: center;
+		flex-wrap: nowrap;
+		max-width: 100%;
+	}
+
+	.g-cta__thumb {
+		flex: 0 0 auto;
+		width: clamp(72px, 10vw, 110px);
+		aspect-ratio: 3 / 4;
+		overflow: hidden;
+		border-radius: var(--brand-radius-md, 10px);
+		border: 1px solid var(--white-a08);
+		background: var(--brand-ink);
+		transition:
+			transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+			border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.g-cta__thumb img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+	}
+
+	/* Subtle stagger so the strip feels organic, not lined-up */
+	.g-cta__thumb:nth-child(odd) {
+		transform: translateY(-4px);
+	}
+	.g-cta__thumb:nth-child(even) {
+		transform: translateY(4px);
+	}
+
+	.g-cta__inner:hover .g-cta__thumb {
+		border-color: var(--teal-a25);
+	}
+
+	.g-cta__header {
+		margin-bottom: 0;
+	}
+
+	/* ── Ghost button + arrow nudge ── */
+	.g-cta__btn {
+		gap: 0.55rem;
+	}
+
+	.g-cta__arrow {
+		transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.g-cta__btn:hover .g-cta__arrow,
+	.g-cta__btn:focus-visible .g-cta__arrow {
+		transform: translateX(3px);
+	}
+
+	/* Mobile-only lead "{countLabel} creatives" sits above the strip; the same
+	   prefix is stripped from the heading on mobile so it's not duplicated. */
+	.g-cta__lead-mobile {
+		display: none;
+		margin: 0;
+	}
+	.g-cta__sub-mobile {
+		display: none;
+	}
+
+	@media (max-width: 720px) {
+		.g-cta {
+			padding: 0 0 clamp(4rem, 9vh, 6rem);
+		}
+		.g-cta__strip {
+			gap: 0.3rem;
+			max-width: 100%;
+			overflow: hidden;
+		}
+		.g-cta__thumb {
+			width: clamp(40px, 13vw, 80px);
+		}
+		.g-cta__lead-mobile {
+			display: block;
+		}
+		.g-cta__creatives-prefix {
+			display: none;
+		}
+		.g-cta__sub-desktop {
+			display: none;
+		}
+		.g-cta__sub-mobile {
+			display: inline;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.g-cta__thumb,
+		.g-cta__arrow {
+			transition: none !important;
+		}
+		.g-cta__thumb:nth-child(odd),
+		.g-cta__thumb:nth-child(even) {
+			transform: none;
+		}
+	}
+</style>

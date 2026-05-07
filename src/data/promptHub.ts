@@ -134,11 +134,11 @@ The signal we noticed:
 {{SIGNAL}}
 
 Constraints:
-— One sentence. Maximum 22 words.
-— Reference the signal by its specific noun (a person, a number, a product), not by its category.
-— No "congrats", "noticed", "saw that", "wanted to reach out".
-— Do not pitch. Do not name our company. Do not ask for a meeting.
-— Tone: a peer noticing something interesting, not a vendor angling for time.
+- One sentence. Maximum 22 words.
+- Reference the signal by its specific noun (a person, a number, a product), not by its category.
+- No "congrats", "noticed", "saw that", "wanted to reach out".
+- Do not pitch. Do not name our company. Do not ask for a meeting.
+- Tone: a peer noticing something interesting, not a vendor angling for time.
 
 Output exactly the sentence. No preamble. No quotes.`,
 		testedOn: ['Claude Opus 4.7', 'Claude Sonnet 4.6', 'GPT-5'],
@@ -147,7 +147,7 @@ Output exactly the sentence. No preamble. No quotes.`,
 			{ slug: 'cold-one-liner-warm', label: 'Warm-intro variant' },
 		],
 		failureMode:
-			'If the {{SIGNAL}} is too generic ("they raised a Series B"), the model defaults to flattery. The specific noun rule kills the slop — feed it a person, a feature name, or a number, never a category.',
+			'If the {{SIGNAL}} is too generic ("they raised a Series B"), the model defaults to flattery. The specific noun rule kills the slop. Feed it a person, a feature name, or a number, never a category.',
 		howWeUseIt: [
 			{
 				h2: 'How it slots into our day',
@@ -155,7 +155,7 @@ Output exactly the sentence. No preamble. No quotes.`,
 			},
 			{
 				h2: 'Why it works',
-				body: 'The "specific noun" constraint is doing all the work. Models love categories ("their growth"); humans only respond to specifics ("Maya joined as Head of Eng"). The 22-word cap is also load-bearing — past that, the model starts pitching itself.',
+				body: 'The "specific noun" constraint is doing all the work. Models love categories ("their growth"); humans only respond to specifics ("Maya joined as Head of Eng"). The 22-word cap is also load-bearing; past that, the model starts pitching itself.',
 			},
 		],
 	},
@@ -193,10 +193,10 @@ Memo structure (markdown):
 1 bullet. The single experiment worth running. Should be testable in 5 days.
 
 Constraints:
-— Under 250 words total.
-— No status updates ("worked on X"). Only state changes ("X went from 0 to 12").
-— If a category had no signal, say "Quiet week on {category}." Do not invent.
-— No emojis. No bold. Headers only.`,
+- Under 250 words total.
+- No status updates ("worked on X"). Only state changes ("X went from 0 to 12").
+- If a category had no signal, say "Quiet week on {category}." Do not invent.
+- No emojis. No bold. Headers only.`,
 		testedOn: ['Claude Opus 4.7', 'Claude Sonnet 4.6'],
 		variants: [{ slug: 'monthly-board-memo', label: 'Monthly board variant' }],
 		failureMode:
@@ -204,7 +204,7 @@ Constraints:
 		howWeUseIt: [
 			{
 				h2: 'It replaced our Friday sync',
-				body: "We used to do a 30-minute call. The memo is better — async, dated, searchable, and you can't bullshit a one-pager that lists what stalled.",
+				body: "We used to do a 30-minute call. The memo is better: async, dated, searchable, and you can't bullshit a one-pager that lists what stalled.",
 			},
 		],
 	},
@@ -229,10 +229,10 @@ BRAND_BRIEF: {{BRAND_BRIEF}}
 
 Write the prompt as a single paragraph, ~80 words, with the following structure (do NOT label the parts):
 
-1. Subject — describe the product as worn, with body language. No mannequin language.
-2. Setting — a specific physical place, not a mood ("a brutalist concrete stairwell at golden hour", not "modern, edgy").
-3. Light — direction + quality + color temperature.
-4. Lens — focal length, depth of field, film stock if relevant.
+1. Subject: describe the product as worn, with body language. No mannequin language.
+2. Setting: a specific physical place, not a mood ("a brutalist concrete stairwell at golden hour", not "modern, edgy").
+3. Light: direction + quality + color temperature.
+4. Lens: focal length, depth of field, film stock if relevant.
 5. One specific styling detail that ties it to the brand voice.
 
 Forbidden words: stunning, breathtaking, vibrant, cinematic, masterpiece, ultra-realistic, 4k, 8k.
@@ -272,20 +272,20 @@ Output exactly the prompt paragraph. No preamble.`,
 				n: 1,
 				title: 'Open the previous Friday update.',
 				subtitle: 'Continuity is the unlock.',
-				body: "Read it once. Note every commitment we made for this week — they are the spine of today's update. If we missed any, we name them in step 4. No exceptions.",
+				body: "Read it once. Note every commitment we made for this week; they are the spine of today's update. If we missed any, we name them in step 4. No exceptions.",
 			},
 			{
 				n: 2,
 				title: 'Pull Linear: Done this week.',
 				subtitle: 'Filter by completed since last Friday.',
-				body: 'Group by project. Discard internal-only tickets. For each remaining card, write the outcome in one line — what changed for the client, not what we did internally.',
+				body: 'Group by project. Discard internal-only tickets. For each remaining card, write the outcome in one line: what changed for the client, not what we did internally.',
 				snippet: 'Linear filter:  team=client  status=Done  completedAt > {{LAST_FRIDAY}}',
 			},
 			{
 				n: 3,
 				title: 'Record a 90-second Loom over the work.',
 				subtitle: "Show, don't list.",
-				body: "Walk through the two most visible changes. Don't script it — talk like you're showing a colleague. Stop at 90 seconds even if there's more; clients don't finish 3-minute Looms.",
+				body: "Walk through the two most visible changes. Don't script it; talk like you're showing a colleague. Stop at 90 seconds even if there's more; clients don't finish 3-minute Looms.",
 			},
 			{
 				n: 4,
@@ -297,7 +297,7 @@ Output exactly the prompt paragraph. No preamble.`,
 				n: 5,
 				title: 'Make a clean ask.',
 				subtitle: 'One ask, one deadline.',
-				body: 'Decisions, files, sign-offs — pick the single thing that unblocks Monday and bold it. If the client owes us 4 things, asking for 4 things gets you 0. Ask for 1, get 1.',
+				body: 'Decisions, files, sign-offs: pick the single thing that unblocks Monday and bold it. If the client owes us 4 things, asking for 4 things gets you 0. Ask for 1, get 1.',
 			},
 			{
 				n: 6,
@@ -343,7 +343,7 @@ Output exactly the prompt paragraph. No preamble.`,
 				n: 2,
 				title: 'Provision the workspace.',
 				subtitle: 'Boring, but timed.',
-				body: "Spin up the client's Notion + Slack channel + Linear project from our template. The template exists — never start from blank.",
+				body: "Spin up the client's Notion + Slack channel + Linear project from our template. The template exists. Never start from blank.",
 				snippet: 'nx provision client --template=agent-v3 --client={{SLUG}}',
 			},
 			{
@@ -362,7 +362,7 @@ Output exactly the prompt paragraph. No preamble.`,
 				n: 5,
 				title: 'Run the first job. Review out loud.',
 				subtitle: 'Both of you watching.',
-				body: 'Run it in front of the client. They see the output and the receipts. Catch one thing wrong together — that becomes the trust moment.',
+				body: 'Run it in front of the client. They see the output and the receipts. Catch one thing wrong together; that becomes the trust moment.',
 			},
 			{
 				n: 6,
@@ -447,7 +447,7 @@ Trigger when the user says "commit", "stage these", or when an agent finishes a 
 		description:
 			"Turns a 45-minute discovery call transcript into a one-page client brief: problem, success metrics, what we're NOT doing, and the first checkpoint. Includes the prompts, the scoring rubric, and the markdown template.",
 		comment:
-			'// Use the day after a discovery call. Reads the transcript, drafts the brief, and flags every place the client was vague — those are the questions for call 2.',
+			'// Use the day after a discovery call. Reads the transcript, drafts the brief, and flags every place the client was vague; those are the questions for call 2.',
 		author: { name: 'Rahul Juneja', role: 'Co-founder', initials: 'RJ', since: 'Sep 2024' },
 		uses: 920,
 		pinned: false,

@@ -6,7 +6,7 @@ const main: NavConfig = {
 			id: 'agent-lab',
 			label: 'Agent Lab',
 			href: '/coming-soon',
-			caption: 'Six agents we run on — Outreach, Strategy, Finance. Yours next.',
+			caption: 'Six agents we run on: Outreach, Strategy, Finance. Yours next.',
 		},
 		{
 			id: 'nexai-studio',
@@ -18,7 +18,7 @@ const main: NavConfig = {
 			id: 'prompt-hub',
 			label: 'Prompt Hub',
 			href: '/prompts',
-			caption: 'Prompts that survived a month of real work — copy, paste, ship.',
+			caption: 'Prompts that survived a month of real work. Copy, paste, ship.',
 		},
 		{
 			id: 'app-vault',
@@ -58,10 +58,10 @@ const main: NavConfig = {
 const studio: NavConfig = {
 	navGroups: [
 		{
-			id: 'showcase',
-			label: 'Showcase',
+			id: 'images',
+			label: 'Images',
 			href: '/studio#showcase',
-			caption: 'AI photoshoot portfolio across categories',
+			caption: 'On-model stills, any category.',
 			children: [
 				{
 					id: 'kurta-sets',
@@ -100,6 +100,12 @@ const studio: NavConfig = {
 					caption: 'Beauty and skincare products.',
 				},
 			],
+		},
+		{
+			id: 'videos',
+			label: 'Videos',
+			href: '/studio#motion',
+			caption: 'Same product, in motion.',
 		},
 		{
 			id: 'gallery',
