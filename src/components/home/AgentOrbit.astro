@@ -219,7 +219,7 @@ const first = agents[0];
 		left: 50%;
 		margin-top: 6px;
 		transform: translateX(-50%);
-		font-family: var(--font-main);
+		font-family: var(--font-body);
 		font-size: 0.72rem;
 		font-weight: var(--fw-semibold);
 		white-space: nowrap;
@@ -240,8 +240,8 @@ const first = agents[0];
 		transition:
 			opacity 0.25s ease,
 			transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-		width: clamp(240px, 24vw, 280px);
-		min-height: 248px;
+		width: clamp(280px, 26vw, 310px);
+		min-height: 260px;
 		background: linear-gradient(135deg, rgba(12, 14, 18, 0.92) 0%, rgba(10, 12, 15, 0.88) 100%);
 		backdrop-filter: blur(20px) saturate(1.4);
 		-webkit-backdrop-filter: blur(20px) saturate(1.4);
@@ -313,7 +313,7 @@ const first = agents[0];
 	}
 
 	.orbit__detail-title {
-		font-family: var(--font-main);
+		font-family: var(--font-body);
 		font-size: 1rem;
 		font-weight: var(--fw-bold);
 		color: var(--color-text-main);
@@ -322,8 +322,8 @@ const first = agents[0];
 	}
 
 	.orbit__detail-role {
-		font-family: var(--font-main);
-		font-size: 0.6rem;
+		font-family: var(--font-body);
+		font-size: var(--type-card-caption-size);
 		font-weight: var(--fw-semibold);
 		color: var(--color-brand-cyan);
 		text-transform: uppercase;
@@ -334,8 +334,8 @@ const first = agents[0];
 
 	/* ── Status badge — text + tint vary per cardState.mode ── */
 	.orbit__detail-badge {
-		font-family: var(--font-main);
-		font-size: 0.5rem;
+		font-family: var(--font-body);
+		font-size: var(--type-card-eyebrow-size);
 		font-weight: var(--fw-bold);
 		letter-spacing: 0.14em;
 		text-transform: uppercase;
@@ -348,18 +348,18 @@ const first = agents[0];
 		flex-shrink: 0;
 	}
 	.orbit__detail-badge[data-mode='approval'] {
-		color: #f5b660;
-		border-color: rgba(245, 182, 96, 0.4);
-		background: rgba(245, 182, 96, 0.08);
+		color: var(--brand-gold-bright);
+		border-color: var(--gold-a45);
+		background: var(--gold-a08);
 		animation: orbitPulse 1.6s ease-in-out infinite;
 	}
 	/* Pipeline (Sales) badge: solid dot + label, dot pulses to convey
 	 * "agent on a live call right now". Full badge does not pulse — only
 	 * the dot, so the label stays legible. */
 	.orbit__detail-badge[data-mode='pipeline'] {
-		color: #f5b660;
-		border-color: rgba(245, 182, 96, 0.4);
-		background: rgba(245, 182, 96, 0.08);
+		color: var(--brand-gold-bright);
+		border-color: var(--gold-a45);
+		background: var(--gold-a08);
 		display: inline-flex;
 		align-items: center;
 		gap: 5px;
@@ -370,8 +370,8 @@ const first = agents[0];
 		width: 5px;
 		height: 5px;
 		border-radius: 50%;
-		background: #f5b660;
-		box-shadow: 0 0 4px rgba(245, 182, 96, 0.6);
+		background: var(--brand-gold-bright);
+		box-shadow: 0 0 4px var(--gold-a60);
 		animation: orbitPipPulse 1.4s ease-in-out infinite;
 	}
 	.orbit__detail-badge[data-mode='tool-calls'],
@@ -391,7 +391,7 @@ const first = agents[0];
 	/* Body container only — body internals live in the global block below
 	   because they're created by JS and Astro scoping wouldn't reach them. */
 	.orbit__detail-body {
-		font-family: var(--font-main);
+		font-family: var(--font-body);
 		font-size: 0.72rem;
 		line-height: 1.4;
 		color: var(--color-text-muted);
@@ -415,7 +415,7 @@ const first = agents[0];
 		}
 
 		.orbit__node-label {
-			font-size: 0.6rem;
+			font-size: var(--type-card-caption-size);
 		}
 
 		.orbit__node-icon {
@@ -549,7 +549,7 @@ const first = agents[0];
 		box-shadow: 0 0 4px rgba(78, 201, 180, 0.5);
 	}
 	.orbit__pip--running {
-		background: #f5b660;
+		background: var(--brand-gold-bright);
 		animation: orbitPipPulse 1.4s ease-in-out infinite;
 	}
 	.orbit__pip--queued {
@@ -560,10 +560,10 @@ const first = agents[0];
 		background: #4ec9b4;
 	}
 	.orbit__pip--amber {
-		background: #f5b660;
+		background: var(--brand-gold-bright);
 	}
 	.orbit__pip--red {
-		background: #ef6a6a;
+		background: var(--brand-rose-bright);
 	}
 	@keyframes orbitPipPulse {
 		0%,
@@ -603,16 +603,16 @@ const first = agents[0];
 		border-color: rgba(78, 201, 180, 0.25);
 	}
 	.orbit__tool--running {
-		color: #f5b660;
-		border-color: rgba(245, 182, 96, 0.35);
-		background: rgba(245, 182, 96, 0.06);
+		color: var(--brand-gold-bright);
+		border-color: var(--gold-a35);
+		background: var(--gold-a05);
 	}
 	.orbit__tool--running::after {
 		content: '';
 		position: absolute;
 		inset: -2px;
 		border-radius: 9px;
-		border: 1px solid rgba(245, 182, 96, 0.5);
+		border: 1px solid var(--gold-a55);
 		animation: orbitToolRing 1.2s ease-out infinite;
 	}
 	@keyframes orbitToolRing {
@@ -641,16 +641,16 @@ const first = agents[0];
 		margin-bottom: 8px;
 	}
 	.orbit__big-stat-value {
-		font-family: var(--font-display, var(--font-main));
+		font-family: var(--font-display, var(--font-body));
 		font-size: 1.4rem;
-		font-weight: 700;
+		font-weight: var(--fw-bold);
 		color: var(--color-text-main);
 		line-height: 1;
 		letter-spacing: -0.02em;
 	}
 	.orbit__big-stat-unit {
-		font-family: var(--font-main);
-		font-size: 0.55rem;
+		font-family: var(--font-body);
+		font-size: var(--type-card-meta-size);
 		text-transform: uppercase;
 		letter-spacing: 0.1em;
 		color: var(--color-text-dim);
@@ -680,8 +680,8 @@ const first = agents[0];
 		color: var(--color-text-main);
 	}
 	.orbit__step--running {
-		background: rgba(245, 182, 96, 0.07);
-		border: 1px solid rgba(245, 182, 96, 0.18);
+		background: var(--gold-a08);
+		border: 1px solid var(--gold-a18);
 		padding: 3px 6px;
 		color: var(--color-text-main);
 	}
@@ -693,14 +693,14 @@ const first = agents[0];
 		flex-shrink: 0;
 	}
 	.orbit__step--running .orbit__step-icon {
-		color: #f5b660;
+		color: var(--brand-gold-bright);
 	}
 	.orbit__step-tool {
 		color: var(--color-brand-cyan);
 		white-space: nowrap;
 	}
 	.orbit__step--running .orbit__step-tool {
-		color: #f5b660;
+		color: var(--brand-gold-bright);
 	}
 	.orbit__step-arg {
 		color: var(--color-text-main);
@@ -756,15 +756,15 @@ const first = agents[0];
 		gap: 1px;
 	}
 	.orbit__ring-num {
-		font-family: var(--font-display, var(--font-main));
+		font-family: var(--font-display, var(--font-body));
 		font-size: 0.95rem;
-		font-weight: 700;
+		font-weight: var(--fw-bold);
 		color: var(--color-text-main);
 		line-height: 1;
 	}
 	.orbit__ring-tot {
-		font-family: var(--font-main);
-		font-size: 0.5rem;
+		font-family: var(--font-body);
+		font-size: var(--type-card-eyebrow-size);
 		text-transform: uppercase;
 		letter-spacing: 0.1em;
 		color: var(--color-text-dim);
@@ -784,7 +784,7 @@ const first = agents[0];
 		border: 1px solid rgba(255, 255, 255, 0.06);
 		border-radius: 6px;
 		background: rgba(255, 255, 255, 0.02);
-		font-family: var(--font-main);
+		font-family: var(--font-body);
 	}
 	.orbit__chip-icon {
 		width: 14px;
@@ -801,7 +801,7 @@ const first = agents[0];
 	}
 	.orbit__chip-name {
 		font-family: var(--font-mono);
-		font-size: 0.6rem;
+		font-size: var(--type-card-caption-size);
 		color: var(--color-brand-cyan);
 		line-height: 1.1;
 	}
@@ -815,7 +815,7 @@ const first = agents[0];
 	}
 	.orbit__cap {
 		font-family: var(--font-mono);
-		font-size: 0.6rem;
+		font-size: var(--type-card-caption-size);
 		color: var(--color-text-dim);
 	}
 
@@ -843,9 +843,9 @@ const first = agents[0];
 	}
 	.orbit__net-letter {
 		fill: currentColor;
-		font-family: var(--font-display, var(--font-main));
+		font-family: var(--font-display, var(--font-body));
 		font-size: 9px;
-		font-weight: 700;
+		font-weight: var(--fw-bold);
 		text-anchor: middle;
 		dominant-baseline: central;
 	}
@@ -888,7 +888,7 @@ const first = agents[0];
 		gap: 6px;
 		padding: 3px 6px;
 		font-size: 0.64rem;
-		font-family: var(--font-main);
+		font-family: var(--font-body);
 		border-radius: 4px;
 		min-width: 0;
 	}
@@ -900,7 +900,7 @@ const first = agents[0];
 	}
 	.orbit__msg-arrow {
 		color: var(--color-brand-cyan);
-		font-weight: 700;
+		font-weight: var(--fw-bold);
 		font-size: 0.72rem;
 		flex-shrink: 0;
 	}
@@ -934,22 +934,22 @@ const first = agents[0];
 		margin-bottom: 8px;
 	}
 	.orbit__decision--amber {
-		background: rgba(245, 182, 96, 0.08);
-		border-color: rgba(245, 182, 96, 0.25);
+		background: var(--gold-a08);
+		border-color: var(--gold-a25);
 	}
 	.orbit__decision--red {
 		background: rgba(239, 106, 106, 0.08);
 		border-color: rgba(239, 106, 106, 0.25);
 	}
 	.orbit__decision-text {
-		font-family: var(--font-main);
+		font-family: var(--font-body);
 		font-size: 0.72rem;
-		font-weight: 600;
+		font-weight: var(--fw-semibold);
 		color: var(--color-text-main);
 	}
 	.orbit__footer {
-		font-family: var(--font-main);
-		font-size: 0.55rem;
+		font-family: var(--font-body);
+		font-size: var(--type-card-meta-size);
 		text-transform: uppercase;
 		letter-spacing: 0.1em;
 		color: var(--color-text-dim);
@@ -963,16 +963,16 @@ const first = agents[0];
 		margin-bottom: 10px;
 	}
 	.orbit__amount {
-		font-family: var(--font-display, var(--font-main));
+		font-family: var(--font-display, var(--font-body));
 		font-size: 1.5rem;
-		font-weight: 700;
+		font-weight: var(--fw-bold);
 		color: var(--color-text-main);
 		line-height: 1;
 		letter-spacing: -0.02em;
 	}
 	.orbit__amount-meta {
 		font-family: var(--font-mono);
-		font-size: 0.6rem;
+		font-size: var(--type-card-caption-size);
 		color: var(--color-text-dim);
 		margin-left: auto;
 	}
@@ -992,9 +992,9 @@ const first = agents[0];
 		background: rgba(78, 201, 180, 0.14);
 		border: 1px solid rgba(78, 201, 180, 0.3);
 		color: var(--color-brand-cyan);
-		font-family: var(--font-display, var(--font-main));
-		font-size: 0.6rem;
-		font-weight: 700;
+		font-family: var(--font-display, var(--font-body));
+		font-size: var(--type-card-caption-size);
+		font-weight: var(--fw-bold);
 		letter-spacing: 0.04em;
 		flex-shrink: 0;
 	}
@@ -1005,9 +1005,9 @@ const first = agents[0];
 		min-width: 0;
 	}
 	.orbit__client-name {
-		font-family: var(--font-main);
+		font-family: var(--font-body);
 		font-size: 0.74rem;
-		font-weight: 600;
+		font-weight: var(--fw-semibold);
 		color: var(--color-text-main);
 		line-height: 1.15;
 		white-space: nowrap;
@@ -1016,7 +1016,7 @@ const first = agents[0];
 	}
 	.orbit__client-meta {
 		font-family: var(--font-mono);
-		font-size: 0.55rem;
+		font-size: var(--type-card-meta-size);
 		color: var(--color-text-dim);
 	}
 	.orbit__age {
@@ -1042,9 +1042,9 @@ const first = agents[0];
 		overflow: hidden;
 		padding: 8px 0;
 		border-radius: 6px;
-		font-family: var(--font-main);
+		font-family: var(--font-body);
 		font-size: 0.7rem;
-		font-weight: 600;
+		font-weight: var(--fw-semibold);
 		letter-spacing: 0.04em;
 		cursor: pointer;
 		border: 1px solid transparent;
@@ -1145,7 +1145,7 @@ const first = agents[0];
 			color 0.3s ease;
 	}
 	.orbit__channel-cap {
-		font-family: var(--font-main);
+		font-family: var(--font-body);
 		font-size: 0.54rem;
 		text-transform: uppercase;
 		letter-spacing: 0.06em;
@@ -1161,7 +1161,7 @@ const first = agents[0];
 		opacity: 0.85;
 	}
 	.orbit__channel--running .orbit__channel-cap {
-		color: #f5b660;
+		color: var(--brand-gold-bright);
 	}
 	.orbit__channel--done {
 		color: var(--color-brand-cyan);
@@ -1175,16 +1175,16 @@ const first = agents[0];
 			0 0 14px -2px rgba(78, 201, 180, 0.4);
 	}
 	.orbit__channel--running {
-		color: #f5b660;
-		border-color: rgba(245, 182, 96, 0.35);
-		background: rgba(245, 182, 96, 0.06);
+		color: var(--brand-gold-bright);
+		border-color: var(--gold-a35);
+		background: var(--gold-a05);
 	}
 	.orbit__channel--running::after {
 		content: '';
 		position: absolute;
 		inset: -2px;
 		border-radius: 9px;
-		border: 1px solid rgba(245, 182, 96, 0.5);
+		border: 1px solid var(--gold-a55);
 		animation: orbitToolRing 1.2s ease-out infinite;
 	}
 	.orbit__channel .orbit__pip {
@@ -1214,8 +1214,8 @@ const first = agents[0];
 		flex-shrink: 0;
 	}
 	.orbit__recent-title {
-		font-family: var(--font-main);
-		font-size: 0.66rem;
+		font-family: var(--font-body);
+		font-size: var(--type-card-body-size);
 		color: var(--color-text-main);
 		white-space: nowrap;
 		overflow: hidden;
@@ -1237,7 +1237,7 @@ const first = agents[0];
 		border: 1px solid rgba(255, 255, 255, 0.06);
 		border-radius: 6px;
 		background: rgba(255, 255, 255, 0.02);
-		font-family: var(--font-main);
+		font-family: var(--font-body);
 		min-width: 0;
 	}
 	.orbit__tile--featured {
@@ -1262,9 +1262,9 @@ const first = agents[0];
 		gap: 4px;
 	}
 	.orbit__tile-value {
-		font-family: var(--font-display, var(--font-main));
+		font-family: var(--font-display, var(--font-body));
 		font-size: 1.3rem;
-		font-weight: 700;
+		font-weight: var(--fw-bold);
 		color: var(--color-text-main);
 		line-height: 1;
 		letter-spacing: -0.02em;
@@ -1279,7 +1279,7 @@ const first = agents[0];
 		flex-shrink: 0;
 	}
 	.orbit__tile-sub {
-		font-family: var(--font-main);
+		font-family: var(--font-body);
 		font-size: 0.52rem;
 		color: var(--color-text-dim);
 		margin-left: auto;
@@ -1288,7 +1288,7 @@ const first = agents[0];
 		white-space: nowrap;
 	}
 	.orbit__tile-arrow--down {
-		color: #ef6a6a;
+		color: var(--brand-rose-bright);
 	}
 	.orbit__tile-arrow--flat {
 		color: var(--color-text-dim);
@@ -1323,7 +1323,7 @@ const first = agents[0];
 		gap: 3px;
 		min-width: 0;
 		color: var(--color-text-dim);
-		font-family: var(--font-main);
+		font-family: var(--font-body);
 		text-align: center;
 	}
 	.orbit__sales-tool-icon {
@@ -1333,16 +1333,16 @@ const first = agents[0];
 		opacity: 0.7;
 	}
 	.orbit__sales-tool-count {
-		font-family: var(--font-display, var(--font-main));
+		font-family: var(--font-display, var(--font-body));
 		font-size: 0.95rem;
-		font-weight: 700;
+		font-weight: var(--fw-bold);
 		color: var(--color-text-main);
 		line-height: 1;
 		letter-spacing: -0.02em;
 	}
 	.orbit__sales-tool-label {
-		font-family: var(--font-main);
-		font-size: 0.5rem;
+		font-family: var(--font-body);
+		font-size: var(--type-card-eyebrow-size);
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
 		color: var(--color-text-dim);
@@ -1351,17 +1351,17 @@ const first = agents[0];
 		max-width: 100%;
 	}
 	.orbit__sales-tool--pending {
-		color: #f5b660;
+		color: var(--brand-gold-bright);
 	}
 	.orbit__sales-tool--pending .orbit__sales-tool-icon {
 		opacity: 1;
-		color: #f5b660;
+		color: var(--brand-gold-bright);
 	}
 	.orbit__sales-tool--pending .orbit__sales-tool-count {
-		color: #f5b660;
+		color: var(--brand-gold-bright);
 	}
 	.orbit__sales-tool--pending .orbit__sales-tool-label {
-		color: #f5b660;
+		color: var(--brand-gold-bright);
 		opacity: 0.9;
 	}
 
@@ -1381,9 +1381,9 @@ const first = agents[0];
 		min-width: 0;
 	}
 	.orbit__deal-name {
-		font-family: var(--font-main);
+		font-family: var(--font-body);
 		font-size: 0.7rem;
-		font-weight: 600;
+		font-weight: var(--fw-semibold);
 		color: var(--color-text-main);
 		white-space: nowrap;
 		overflow: hidden;
@@ -1392,9 +1392,9 @@ const first = agents[0];
 		flex: 1 1 0;
 	}
 	.orbit__deal-value {
-		font-family: var(--font-display, var(--font-main));
+		font-family: var(--font-display, var(--font-body));
 		font-size: 0.78rem;
-		font-weight: 700;
+		font-weight: var(--fw-bold);
 		color: var(--color-brand-cyan);
 		flex: 0 0 auto;
 	}
@@ -1402,15 +1402,15 @@ const first = agents[0];
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		font-family: var(--font-main);
+		font-family: var(--font-body);
 		font-size: 0.54rem;
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
 		margin-bottom: 6px;
 	}
 	.orbit__deal-stage-label {
-		color: #f5b660;
-		font-weight: 700;
+		color: var(--brand-gold-bright);
+		font-weight: var(--fw-bold);
 	}
 	.orbit__deal-stage-counter {
 		color: var(--color-text-dim);
@@ -1434,9 +1434,9 @@ const first = agents[0];
 		box-shadow: 0 0 4px rgba(78, 201, 180, 0.4);
 	}
 	.orbit__stage-dot--active {
-		background: #f5b660;
-		border-color: #f5b660;
-		box-shadow: 0 0 6px rgba(245, 182, 96, 0.55);
+		background: var(--brand-gold-bright);
+		border-color: var(--brand-gold-bright);
+		box-shadow: 0 0 6px var(--gold-a55);
 		animation: orbitPipPulse 1.4s ease-in-out infinite;
 	}
 	.orbit__stage-line {
@@ -1451,8 +1451,8 @@ const first = agents[0];
 		margin-top: 8px;
 		padding-top: 7px;
 		border-top: 1px solid rgba(78, 201, 180, 0.18);
-		font-family: var(--font-main);
-		font-size: 0.6rem;
+		font-family: var(--font-body);
+		font-size: var(--type-card-caption-size);
 		color: rgba(255, 255, 255, 0.6);
 		line-height: 1.35;
 	}
@@ -1464,9 +1464,9 @@ const first = agents[0];
 		background: rgba(78, 201, 180, 0.06);
 		border-radius: 0 4px 4px 0;
 		color: var(--color-text-main);
-		font-family: var(--font-main);
+		font-family: var(--font-body);
 		font-size: 0.62rem;
-		font-weight: 500;
+		font-weight: var(--fw-medium);
 		letter-spacing: 0.01em;
 	}
 
@@ -1497,9 +1497,9 @@ const first = agents[0];
 		filter: drop-shadow(0 0 6px rgba(78, 201, 180, 0.3));
 	}
 	.orbit__sales-headline-value {
-		font-family: var(--font-display, var(--font-main));
+		font-family: var(--font-display, var(--font-body));
 		font-size: 2.2rem; /* CHANGED */
-		font-weight: 700;
+		font-weight: var(--fw-bold);
 		color: var(--color-text-main);
 		line-height: 1;
 		letter-spacing: -0.02em;
@@ -1511,15 +1511,15 @@ const first = agents[0];
 		min-width: 0;
 	}
 	.orbit__sales-headline-label {
-		font-family: var(--font-main);
-		font-size: 0.5rem;
+		font-family: var(--font-body);
+		font-size: var(--type-card-eyebrow-size);
 		text-transform: uppercase;
 		letter-spacing: 0.1em;
 		color: var(--color-text-dim);
 	}
 	.orbit__sales-headline-sub {
-		font-family: var(--font-main);
-		font-size: 0.6rem;
+		font-family: var(--font-body);
+		font-size: var(--type-card-caption-size);
 		color: var(--color-text-dim);
 		line-height: 1.3;
 	}
@@ -1532,9 +1532,9 @@ const first = agents[0];
 		background: rgba(78, 201, 180, 0.15);
 		border: 1px solid rgba(78, 201, 180, 0.3);
 		color: var(--color-brand-cyan);
-		font-family: var(--font-display, var(--font-main));
-		font-size: 0.55rem;
-		font-weight: 700;
+		font-family: var(--font-display, var(--font-body));
+		font-size: var(--type-card-meta-size);
+		font-weight: var(--fw-bold);
 		letter-spacing: 0.04em;
 		line-height: 1;
 		white-space: nowrap;
@@ -1557,5 +1557,2986 @@ const first = agents[0];
 		.orbit__btn::before {
 			transition: none !important;
 		}
+	}
+</style>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     Hero console cards — bespoke per-agent renderers
+     Spec: docs/superpowers/specs/2026-05-23-hero-console-cards-design.md
+     ═══════════════════════════════════════════════════════════════════════ -->
+<style is:global>
+	/* ── Status pill rules: one data-mode per cycle phase per card ─────── */
+	.orbit__detail-badge[data-mode='sales-warroom'],
+	.orbit__detail-badge[data-mode='ops-escalation'],
+	.orbit__detail-badge[data-mode='ops-floor'],
+	.orbit__detail-badge[data-mode='ceo-filter'],
+	.orbit__detail-badge[data-mode='creatives-renderbay'] {
+		color: var(--brand-gold-bright);
+		border-color: var(--gold-a45);
+		background: var(--gold-a08);
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+	}
+	.orbit__detail-badge[data-mode='sales-warroom']::before,
+	.orbit__detail-badge[data-mode='ops-escalation']::before,
+	.orbit__detail-badge[data-mode='ops-floor']::before,
+	.orbit__detail-badge[data-mode='ceo-filter']::before,
+	.orbit__detail-badge[data-mode='creatives-renderbay']::before {
+		content: '';
+		display: inline-block;
+		width: 5px;
+		height: 5px;
+		border-radius: 50%;
+		background: var(--brand-gold-bright);
+		box-shadow: 0 0 4px var(--gold-a60);
+		animation: orbitPipPulse 1.4s ease-in-out infinite;
+		flex-shrink: 0;
+	}
+	.orbit__detail-badge[data-mode='ops-processing'] {
+		color: var(--brand-gold-bright);
+		border-color: var(--gold-a45);
+		background: var(--gold-a08);
+		animation: orbitPulse 1.6s ease-in-out infinite;
+	}
+	.orbit__detail-badge[data-mode='ops-refunded'],
+	.orbit__detail-badge[data-mode='creatives-pushed'],
+	.orbit__detail-badge[data-mode='ceo-decided-hire'],
+	.orbit__detail-badge[data-mode='ceo-decided-defer'],
+	.orbit__detail-badge[data-mode='social-sent'] {
+		color: var(--color-brand-cyan);
+		border-color: rgba(78, 201, 180, 0.4);
+		background: rgba(78, 201, 180, 0.1);
+	}
+	.orbit__detail-badge[data-mode='research-brief'] {
+		color: var(--color-brand-cyan);
+		border-color: rgba(78, 201, 180, 0.4);
+		background: rgba(78, 201, 180, 0.07);
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+	}
+	.orbit__detail-badge[data-mode='research-brief']::before {
+		content: '';
+		display: inline-block;
+		width: 5px;
+		height: 5px;
+		border-radius: 50%;
+		background: var(--color-brand-cyan);
+		box-shadow: 0 0 5px rgba(78, 201, 180, 0.7);
+		animation: orbitPipPulse 1.6s ease-in-out infinite;
+		flex-shrink: 0;
+	}
+	.orbit__detail-badge[data-mode='research-live'] {
+		color: var(--color-brand-cyan);
+		border-color: rgba(78, 201, 180, 0.5);
+		background: rgba(78, 201, 180, 0.12);
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+	}
+	.orbit__detail-badge[data-mode='research-live']::before {
+		content: '';
+		display: inline-block;
+		width: 5px;
+		height: 5px;
+		border-radius: 50%;
+		background: var(--color-brand-cyan);
+		box-shadow: 0 0 5px rgba(78, 201, 180, 0.7);
+		flex-shrink: 0;
+	}
+	.orbit__detail-badge[data-mode='social-triage'] {
+		color: var(--brand-rose-bright);
+		border-color: var(--rose-a40);
+		background: rgba(239, 106, 106, 0.07);
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+	}
+	.orbit__detail-badge[data-mode='social-triage']::before {
+		content: '';
+		display: inline-block;
+		width: 5px;
+		height: 5px;
+		border-radius: 50%;
+		background: var(--brand-rose-bright);
+		box-shadow: 0 0 5px rgba(239, 106, 106, 0.7);
+		animation: orbitPipPulse 1.1s ease-in-out infinite;
+		flex-shrink: 0;
+	}
+
+	/* ════════════════════════════════════════════════════════════════════
+	   SALES — War Room  .orbit__sales__*
+	   ════════════════════════════════════════════════════════════════════ */
+
+	/* ── Pipeline value chart ── */
+	.orbit__sales__chart {
+		padding: 7px 9px 6px;
+		background: rgba(6, 8, 10, 0.55);
+		border: 1px solid var(--white-a08);
+		border-radius: 7px;
+		margin-bottom: 9px;
+		color: var(--brand-teal-bright);
+	}
+	.orbit__sales__chart-head {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		margin-bottom: 2px;
+	}
+	.orbit__sales__chart-label {
+		font-family: var(--font-body);
+		font-size: var(--type-card-body-size);
+		font-weight: var(--fw-bold);
+		color: var(--color-text-main);
+		font-variant-numeric: tabular-nums;
+		letter-spacing: -0.005em;
+	}
+	.orbit__sales__chart-trend {
+		font-family: var(--font-mono);
+		font-size: 0.56rem;
+		font-weight: var(--fw-bold);
+		font-variant-numeric: tabular-nums;
+		color: var(--brand-teal-bright);
+		padding: 1px 6px;
+		border-radius: 9999px;
+		background: rgba(78, 201, 180, 0.12);
+		border: 1px solid rgba(78, 201, 180, 0.3);
+	}
+	.orbit__sales__chart-spark {
+		display: block;
+		height: 36px;
+		margin-bottom: 4px;
+	}
+	.orbit__sales__spark {
+		width: 100%;
+		height: 100%;
+		display: block;
+		filter: drop-shadow(0 0 5px rgba(78, 201, 180, 0.28));
+	}
+	/* ── Workflow timeline — agent's live qualification flow ── */
+	.orbit__sales__workflow {
+		display: flex;
+		flex-direction: column;
+		margin-bottom: 9px;
+	}
+	.orbit__sales__wf-step {
+		display: grid;
+		grid-template-columns: 22px 1fr;
+		gap: 8px;
+		min-height: 32px;
+	}
+	.orbit__sales__wf-rail {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0;
+	}
+	.orbit__sales__wf-bubble {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 22px;
+		height: 22px;
+		border-radius: 50%;
+		flex-shrink: 0;
+		transition:
+			background 0.3s ease,
+			border-color 0.3s ease,
+			color 0.3s ease;
+	}
+	.orbit__sales__wf-bubble--done {
+		background: rgba(78, 201, 180, 0.14);
+		border: 1px solid rgba(78, 201, 180, 0.45);
+		color: var(--brand-teal-bright);
+	}
+	.orbit__sales__wf-bubble--current {
+		background: var(--gold-a14);
+		border: 1px solid var(--gold-a55);
+		color: var(--brand-gold-bright);
+		box-shadow: 0 0 0 2px var(--gold-a14);
+		animation: ceoTokenHalo 1.6s ease-in-out infinite;
+	}
+	.orbit__sales__wf-rail-line {
+		flex: 1;
+		width: 1.5px;
+		min-height: 12px;
+		background: rgba(255, 255, 255, 0.1);
+		margin-top: 2px;
+		transition: background 0.3s ease;
+	}
+	.orbit__sales__wf-rail-line--done { background: rgba(78, 201, 180, 0.35); }
+
+	.orbit__sales__wf-body {
+		padding-bottom: 9px;
+		min-width: 0;
+	}
+	.orbit__sales__wf-step:last-child .orbit__sales__wf-body { padding-bottom: 0; }
+
+	.orbit__sales__wf-title-row {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		margin-bottom: 1px;
+	}
+	.orbit__sales__wf-title {
+		font-family: var(--font-body);
+		font-size: 0.62rem;
+		font-weight: var(--fw-bold);
+		color: var(--color-text-main);
+		flex: 1;
+		min-width: 0;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.orbit__sales__wf-step--done .orbit__sales__wf-title { color: rgba(255, 255, 255, 0.7); }
+	.orbit__sales__wf-elapsed {
+		font-family: var(--font-mono);
+		font-size: var(--type-card-eyebrow-size);
+		font-variant-numeric: tabular-nums;
+		color: var(--color-text-dim);
+		flex-shrink: 0;
+	}
+	.orbit__sales__wf-check {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 12px;
+		height: 12px;
+		color: var(--brand-teal-bright);
+		flex-shrink: 0;
+	}
+	.orbit__sales__wf-pending {
+		display: inline-block;
+		width: 11px;
+		height: 11px;
+		border-radius: 50%;
+		border: 1.6px solid var(--gold-a18);
+		border-top-color: var(--brand-gold-bright);
+		background: transparent;
+		flex-shrink: 0;
+		animation: orbitWfSpin 0.85s linear infinite;
+	}
+	@keyframes orbitWfSpin {
+		to { transform: rotate(360deg); }
+	}
+	.orbit__sales__wf-detail {
+		font-family: var(--font-body);
+		font-size: 0.56rem;
+		color: var(--color-text-dim);
+		line-height: 1.3;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.orbit__sales__wf-step--current .orbit__sales__wf-detail {
+		color: rgba(255, 255, 255, 0.65);
+		font-style: italic;
+	}
+
+	/* Slide-in for post-confirm steps */
+	.orbit__sales__wf-step--enter {
+		opacity: 0;
+		transform: translateY(8px);
+		transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+	}
+	.orbit__sales__wf-step--enter-visible {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	/* Post-confirm summary line */
+	.orbit__sales__wf-summary {
+		margin-top: 4px;
+		padding: 5px 9px;
+		border-radius: 5px;
+		background: rgba(78, 201, 180, 0.08);
+		border-left: 2px solid var(--color-brand-cyan);
+		font-family: var(--font-mono);
+		font-size: 0.56rem;
+		font-variant-numeric: tabular-nums;
+		color: var(--brand-teal-bright);
+		opacity: 0;
+		transform: translateY(4px);
+		transition: opacity 0.3s ease, transform 0.3s ease;
+	}
+	.orbit__sales__wf-summary--enter-visible { opacity: 1; transform: translateY(0); }
+
+	@media (prefers-reduced-motion: reduce) {
+		.orbit__sales__wf-bubble--current,
+		.orbit__sales__wf-pending { animation: none !important; }
+		.orbit__sales__wf-step,
+		.orbit__sales__wf-summary { transition: none !important; }
+		.orbit__sales__wf-step--enter,
+		.orbit__sales__wf-summary { opacity: 1; transform: none; }
+	}
+
+	/* Brief teal flash on a workflow step (used after reschedule re-pick) */
+	.orbit__sales__wf-step--flash .orbit__sales__wf-bubble {
+		box-shadow: 0 0 0 3px rgba(78, 201, 180, 0.35);
+		transition: box-shadow 0.7s ease;
+	}
+
+	/* ── Reschedule slot picker ── */
+	.orbit__sales__reslot-panel {
+		margin-bottom: 9px;
+		padding: 7px 9px;
+		border-radius: 7px;
+		background: var(--gold-a05);
+		border: 1px solid var(--gold-a25);
+		overflow: hidden;
+		max-height: 0;
+		opacity: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+		transition:
+			max-height 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+			opacity 0.28s ease,
+			padding-top 0.28s ease,
+			padding-bottom 0.28s ease,
+			margin-bottom 0.28s ease;
+	}
+	.orbit__sales__reslot-panel[hidden] { display: none; }
+	.orbit__sales__reslot-panel--visible {
+		max-height: 180px;
+		opacity: 1;
+		padding-top: 7px;
+		padding-bottom: 8px;
+	}
+	.orbit__sales__reslot-head {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		margin-bottom: 6px;
+	}
+	.orbit__sales__reslot-dot {
+		display: inline-block;
+		width: 5px;
+		height: 5px;
+		border-radius: 50%;
+		background: var(--brand-gold-bright);
+		box-shadow: 0 0 4px var(--gold-a75);
+		animation: orbitPipPulse 1.2s ease-in-out infinite;
+		flex-shrink: 0;
+	}
+	.orbit__sales__reslot-check {
+		font-family: var(--font-mono);
+		font-size: 0.54rem;
+		font-variant-numeric: tabular-nums;
+		color: var(--brand-gold-bright);
+		letter-spacing: 0.01em;
+	}
+	.orbit__sales__reslot-list {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+	.orbit__sales__reslot-pill {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 8px;
+		padding: 5px 9px;
+		border-radius: 5px;
+		background: rgba(255, 255, 255, 0.04);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		cursor: pointer;
+		font-family: inherit;
+		color: inherit;
+		text-align: left;
+		transition:
+			background 0.2s ease,
+			border-color 0.2s ease,
+			color 0.2s ease;
+	}
+	.orbit__sales__reslot-pill:hover {
+		background: rgba(78, 201, 180, 0.08);
+		border-color: rgba(78, 201, 180, 0.3);
+	}
+	.orbit__sales__reslot-pill--selected {
+		background: rgba(78, 201, 180, 0.14);
+		border-color: rgba(78, 201, 180, 0.5);
+		box-shadow: 0 0 0 1px rgba(78, 201, 180, 0.25);
+	}
+	.orbit__sales__reslot-pill-time {
+		font-family: var(--font-mono);
+		font-size: var(--type-card-caption-size);
+		font-weight: var(--fw-bold);
+		font-variant-numeric: tabular-nums;
+		color: var(--color-text-main);
+		letter-spacing: -0.005em;
+	}
+	.orbit__sales__reslot-pill--selected .orbit__sales__reslot-pill-time {
+		color: var(--brand-teal-bright);
+	}
+	.orbit__sales__reslot-pill-sub {
+		font-family: var(--font-body);
+		font-size: 0.54rem;
+		color: var(--color-text-dim);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.orbit__sales__reslot-dot { animation: none !important; }
+		.orbit__sales__reslot-panel,
+		.orbit__sales__reslot-pill,
+		.orbit__sales__wf-step--flash .orbit__sales__wf-bubble { transition: none !important; }
+	}
+	.orbit__sales__actions { --orbit-actions-cols: 1.4fr 1fr; }
+
+	/* ════════════════════════════════════════════════════════════════════
+	   POST-CYCLE CTA — universal swap-in for any agent's action bar after
+	   its demo cycle completes. The CTA is rendered hidden (opacity:0,
+	   pointer-events:none, position:absolute) inside the actions wrapper.
+	   When .orbit__actions--post-cycle is added, the original buttons fade
+	   out and the CTA fades in.
+	   ════════════════════════════════════════════════════════════════════ */
+	.orbit__actions {
+		position: relative;
+		display: grid;
+		grid-template-columns: var(--orbit-actions-cols, 1fr 1fr);
+		gap: 6px;
+		/* min-height grows AFTER buttons fade out — prevents them being
+		   stretched tall mid-fade, exposing empty space behind. */
+		transition: min-height 0.32s ease 0.22s;
+		/* Keep grid children at their natural height so growing min-height
+		   never stretches a visible button — bar grows AROUND them. */
+		align-items: center;
+	}
+	/* Fade the original buttons OUT first (0.22s, no delay) — then the CTA
+	   fades in (see below). Sequential, not parallel, so the user never sees
+	   two stacked layers mid-transition. visibility flips after opacity hits 0
+	   to remove the buttons from the a11y tree and reclaim pointer focus. */
+	.orbit__actions > .orbit__btn {
+		transition:
+			opacity 0.22s ease,
+			visibility 0s linear 0.22s;
+	}
+	/* Two-row CTA — question label above, button-styled action below.
+	   The whole anchor is clickable; the inner "action" element is what
+	   visually reads as the button. */
+	.orbit__post-cycle-cta {
+		position: absolute;
+		inset: 0;
+		z-index: 2;
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		justify-content: center;
+		gap: 7px;
+		padding: 0;
+		background: transparent;
+		text-decoration: none;
+		color: inherit;
+		opacity: 0;
+		pointer-events: none;
+		transform: translateY(4px);
+		/* Delay the CTA fade-in to AFTER the original buttons finish fading out
+		   (buttons fade 0→0.22s, CTA fades 0.22→0.54s). Sequential swap reads
+		   as a clean morph, not a stacked cross-fade. */
+		transition:
+			opacity 0.32s ease 0.22s,
+			transform 0.32s ease 0.22s;
+	}
+	.orbit__post-cycle-cta-label {
+		font-family: var(--font-body);
+		font-size: 0.7rem;
+		font-weight: var(--fw-semibold);
+		line-height: 1.25;
+		text-align: center;
+		color: rgba(255, 255, 255, 0.78);
+		letter-spacing: -0.005em;
+	}
+	.orbit__post-cycle-cta-sub {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 11px 14px;
+		background: var(--brand-gradient-teal);
+		color: #04130f;
+		border: 1px solid rgba(78, 201, 180, 0.55);
+		border-radius: 10px;
+		font-family: var(--font-body);
+		font-size: 0.74rem;
+		font-weight: var(--fw-bold);
+		letter-spacing: -0.005em;
+		line-height: 1;
+		box-shadow: 0 4px 14px -4px rgba(78, 201, 180, 0.45);
+		transition:
+			transform 0.18s ease,
+			box-shadow 0.18s ease;
+	}
+	.orbit__post-cycle-cta:hover .orbit__post-cycle-cta-sub {
+		transform: translateY(-1px);
+		box-shadow: 0 7px 22px -4px rgba(78, 201, 180, 0.7);
+	}
+	/* Swap-in state — fade buttons out (and hide them), grow the action
+	   bar to give the CTA room, fade CTA in. */
+	.orbit__actions--post-cycle {
+		min-height: 84px;
+	}
+	.orbit__actions--post-cycle > .orbit__btn {
+		opacity: 0;
+		pointer-events: none;
+		visibility: hidden;
+	}
+	.orbit__actions--post-cycle > .orbit__post-cycle-cta {
+		opacity: 1;
+		pointer-events: auto;
+		transform: translateY(0);
+	}
+
+	/* Light mode — post-cycle CTA */
+	.home-hero--light .orbit__post-cycle-cta-label {
+		color: rgba(0, 0, 0, 0.72);
+	}
+	.home-hero--light .orbit__post-cycle-cta-sub {
+		color: #fff;
+		box-shadow: 0 4px 14px -4px rgba(13, 122, 110, 0.5);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.orbit__post-cycle-cta,
+		.orbit__post-cycle-cta-sub,
+		.orbit__actions > * {
+			transition: none !important;
+		}
+		.orbit__post-cycle-cta:hover .orbit__post-cycle-cta-sub {
+			transform: none !important;
+		}
+	}
+
+	/* ════════════════════════════════════════════════════════════════════
+	   SHARED — Card section recipe  .orbit__card-section
+	   Soft-bordered rounded box for content blocks (Social content, Creatives
+	   brief, Ops customer, etc). Apply ALONGSIDE the per-card BEM class so
+	   light-mode overrides keep working.
+	   ════════════════════════════════════════════════════════════════════ */
+	.orbit__card-section {
+		padding: 8px 11px;
+		background: var(--white-a04);
+		border: 1px solid var(--white-a08);
+		border-radius: 7px;
+	}
+
+	/* ════════════════════════════════════════════════════════════════════
+	   SHARED — Post-cycle cascade  .orbit__cascade__*
+	   Used by Social, Creatives, Ops, CEO. Research has its own richer
+	   pattern at .orbit__research__cq-*. Font props inherit from the global
+	   card-scale utilities (.t-card-meta / .t-card-eyebrow analogue).
+	   ════════════════════════════════════════════════════════════════════ */
+	.orbit__cascade {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+	}
+	.orbit__cascade:not(:empty) { margin-bottom: 8px; }
+	.orbit__cascade__step {
+		display: flex;
+		align-items: baseline;
+		gap: 7px;
+		padding: 4px 8px;
+		background: rgba(78, 201, 180, 0.05);
+		border-left: 2px solid rgba(78, 201, 180, 0.45);
+		border-radius: 0 6px 6px 0;
+		opacity: 0;
+		transform: translateY(4px);
+		transition: opacity 0.32s ease, transform 0.32s ease;
+	}
+	.orbit__cascade__step--enter-visible {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	.orbit__cascade__arrow {
+		font-family: var(--font-mono);
+		font-size: var(--type-card-meta-size);
+		font-weight: var(--fw-bold);
+		color: var(--brand-teal-bright);
+		flex-shrink: 0;
+	}
+	.orbit__cascade__agent {
+		font-family: var(--font-body);
+		font-size: var(--type-card-caption-size);
+		font-weight: var(--fw-semibold);
+		color: var(--color-text-main);
+		flex-shrink: 0;
+	}
+	.orbit__cascade__detail {
+		font-family: var(--font-body);
+		font-size: var(--type-card-caption-size);
+		color: var(--color-text-muted);
+		line-height: 1.3;
+	}
+	.orbit__cascade__summary {
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-card-eyebrow-size);
+		font-weight: var(--fw-bold);
+		text-transform: uppercase;
+		letter-spacing: var(--tracking-card);
+		color: var(--brand-teal-bright);
+		padding: 5px 9px;
+		background: rgba(78, 201, 180, 0.08);
+		border: 1px solid rgba(78, 201, 180, 0.25);
+		border-radius: 6px;
+		text-align: center;
+		opacity: 0;
+		transform: translateY(4px);
+		transition: opacity 0.36s ease, transform 0.36s ease;
+	}
+	.orbit__cascade__summary--enter-visible {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.orbit__cascade__step,
+		.orbit__cascade__summary {
+			transition: none !important;
+		}
+	}
+
+	/* ════════════════════════════════════════════════════════════════════
+	   SOCIAL — Cross-Platform Publisher  .orbit__social__*
+	   ════════════════════════════════════════════════════════════════════ */
+
+	.orbit__social__content {
+		margin-bottom: 11px;
+	}
+	.orbit__social__content-eyebrow {
+		font-family: var(--font-accent-jakarta);
+		font-size: 0.48rem;
+		font-weight: var(--fw-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: rgba(255, 255, 255, 0.5);
+		margin-bottom: 3px;
+	}
+	.orbit__social__content-title {
+		font-family: var(--font-body);
+		font-size: 0.7rem;
+		font-weight: var(--fw-semibold);
+		color: var(--color-text-main);
+		line-height: 1.25;
+		margin-bottom: 2px;
+	}
+	.orbit__social__content-meta {
+		font-family: var(--font-mono);
+		font-size: 0.52rem;
+		color: rgba(255, 255, 255, 0.5);
+		letter-spacing: 0.01em;
+	}
+
+	.orbit__social__platforms-label {
+		font-family: var(--font-accent-jakarta);
+		font-size: 0.48rem;
+		font-weight: var(--fw-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: rgba(255, 255, 255, 0.5);
+		margin-bottom: 6px;
+	}
+	.orbit__social__platforms {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 5px;
+		margin-bottom: 11px;
+	}
+	.orbit__social__plat {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 4px;
+		padding: 6px 4px 5px;
+		background: rgba(255, 255, 255, 0.03);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-radius: 7px;
+		transition: border-color 0.2s ease;
+	}
+	.orbit__social__plat--live {
+		border-color: rgba(78, 201, 180, 0.32);
+		background: rgba(78, 201, 180, 0.05);
+	}
+	.orbit__social__plat--draft {
+		border-color: var(--gold-a45);
+		background: var(--gold-a05);
+	}
+
+	/* Brand-color logo chips per platform */
+	.orbit__social__plat-chip {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 22px;
+		height: 22px;
+		border-radius: 5px;
+		flex-shrink: 0;
+	}
+	.orbit__social__plat-chip svg { display: block; }
+	.orbit__social__plat-chip--ig {
+		background: linear-gradient(135deg, #f9ce34 0%, #ee2a7b 45%, #6228d7 100%);
+	}
+	.orbit__social__plat-chip--fb { background: #1877f2; }
+	.orbit__social__plat-chip--tt {
+		background: #000;
+		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+	}
+	.orbit__social__plat-chip--li { background: #0a66c2; }
+	.orbit__social__plat-chip--yt { background: #ff0000; }
+	.orbit__social__plat-chip--x {
+		background: #000;
+		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+	}
+
+	.orbit__social__plat-status {
+		font-family: var(--font-accent-jakarta);
+		font-size: 0.46rem;
+		font-weight: var(--fw-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		line-height: 1;
+		color: rgba(255, 255, 255, 0.65);
+	}
+	.orbit__social__plat-status--live { color: var(--brand-teal-bright); }
+	.orbit__social__plat-status--draft { color: var(--brand-gold-bright); }
+	.orbit__social__plat-status--scheduled { color: rgba(255, 255, 255, 0.7); }
+	.orbit__social__plat-metric {
+		font-family: var(--font-mono);
+		font-size: 0.46rem;
+		color: rgba(255, 255, 255, 0.45);
+		letter-spacing: 0.01em;
+		line-height: 1.2;
+		text-align: center;
+	}
+	.orbit__social__plat--draft .orbit__social__plat-metric {
+		color: var(--gold-a75);
+	}
+
+	.orbit__social__ask-label {
+		font-family: var(--font-accent-jakarta);
+		font-size: 0.48rem;
+		font-weight: var(--fw-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: var(--brand-gold-bright);
+		margin-bottom: 5px;
+	}
+	.orbit__social__ask {
+		padding: 8px 11px;
+		margin-bottom: 10px;
+		background: var(--gold-a05);
+		border-left: 2px solid var(--gold-a55);
+		border-radius: 0 7px 7px 0;
+	}
+	.orbit__social__ask-title {
+		font-family: var(--font-body);
+		font-size: 0.62rem;
+		font-weight: var(--fw-semibold);
+		color: var(--color-text-main);
+		line-height: 1.3;
+		margin-bottom: 5px;
+	}
+	.orbit__social__ask-draft {
+		display: flex;
+		gap: 6px;
+		padding-top: 5px;
+		border-top: 1px solid rgba(255, 255, 255, 0.06);
+	}
+	.orbit__social__ask-draft-arrow {
+		font-family: var(--font-mono);
+		font-size: 0.7rem;
+		color: var(--brand-teal-bright);
+		line-height: 1;
+		flex-shrink: 0;
+	}
+	.orbit__social__ask-draft-text {
+		font-family: var(--font-body);
+		font-size: var(--type-card-caption-size);
+		font-style: italic;
+		color: rgba(255, 255, 255, 0.78);
+		line-height: 1.35;
+	}
+
+
+	/* .orbit__social__actions uses default 1fr 1fr from .orbit__actions */
+
+
+	/* ════════════════════════════════════════════════════════════════════
+	   CREATIVES — Render Bay  .orbit__creatives__*
+	   ════════════════════════════════════════════════════════════════════ */
+
+	.orbit__creatives__brief {
+		margin-bottom: 10px;
+	}
+	.orbit__creatives__brief-row {
+		display: flex;
+		align-items: baseline;
+		gap: 7px;
+		margin-bottom: 3px;
+	}
+	.orbit__creatives__brief-label {
+		font-family: var(--font-accent-jakarta);
+		font-size: 0.48rem;
+		font-weight: var(--fw-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: rgba(255, 255, 255, 0.5);
+		flex-shrink: 0;
+	}
+	.orbit__creatives__brief-title {
+		font-family: var(--font-body);
+		font-size: var(--type-card-body-size);
+		font-weight: var(--fw-semibold);
+		color: var(--color-text-main);
+		line-height: 1.25;
+	}
+	.orbit__creatives__brief-meta {
+		font-family: var(--font-mono);
+		font-size: 0.52rem;
+		color: rgba(255, 255, 255, 0.45);
+		letter-spacing: 0.01em;
+	}
+
+	/* Gold = "needs you" — same semantic as Social's NEEDS YOU label
+	   and Sales' pending workflow step. Locks the gold across all cards. */
+	.orbit__creatives__tiles-label {
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-card-eyebrow-size);
+		font-weight: var(--fw-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: var(--brand-gold-bright);
+		margin-bottom: 7px;
+	}
+
+	.orbit__creatives__tiles {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 6px;
+		margin-bottom: 10px;
+	}
+	.orbit__creatives__tile {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		padding: 0;
+		background: transparent;
+		border: 1.5px solid rgba(255, 255, 255, 0.1);
+		border-radius: 7px;
+		overflow: hidden;
+		cursor: pointer;
+		transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+	}
+	.orbit__creatives__tile:hover:not([disabled]) {
+		border-color: rgba(78, 201, 180, 0.5);
+		transform: translateY(-1px);
+	}
+	.orbit__creatives__tile--selected {
+		border-color: var(--brand-teal-bright);
+		box-shadow: 0 0 0 1px var(--brand-teal-bright), 0 0 12px rgba(78, 201, 180, 0.3);
+	}
+	.orbit__creatives__tile[disabled] {
+		opacity: 0.55;
+		cursor: default;
+	}
+	.orbit__creatives__tile-img {
+		width: 100%;
+		aspect-ratio: 3 / 4;
+		object-fit: cover;
+		display: block;
+		background: rgba(255, 255, 255, 0.04);
+	}
+	.orbit__creatives__tile-id {
+		position: absolute;
+		top: 4px;
+		left: 4px;
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-card-eyebrow-size);
+		font-weight: var(--fw-black);
+		color: #fff;
+		background: rgba(0, 0, 0, 0.55);
+		padding: 1px 5px;
+		border-radius: 3px;
+		letter-spacing: 0.06em;
+	}
+	.orbit__creatives__tile-pick {
+		position: absolute;
+		top: 4px;
+		right: 4px;
+		font-size: 0.72rem;
+		color: var(--brand-teal-bright);
+		background: rgba(0, 0, 0, 0.55);
+		padding: 0 5px;
+		border-radius: 3px;
+		line-height: 1.1;
+	}
+	.orbit__creatives__tile-meta {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 4px 6px;
+		background: rgba(0, 0, 0, 0.45);
+		backdrop-filter: blur(4px);
+	}
+	.orbit__creatives__tile-scene {
+		font-family: var(--font-body);
+		font-size: 0.52rem;
+		font-weight: var(--fw-medium);
+		color: rgba(255, 255, 255, 0.88);
+		text-transform: lowercase;
+	}
+	.orbit__creatives__tile-qa {
+		font-family: var(--font-mono);
+		font-size: var(--type-card-eyebrow-size);
+		font-weight: var(--fw-semibold);
+		color: var(--brand-teal-bright);
+		letter-spacing: 0.01em;
+	}
+
+
+	.orbit__creatives__actions { --orbit-actions-cols: 1.6fr 1fr; }
+
+	@media (prefers-reduced-motion: reduce) {
+		.orbit__creatives__tile {
+			transition: none !important;
+		}
+	}
+
+	/* ════════════════════════════════════════════════════════════════════
+	   OPERATIONS — Ticket Resolution  .orbit__ops__*
+	   ════════════════════════════════════════════════════════════════════ */
+
+	.orbit__ops__label {
+		font-family: var(--font-accent-jakarta);
+		font-size: 0.48rem;
+		font-weight: var(--fw-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: rgba(255, 255, 255, 0.5);
+		margin-bottom: 5px;
+	}
+
+	.orbit__ops__customer {
+		display: flex;
+		align-items: center;
+		gap: 9px;
+		margin-bottom: 11px;
+	}
+	.orbit__ops__avatar {
+		width: 26px;
+		height: 26px;
+		border-radius: 50%;
+		background: linear-gradient(135deg, var(--brand-teal-bright), #2d8c7e);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		font-family: var(--font-display);
+		font-size: var(--type-card-caption-size);
+		font-weight: var(--fw-bold);
+		color: #fff;
+		letter-spacing: 0.04em;
+		flex-shrink: 0;
+	}
+	.orbit__ops__customer-body {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		min-width: 0;
+	}
+	.orbit__ops__customer-name-row {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+	}
+	.orbit__ops__customer-name {
+		font-family: var(--font-body);
+		font-size: var(--type-card-body-size);
+		font-weight: var(--fw-semibold);
+		color: var(--color-text-main);
+		line-height: 1.2;
+	}
+	.orbit__ops__loyal-tag {
+		font-family: var(--font-accent-jakarta);
+		font-size: 0.46rem;
+		font-weight: var(--fw-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: var(--brand-teal-bright);
+		border: 1px solid rgba(78, 201, 180, 0.4);
+		padding: 1px 5px;
+		border-radius: 3px;
+	}
+	.orbit__ops__customer-meta {
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+		font-family: var(--font-mono);
+		font-size: 0.52rem;
+		color: rgba(255, 255, 255, 0.5);
+		letter-spacing: 0.01em;
+	}
+	.orbit__ops__meta-sep { color: rgba(255, 255, 255, 0.25); }
+
+	.orbit__ops__case {
+		display: flex;
+		align-items: baseline;
+		gap: 7px;
+		padding: 6px 10px;
+		margin-bottom: 11px;
+		background: var(--gold-a05);
+		border-left: 2px solid var(--gold-a55);
+		border-radius: 0 6px 6px 0;
+	}
+	.orbit__ops__case-summary {
+		font-family: var(--font-body);
+		font-size: 0.62rem;
+		font-weight: var(--fw-medium);
+		color: var(--color-text-main);
+	}
+	.orbit__ops__case-meta {
+		font-family: var(--font-mono);
+		font-size: var(--type-card-eyebrow-size);
+		color: var(--brand-gold-bright);
+		letter-spacing: 0.01em;
+		margin-left: auto;
+		flex-shrink: 0;
+	}
+
+	.orbit__ops__suggestion {
+		padding: 9px 11px;
+		margin-bottom: 10px;
+		background: linear-gradient(
+			135deg,
+			rgba(78, 201, 180, 0.07) 0%,
+			rgba(78, 201, 180, 0.025) 100%
+		);
+		border: 1px solid rgba(78, 201, 180, 0.25);
+		border-radius: 8px;
+	}
+	.orbit__ops__suggestion-label {
+		font-family: var(--font-accent-jakarta);
+		font-size: 0.48rem;
+		font-weight: var(--fw-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: var(--brand-teal-bright);
+		margin-bottom: 5px;
+	}
+	.orbit__ops__suggestion-text {
+		font-family: var(--font-body);
+		font-size: 0.64rem;
+		font-weight: var(--fw-medium);
+		line-height: 1.35;
+		color: var(--color-text-main);
+	}
+
+
+	/* .orbit__ops__actions uses default 1fr 1fr from .orbit__actions */
+
+
+	/* ════════════════════════════════════════════════════════════════════
+	   CEO — The Filter  .orbit__ceo__*
+	   ════════════════════════════════════════════════════════════════════ */
+	/* ── Chips eyebrow + cross-agent status row ── */
+	.orbit__ceo__chips-eyebrow {
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-card-eyebrow-size);
+		font-weight: var(--fw-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: rgba(255, 255, 255, 0.55);
+		margin-bottom: 6px;
+	}
+	.orbit__ceo__chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px;
+		margin-bottom: 12px;
+	}
+	.orbit__ceo__chip {
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+		padding: 3px 7px 3px 6px;
+		background: rgba(255, 255, 255, 0.04);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-radius: 11px;
+		white-space: nowrap;
+	}
+	.orbit__ceo__chip-dot {
+		width: 5px;
+		height: 5px;
+		border-radius: 50%;
+		background: var(--brand-teal-bright);
+		flex-shrink: 0;
+	}
+	.orbit__ceo__chip--alert .orbit__ceo__chip-dot { background: var(--brand-gold-bright); }
+	.orbit__ceo__chip--spend .orbit__ceo__chip-dot { background: var(--brand-teal-bright); }
+	.orbit__ceo__chip-label {
+		font-family: var(--font-body);
+		font-size: 0.54rem;
+		font-weight: var(--fw-semibold);
+		color: rgba(255, 255, 255, 0.8);
+		letter-spacing: 0.01em;
+	}
+	.orbit__ceo__chip-ping {
+		font-family: var(--font-mono);
+		font-size: 0.52rem;
+		font-weight: var(--fw-medium);
+		color: rgba(255, 255, 255, 0.5);
+		letter-spacing: 0.01em;
+	}
+	.orbit__ceo__chip--alert .orbit__ceo__chip-ping { color: var(--brand-gold-bright); }
+	.orbit__ceo__chip--spend .orbit__ceo__chip-ping { color: var(--brand-teal-bright); }
+
+	/* ── Synthesis block — 3 signal lines → 1 conclusion ── */
+	.orbit__ceo__synth {
+		padding: 9px 11px 10px;
+		margin-bottom: 12px;
+		background: linear-gradient(
+			135deg,
+			rgba(78, 201, 180, 0.07) 0%,
+			rgba(78, 201, 180, 0.025) 100%
+		);
+		border: 1px solid rgba(78, 201, 180, 0.2);
+		border-radius: 8px;
+	}
+	.orbit__ceo__synth-lines {
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+		margin-bottom: 7px;
+	}
+	.orbit__ceo__synth-line {
+		display: flex;
+		align-items: flex-start;
+		gap: 7px;
+	}
+	.orbit__ceo__synth-tick {
+		display: inline-block;
+		width: 3px;
+		height: 3px;
+		border-radius: 50%;
+		background: rgba(78, 201, 180, 0.65);
+		margin-top: 6px;
+		flex-shrink: 0;
+	}
+	.orbit__ceo__synth-text {
+		font-family: var(--font-body);
+		font-size: var(--type-card-caption-size);
+		line-height: 1.35;
+		color: rgba(255, 255, 255, 0.78);
+	}
+	.orbit__ceo__synth-conclusion {
+		display: flex;
+		align-items: flex-start;
+		gap: 7px;
+		padding-top: 7px;
+		border-top: 1px solid rgba(78, 201, 180, 0.18);
+	}
+	.orbit__ceo__synth-arrow {
+		font-family: var(--font-mono);
+		font-size: 0.7rem;
+		font-weight: var(--fw-bold);
+		color: var(--brand-teal-bright);
+		line-height: 1;
+		flex-shrink: 0;
+		margin-top: 2px;
+	}
+	.orbit__ceo__synth-conclusion-text {
+		font-family: var(--font-body);
+		font-size: var(--type-card-body-size);
+		font-weight: var(--fw-semibold);
+		line-height: 1.3;
+		color: var(--color-text-main);
+	}
+
+	/* ── Decision block ── */
+	.orbit__ceo__decision { margin-bottom: 10px; }
+	.orbit__ceo__decision-eyebrow {
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-card-eyebrow-size);
+		font-weight: var(--fw-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: rgba(255, 255, 255, 0.55);
+		margin-bottom: 5px;
+	}
+	.orbit__ceo__decision-title-row {
+		display: flex;
+		align-items: baseline;
+		gap: 9px;
+		flex-wrap: wrap;
+	}
+	.orbit__ceo__decision-title {
+		font-family: var(--font-display);
+		font-size: 0.82rem;
+		font-weight: var(--fw-bold);
+		letter-spacing: -0.01em;
+		color: var(--color-text-main);
+		line-height: 1.2;
+	}
+	.orbit__ceo__decision-meta {
+		font-family: var(--font-mono);
+		font-size: 0.54rem;
+		color: rgba(255, 255, 255, 0.5);
+		letter-spacing: 0.01em;
+		flex-shrink: 0;
+	}
+
+	/* ── Cascade (post-decision fan-out to other agents) ── */
+
+	/* ── Action bar — uses default 1fr 1fr from .orbit__actions ── */
+
+
+	/* ════════════════════════════════════════════════════════════════════
+	   RESEARCH — Tomorrow's Brief Picker (v3)  .orbit__research__*
+	   Concept: today's brief shipped → visitor commissions tomorrow → agent
+	   confirms with cascade → CTA. Modeled on Sales' Confirm → cycle → CTA.
+	   ════════════════════════════════════════════════════════════════════ */
+
+	/* ── Today's brief block (top) ── */
+	.orbit__research__today {
+		padding: 10px 12px 9px;
+		margin-bottom: 12px;
+		background: linear-gradient(
+			135deg,
+			rgba(78, 201, 180, 0.07) 0%,
+			rgba(78, 201, 180, 0.025) 100%
+		);
+		border: 1px solid rgba(78, 201, 180, 0.2);
+		border-radius: 8px;
+	}
+	.orbit__research__today-head {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 6px;
+	}
+	.orbit__research__today-label {
+		font-family: var(--font-accent-jakarta);
+		font-size: 0.48rem;
+		font-weight: var(--fw-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: rgba(255, 255, 255, 0.55);
+	}
+	.orbit__research__today-shipped {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		color: var(--brand-teal-bright);
+		font-family: var(--font-accent-jakarta);
+		font-size: 0.48rem;
+		font-weight: var(--fw-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+	}
+	.orbit__research__today-insight {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 6px;
+	}
+	.orbit__research__today-insight-text {
+		font-family: var(--font-body);
+		font-size: var(--type-card-body-size);
+		font-weight: var(--fw-medium);
+		line-height: 1.4;
+		color: rgba(255, 255, 255, 0.88);
+	}
+	.orbit__research__today-insight-source {
+		font-family: var(--font-mono);
+		font-size: var(--type-card-eyebrow-size);
+		font-weight: var(--fw-semibold);
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: rgba(255, 255, 255, 0.45);
+		padding: 1px 6px;
+		border: 1px solid rgba(255, 255, 255, 0.12);
+		border-radius: 4px;
+		white-space: nowrap;
+	}
+
+	/* ── Picker label + 3 angle options ── */
+	/* Gold = "needs you" — same semantic as Social's NEEDS YOU label
+	   and Sales' pending workflow step. Locks the gold across all cards. */
+	.orbit__research__picker-label {
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-card-eyebrow-size);
+		font-weight: var(--fw-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: var(--brand-gold-bright);
+		margin-bottom: 7px;
+	}
+	.orbit__research__picker {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		margin-bottom: 10px;
+	}
+	.orbit__research__angle {
+		display: grid;
+		grid-template-columns: 12px 1fr auto;
+		align-items: center;
+		gap: 9px;
+		padding: 7px 10px;
+		background: rgba(255, 255, 255, 0.025);
+		border: 1px solid rgba(255, 255, 255, 0.06);
+		border-radius: 7px;
+		cursor: pointer;
+		text-align: left;
+		transition:
+			background 0.18s ease,
+			border-color 0.18s ease,
+			box-shadow 0.18s ease;
+	}
+	.orbit__research__angle:hover:not([disabled]) {
+		background: rgba(78, 201, 180, 0.05);
+		border-color: rgba(78, 201, 180, 0.2);
+	}
+	.orbit__research__angle--selected {
+		background: rgba(78, 201, 180, 0.08);
+		border-color: rgba(78, 201, 180, 0.4);
+	}
+	.orbit__research__angle--flash {
+		box-shadow: 0 0 0 2px rgba(78, 201, 180, 0.45);
+		transition: box-shadow 0.7s ease;
+	}
+	.orbit__research__angle[disabled] {
+		opacity: 0.55;
+		cursor: not-allowed;
+	}
+	.orbit__research__angle-dot {
+		width: 11px;
+		height: 11px;
+		border-radius: 50%;
+		border: 1.5px solid rgba(255, 255, 255, 0.3);
+		background: transparent;
+		flex-shrink: 0;
+		transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+	}
+	.orbit__research__angle--selected .orbit__research__angle-dot {
+		border-color: var(--brand-teal-bright);
+		background: radial-gradient(
+			circle,
+			var(--brand-teal-bright) 0%,
+			var(--brand-teal-bright) 38%,
+			transparent 42%
+		);
+		box-shadow: 0 0 6px rgba(78, 201, 180, 0.4);
+	}
+	.orbit__research__angle-title {
+		font-family: var(--font-body);
+		font-size: var(--type-card-body-size);
+		font-weight: var(--fw-semibold);
+		color: var(--color-text-main);
+		line-height: 1.2;
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.orbit__research__angle-meta {
+		font-family: var(--font-mono);
+		font-size: 0.54rem;
+		color: rgba(255, 255, 255, 0.5);
+		letter-spacing: 0.01em;
+		flex-shrink: 0;
+	}
+
+	/* ── "Surprise me" reasoning sub-label (revealed after Surprise click) ── */
+	.orbit__research__surprise-sub {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		padding: 6px 10px;
+		margin-bottom: 9px;
+		background: rgba(78, 201, 180, 0.06);
+		border-left: 2px solid var(--brand-teal-bright);
+		border-radius: 4px;
+		opacity: 0;
+		transform: translateY(2px);
+		transition: opacity 0.32s ease, transform 0.32s ease;
+	}
+	.orbit__research__surprise-sub[hidden] { display: none; }
+	.orbit__research__surprise-sub--visible {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	.orbit__research__surprise-sub-icon {
+		color: var(--brand-teal-bright);
+		font-size: var(--type-card-caption-size);
+		line-height: 1;
+		flex-shrink: 0;
+	}
+	.orbit__research__surprise-sub-text {
+		font-family: var(--font-body);
+		font-size: 0.58rem;
+		font-style: italic;
+		color: rgba(255, 255, 255, 0.85);
+		line-height: 1.35;
+	}
+
+	/* ── Post-queue cascade (steps + summary) — Research-specific richer pattern
+	      (bubble + title-row + check), distinct from the shared .orbit__cascade__*. */
+	.orbit__research__cascade {
+		display: flex;
+		flex-direction: column;
+		gap: 7px;
+	}
+	/* Mirror the shared .orbit__cascade spacer so populated cascade gets a clean
+	   gap to the action bar below it. Without this, last cascade item butts up
+	   against the Queue/Surprise buttons (or visually overlaps once content
+	   wraps to two lines on narrower viewports). */
+	.orbit__research__cascade:not(:empty) { margin-bottom: 10px; }
+	.orbit__research__cq-step {
+		display: grid;
+		grid-template-columns: 22px 1fr;
+		gap: 9px;
+		align-items: start;
+		opacity: 0;
+		transform: translateY(4px);
+		transition: opacity 0.32s ease, transform 0.32s ease;
+	}
+	.orbit__research__cq-step--enter-visible {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	.orbit__research__cq-bubble {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 22px;
+		height: 22px;
+		border-radius: 50%;
+		background: rgba(78, 201, 180, 0.14);
+		border: 1px solid rgba(78, 201, 180, 0.45);
+		color: var(--brand-teal-bright);
+		flex-shrink: 0;
+		margin-top: 1px;
+	}
+	.orbit__research__cq-body {
+		display: flex;
+		flex-direction: column;
+		gap: 1px;
+		min-width: 0;
+	}
+	.orbit__research__cq-title-row {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+	}
+	.orbit__research__cq-title {
+		font-family: var(--font-body);
+		font-size: 0.64rem;
+		font-weight: var(--fw-semibold);
+		color: var(--color-text-main);
+		line-height: 1.3;
+		flex: 1;
+		min-width: 0;
+	}
+	.orbit__research__cq-check {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 12px;
+		height: 12px;
+		color: var(--brand-teal-bright);
+		flex-shrink: 0;
+	}
+	.orbit__research__cq-detail {
+		font-family: var(--font-body);
+		font-size: 0.56rem;
+		color: var(--color-text-dim);
+		line-height: 1.4;
+	}
+	.orbit__research__cq-summary {
+		padding: 7px 10px;
+		margin: 4px 0 9px;
+		background: rgba(78, 201, 180, 0.07);
+		border: 1px solid rgba(78, 201, 180, 0.22);
+		border-radius: 5px;
+		font-family: var(--font-mono);
+		font-size: 0.58rem;
+		color: var(--brand-teal-bright);
+		font-variant-numeric: tabular-nums;
+		opacity: 0;
+		transform: translateY(4px);
+		transition: opacity 0.32s ease, transform 0.32s ease;
+	}
+	.orbit__research__cq-summary--enter-visible {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	/* ── Action bar — Queue (primary) + Surprise (ghost) ── */
+	.orbit__research__actions { --orbit-actions-cols: 1.55fr 1fr; }
+
+	/* ── Light-mode overrides for v3 ── */
+	.home-hero--light .orbit__research__today {
+		background: linear-gradient(
+			135deg,
+			rgba(13, 122, 110, 0.06) 0%,
+			rgba(13, 122, 110, 0.02) 100%
+		);
+		border-color: rgba(13, 122, 110, 0.25);
+	}
+	.home-hero--light .orbit__research__today-label { color: rgba(0, 0, 0, 0.5); }
+	.home-hero--light .orbit__research__today-shipped { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__research__today-insight-text { color: rgba(0, 0, 0, 0.82); }
+	.home-hero--light .orbit__research__today-insight-source {
+		color: rgba(0, 0, 0, 0.5);
+		border-color: rgba(0, 0, 0, 0.14);
+	}
+	.home-hero--light .orbit__research__picker-label { color: var(--brand-gold-dark); }
+	.home-hero--light .orbit__research__angle {
+		background: rgba(0, 0, 0, 0.025);
+		border-color: rgba(0, 0, 0, 0.07);
+	}
+	.home-hero--light .orbit__research__angle:hover:not([disabled]) {
+		background: rgba(13, 122, 110, 0.04);
+		border-color: rgba(13, 122, 110, 0.2);
+	}
+	.home-hero--light .orbit__research__angle--selected {
+		background: rgba(13, 122, 110, 0.06);
+		border-color: rgba(13, 122, 110, 0.42);
+	}
+	.home-hero--light .orbit__research__angle-dot { border-color: rgba(0, 0, 0, 0.35); }
+	.home-hero--light .orbit__research__angle--selected .orbit__research__angle-dot {
+		border-color: var(--brand-teal-dark);
+		background: radial-gradient(
+			circle,
+			var(--brand-teal-dark) 0%,
+			var(--brand-teal-dark) 38%,
+			transparent 42%
+		);
+		box-shadow: 0 0 6px rgba(13, 122, 110, 0.4);
+	}
+	.home-hero--light .orbit__research__angle-title { color: #111; }
+	.home-hero--light .orbit__research__angle-meta { color: rgba(0, 0, 0, 0.5); }
+	.home-hero--light .orbit__research__surprise-sub {
+		background: rgba(13, 122, 110, 0.06);
+		border-left-color: var(--brand-teal-dark);
+	}
+	.home-hero--light .orbit__research__surprise-sub-icon { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__research__surprise-sub-text { color: rgba(0, 0, 0, 0.78); }
+	.home-hero--light .orbit__research__cq-bubble {
+		background: rgba(13, 122, 110, 0.1);
+		border-color: rgba(13, 122, 110, 0.42);
+		color: var(--brand-teal-dark);
+	}
+	.home-hero--light .orbit__research__cq-title { color: #111; }
+	.home-hero--light .orbit__research__cq-detail { color: rgba(0, 0, 0, 0.55); }
+	.home-hero--light .orbit__research__cq-check { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__research__cq-summary {
+		background: rgba(13, 122, 110, 0.07);
+		border-color: rgba(13, 122, 110, 0.25);
+		color: var(--brand-teal-dark);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.orbit__research__angle,
+		.orbit__research__angle-dot,
+		.orbit__research__surprise-sub,
+		.orbit__research__cq-step,
+		.orbit__research__cq-summary {
+			transition: none !important;
+		}
+	}
+
+	/* ── Hero insight block — the agent's OUTPUT (today's finding) ── */
+	.orbit__research__insight {
+		position: relative;
+		padding: 12px 14px 12px;
+		margin-bottom: 14px;
+		background: linear-gradient(
+			135deg,
+			rgba(78, 201, 180, 0.08) 0%,
+			rgba(78, 201, 180, 0.03) 100%
+		);
+		border: 1px solid rgba(78, 201, 180, 0.22);
+		border-radius: 9px;
+	}
+	.orbit__research__insight-eyebrow {
+		display: block;
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-card-eyebrow-size);
+		font-weight: var(--fw-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: var(--brand-teal-bright);
+		margin-bottom: 8px;
+	}
+	.orbit__research__insight-stat-row {
+		display: flex;
+		align-items: baseline;
+		gap: 10px;
+		margin-bottom: 8px;
+	}
+	.orbit__research__insight-stat {
+		font-family: var(--font-display);
+		font-weight: var(--fw-black);
+		font-size: 2.2rem;
+		line-height: 1;
+		color: var(--brand-teal-bright);
+		letter-spacing: -0.03em;
+		flex-shrink: 0;
+	}
+	.orbit__research__insight-stat-sub {
+		font-family: var(--font-body);
+		font-size: 0.7rem;
+		font-weight: var(--fw-medium);
+		line-height: 1.3;
+		color: rgba(255, 255, 255, 0.85);
+	}
+	.orbit__research__insight-source {
+		display: block;
+		font-family: var(--font-mono);
+		font-size: var(--type-card-meta-size);
+		color: rgba(255, 255, 255, 0.5);
+		letter-spacing: 0.01em;
+	}
+
+	/* ── Workflow header — small label above the steps ── */
+	.orbit__research__wf-head {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		margin-bottom: 8px;
+	}
+	.orbit__research__wf-head-label {
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-card-eyebrow-size);
+		font-weight: var(--fw-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: rgba(255, 255, 255, 0.55);
+	}
+
+	/* ── Workflow list — 4 steps, vertical rail with check + title + detail ── */
+	.orbit__research__wf-list {
+		display: flex;
+		flex-direction: column;
+		margin-bottom: 12px;
+	}
+	.orbit__research__wf-step {
+		display: grid;
+		grid-template-columns: 22px 1fr;
+		gap: 9px;
+		padding: 0 0 9px;
+	}
+	.orbit__research__wf-step:last-child { padding-bottom: 0; }
+	.orbit__research__wf-rail {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0;
+	}
+	.orbit__research__wf-bubble {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 22px;
+		height: 22px;
+		border-radius: 50%;
+		background: rgba(78, 201, 180, 0.14);
+		border: 1px solid rgba(78, 201, 180, 0.45);
+		color: var(--brand-teal-bright);
+		flex-shrink: 0;
+	}
+	.orbit__research__wf-rail-line {
+		display: block;
+		width: 1.5px;
+		flex: 1;
+		min-height: 8px;
+		background: rgba(78, 201, 180, 0.3);
+		margin-top: 1px;
+	}
+	.orbit__research__wf-body {
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+		padding-top: 1px;
+	}
+	.orbit__research__wf-title-row {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		margin-bottom: 1px;
+	}
+	.orbit__research__wf-title {
+		font-family: var(--font-body);
+		font-size: var(--type-card-body-size);
+		font-weight: var(--fw-semibold);
+		color: var(--color-text-main);
+		line-height: 1.3;
+		flex: 1;
+		min-width: 0;
+	}
+	.orbit__research__wf-check {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 12px;
+		height: 12px;
+		color: var(--brand-teal-bright);
+		flex-shrink: 0;
+	}
+	.orbit__research__wf-detail {
+		font-family: var(--font-body);
+		font-size: 0.58rem;
+		color: var(--color-text-dim);
+		line-height: 1.35;
+	}
+
+	/* ── Primary CTA — self-contained, full-width pill ── */
+	.orbit__research__cta-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		padding: 11px 14px;
+		background: var(--brand-gradient-teal);
+		color: #04130f;
+		border: 1px solid rgba(78, 201, 180, 0.55);
+		border-radius: 10px;
+		text-decoration: none;
+		box-shadow: 0 4px 14px -4px rgba(78, 201, 180, 0.45);
+		transition:
+			transform 0.18s ease,
+			box-shadow 0.18s ease;
+	}
+	.orbit__research__cta-btn:hover {
+		transform: translateY(-1px);
+		box-shadow: 0 7px 22px -4px rgba(78, 201, 180, 0.7);
+	}
+	.orbit__research__cta-btn-label {
+		font-family: var(--font-body);
+		font-size: 0.74rem;
+		font-weight: var(--fw-bold);
+		letter-spacing: -0.005em;
+		line-height: 1;
+	}
+
+	/* ── Light-mode overrides for the v2 design ── */
+	.home-hero--light .orbit__research__insight {
+		background: linear-gradient(
+			135deg,
+			rgba(13, 122, 110, 0.07) 0%,
+			rgba(13, 122, 110, 0.02) 100%
+		);
+		border-color: rgba(13, 122, 110, 0.28);
+	}
+	.home-hero--light .orbit__research__insight-eyebrow,
+	.home-hero--light .orbit__research__insight-stat {
+		color: var(--brand-teal-dark);
+	}
+	.home-hero--light .orbit__research__insight-stat-sub { color: rgba(0, 0, 0, 0.78); }
+	.home-hero--light .orbit__research__insight-source { color: rgba(0, 0, 0, 0.45); }
+	.home-hero--light .orbit__research__wf-head-label { color: rgba(0, 0, 0, 0.45); }
+	.home-hero--light .orbit__research__wf-bubble {
+		background: rgba(13, 122, 110, 0.1);
+		border-color: rgba(13, 122, 110, 0.45);
+		color: var(--brand-teal-dark);
+	}
+	.home-hero--light .orbit__research__wf-rail-line { background: rgba(13, 122, 110, 0.3); }
+	.home-hero--light .orbit__research__wf-title { color: #111; }
+	.home-hero--light .orbit__research__wf-detail { color: rgba(0, 0, 0, 0.55); }
+	.home-hero--light .orbit__research__wf-check { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__research__cta-btn {
+		color: #fff;
+		box-shadow: 0 4px 14px -4px rgba(13, 122, 110, 0.5);
+	}
+
+	/* ── (legacy below — dead after v2 redesign, pending sweep) ── */
+
+	/* ── Hero signal block (clickable button) ── */
+	.orbit__research__signal-block {
+		position: relative;
+		display: block;
+		width: 100%;
+		padding: 11px 14px 32px;
+		margin-bottom: 11px;
+		border: none;
+		border-left: 2px solid var(--brand-teal-bright);
+		background: linear-gradient(
+			90deg,
+			rgba(78, 201, 180, 0.08) 0%,
+			rgba(78, 201, 180, 0.03) 60%,
+			transparent 100%
+		);
+		border-radius: 0 6px 6px 0;
+		overflow: hidden;
+		text-align: left;
+		font-family: inherit;
+		color: inherit;
+		cursor: pointer;
+		transition: background 0.25s ease;
+	}
+	.orbit__research__signal-block:hover {
+		background: linear-gradient(
+			90deg,
+			rgba(78, 201, 180, 0.14) 0%,
+			rgba(78, 201, 180, 0.05) 60%,
+			transparent 100%
+		);
+	}
+	.orbit__research__signal-block:focus-visible {
+		outline: 2px solid rgba(78, 201, 180, 0.5);
+		outline-offset: 2px;
+	}
+	/* Subtle horizontal shimmer drifting along the top edge of the signal */
+	.orbit__research__signal-block::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -30%;
+		right: 0;
+		height: 1px;
+		background: linear-gradient(
+			90deg,
+			transparent 0%,
+			rgba(78, 201, 180, 0.55) 50%,
+			transparent 100%
+		);
+		animation: researchSignalShimmer 6s ease-in-out infinite;
+		pointer-events: none;
+	}
+	@keyframes researchSignalShimmer {
+		0%, 100% { transform: translateX(0); opacity: 0.45; }
+		50% { transform: translateX(50%); opacity: 1; }
+	}
+	.orbit__research__signal-headline {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-weight: var(--fw-semibold);
+		font-size: 0.9rem;
+		line-height: 1.3;
+		color: var(--color-text-main);
+		margin: 0 0 6px;
+		letter-spacing: -0.01em;
+		text-wrap: pretty;
+	}
+	.orbit__research__signal-grad {
+		background: linear-gradient(135deg, #1e7e72, #4ec9b4);
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+		color: transparent;
+		font-style: italic;
+	}
+	.orbit__research__signal-evidence {
+		font-family: var(--font-mono);
+		font-size: var(--type-card-meta-size);
+		font-variant-numeric: tabular-nums;
+		color: var(--brand-teal-bright);
+		margin: 0 0 4px;
+		letter-spacing: 0.01em;
+		opacity: 0.92;
+	}
+	.orbit__research__signal-sub {
+		font-family: var(--font-body);
+		font-size: var(--type-card-caption-size);
+		color: var(--color-text-dim);
+		margin: 0;
+		line-height: 1.4;
+	}
+	.orbit__research__signal-sub-icon {
+		color: var(--brand-gold-bright);
+		display: inline-block;
+		margin-right: 2px;
+	}
+	.orbit__research__signal-accent {
+		font-family: var(--font-body);
+		font-weight: var(--fw-bold);
+		color: var(--brand-gold-bright);
+		font-variant-numeric: tabular-nums;
+		margin-right: 4px;
+	}
+
+	/* ── Process strip — 3 enriched done rows ── */
+	.orbit__research__process {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		margin-bottom: 10px;
+	}
+	.orbit__research__row {
+		display: grid;
+		grid-template-columns: 12px 4.2rem 1fr;
+		gap: 8px;
+		align-items: center;
+		min-width: 0;
+		padding: 2px 0;
+		border-radius: 4px;
+		transition: background 0.2s ease;
+	}
+	.orbit__research__row:hover { background: rgba(78, 201, 180, 0.03); }
+	.orbit__research__row-check {
+		color: var(--brand-teal-bright);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 12px;
+		height: 12px;
+		flex-shrink: 0;
+	}
+	.orbit__research__row-label {
+		font-family: var(--font-display);
+		font-size: var(--type-card-eyebrow-size);
+		font-weight: var(--fw-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		color: var(--color-text-dim);
+		white-space: nowrap;
+	}
+	.orbit__research__row-body {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		min-width: 0;
+		overflow: hidden;
+	}
+	.orbit__research__row-detail {
+		font-family: var(--font-mono);
+		font-size: 0.58rem;
+		font-variant-numeric: tabular-nums;
+		color: var(--color-text-muted);
+		letter-spacing: 0.01em;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		min-width: 0;
+	}
+
+	/* Sources row — inline icon + count pairs */
+	.orbit__research__src-strip {
+		display: inline-flex;
+		align-items: center;
+		gap: 9px;
+		flex-shrink: 0;
+	}
+	.orbit__research__src-cell {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		color: var(--brand-teal-bright);
+		opacity: 0.85;
+	}
+	.orbit__research__src-cell svg { flex-shrink: 0; }
+	.orbit__research__src-count {
+		font-family: var(--font-mono);
+		font-size: 0.58rem;
+		font-weight: var(--fw-bold);
+		font-variant-numeric: tabular-nums;
+		color: var(--color-text-main);
+		letter-spacing: -0.01em;
+	}
+
+	/* Analysis row — funnel with arrows */
+	.orbit__research__funnel {
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+		flex-shrink: 0;
+	}
+	.orbit__research__funnel-step {
+		font-family: var(--font-mono);
+		font-size: 0.58rem;
+		font-weight: var(--fw-bold);
+		font-variant-numeric: tabular-nums;
+		color: var(--color-text-main);
+		padding: 1px 5px;
+		border-radius: 3px;
+		background: rgba(78, 201, 180, 0.08);
+		border: 1px solid rgba(78, 201, 180, 0.18);
+	}
+	.orbit__research__funnel-arrow {
+		font-family: var(--font-mono);
+		font-size: var(--type-card-caption-size);
+		color: var(--brand-teal-bright);
+		opacity: 0.6;
+	}
+
+	/* Document row — small doc glyph */
+	.orbit__research__doc-icon {
+		display: inline-flex;
+		align-items: center;
+		color: var(--brand-teal-bright);
+		opacity: 0.85;
+		flex-shrink: 0;
+	}
+
+	/* Confirmed (publish) row — teal-tinted */
+	.orbit__research__row--confirmed .orbit__research__row-label,
+	.orbit__research__row--confirmed .orbit__research__row-detail {
+		color: var(--brand-teal-bright);
+	}
+
+	/* Slide-in for the publish confirmation row */
+	.orbit__research__row--enter {
+		opacity: 0;
+		transform: translateY(4px);
+		transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+	}
+	.orbit__research__row--enter-visible { opacity: 1; transform: translateY(0); }
+
+	/* ── Publish receipt panel (multi-stage reveal) ── */
+	.orbit__research__receipt {
+		margin-top: 6px;
+		padding: 8px 10px;
+		border-radius: 6px;
+		background: linear-gradient(
+			180deg,
+			rgba(78, 201, 180, 0.07) 0%,
+			rgba(78, 201, 180, 0.02) 100%
+		);
+		border: 1px solid rgba(78, 201, 180, 0.22);
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+		max-height: 0;
+		opacity: 0;
+		overflow: hidden;
+		padding-top: 0;
+		padding-bottom: 0;
+		transition:
+			max-height 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+			opacity 0.28s ease,
+			padding-top 0.28s ease,
+			padding-bottom 0.28s ease,
+			margin-top 0.28s ease;
+	}
+	.orbit__research__receipt--visible {
+		max-height: 260px;
+		opacity: 1;
+		padding-top: 8px;
+		padding-bottom: 8px;
+	}
+	.orbit__research__rcpt-row {
+		display: grid;
+		grid-template-columns: 14px 4.2rem 1fr;
+		gap: 8px;
+		align-items: center;
+		min-width: 0;
+		opacity: 0;
+		transform: translateY(4px);
+		transition:
+			opacity 0.28s ease,
+			transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1),
+			color 0.3s ease,
+			background 0.3s ease;
+	}
+	.orbit__research__rcpt-row--enter-visible {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	.orbit__research__rcpt-row--amber { color: var(--brand-gold-bright); }
+	.orbit__research__rcpt-row--teal { color: var(--brand-teal-bright); }
+	.orbit__research__rcpt-icon {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 14px;
+		height: 14px;
+		flex-shrink: 0;
+		font-size: 0.7rem;
+		line-height: 1;
+	}
+	.orbit__research__rcpt-label {
+		font-family: var(--font-display);
+		font-size: var(--type-card-eyebrow-size);
+		font-weight: var(--fw-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		white-space: nowrap;
+	}
+	.orbit__research__rcpt-detail {
+		font-family: var(--font-mono);
+		font-size: 0.58rem;
+		font-variant-numeric: tabular-nums;
+		color: var(--color-text-muted);
+		letter-spacing: 0.01em;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		min-width: 0;
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+	}
+	/* Amber pulsing dot for the POSTING stage */
+	.orbit__research__rcpt-pulse-dot {
+		display: inline-block;
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		background: var(--brand-gold-bright);
+		box-shadow: 0 0 5px var(--gold-a60);
+		animation: orbitPipPulse 0.8s ease-in-out infinite;
+	}
+	/* Avatar stack inside the READ row's detail */
+	.orbit__research__rcpt-avatars {
+		display: inline-flex;
+		align-items: center;
+		flex-shrink: 0;
+	}
+	.orbit__research__rcpt-avatar {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 18px;
+		height: 18px;
+		border-radius: 50%;
+		background: rgba(78, 201, 180, 0.2);
+		border: 1.5px solid rgba(10, 12, 16, 0.95);
+		color: var(--brand-teal-bright);
+		font-family: var(--font-display);
+		font-size: 0.42rem;
+		font-weight: var(--fw-bold);
+		flex-shrink: 0;
+		margin-left: -5px;
+		opacity: 0;
+		transform: scale(0.6);
+		transition:
+			opacity 0.22s ease,
+			transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+	}
+	.orbit__research__rcpt-avatars .orbit__research__rcpt-avatar:first-child { margin-left: 0; }
+	.orbit__research__rcpt-avatar--enter-visible {
+		opacity: 1;
+		transform: scale(1);
+	}
+
+	/* Channel picker hidden after publish (free up space for receipt) */
+	.orbit__research__channel-picker--hidden {
+		max-height: 0;
+		opacity: 0;
+		overflow: hidden;
+		margin-bottom: 0;
+		transition:
+			max-height 0.3s ease,
+			opacity 0.25s ease,
+			margin-bottom 0.3s ease;
+	}
+
+	/* ── Channel picker (compact, single row) ── */
+	.orbit__research__channel-picker {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin-bottom: 8px;
+	}
+	.orbit__research__channel-label {
+		font-family: var(--font-display);
+		font-size: 0.46rem;
+		font-weight: var(--fw-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		color: var(--color-text-dim);
+		flex-shrink: 0;
+	}
+	.orbit__research__channel-chips {
+		display: flex;
+		gap: 4px;
+		flex: 1;
+		min-width: 0;
+	}
+	.orbit__research__channel-chip {
+		display: inline-flex;
+		align-items: center;
+		gap: 2px;
+		padding: 2px 7px;
+		border-radius: 9999px;
+		background: rgba(255, 255, 255, 0.03);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		cursor: pointer;
+		font-family: inherit;
+		color: var(--color-text-muted);
+		transition:
+			background 0.2s ease,
+			border-color 0.2s ease,
+			color 0.2s ease,
+			transform 0.15s ease;
+		flex-shrink: 0;
+	}
+	.orbit__research__channel-chip:hover {
+		background: rgba(78, 201, 180, 0.08);
+		border-color: rgba(78, 201, 180, 0.3);
+		color: var(--color-text-main);
+		transform: translateY(-1px);
+	}
+	.orbit__research__channel-chip--selected {
+		background: rgba(78, 201, 180, 0.14);
+		border-color: rgba(78, 201, 180, 0.5);
+		color: var(--brand-teal-bright);
+		box-shadow: 0 0 0 1px rgba(78, 201, 180, 0.18);
+	}
+	.orbit__research__channel-hash {
+		font-family: var(--font-mono);
+		font-size: 0.52rem;
+		opacity: 0.7;
+	}
+	.orbit__research__channel-name {
+		font-family: var(--font-mono);
+		font-size: 0.54rem;
+		font-weight: var(--fw-semibold);
+		letter-spacing: 0.01em;
+	}
+
+	/* Proof line — replaces the corporate "PUSH TO #slack" UI. Static badge
+	   that reads as "the agent did real work to get this to you." */
+	.orbit__research__proof {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		padding: 6px 10px;
+		margin: 8px 0 9px;
+		background: rgba(78, 201, 180, 0.05);
+		border: 1px solid rgba(78, 201, 180, 0.14);
+		border-radius: 6px;
+	}
+	.orbit__research__proof-icon {
+		font-size: 0.65rem;
+		color: var(--brand-teal-bright);
+		line-height: 1;
+		flex-shrink: 0;
+	}
+	.orbit__research__proof-text {
+		font-family: var(--font-mono);
+		font-size: var(--type-card-meta-size);
+		color: rgba(255, 255, 255, 0.65);
+		letter-spacing: 0.01em;
+		line-height: 1.3;
+	}
+	/* Single primary CTA — full-width "Read the full brief →" */
+	.orbit__research__read-btn { width: 100%; }
+	.home-hero--light .orbit__research__proof {
+		background: rgba(13, 122, 110, 0.05);
+		border-color: rgba(13, 122, 110, 0.18);
+	}
+	.home-hero--light .orbit__research__proof-icon { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__research__proof-text { color: rgba(0, 0, 0, 0.6); }
+
+	/* Expand chevron — bottom-right of signal block */
+	.orbit__research__signal-expand {
+		position: absolute;
+		bottom: 9px;
+		right: 12px;
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		font-family: var(--font-display);
+		font-size: 0.46rem;
+		font-weight: var(--fw-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		color: var(--brand-teal-bright);
+		opacity: 0.7;
+		transition: opacity 0.2s ease;
+	}
+	.orbit__research__signal-block:hover .orbit__research__signal-expand { opacity: 1; }
+	.orbit__research__signal-expand svg { transition: transform 0.3s ease; }
+	.orbit__research__signal-block--expanded .orbit__research__signal-expand svg {
+		transform: rotate(180deg);
+	}
+	.orbit__research__signal-block--expanded .orbit__research__signal-expand-label::after {
+		content: ' · close';
+	}
+
+	/* ── Full-brief panel — absolute overlay covering the entire card body ──
+	   Body gets position: relative inline; brief uses inset: 0 to fully cover
+	   signal + process + picker + actions when open. Card height NEVER grows
+	   because brief is out of normal flow. Bounded by body's own size. */
+	.orbit__research__brief-panel {
+		position: absolute;
+		inset: 0;
+		z-index: 10;
+		opacity: 0;
+		pointer-events: none;
+		transform: translateY(6px);
+		transition:
+			opacity 0.28s ease,
+			transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+		background: linear-gradient(
+			180deg,
+			rgba(10, 14, 18, 0.97) 0%,
+			rgba(8, 12, 16, 0.99) 100%
+		);
+		backdrop-filter: blur(12px);
+		-webkit-backdrop-filter: blur(12px);
+		border-radius: 8px;
+		border: 1px solid rgba(78, 201, 180, 0.3);
+		box-shadow:
+			0 12px 32px rgba(0, 0, 0, 0.5),
+			0 2px 8px rgba(0, 0, 0, 0.3);
+		display: flex;
+		flex-direction: column;
+		padding: 12px 14px 14px;
+	}
+	.orbit__research__brief-panel[hidden] { display: none; }
+	.orbit__research__brief-panel--visible {
+		opacity: 1;
+		pointer-events: auto;
+		transform: translateY(0);
+	}
+	/* Compact header inside the brief panel: eyebrow + close button */
+	.orbit__research__brief-head {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 9px;
+		padding-bottom: 7px;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+		flex-shrink: 0;
+	}
+	.orbit__research__brief-eyebrow {
+		font-family: var(--font-display);
+		font-size: 0.48rem;
+		font-weight: var(--fw-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: var(--brand-teal-bright);
+		opacity: 0.85;
+	}
+	.orbit__research__brief-close {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 22px;
+		height: 22px;
+		border-radius: 4px;
+		background: rgba(255, 255, 255, 0.04);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		color: var(--color-text-muted);
+		cursor: pointer;
+		transition:
+			background 0.18s ease,
+			color 0.18s ease,
+			border-color 0.18s ease;
+		padding: 0;
+	}
+	.orbit__research__brief-close:hover {
+		background: rgba(78, 201, 180, 0.08);
+		color: var(--brand-teal-bright);
+		border-color: rgba(78, 201, 180, 0.3);
+	}
+	/* Scrollable inner area — fills remaining space inside the panel */
+	.orbit__research__brief-scroll {
+		flex: 1 1 0;
+		min-height: 0;        /* critical for flex children that scroll */
+		overflow-y: auto;
+		padding-right: 6px;
+		margin-bottom: 10px;
+		/* Soft fade hint at top + bottom edges when content overflows */
+		-webkit-mask-image: linear-gradient(
+			to bottom,
+			transparent 0%,
+			#000 6%,
+			#000 94%,
+			transparent 100%
+		);
+		mask-image: linear-gradient(
+			to bottom,
+			transparent 0%,
+			#000 6%,
+			#000 94%,
+			transparent 100%
+		);
+		scrollbar-width: thin;
+		scrollbar-color: rgba(78, 201, 180, 0.35) transparent;
+	}
+	.orbit__research__brief-scroll::-webkit-scrollbar { width: 4px; }
+	.orbit__research__brief-scroll::-webkit-scrollbar-track { background: transparent; }
+	.orbit__research__brief-scroll::-webkit-scrollbar-thumb {
+		background: rgba(78, 201, 180, 0.3);
+		border-radius: 2px;
+	}
+	.orbit__research__brief-scroll::-webkit-scrollbar-thumb:hover {
+		background: rgba(78, 201, 180, 0.5);
+	}
+	.orbit__research__brief-p {
+		font-family: var(--font-body);
+		font-size: 0.62rem;
+		line-height: 1.5;
+		color: rgba(255, 255, 255, 0.78);
+		margin: 0;
+	}
+	/* TL;DR summary — bigger, bolder lead line */
+	.orbit__research__brief-summary {
+		font-family: var(--font-body);
+		font-size: 0.72rem;
+		line-height: 1.42;
+		font-weight: var(--fw-semibold);
+		color: rgba(255, 255, 255, 0.95);
+		margin: 0 0 12px;
+	}
+	/* Stat tiles row — 4 across, key numbers */
+	.orbit__research__brief-stats {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 5px;
+		margin-bottom: 12px;
+	}
+	.orbit__research__brief-stat {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		padding: 8px 4px 7px;
+		border-radius: 6px;
+		background: rgba(78, 201, 180, 0.06);
+		border: 1px solid rgba(78, 201, 180, 0.16);
+		min-width: 0;
+	}
+	.orbit__research__brief-stat-value {
+		font-family: var(--font-display);
+		font-weight: var(--fw-bold);
+		font-size: 0.82rem;
+		line-height: 1.05;
+		color: var(--brand-teal-bright);
+		letter-spacing: -0.01em;
+	}
+	.orbit__research__brief-stat-label {
+		font-family: var(--font-accent-jakarta);
+		font-size: 0.42rem;
+		font-weight: var(--fw-semibold);
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: rgba(255, 255, 255, 0.55);
+		margin-top: 4px;
+		text-align: center;
+		line-height: 1.15;
+	}
+	/* Sectioned block: eyebrow + body */
+	.orbit__research__brief-block { margin-bottom: 10px; }
+	.orbit__research__brief-section-eyebrow {
+		display: block;
+		font-family: var(--font-accent-jakarta);
+		font-size: 0.44rem;
+		font-weight: var(--fw-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		color: var(--brand-teal-bright);
+		opacity: 0.85;
+		margin-bottom: 5px;
+	}
+	/* Takeaway callout — tinted box with left accent */
+	.orbit__research__brief-takeaway {
+		background: rgba(78, 201, 180, 0.08);
+		border: 1px solid rgba(78, 201, 180, 0.18);
+		border-left: 2px solid var(--brand-teal-bright);
+		padding: 8px 10px 9px;
+		border-radius: 4px;
+		margin: 0 0 12px;
+	}
+	.orbit__research__brief-takeaway-eyebrow {
+		display: block;
+		font-family: var(--font-accent-jakarta);
+		font-size: 0.44rem;
+		font-weight: var(--fw-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		color: var(--brand-teal-bright);
+		margin-bottom: 4px;
+	}
+	.orbit__research__brief-takeaway-body {
+		font-family: var(--font-body);
+		font-size: 0.64rem;
+		line-height: 1.45;
+		color: rgba(255, 255, 255, 0.88);
+		margin: 0;
+	}
+	/* Scope chip row — wrappable, soft teal pills */
+	.orbit__research__brief-chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px;
+		margin-top: 2px;
+	}
+	.orbit__research__brief-chip {
+		display: inline-flex;
+		align-items: center;
+		padding: 3px 8px;
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-card-meta-size);
+		font-weight: var(--fw-semibold);
+		color: rgba(255, 255, 255, 0.78);
+		background: rgba(78, 201, 180, 0.07);
+		border: 1px solid rgba(78, 201, 180, 0.2);
+		border-radius: 999px;
+		letter-spacing: 0.01em;
+		white-space: nowrap;
+	}
+	/* Trust strip — industry fit + social proof, stacked */
+	.orbit__research__brief-trust {
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+		margin: 10px 0 8px;
+		padding: 8px 10px;
+		background: rgba(255, 255, 255, 0.025);
+		border-radius: 5px;
+	}
+	.orbit__research__brief-trust-line {
+		font-family: var(--font-mono);
+		font-size: 0.52rem;
+		color: rgba(255, 255, 255, 0.6);
+		letter-spacing: 0.01em;
+		line-height: 1.4;
+	}
+	.home-hero--light .orbit__research__brief-chip {
+		color: rgba(0, 0, 0, 0.7);
+		background: rgba(13, 122, 110, 0.06);
+		border-color: rgba(13, 122, 110, 0.22);
+	}
+	.home-hero--light .orbit__research__brief-trust {
+		background: rgba(0, 0, 0, 0.03);
+	}
+	.home-hero--light .orbit__research__brief-trust-line {
+		color: rgba(0, 0, 0, 0.55);
+	}
+	.orbit__research__brief-sources {
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+		padding: 6px 0 2px;
+		margin-bottom: 0;
+		border-top: 1px solid rgba(255, 255, 255, 0.06);
+	}
+	.orbit__research__brief-source {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		text-decoration: none;
+		color: var(--color-text-muted);
+		font-family: var(--font-mono);
+		font-size: var(--type-card-meta-size);
+		letter-spacing: 0.01em;
+		transition: color 0.2s ease;
+	}
+	.orbit__research__brief-source:hover { color: var(--brand-teal-bright); }
+	.orbit__research__brief-source-arrow {
+		color: var(--brand-teal-bright);
+		opacity: 0.7;
+		flex-shrink: 0;
+	}
+	.orbit__research__brief-source-label {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	/* Brief CTA — primary teal button, two-line label */
+	.orbit__research__brief-cta {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 2px;
+		padding: 10px 12px;
+		border-radius: 6px;
+		background: linear-gradient(135deg, var(--brand-teal-dark, #1e7e72), var(--brand-teal-bright, #4ec9b4));
+		color: var(--brand-ink, #0a0c10);
+		text-decoration: none;
+		text-align: center;
+		box-shadow: 0 4px 14px -4px rgba(78, 201, 180, 0.45);
+		transition:
+			transform 0.18s ease,
+			box-shadow 0.18s ease;
+	}
+	.orbit__research__brief-cta:hover {
+		transform: translateY(-1px);
+		box-shadow: 0 6px 18px -4px rgba(78, 201, 180, 0.6);
+	}
+	.orbit__research__brief-cta-label {
+		font-family: var(--font-body);
+		font-size: var(--type-card-body-size);
+		font-weight: var(--fw-bold);
+		letter-spacing: -0.005em;
+		line-height: 1.2;
+	}
+	.orbit__research__brief-cta-sub {
+		font-family: var(--font-mono);
+		font-size: var(--type-card-eyebrow-size);
+		font-weight: var(--fw-semibold);
+		opacity: 0.78;
+		letter-spacing: 0.04em;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.orbit__research__signal-block::before,
+		.orbit__research__rcpt-pulse-dot { animation: none !important; }
+		.orbit__research__row,
+		.orbit__research__channel-chip,
+		.orbit__research__signal-block,
+		.orbit__research__brief-panel,
+		.orbit__research__brief-cta,
+		.orbit__research__signal-expand svg,
+		.orbit__research__receipt,
+		.orbit__research__rcpt-row,
+		.orbit__research__rcpt-avatar,
+		.orbit__research__channel-picker--hidden { transition: none !important; }
+		.orbit__research__row--enter,
+		.orbit__research__rcpt-row--enter,
+		.orbit__research__rcpt-avatar--enter { opacity: 1; transform: none; }
+	}
+
+	/* ════════════════════════════════════════════════════════════════════
+	   REDUCED MOTION
+	   ════════════════════════════════════════════════════════════════════ */
+	@media (prefers-reduced-motion: reduce) {
+		.orbit__sales__hot-dot,
+		.orbit__social__live-dot {
+			animation: none !important;
+		}
+	}
+
+	/* ════════════════════════════════════════════════════════════════════
+	   LIGHT MODE — .home-hero--light .orbit__*__*
+	   ════════════════════════════════════════════════════════════════════ */
+
+	/* Sales */
+	.home-hero--light .orbit__sales__chart {
+		background: rgba(0, 0, 0, 0.025);
+		border-color: rgba(0, 0, 0, 0.08);
+		color: var(--brand-teal-dark);
+	}
+	.home-hero--light .orbit__sales__chart-label { color: #111; }
+	.home-hero--light .orbit__sales__chart-trend {
+		color: var(--brand-teal-dark);
+		background: rgba(13, 122, 110, 0.1);
+		border-color: rgba(13, 122, 110, 0.3);
+	}
+	.home-hero--light .orbit__sales__spark { filter: drop-shadow(0 0 4px rgba(13, 122, 110, 0.2)); }
+
+	/* Workflow timeline — light mode */
+	.home-hero--light .orbit__sales__wf-bubble--done {
+		background: rgba(13, 122, 110, 0.1);
+		border-color: rgba(13, 122, 110, 0.4);
+		color: var(--brand-teal-dark);
+	}
+	.home-hero--light .orbit__sales__wf-bubble--current {
+		background: var(--gold-a14);
+		border-color: var(--gold-dark-a50);
+		color: var(--brand-gold-dark);
+	}
+	.home-hero--light .orbit__sales__wf-pending {
+		border-color: var(--gold-dark-a25);
+		border-top-color: var(--brand-gold-dark);
+	}
+	.home-hero--light .orbit__sales__wf-rail-line { background: rgba(0, 0, 0, 0.08); }
+	.home-hero--light .orbit__sales__wf-rail-line--done { background: rgba(13, 122, 110, 0.35); }
+	.home-hero--light .orbit__sales__wf-title { color: #111; }
+	.home-hero--light .orbit__sales__wf-step--done .orbit__sales__wf-title { color: rgba(0, 0, 0, 0.6); }
+	.home-hero--light .orbit__sales__wf-detail { color: rgba(0, 0, 0, 0.5); }
+	.home-hero--light .orbit__sales__wf-step--current .orbit__sales__wf-detail { color: rgba(0, 0, 0, 0.6); }
+	.home-hero--light .orbit__sales__wf-elapsed { color: rgba(0, 0, 0, 0.4); }
+	.home-hero--light .orbit__sales__wf-check { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__sales__wf-summary {
+		background: rgba(13, 122, 110, 0.07);
+		border-left-color: var(--brand-teal-dark);
+		color: var(--brand-teal-dark);
+	}
+	/* Reschedule picker — light */
+	.home-hero--light .orbit__sales__reslot-panel {
+		background: var(--gold-a05);
+		border-color: var(--gold-dark-a25);
+	}
+	.home-hero--light .orbit__sales__reslot-check { color: var(--brand-gold-dark); }
+	.home-hero--light .orbit__sales__reslot-dot {
+		background: var(--brand-gold-dark);
+		box-shadow: 0 0 4px var(--gold-dark-a50);
+	}
+	.home-hero--light .orbit__sales__reslot-pill {
+		background: rgba(0, 0, 0, 0.025);
+		border-color: rgba(0, 0, 0, 0.08);
+	}
+	.home-hero--light .orbit__sales__reslot-pill:hover {
+		background: rgba(13, 122, 110, 0.06);
+		border-color: rgba(13, 122, 110, 0.25);
+	}
+	.home-hero--light .orbit__sales__reslot-pill--selected {
+		background: rgba(13, 122, 110, 0.1);
+		border-color: rgba(13, 122, 110, 0.45);
+		box-shadow: 0 0 0 1px rgba(13, 122, 110, 0.2);
+	}
+	.home-hero--light .orbit__sales__reslot-pill-time { color: #111; }
+	.home-hero--light .orbit__sales__reslot-pill--selected .orbit__sales__reslot-pill-time {
+		color: var(--brand-teal-dark);
+	}
+	.home-hero--light .orbit__sales__reslot-pill-sub { color: rgba(0, 0, 0, 0.45); }
+
+	/* Shared — Post-cycle cascade (Social/Creatives/Ops/CEO) */
+	.home-hero--light .orbit__cascade__step {
+		background: rgba(13, 122, 110, 0.05);
+		border-left-color: rgba(13, 122, 110, 0.45);
+	}
+	.home-hero--light .orbit__cascade__arrow { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__cascade__agent { color: #111; }
+	.home-hero--light .orbit__cascade__detail { color: rgba(0, 0, 0, 0.55); }
+	.home-hero--light .orbit__cascade__summary {
+		background: rgba(13, 122, 110, 0.08);
+		border-color: rgba(13, 122, 110, 0.3);
+		color: var(--brand-teal-dark);
+	}
+
+	/* Social — Cross-Platform Publisher */
+	.home-hero--light .orbit__social__content {
+		background: rgba(0, 0, 0, 0.025);
+		border-color: rgba(0, 0, 0, 0.07);
+	}
+	.home-hero--light .orbit__social__content-eyebrow { color: rgba(0, 0, 0, 0.5); }
+	.home-hero--light .orbit__social__content-title { color: #111; }
+	.home-hero--light .orbit__social__content-meta { color: rgba(0, 0, 0, 0.45); }
+	.home-hero--light .orbit__social__platforms-label { color: rgba(0, 0, 0, 0.5); }
+	.home-hero--light .orbit__social__plat {
+		background: rgba(0, 0, 0, 0.025);
+		border-color: rgba(0, 0, 0, 0.08);
+	}
+	.home-hero--light .orbit__social__plat--live {
+		background: rgba(13, 122, 110, 0.05);
+		border-color: rgba(13, 122, 110, 0.32);
+	}
+	.home-hero--light .orbit__social__plat--draft {
+		background: var(--gold-a08);
+		border-color: var(--gold-dark-a42);
+	}
+	.home-hero--light .orbit__social__plat-status { color: rgba(0, 0, 0, 0.6); }
+	.home-hero--light .orbit__social__plat-status--live { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__social__plat-status--draft { color: var(--brand-gold-dark); }
+	.home-hero--light .orbit__social__plat-status--scheduled { color: rgba(0, 0, 0, 0.6); }
+	.home-hero--light .orbit__social__plat-metric { color: rgba(0, 0, 0, 0.45); }
+	.home-hero--light .orbit__social__plat--draft .orbit__social__plat-metric { color: var(--brand-gold-dark); }
+	.home-hero--light .orbit__social__ask-label { color: var(--brand-gold-dark); }
+	.home-hero--light .orbit__social__ask {
+		background: var(--gold-a05);
+		border-left-color: var(--gold-dark-a55);
+	}
+	.home-hero--light .orbit__social__ask-title { color: #111; }
+	.home-hero--light .orbit__social__ask-draft { border-top-color: rgba(0, 0, 0, 0.07); }
+	.home-hero--light .orbit__social__ask-draft-arrow { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__social__ask-draft-text { color: rgba(0, 0, 0, 0.7); }
+
+	/* Creatives — Render Bay */
+	.home-hero--light .orbit__creatives__brief {
+		background: rgba(0, 0, 0, 0.025);
+		border-color: rgba(0, 0, 0, 0.07);
+	}
+	.home-hero--light .orbit__creatives__brief-label { color: rgba(0, 0, 0, 0.5); }
+	.home-hero--light .orbit__creatives__brief-title { color: #111; }
+	.home-hero--light .orbit__creatives__brief-meta { color: rgba(0, 0, 0, 0.45); }
+	.home-hero--light .orbit__creatives__tiles-label { color: var(--brand-gold-dark); }
+	.home-hero--light .orbit__creatives__tile { border-color: rgba(0, 0, 0, 0.12); }
+	.home-hero--light .orbit__creatives__tile:hover:not([disabled]) {
+		border-color: rgba(13, 122, 110, 0.5);
+	}
+	.home-hero--light .orbit__creatives__tile--selected {
+		border-color: var(--brand-teal-dark);
+		box-shadow: 0 0 0 1px var(--brand-teal-dark), 0 0 12px rgba(13, 122, 110, 0.3);
+	}
+	.home-hero--light .orbit__creatives__tile-pick { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__creatives__tile-qa { color: var(--brand-teal-dark); }
+
+	/* Operations — Ticket Resolution */
+	.home-hero--light .orbit__ops__label { color: rgba(0, 0, 0, 0.5); }
+	.home-hero--light .orbit__ops__customer {
+		background: rgba(0, 0, 0, 0.025);
+		border-color: rgba(0, 0, 0, 0.07);
+	}
+	.home-hero--light .orbit__ops__avatar {
+		background: linear-gradient(135deg, var(--brand-teal-dark), #1a6e64);
+		color: #fff;
+	}
+	.home-hero--light .orbit__ops__customer-name { color: #111; }
+	.home-hero--light .orbit__ops__loyal-tag {
+		color: var(--brand-teal-dark);
+		border-color: rgba(13, 122, 110, 0.45);
+	}
+	.home-hero--light .orbit__ops__customer-meta { color: rgba(0, 0, 0, 0.5); }
+	.home-hero--light .orbit__ops__meta-sep { color: rgba(0, 0, 0, 0.25); }
+	.home-hero--light .orbit__ops__case {
+		background: var(--gold-a08);
+		border-left-color: var(--gold-dark-a55);
+	}
+	.home-hero--light .orbit__ops__case-summary { color: #111; }
+	.home-hero--light .orbit__ops__case-meta { color: var(--brand-gold-dark); }
+	.home-hero--light .orbit__ops__suggestion {
+		background: linear-gradient(135deg, rgba(13, 122, 110, 0.06) 0%, rgba(13, 122, 110, 0.02) 100%);
+		border-color: rgba(13, 122, 110, 0.28);
+	}
+	.home-hero--light .orbit__ops__suggestion-label { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__ops__suggestion-text { color: #111; }
+
+
+	/* CEO — Daily Filter */
+	.home-hero--light .orbit__ceo__chips-eyebrow { color: rgba(0, 0, 0, 0.5); }
+	.home-hero--light .orbit__ceo__chip {
+		background: rgba(0, 0, 0, 0.025);
+		border-color: rgba(0, 0, 0, 0.07);
+	}
+	.home-hero--light .orbit__ceo__chip-dot { background: var(--brand-teal-dark); }
+	.home-hero--light .orbit__ceo__chip--alert .orbit__ceo__chip-dot { background: var(--brand-gold-dark); }
+	.home-hero--light .orbit__ceo__chip--spend .orbit__ceo__chip-dot { background: var(--brand-teal-dark); }
+	.home-hero--light .orbit__ceo__chip-label { color: rgba(0, 0, 0, 0.78); }
+	.home-hero--light .orbit__ceo__chip-ping { color: rgba(0, 0, 0, 0.5); }
+	.home-hero--light .orbit__ceo__chip--alert .orbit__ceo__chip-ping { color: var(--brand-gold-dark); }
+	.home-hero--light .orbit__ceo__chip--spend .orbit__ceo__chip-ping { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__ceo__synth {
+		background: linear-gradient(135deg, rgba(13, 122, 110, 0.06) 0%, rgba(13, 122, 110, 0.02) 100%);
+		border-color: rgba(13, 122, 110, 0.25);
+	}
+	.home-hero--light .orbit__ceo__synth-tick { background: var(--brand-teal-dark); }
+	.home-hero--light .orbit__ceo__synth-text { color: rgba(0, 0, 0, 0.78); }
+	.home-hero--light .orbit__ceo__synth-conclusion { border-top-color: rgba(13, 122, 110, 0.22); }
+	.home-hero--light .orbit__ceo__synth-arrow { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__ceo__synth-conclusion-text { color: #111; }
+	.home-hero--light .orbit__ceo__decision-eyebrow { color: rgba(0, 0, 0, 0.5); }
+	.home-hero--light .orbit__ceo__decision-title { color: #111; }
+	.home-hero--light .orbit__ceo__decision-meta { color: rgba(0, 0, 0, 0.5); }
+
+	/* Research */
+	.home-hero--light .orbit__research__signal-block {
+		border-left-color: var(--brand-teal-dark);
+		background: linear-gradient(
+			90deg,
+			rgba(13, 122, 110, 0.08) 0%,
+			rgba(13, 122, 110, 0.03) 60%,
+			transparent 100%
+		);
+	}
+	.home-hero--light .orbit__research__signal-block::before {
+		background: linear-gradient(
+			90deg,
+			transparent 0%,
+			rgba(13, 122, 110, 0.55) 50%,
+			transparent 100%
+		);
+	}
+	.home-hero--light .orbit__research__signal-headline { color: #111; }
+	.home-hero--light .orbit__research__signal-evidence { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__research__signal-sub { color: rgba(0, 0, 0, 0.5); }
+	.home-hero--light .orbit__research__signal-sub-icon,
+	.home-hero--light .orbit__research__signal-accent { color: var(--brand-gold-dark); }
+
+	.home-hero--light .orbit__research__row:hover { background: rgba(13, 122, 110, 0.04); }
+	.home-hero--light .orbit__research__row-check { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__research__row-label { color: rgba(0, 0, 0, 0.45); }
+	.home-hero--light .orbit__research__row-detail { color: rgba(0, 0, 0, 0.6); }
+	.home-hero--light .orbit__research__src-cell { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__research__src-count { color: rgba(0, 0, 0, 0.85); }
+	.home-hero--light .orbit__research__funnel-step {
+		background: rgba(13, 122, 110, 0.08);
+		border-color: rgba(13, 122, 110, 0.22);
+		color: rgba(0, 0, 0, 0.85);
+	}
+	.home-hero--light .orbit__research__funnel-arrow { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__research__doc-icon { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__research__row--confirmed .orbit__research__row-label,
+	.home-hero--light .orbit__research__row--confirmed .orbit__research__row-detail {
+		color: var(--brand-teal-dark);
+	}
+
+	.home-hero--light .orbit__research__channel-label { color: rgba(0, 0, 0, 0.45); }
+	.home-hero--light .orbit__research__channel-chip {
+		background: rgba(0, 0, 0, 0.025);
+		border-color: rgba(0, 0, 0, 0.08);
+		color: rgba(0, 0, 0, 0.55);
+	}
+	.home-hero--light .orbit__research__channel-chip:hover {
+		background: rgba(13, 122, 110, 0.06);
+		border-color: rgba(13, 122, 110, 0.25);
+		color: #111;
+	}
+	.home-hero--light .orbit__research__channel-chip--selected {
+		background: rgba(13, 122, 110, 0.1);
+		border-color: rgba(13, 122, 110, 0.45);
+		color: var(--brand-teal-dark);
+	}
+	.home-hero--light .orbit__research__signal-block:hover {
+		background: linear-gradient(
+			90deg,
+			rgba(13, 122, 110, 0.12) 0%,
+			rgba(13, 122, 110, 0.04) 60%,
+			transparent 100%
+		);
+	}
+	.home-hero--light .orbit__research__signal-expand { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__research__brief-panel {
+		background: linear-gradient(180deg, rgba(248, 248, 250, 0.97) 0%, rgba(245, 245, 248, 0.99) 100%);
+		border-color: rgba(13, 122, 110, 0.35);
+	}
+	.home-hero--light .orbit__research__brief-head {
+		border-bottom-color: rgba(0, 0, 0, 0.08);
+	}
+	.home-hero--light .orbit__research__brief-eyebrow {
+		color: var(--brand-teal-dark);
+	}
+	.home-hero--light .orbit__research__brief-close {
+		background: rgba(0, 0, 0, 0.03);
+		border-color: rgba(0, 0, 0, 0.1);
+		color: rgba(0, 0, 0, 0.55);
+	}
+	.home-hero--light .orbit__research__brief-close:hover {
+		background: rgba(13, 122, 110, 0.08);
+		border-color: rgba(13, 122, 110, 0.3);
+		color: var(--brand-teal-dark);
+	}
+	.home-hero--light .orbit__research__brief-scroll {
+		scrollbar-color: rgba(13, 122, 110, 0.4) transparent;
+	}
+	.home-hero--light .orbit__research__brief-scroll::-webkit-scrollbar-thumb {
+		background: rgba(13, 122, 110, 0.35);
+	}
+	.home-hero--light .orbit__research__brief-scroll::-webkit-scrollbar-thumb:hover {
+		background: rgba(13, 122, 110, 0.55);
+	}
+	.home-hero--light .orbit__research__brief-p { color: rgba(0, 0, 0, 0.72); }
+	.home-hero--light .orbit__research__brief-summary { color: rgba(0, 0, 0, 0.88); }
+	.home-hero--light .orbit__research__brief-stat {
+		background: rgba(13, 122, 110, 0.06);
+		border-color: rgba(13, 122, 110, 0.22);
+	}
+	.home-hero--light .orbit__research__brief-stat-value { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__research__brief-stat-label { color: rgba(0, 0, 0, 0.5); }
+	.home-hero--light .orbit__research__brief-section-eyebrow { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__research__brief-takeaway {
+		background: rgba(13, 122, 110, 0.07);
+		border-color: rgba(13, 122, 110, 0.22);
+		border-left-color: var(--brand-teal-dark);
+	}
+	.home-hero--light .orbit__research__brief-takeaway-eyebrow { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__research__brief-takeaway-body { color: rgba(0, 0, 0, 0.78); }
+	.home-hero--light .orbit__research__brief-sources {
+		border-top-color: rgba(0, 0, 0, 0.07);
+		border-bottom-color: rgba(0, 0, 0, 0.07);
+	}
+	.home-hero--light .orbit__research__brief-source { color: rgba(0, 0, 0, 0.55); }
+	.home-hero--light .orbit__research__brief-source:hover { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__research__brief-source-arrow { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__research__brief-cta {
+		color: #fff;
+		box-shadow: 0 4px 14px -4px rgba(13, 122, 110, 0.5);
+	}
+
+	/* Receipt panel — light */
+	.home-hero--light .orbit__research__receipt {
+		background: linear-gradient(180deg, rgba(13, 122, 110, 0.08) 0%, rgba(13, 122, 110, 0.03) 100%);
+		border-color: rgba(13, 122, 110, 0.25);
+	}
+	.home-hero--light .orbit__research__rcpt-row--amber { color: var(--brand-gold-dark); }
+	.home-hero--light .orbit__research__rcpt-row--teal { color: var(--brand-teal-dark); }
+	.home-hero--light .orbit__research__rcpt-detail { color: rgba(0, 0, 0, 0.6); }
+	.home-hero--light .orbit__research__rcpt-pulse-dot {
+		background: var(--brand-gold-dark);
+		box-shadow: 0 0 5px var(--gold-dark-a50);
+	}
+	.home-hero--light .orbit__research__rcpt-avatar {
+		background: rgba(13, 122, 110, 0.18);
+		border-color: rgba(255, 255, 255, 0.95);
+		color: var(--brand-teal-dark);
 	}
 </style>

@@ -1,117 +1,244 @@
 import { site } from '../config/site';
+import { ik, tr } from '../config/imagekit';
 
 // ── Hero content ──
-export const heroEyebrow = 'Your business on autopilot';
-export const heroHeadlineBefore = 'AI Agents for';
+export const heroEyebrow = 'One agent per function. Not one more hire.';
+export const heroHeadlineBefore = 'One agent for';
 export const heroHeadlineAfter = '.';
-export const heroRotationWords = [
-	'Outreach',
-	'Marketing',
-	'Research',
-	'Finance',
-	'Creatives',
-	'Sales',
-];
+export const heroRotationWords = ['Sales', 'Social', 'Creatives', 'Operations', 'CEO', 'Research'];
 export const heroSubtext =
-	'We understand your business, then design, develop, and train AI agents to run it for you.';
+	'Each one does the work a hire would — drafts outreach, ships creatives, briefs your morning. A reviewer signs off before anything goes out, and their edits make the next run sharper.';
 export const bookingUrl = site.bookingUrl;
 
 // ── Agent orbit data ──
-export interface Capability {
-	text: string;
-	status: 'active' | 'planned';
+//
+// Each agent's card body is a "working console" — a bespoke layout per agent,
+// not a generic state mode. Spec: docs/superpowers/specs/2026-05-23-hero-console-cards-design.md
+
+/** Post-cycle CTA — replaces the action bar after the demo cycle completes,
+ *  driving the visitor to NexAI's booking link. Universal across all agents. */
+export interface PostCycleCta {
+	label: string; // "Want a Sales Agent like this for your business?"
+	sub: string; // "Book a call with NexAI →"
+	href: string; // booking URL
 }
 
-// Each agent's card shows a different operational state. The body is
-// rendered by mode (one of the AgentCardState union variants below) using
-// the visual primitives in `agent-orbit.ts` (status pip, ring, sparkline,
-// network, avatar, continuation button, channel grid, icon row).
+// ─── Sales — War Room ────────────────────────────────────────────────
+/** Pipeline value chart — area sparkline + trend label */
+export interface SalesPipelineChart {
+	valueLabel: string; // "Pipeline · $2.4M"
+	trendLabel: string; // "↑ 22% WoW"
+	points: number[]; // 8 weekly values, normalised on render
+}
+/** One step in the agent's workflow timeline */
+export interface SalesWorkflowStep {
+	iconKey: 'crm' | 'linkedin' | 'phone' | 'calendar' | 'email' | 'crm-save';
+	title: string; // "Lead from CRM"
+	detail: string; // "Aria Sharma · Founder, Indoera"
+	status: 'done' | 'current';
+	elapsed?: string; // "3m42s" for phone call
+}
+/** Two-step morph that fires after Confirm click */
+export interface SalesPostConfirm {
+	steps: [SalesWorkflowStep, SalesWorkflowStep]; // email + crm-save
+	summary: string; // "Lead to booked, end-to-end"
+}
+export interface SalesRescheduleSlot {
+	label: string; // "Thu 10:00am"
+	sub: string; // "30 min · same agenda"
+}
+export interface SalesWarRoomState {
+	mode: 'sales-warroom';
+	badge: string;
+	chart: SalesPipelineChart;
+	workflow: SalesWorkflowStep[]; // 4 steps: 3 done + 1 current
+	postConfirm: SalesPostConfirm;
+	rescheduleSlots: SalesRescheduleSlot[]; // 3 alt times the agent proposes
+	rescheduleCheckLabel: string; // "Checking Aria's calendar · 2 conflicts found"
+	confirmLabel: string; // "Confirm meeting"
+	declineLabel: string; // "Reschedule"
+	confirmedLabel: string; // "Booked"
+	postCycleCta: PostCycleCta; // replaces action bar after cycle complete
+}
 
+// ─── Social — Cross-Platform Publisher ────────────────────────────────
+export type SocialPlatformKey = 'ig' | 'fb' | 'tt' | 'li' | 'yt' | 'x';
+export type SocialPlatformStatus = 'live' | 'scheduled' | 'draft';
+export interface SocialPlatform {
+	key: SocialPlatformKey;
+	label: string; // "Instagram" — aria
+	status: SocialPlatformStatus;
+	statusLabel: string; // "LIVE" | "6 PM" | "DRAFT"
+	metric: string; // "6.4K · +18%" | "queued" | "needs you"
+}
+export interface SocialCascadeStep {
+	agent: string; // "LinkedIn" | "IG Reels" | "Analytics"
+	detail: string;
+}
+export interface SocialTriageState {
+	mode: 'social-triage';
+	badge: string;
+	contentEyebrow: string; // "Today's drop"
+	contentTitle: string; // "Tree runner SU25 — launch"
+	contentMeta: string; // "Allbirds · 4 variants"
+	platformsLabel: string; // "Across platforms"
+	platforms: SocialPlatform[]; // 6 — IG, FB, TT, LI, YT, X
+	askLabel: string; // "Needs you · 1"
+	askTitle: string; // "Approve LinkedIn caption · Senior Partner tone"
+	askDraft: string; // italic preview of the draft copy
+	ctaA: string; // "Approve"
+	ctaB: string; // "Edit"
+	cascade: SocialCascadeStep[];
+	cascadeSummary: string;
+	postCycleCta: PostCycleCta;
+}
+
+// ─── Creatives — Render Bay ──────────────────────────────────────────
+export interface CreativesTile {
+	id: 'A' | 'B' | 'C' | 'D';
+	imageSrc: string; // real Studio image URL
+	imageAlt: string;
+	scene: string; // "heritage" | "bridal" | "macro" | "flat-lay"
+	qaScore: number; // 0–100
+	isAgentPick?: boolean;
+}
+export interface CreativesCascadeStep {
+	agent: string; // "Shopify" | "Social" | "Brand pack"
+	detail: string;
+}
+export interface CreativesRenderBayState {
+	mode: 'creatives-renderbay';
+	badge: string;
+	briefLabel: string; // "Brief"
+	briefTitle: string; // "Dhwani Bansal Jewelry · Diwali drop"
+	briefMeta: string; // "#SKU-DBJ-D24 · 2 variants"
+	tilesLabel: string; // "Pick your hero variant"
+	tiles: [CreativesTile, CreativesTile];
+	ctaA: string; // "Approve pick → push live"
+	ctaB: string; // "See more →"
+	cascade: CreativesCascadeStep[];
+	cascadeSummary: string;
+	postCycleCta: PostCycleCta;
+}
+
+// ─── Operations — Ticket Resolution ──────────────────────────────────
+export interface OpsCustomer {
+	initials: string;
+	name: string;
+	ltv: string;
+	orders: number;
+	loyal: boolean;
+}
+export interface OpsCase {
+	summary: string; // "Shipping delay · 6 days"
+	meta: string; // "2nd ticket"
+}
+export interface OpsSuggestion {
+	text: string;
+	confidence: number; // 0–100
+}
+export interface OpsCascadeStep {
+	agent: string; // "Razorpay" | "Email" | "WA"
+	detail: string;
+}
+export interface OpsFloorState {
+	mode: 'ops-floor';
+	badge: string;
+	customerLabel: string; // "Customer"
+	customer: OpsCustomer;
+	caseLabel: string; // "Case"
+	case: OpsCase;
+	suggestionLabel: string; // "Agent suggests"
+	suggestion: OpsSuggestion;
+	ctaA: string; // "Approve"
+	ctaB: string; // "Override"
+	cascade: OpsCascadeStep[];
+	cascadeSummary: string;
+	postCycleCta: PostCycleCta;
+}
+
+// ─── CEO — The Orchestrator's Daily Filter ───────────────────────────
+/** One specialist agent's status ping in the orchestration row */
+export interface CeoAgentChip {
+	key: 'sales' | 'research' | 'social' | 'creatives' | 'ops';
+	label: string; // "Sales"
+	ping: string; // "3 demos" | "1 brief" | "2 esc" | "4 PDPs" | "$400 ask"
+	tone: 'work' | 'alert' | 'spend';
+}
+/** Synthesis block — 3 lines linking agent signals + 1 conclusion */
+export interface CeoSynthesis {
+	lines: string[]; // 3 short signal lines
+	conclusion: string; // "Glossier brief slips without a hire."
+}
+/** One step in the post-decision cascade — CEO routing the call to agents */
+export interface CeoCascadeStep {
+	agent: string; // "Ops" | "Finance" | "Sales"
+	detail: string; // "drafting offer @ $11K/mo"
+}
+export interface CeoFilterState {
+	mode: 'ceo-filter';
+	badge: string;
+	chipsEyebrow: string; // "Read across today"
+	chips: CeoAgentChip[]; // 5 chips
+	synthesis: CeoSynthesis;
+	decisionEyebrow: string; // "The 1 decision that needs you today"
+	decisionTitle: string; // "Hire Sr. Designer"
+	decisionMeta: string; // "decide by 4pm"
+	ctaA: string; // "Hire"
+	ctaB: string; // "Defer to Sep"
+	cascade: CeoCascadeStep[];
+	cascadeSummary: string; // "Loop closed · 3 agents updated"
+	postCycleCta: PostCycleCta;
+}
+
+// ─── Research — Tomorrow's Brief Picker ──────────────────────────────
+/** Today's brief — the agent's already-shipped deliverable shown at top */
+export interface ResearchTodayBrief {
+	timestamp: string; // "06:42 AM"
+	shippedLabel: string; // "shipped"
+	insight: string; // "25% of work runs agent-alone by 2030"
+	insightSource: string; // "Gartner+13" — mono attribution chip
+}
+/** One angle the agent can take for tomorrow's brief — the visitor picks one */
+export interface ResearchAngleOption {
+	key: string; // "capital" | "execution" | "hiring"
+	title: string; // "Capital flows"
+	meta: string; // "7 signals" | "11 cases" | "LinkedIn + Greenhouse"
+	isDefault?: boolean;
+	isAgentPick?: boolean; // used by "Surprise me" to land here
+}
+/** One step in the post-queue cascade — agent confirming work is queued */
+export interface ResearchQueueStep {
+	iconKey: 'sources' | 'calendar' | 'brief';
+	title: string;
+	detail: string;
+}
+export interface ResearchPostQueue {
+	steps: ResearchQueueStep[]; // 2 steps
+	summary: string; // "Cycle complete · agent on-shift for 23h 47m"
+}
+export interface ResearchBriefState {
+	mode: 'research-brief';
+	badge: string;
+	today: ResearchTodayBrief;
+	pickerLabel: string; // "TOMORROW'S BRIEF · pick an angle"
+	angles: ResearchAngleOption[]; // 3 options
+	queueLabel: string; // "Queue for 6:42 AM →"
+	queuedLabel: string; // "Queued ✓"
+	surpriseLabel: string; // "Surprise me"
+	surpriseSubLabel: string; // "Agent picked: Execution gap — highest signal density this week."
+	postQueue: ResearchPostQueue;
+	postCycleCta: PostCycleCta; // replaces action bar after cycle complete
+}
+
+// ─── Discriminated union ─────────────────────────────────────────────
 export type AgentCardState =
-	| {
-			mode: 'tool-calls';
-			badge: string;
-			steps: {
-				tool: string;
-				iconKey: string;
-				status: 'done' | 'running';
-				label: string;
-			}[];
-			progress: { current: number; total: number; unit: string };
-	  }
-	| {
-			mode: 'approval';
-			badge: string;
-			amount: string;
-			avatar: string;
-			client: string;
-			invoice: string;
-			context: string;
-			ageMin: number;
-			risk: 'green' | 'amber' | 'red';
-	  }
-	| {
-			mode: 'thread';
-			badge: string;
-			peers: { label: string; dir: 'in' | 'out' }[];
-			messages: { dir: 'in' | 'out'; agent: string; text: string }[];
-			decision: { text: string; outcome: 'green' | 'amber' | 'red' };
-			footer: string;
-	  }
-	| {
-			mode: 'connectors';
-			badge: string;
-			channels: {
-				iconKey: string;
-				status: 'done' | 'running' | 'queued';
-				label: string;
-				caption: string;
-				live?: boolean;
-			}[];
-			recent: { iconKey: string; title: string };
-			footer: string;
-	  }
-	| {
-			mode: 'batch';
-			badge: string;
-			ring: { current: number; total: number; unit: string };
-			channels: { iconKey: string; label: string; action: string }[];
-			footer: string;
-	  }
-	| {
-			mode: 'metrics';
-			badge: string;
-			tiles: {
-				label: string;
-				value: string;
-				points?: number[];
-				trend?: 'up' | 'down' | 'flat';
-				sub?: string;
-				featured?: boolean;
-			}[];
-			footer?: string;
-	  }
-	| {
-			mode: 'pipeline';
-			badge: string;
-			tools: {
-				iconKey: string;
-				label: string;
-				value: string;
-				status: 'done' | 'running';
-				pending?: boolean;
-			}[];
-			deal: {
-				name: string;
-				stage: string;
-				stageNum: number;
-				totalStages: number;
-				value: string;
-				subtext?: string;
-			};
-			headline: { label: string; value: string; sub?: string; trend?: string; points?: number[] };
-			footer: string;
-	  };
+	| SalesWarRoomState
+	| SocialTriageState
+	| CreativesRenderBayState
+	| OpsFloorState
+	| CeoFilterState
+	| ResearchBriefState;
 
 export interface AgentNode {
 	id: string;
@@ -119,196 +246,358 @@ export interface AgentNode {
 	role: string;
 	description: string;
 	icon: string;
-	capabilities: Capability[];
 	cardState: AgentCardState;
 }
 
+// ─── Agents (orbit order, agent[0] at checkpoint) ────────────────────
 export const agents: AgentNode[] = [
 	{
-		id: 'outreach',
-		title: 'Outreach',
-		role: 'Sales & Partnerships',
+		id: 'sales',
+		title: 'Sales',
+		role: 'Pipeline & Outreach',
 		description:
-			'Finds leads, writes cold messages, tracks follow-ups, and flags deals that are going cold.',
-		icon: 'M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75',
-		capabilities: [
-			{ text: 'Cold outreach sequences', status: 'active' },
-			{ text: 'CRM updates via chat', status: 'active' },
-			{ text: 'Follow-up reminders', status: 'planned' },
-			{ text: 'Partnership discovery', status: 'planned' },
-		],
+			'Finds leads, drafts the cold outreach, qualifies inbound, and books the room before it goes cold.',
+		icon: 'M23 6l-9.5 9.5-5-5L1 18M17 6h6v6',
 		cardState: {
-			mode: 'tool-calls',
-			badge: 'running',
-			steps: [
-				{ tool: 'apollo', iconKey: 'apollo', status: 'done', label: 'query · D2C, Series A, IN' },
+			mode: 'sales-warroom',
+			badge: 'BOOKING MEETING',
+			chart: {
+				valueLabel: 'Pipeline · $2.4M',
+				trendLabel: '↑ 34% WoW',
+				// 8-week weekly pipeline value (in $K) — steep growth curve
+				points: [320, 420, 540, 720, 960, 1280, 1820, 2400],
+			},
+			// Agent's live qualification flow — 3 done, 1 current waiting on user
+			workflow: [
 				{
-					tool: 'clearbit',
-					iconKey: 'clearbit',
+					iconKey: 'crm',
+					title: 'New lead detected in CRM',
+					detail: 'Aria Sharma · Head of Growth, The Whole Truth',
 					status: 'done',
-					label: 'enrich · harshita@moshal',
 				},
-				{ tool: 'score', iconKey: 'brain', status: 'done', label: 'intent · 84/100' },
-				{ tool: 'gmail', iconKey: 'gmail', status: 'running', label: 'draft · subject A/B test' },
+				{
+					iconKey: 'linkedin',
+					title: "Enriched Aria's profile",
+					detail: 'Series B · 80 employees · Mumbai',
+					status: 'done',
+				},
+				{
+					iconKey: 'phone',
+					title: 'Discovery call',
+					detail: '"We need AI photoshoots for our protein bar launch…"',
+					status: 'done',
+					elapsed: '3m42s',
+				},
+				{
+					iconKey: 'calendar',
+					title: 'Calendar invite drafted',
+					detail: 'Wed 12:30pm · 30 min · awaiting your confirm',
+					status: 'current',
+				},
 			],
-			progress: { current: 4, total: 12, unit: 'leads processed' },
+			postConfirm: {
+				steps: [
+					{
+						iconKey: 'email',
+						title: 'Confirmation sent',
+						detail: 'aria@thewholetruthfoods.com',
+						status: 'done',
+					},
+					{
+						iconKey: 'crm-save',
+						title: 'Saved to your CRM',
+						detail: 'Pipeline +$24K',
+						status: 'done',
+					},
+				],
+				summary: 'Lead to booked, end-to-end',
+			},
+			rescheduleSlots: [
+				{ label: 'Thu 10:00am', sub: '30 min · same agenda' },
+				{ label: 'Thu 3:00pm', sub: '45 min · w/ co-founder' },
+				{ label: 'Fri 11:00am', sub: '30 min · post product demo' },
+			],
+			rescheduleCheckLabel: '3 open slots found',
+			confirmLabel: 'Confirm meeting',
+			declineLabel: 'Reschedule',
+			confirmedLabel: 'Booked',
+			postCycleCta: {
+				label: 'Want a Sales Agent for your business?',
+				sub: 'Book a call with NexAI →',
+				href: site.bookingUrl,
+			},
 		},
 	},
 	{
-		id: 'marketing',
-		title: 'Marketing',
-		role: 'Content & Campaigns',
+		id: 'social',
+		title: 'Social',
+		role: 'Posts & Replies',
 		description:
-			"Runs content pipelines, schedules posts, and tells you what's actually driving traffic.",
-		icon: 'M22 12h-4l-3 9L9 3l-3 9H2',
-		capabilities: [
-			{ text: 'Social post scheduling', status: 'active' },
-			{ text: 'SEO audit reports', status: 'active' },
-			{ text: 'Campaign performance summaries', status: 'active' },
-			{ text: 'Ad creative A/B testing', status: 'planned' },
-		],
+			'Publishes across platforms, watches engagement on live posts, and triages DMs with drafted replies — holding anything that needs your voice.',
+		icon: 'M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z',
 		cardState: {
-			mode: 'batch',
-			badge: 'batch',
-			ring: { current: 11, total: 18, unit: 'posts' },
-			channels: [
-				{ iconKey: 'linkedin', label: 'LinkedIn', action: 'carousel · live now' },
-				{ iconKey: 'x', label: 'X', action: '5-post thread · 4PM' },
-				{ iconKey: 'buffer', label: 'Buffer', action: '9 queued · IG + LI' },
-				{ iconKey: 'mailchimp', label: 'Mailchimp', action: 'digest → 8AM IST' },
+			mode: 'social-triage',
+			badge: 'PUBLISHING · 6 PLATFORMS',
+			contentEyebrow: "Today's drop",
+			contentTitle: 'Tree runner SU25 — launch',
+			contentMeta: 'Allbirds · 6 variants',
+			platformsLabel: 'Across platforms',
+			platforms: [
+				{
+					key: 'ig',
+					label: 'Instagram',
+					status: 'live',
+					statusLabel: 'LIVE',
+					metric: '6.4K · +18%',
+				},
+				{
+					key: 'fb',
+					label: 'Facebook',
+					status: 'live',
+					statusLabel: 'LIVE',
+					metric: '2.1K shares',
+				},
+				{
+					key: 'tt',
+					label: 'TikTok',
+					status: 'scheduled',
+					statusLabel: '6 PM',
+					metric: 'queued',
+				},
+				{
+					key: 'li',
+					label: 'LinkedIn',
+					status: 'draft',
+					statusLabel: 'DRAFT',
+					metric: 'needs you',
+				},
+				{
+					key: 'yt',
+					label: 'YouTube',
+					status: 'scheduled',
+					statusLabel: '8 PM',
+					metric: 'Shorts cut',
+				},
+				{
+					key: 'x',
+					label: 'X',
+					status: 'live',
+					statusLabel: 'LIVE',
+					metric: '+24% velocity',
+				},
 			],
-			footer: '~4 posts/min',
-		},
-	},
-	{
-		id: 'research',
-		title: 'Research',
-		role: 'Signals & Insights',
-		description:
-			'Reads the market, scans competitors, and surfaces signals that change what to ship next.',
-		icon: 'M11 19a8 8 0 100-16 8 8 0 000 16zm5.5-2.5L21 21M9 11h4M11 9v4',
-		capabilities: [
-			{ text: 'Weekly competitor scans', status: 'active' },
-			{ text: 'Trend & signal reports', status: 'active' },
-			{ text: 'Customer interview synthesis', status: 'planned' },
-			{ text: 'Market sizing briefs', status: 'planned' },
-		],
-		cardState: {
-			mode: 'thread',
-			badge: 'scanning',
-			peers: [
-				{ label: 'S', dir: 'in' },
-				{ label: 'C', dir: 'out' },
+			askLabel: 'Needs you · 1',
+			askTitle: 'Approve LinkedIn caption · Senior Partner tone',
+			askDraft:
+				'"Building shoes for the way you move — not the way you look. Tree runner SU25 drops today."',
+			ctaA: 'Approve',
+			ctaB: 'Edit',
+			cascade: [
+				{ agent: 'LinkedIn', detail: 'published · 11:42 AM' },
+				{ agent: 'IG Reels', detail: 'cross-posted as 15s cut' },
+				{ agent: 'Analytics', detail: 'tracking 4 platforms' },
 			],
-			messages: [
-				{ dir: 'in', agent: 'sales', text: 'Banno win, next play?' },
-				{ dir: 'out', agent: 'creatives', text: 'Indie jewelry trend?' },
-				{ dir: 'in', agent: 'creatives', text: '+28% search · 30d' },
-			],
-			decision: { text: 'Trend: indie jewelry → adopt', outcome: 'green' },
-			footer: '3 signals tracked',
-		},
-	},
-	{
-		id: 'finance',
-		title: 'Finance',
-		role: 'P&L & Cash Flow',
-		description:
-			'Watches your numbers, flags overruns, and drafts invoices before you remember to.',
-		icon: 'M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6',
-		capabilities: [
-			{ text: 'Monthly P&L summaries', status: 'active' },
-			{ text: 'Invoice generation', status: 'active' },
-			{ text: 'Expense categorization', status: 'planned' },
-			{ text: 'Revenue forecast modeling', status: 'planned' },
-		],
-		cardState: {
-			mode: 'approval',
-			badge: 'waiting',
-			amount: '$18,500',
-			avatar: 'RJ',
-			client: 'Rahul Juneja',
-			invoice: '#INV-047',
-			context: '32 SKUs · jewelry restock',
-			ageMin: 14,
-			risk: 'amber',
+			cascadeSummary: '4 platforms live · tracked in one place',
+			postCycleCta: {
+				label: 'Want a Social Agent like this for your brand?',
+				sub: 'Book a call with NexAI →',
+				href: site.bookingUrl,
+			},
 		},
 	},
 	{
 		id: 'creatives',
 		title: 'Creatives',
-		role: 'Visual & Brand',
+		role: 'PDP & UGC',
 		description:
-			'Generates cover art, ad variants, and brand visuals on cue. Keeps every channel fed.',
+			'Generates product variants, scores each on QA, and pushes the winner you pick straight to the PDP.',
 		icon: 'M12 19l7-7 3 3-7 7-3-3zM18 13l-1.5-7.5L2 2l3.5 14.5L13 18zM2 2l7.586 7.586M11 11a2 2 0 11-4 0 2 2 0 014 0z',
-		capabilities: [
-			{ text: 'AI cover art & banners', status: 'active' },
-			{ text: 'Ad creative variants', status: 'active' },
-			{ text: 'Video edits & motion', status: 'planned' },
-			{ text: 'Brand asset library sync', status: 'planned' },
-		],
 		cardState: {
-			mode: 'connectors',
-			badge: 'rendering',
-			channels: [
+			mode: 'creatives-renderbay',
+			badge: '2 RENDERS READY',
+			briefLabel: 'Brief',
+			briefTitle: 'Dhwani Bansal Jewelry · Diwali drop',
+			briefMeta: '#SKU-DBJ-D24 · 2 variants',
+			tilesLabel: 'Pick your hero variant',
+			tiles: [
 				{
-					iconKey: 'midjourney',
-					status: 'running',
-					label: 'Midjourney',
-					caption: 'cover · 4 variants',
+					id: 'A',
+					imageSrc: `${ik}/studio/hero/dbj/dbj-04.jpg${tr.thumb}`,
+					imageAlt: 'DBJ · bridal styling variant',
+					scene: 'bridal',
+					qaScore: 94,
+					isAgentPick: true,
 				},
 				{
-					iconKey: 'figma',
-					status: 'done',
-					label: 'Figma',
-					caption: 'hero · v3 ready',
-					live: true,
+					id: 'B',
+					imageSrc: `${ik}/studio/hero/dbj/dbj-01.jpg${tr.thumb}`,
+					imageAlt: 'DBJ · earring macro variant',
+					scene: 'macro',
+					qaScore: 89,
 				},
-				{ iconKey: 'canva', status: 'done', label: 'Canva', caption: 'ad set · 6 sizes' },
-				{ iconKey: 'runway', status: 'queued', label: 'Runway', caption: 'reel · 12s queued' },
 			],
-			recent: { iconKey: 'midjourney', title: 'shore-blue cover · v3 ready' },
-			footer: 'last render · 4m ago',
+			ctaA: 'Approve pick → push live',
+			ctaB: 'See more →',
+			cascade: [
+				{ agent: 'Shopify', detail: 'uploaded to PDP · live' },
+				{ agent: 'Social', detail: 'scheduled IG · 6 PM IST' },
+				{ agent: 'Brand pack', detail: 'variant saved · v24' },
+			],
+			cascadeSummary: 'Loop closed · 3 channels updated',
+			postCycleCta: {
+				label: 'Want a Creatives Agent like this for your PDPs?',
+				sub: 'Book a call with NexAI →',
+				href: site.bookingUrl,
+			},
 		},
 	},
 	{
-		id: 'sales',
-		title: 'Sales',
-		role: 'Pipeline & Demos',
+		id: 'ops',
+		title: 'Operations',
+		role: 'Tickets & Accounts',
 		description:
-			'Qualifies inbound leads, drafts proposals, and books demos before you remember to.',
-		icon: 'M23 6l-9.5 9.5-5-5L1 18M17 6h6v6',
-		capabilities: [
-			{ text: 'Lead qualification scoring', status: 'active' },
-			{ text: 'Proposal drafting', status: 'active' },
-			{ text: 'Demo scheduling automation', status: 'planned' },
-			{ text: 'Pipeline health alerts', status: 'planned' },
-		],
+			'Triages support, drafts the customer reply, and protects your high-LTV accounts — with a refund or override always yours to sign off.',
+		icon: 'M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z',
 		cardState: {
-			mode: 'pipeline',
-			badge: 'on call',
-			tools: [
-				{ iconKey: 'phone', value: '18', label: 'calls', status: 'done' },
-				{ iconKey: 'clock', value: '12h', label: 'active', status: 'done' },
-				{ iconKey: 'gmail', value: '47', label: 'emails', status: 'done' },
-				{ iconKey: 'bell', value: '31', label: 'queued', status: 'running', pending: true },
+			mode: 'ops-floor',
+			badge: 'ESCALATION · #4821',
+			customerLabel: 'Customer',
+			customer: {
+				initials: 'RM',
+				name: 'Riya M',
+				ltv: '₹84K LTV',
+				orders: 12,
+				loyal: true,
+			},
+			caseLabel: 'Case',
+			case: {
+				summary: 'Shipping delay · 6 days',
+				meta: '2nd ticket',
+			},
+			suggestionLabel: 'Agent suggests · 92% conf',
+			suggestion: {
+				text: 'Full refund ₹4,400 + ₹200 voucher · warm-tone apology.',
+				confidence: 92,
+			},
+			ctaA: 'Approve',
+			ctaB: 'Override',
+			cascade: [
+				{ agent: 'Razorpay', detail: '₹4,400 pushed · txn #84221' },
+				{ agent: 'Email', detail: 'apology sent · warm-1' },
+				{ agent: 'WhatsApp', detail: 'Riya notified · read 11:43' },
 			],
-			deal: {
-				name: 'Banno · Enterprise',
-				stage: 'Negotiation',
-				stageNum: 4,
-				totalStages: 5,
-				value: '$12K',
-				subtext: 'Follow-up scheduled May 2 · pricing deck sent',
+			cascadeSummary: 'Loop closed · resolved in 4m',
+			postCycleCta: {
+				label: 'Want an Ops Agent like this for your support?',
+				sub: 'Book a call with NexAI →',
+				href: site.bookingUrl,
 			},
-			headline: {
-				label: 'pipeline value',
-				value: '$42K',
-				sub: '8 deals · 3 closing this week',
-				trend: '↑ 18% WoW',
-				points: [26, 24, 28, 27, 31, 29, 34, 33, 37, 36, 40, 42],
+		},
+	},
+	{
+		id: 'ceo',
+		title: 'CEO',
+		role: 'Strategy & Decisions',
+		description:
+			"Reads across every team, connects what's happening, and brings you the single call that can't wait — with the downstream effects already mapped.",
+		icon: 'M12 1l9 5v6c0 5.55-3.84 10.74-9 12-5.16-1.26-9-6.45-9-12V6l9-5z',
+		cardState: {
+			mode: 'ceo-filter',
+			badge: 'ORCHESTRATOR · 24-HR LENS',
+			chipsEyebrow: 'Read across today',
+			chips: [
+				{ key: 'sales', label: 'Sales', ping: '3 demos', tone: 'work' },
+				{ key: 'research', label: 'Research', ping: '1 brief', tone: 'work' },
+				{ key: 'social', label: 'Social', ping: '2 esc', tone: 'alert' },
+				{ key: 'creatives', label: 'Creatives', ping: '4 PDPs', tone: 'work' },
+				{ key: 'ops', label: 'Ops', ping: '$400 ask', tone: 'spend' },
+			],
+			synthesis: {
+				lines: [
+					'Research flagged hiring market tightening.',
+					'Sales booked +3 demos this week.',
+					'Creatives queue full through Mon.',
+				],
+				conclusion: 'Glossier brief slips without a hire.',
 			},
-			footer: 'Agent closed $5.6K today · 2 deals won',
+			decisionEyebrow: 'The 1 decision that needs you today',
+			decisionTitle: 'Hire Sr. Designer',
+			decisionMeta: 'decide by 4pm',
+			ctaA: 'Hire',
+			ctaB: 'Defer to Sep',
+			cascade: [
+				{ agent: 'Ops', detail: 'drafting offer @ $11K/mo' },
+				{ agent: 'Finance', detail: 'runway recalc 8.4 → 7.6mo' },
+				{ agent: 'Sales', detail: '2 more demos held this week' },
+			],
+			cascadeSummary: 'Loop closed · 3 agents updated',
+			postCycleCta: {
+				label: 'Want a CEO Agent like this for your business?',
+				sub: 'Book a call with NexAI →',
+				href: site.bookingUrl,
+			},
+		},
+	},
+	{
+		id: 'research',
+		title: 'Research',
+		role: 'Briefs & Signal',
+		description:
+			'Reads the market overnight and lands a one-page brief on your desk first thing — sourced, cited, ready to act on.',
+		icon: 'M11 19a8 8 0 100-16 8 8 0 000 16zm5.5-2.5L21 21M9 11h4M11 9v4',
+		cardState: {
+			mode: 'research-brief',
+			badge: 'BRIEF #51 DELIVERED',
+			today: {
+				timestamp: '06:42 AM',
+				shippedLabel: 'shipped',
+				insight: '25% of work runs agent-alone by 2030',
+				insightSource: 'Gartner+13',
+			},
+			pickerLabel: "Tomorrow's angle",
+			angles: [
+				{
+					key: 'capital',
+					title: 'Capital flows',
+					meta: '7 signals',
+					isDefault: true,
+				},
+				{
+					key: 'execution',
+					title: 'Execution gap',
+					meta: '11 cases',
+					isAgentPick: true,
+				},
+				{
+					key: 'hiring',
+					title: 'Hiring shift',
+					meta: '9 roles',
+				},
+			],
+			queueLabel: 'Queue for 6:42 AM →',
+			queuedLabel: 'Queued',
+			surpriseLabel: 'Surprise me',
+			surpriseSubLabel: 'Execution gap · highest signal density',
+			postQueue: {
+				steps: [
+					{
+						iconKey: 'sources',
+						title: 'Briefed 7 sources to scan overnight',
+						detail: 'Bloomberg · PitchBook · Crunchbase · LinkedIn · X · Gartner · Reuters',
+					},
+					{
+						iconKey: 'calendar',
+						title: 'Calendar set · Brief #52 lands 6:42 AM tomorrow',
+						detail: '',
+					},
+				],
+				summary: 'Cycle complete · agent on-shift for 23h 47m',
+			},
+			postCycleCta: {
+				label: 'Want a Research Agent for your business?',
+				sub: 'Book a call with NexAI →',
+				href: site.bookingUrl,
+			},
 		},
 	},
 ];

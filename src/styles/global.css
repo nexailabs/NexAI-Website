@@ -158,11 +158,19 @@
 		--type-tag-weight: 500;
 		--type-tag-tracking: 0.16em;
 
+		/* Card-scale sub-rem ramp — only for the agent-orbit cards.
+		   Hero numerals + italic display quotes remain component-level one-offs. */
+		--type-card-eyebrow-size: 0.5rem;
+		--type-card-meta-size: 0.55rem;
+		--type-card-body-size: 0.66rem;
+		--type-card-caption-size: 0.6rem;
+
 		/* Tracking ramp */
 		--tracking-tight: -0.02em;
 		--tracking-tighter: -0.035em;
 		--tracking-ui: 0.04em;
 		--tracking-label: 0.12em;
+		--tracking-card: 0.12em;
 		--tracking-eyebrow: 0.18em;
 		--tracking-tag: 0.16em;
 
@@ -545,6 +553,35 @@
 
 	.t-mono {
 		font-family: var(--font-mono);
+	}
+
+	/* Card-scale utilities — used by the agent-orbit cards.
+	   Use these instead of redeclaring font-family/size/weight per selector.
+	   Per-instance color overrides are fine (e.g. teal eyebrow vs amber). */
+	.t-card-eyebrow {
+		font-family: var(--font-accent-jakarta);
+		font-size: var(--type-card-eyebrow-size);
+		font-weight: var(--fw-bold);
+		letter-spacing: var(--tracking-card);
+		line-height: 1;
+		text-transform: uppercase;
+		color: var(--color-text-subtle);
+	}
+
+	.t-card-title {
+		font-family: var(--font-body);
+		font-size: var(--type-card-body-size);
+		font-weight: var(--fw-semibold);
+		line-height: 1.3;
+		color: var(--color-text-main);
+	}
+
+	.t-card-meta {
+		font-family: var(--font-mono);
+		font-variant-numeric: tabular-nums;
+		font-size: var(--type-card-meta-size);
+		letter-spacing: 0.01em;
+		color: var(--color-text-dim);
 	}
 }
 

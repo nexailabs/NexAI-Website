@@ -102,10 +102,9 @@ const featured = VAULT_TOOLS.filter((t) => t.slug !== tool.slug).slice(0, 12);
 
 				<p class="vault-detail__lede">{tool.one}</p>
 				<p class="vault-detail__body">
-					We picked {tool.name} after running a couple of alternatives in parallel for a month. The decision
-					wasn't a feature checklist; it was about which one disappeared into the workflow fastest. {
-						tool.name
-					} did.
+					We picked {tool.name} after running a couple of alternatives in parallel on real work. The
+					decision wasn't a feature checklist; it was about which one disappeared into the workflow
+					fastest. {tool.name} did.
 				</p>
 
 				<blockquote class="vault-detail__quote">{tool.why}</blockquote>
@@ -115,7 +114,7 @@ const featured = VAULT_TOOLS.filter((t) => t.slug !== tool.slug).slice(0, 12);
 					We were on <strong>{tool.replaced}</strong> before
 					{tool.replacedNote && <span class="vault-detail__note">, {tool.replacedNote}</span>}. It
 					wasn't bad, it was just heavier than the job we were asking it to do. Switching cost us a
-					weekend; we got it back inside a month.
+					weekend, and the workflow's been lighter since.
 				</p>
 
 				<h2 class="vault-detail__h2">How it sits in the stack.</h2>

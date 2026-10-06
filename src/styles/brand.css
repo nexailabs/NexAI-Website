@@ -32,6 +32,38 @@
 	--teal-a90: rgba(48, 192, 203, 0.9);
 
 	/* ------------------------------------------------------------------ */
+	/*  COLOR — gold / state-pending (used by the agent-orbit cards for   */
+	/*  "needs you" / pending / awaiting-decision moments). Locked here   */
+	/*  so the same shade is reused across all 6 cards.                   */
+	/* ------------------------------------------------------------------ */
+	--brand-gold-bright: #f5b660;
+	--brand-gold-dark: #c47a00;
+	--gold-a05: rgba(245, 182, 96, 0.05);
+	--gold-a08: rgba(245, 182, 96, 0.08);
+	--gold-a14: rgba(245, 182, 96, 0.14);
+	--gold-a18: rgba(245, 182, 96, 0.18);
+	--gold-a25: rgba(245, 182, 96, 0.25);
+	--gold-a35: rgba(245, 182, 96, 0.35);
+	--gold-a45: rgba(245, 182, 96, 0.45);
+	--gold-a55: rgba(245, 182, 96, 0.55);
+	--gold-a60: rgba(245, 182, 96, 0.6);
+	--gold-a75: rgba(245, 182, 96, 0.75);
+	/* Dark-variant alphas — used in light-mode overrides where the
+	   bright gold would burn out against a light card. */
+	--gold-dark-a25: rgba(200, 135, 10, 0.25);
+	--gold-dark-a42: rgba(200, 135, 10, 0.42);
+	--gold-dark-a50: rgba(200, 135, 10, 0.5);
+	--gold-dark-a55: rgba(200, 135, 10, 0.55);
+
+	/* ------------------------------------------------------------------ */
+	/*  COLOR — state-angry / danger (used by the agent-orbit cards for   */
+	/*  the "angry sentiment" tag in Social escalation only).             */
+	/* ------------------------------------------------------------------ */
+	--brand-rose-bright: #ef6a6a;
+	--brand-rose-dark: #c0392b;
+	--rose-a40: rgba(239, 106, 106, 0.4);
+
+	/* ------------------------------------------------------------------ */
 	/*  COLOR — quantized white alpha (use these, not ad-hoc rgba)        */
 	/* ------------------------------------------------------------------ */
 	--white-a04: rgba(255, 255, 255, 0.04);

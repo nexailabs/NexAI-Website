@@ -11,61 +11,70 @@ interface Agent {
 
 const agents: Agent[] = [
 	{
-		slug: 'outreach',
-		label: 'Outreach',
-		sub: 'Synthesizes signals across the web and writes opening lines a human would actually reply to.',
+		slug: 'sales',
+		label: 'Sales',
+		sublabel: 'Pipeline & Outreach',
+		sub: 'Finds the lead, writes the opener a human would actually reply to, and books the room before it goes cold.',
 		capabilities: [
 			'Signal-driven cold one-liners',
-			'Reply triage & follow-up timing',
-			'Trigger-based account list refresh',
+			'Inbound triage & follow-up timing',
+			'Trigger-based account-list refresh',
 		],
 	},
 	{
-		slug: 'strategy',
-		label: 'CEO',
-		sublabel: 'Strategy & Decisions',
-		sub: 'Synthesizes what’s happening across every team and surfaces the one thing that needs your attention.',
+		slug: 'social',
+		label: 'Social',
+		sublabel: 'Posts & Replies',
+		sub: 'Reads what’s converting, ships the drop across platforms, and holds the one caption that needs your voice.',
 		capabilities: [
-			'Daily cross-team briefings',
-			'Goal vs. reality tracking',
-			'Task delegation by department',
-		],
-	},
-	{
-		slug: 'marketing',
-		label: 'Marketing',
-		sub: 'Reads what’s converting, what’s not, and writes the next experiment before the standup.',
-		capabilities: [
-			'Channel performance synthesis',
-			'Ad copy variants from receipts',
-			'Landing-page CRO suggestions',
+			'Multi-platform publishing',
+			'Caption variants from what’s working',
+			'DM & comment triage with drafts',
 		],
 	},
 	{
 		slug: 'creatives',
 		label: 'Creatives',
+		sublabel: 'PDP & UGC',
 		sub: 'Turns a brand brief and a flat product photo into a styled editorial shot, at the volume your studio actually needs.',
 		capabilities: [
 			'Studio shot brief → image',
 			'Brand-locked prompt scaffolds',
-			'Asset versioning & QA',
+			'QA scoring & asset versioning',
+		],
+	},
+	{
+		slug: 'operations',
+		label: 'Operations',
+		sublabel: 'Tickets & Accounts',
+		sub: 'Triages support, drafts the customer reply, and protects your high-LTV accounts — refund or override always yours to sign.',
+		capabilities: [
+			'Ticket triage & SLA watch',
+			'Refund / voucher drafts for sign-off',
+			'High-LTV account protection',
+		],
+	},
+	{
+		slug: 'ceo',
+		label: 'CEO',
+		sublabel: 'Strategy & Decisions',
+		sub: 'Reads across every team and surfaces the one call that can’t wait — with the downstream effects already mapped.',
+		capabilities: [
+			'Daily cross-team synthesis',
+			'Goal vs. reality tracking',
+			'One decision surfaced, not twenty',
 		],
 	},
 	{
 		slug: 'research',
 		label: 'Research',
-		sub: 'A junior analyst that never sleeps, never forgets a source, and writes one-page briefs you trust by month two.',
+		sublabel: 'Briefs & Signal',
+		sub: 'A junior analyst that never sleeps, never forgets a source, and lands a cited one-page brief on your desk first thing.',
 		capabilities: [
-			'Discovery-call → one-page brief',
+			'Overnight market scan → brief',
 			'Competitive teardown',
 			'Source citations, always',
 		],
-	},
-	{
-		slug: 'finance',
-		label: 'Finance',
-		sub: 'Reads the bank feed, reconciles invoices, and asks the founder one question a week, never twenty.',
-		capabilities: ['Invoice reconciliation', 'GST / TDS prep', 'Cash runway projections'],
 	},
 ];
 
@@ -85,8 +94,8 @@ const totalPadded = String(total).padStart(2, '0');
 				</h2>
 			</div>
 			<p class="home-roster__lede">
-				Most clients start with one. By month four, three departments run on agents &mdash; and two
-				more are scoped.
+				Most clients start with one. The agent earns the next one &mdash; three departments running,
+				two more scoped, before you&rsquo;ve planned for it.
 			</p>
 		</div>
 
@@ -159,8 +168,7 @@ const totalPadded = String(total).padStart(2, '0');
 		{/* Footer ledger row */}
 		<div class="home-roster__footer">
 			<span
-				>Outreach &middot; CEO &middot; Marketing &middot; Creatives &middot; Research &middot;
-				Finance</span
+				>Sales &middot; Social &middot; Creatives &middot; Operations &middot; CEO &middot; Research</span
 			>
 			<span class="home-roster__footer-r">
 				<span class="home-roster__footer-dot" aria-hidden="true"></span>
