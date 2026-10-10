@@ -129,14 +129,6 @@ export const brandLogos: BrandLogo[] = [
 		height: 208,
 		scale: 1.1,
 	},
-	{
-		src: `${ik}/studio/brands/jugo.png${tr.logo}`,
-		alt: 'Jugo',
-		width: 203,
-		height: 180,
-		scale: 0.9,
-		offsetY: '0.15rem',
-	},
 	{ src: `${ik}/studio/brands/stf.png${tr.logo}`, alt: 'STF', width: 389, height: 162, scale: 0.9 },
 	{
 		src: `${ik}/studio/brands/leemboodi.png${tr.logo}`,

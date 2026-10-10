@@ -7,11 +7,9 @@ export default defineConfig({
 	site: 'https://www.nexailabs.com',
 	output: 'static',
 	integrations: [
+		// Only /studio is a page of ours now; everything else redirects (public/_redirects).
 		sitemap({
-			filter: (page) =>
-				!page.includes('/coming-soon') &&
-				!page.includes('/prompts/empty') &&
-				!page.includes('/apps/empty'),
+			filter: (page) => new URL(page).pathname.startsWith('/studio'),
 		}),
 	],
 	prefetch: {

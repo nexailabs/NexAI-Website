@@ -3,34 +3,16 @@ import type { NavConfig } from '../types/navigation';
 const main: NavConfig = {
 	navGroups: [
 		{
-			id: 'agent-lab',
-			label: 'Agent Lab',
-			href: '/coming-soon',
-			caption: 'Six agents we run on: Outreach, Strategy, Finance. Yours next.',
-		},
-		{
 			id: 'nexai-studio',
 			label: 'NexAI Studio',
 			href: '/studio',
 			caption: 'Mannequin in, on-model out. 3 days, 80% cheaper than a studio day.',
 		},
 		{
-			id: 'prompt-hub',
-			label: 'Prompt Hub',
-			href: '/prompts',
-			caption: 'Prompts that survived a month of real work. Copy, paste, ship.',
-		},
-		{
-			id: 'app-vault',
-			label: 'App Vault',
-			href: '/apps',
-			caption: 'Ten tools we run our company on. What each one replaced.',
-		},
-		{
-			id: 'field-notes',
-			label: 'Field Notes',
-			href: '/blog',
-			caption: "Essays on what shipped, what didn't, what we'd do again.",
+			id: 'studio-app',
+			label: 'The App',
+			href: 'https://studio.nexailabs.com/',
+			caption: 'Make the images yourself. Invite-only while we onboard the first brands.',
 		},
 		{
 			id: 'catch-us',
@@ -114,10 +96,10 @@ const studio: NavConfig = {
 			caption: 'Before & after transformations',
 		},
 		{
-			id: 'nexai-labs',
-			label: 'NexAI Labs',
-			href: '/',
-			caption: 'Back to our full AI product suite',
+			id: 'studio-app',
+			label: 'The App',
+			href: 'https://studio.nexailabs.com/',
+			caption: 'Make the images yourself. Invite-only for now.',
 		},
 	],
 	topHref: '/studio',

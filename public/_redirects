@@ -8,3 +8,16 @@
 /blog/how-ai-is-replacing* /studio 301
 /blog/how-ai-sales-agents* / 301
 /blog/cracking-the-code-j* / 301
+# Agents site retired 2026-10-06 (CEO-PLAN-2026-Q4 "Vision", 1 Oct): we sell the
+# app and the Studio only. The homepage points at the app's own landing until
+# nexailabs.com is rebuilt as its homepage, so it is a 302, not a 301.
+/coming-soon / 301
+/coming-soon/ / 301
+/apps / 301
+/apps/* / 301
+/prompts / 301
+/prompts/* / 301
+/blog / 301
+/blog/* / 301
+/index.html https://studio.nexailabs.com/ 302
+/ https://studio.nexailabs.com/ 302

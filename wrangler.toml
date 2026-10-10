@@ -1,26 +1,11 @@
-# Cloudflare Worker config — Workers Static Assets.
-# The Astro build (`npm run build`) outputs the static site to `dist/`, which
-# is bound as ASSETS. The Worker (src/worker.ts) handles /api/runs (Prompt Hub
-# vanity counter, KV-backed) and falls through to the static site for all
-# other routes.
-#
-# To create the KV namespaces this project needs (run from this repo root):
-#   wrangler kv:namespace create PROMPT_HUB_KV
-#   wrangler kv:namespace create PROMPT_HUB_KV --preview
-#
-# Paste the printed `id` and `preview_id` values into the binding below.
+# Cloudflare Worker config — Workers Static Assets, no Worker code.
+# The Astro build (`npm run build`) outputs the static site to `dist/`.
+# Redirects and headers come from `public/_redirects` and `public/_headers`.
+# Deploy: `npm run build && npx wrangler deploy`.
 
 name = "nexai-website"
 account_id = "4fa2570f652ab2cfede50d75a3a58422"
 compatibility_date = "2025-01-01"
-main = "src/worker.ts"
 
 [assets]
 directory = "./dist"
-binding = "ASSETS"
-run_worker_first = ["/api/*"]
-
-[[kv_namespaces]]
-binding = "PROMPT_HUB_KV"
-id = "c2b8e126dd6849ca93118dbd0ef3a656"
-preview_id = "5adb3b544a3d4cbb963a3806d393534f"
